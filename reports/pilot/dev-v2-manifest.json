@@ -1,0 +1,1722 @@
+{
+ "data_dir": "data/pilot/dev-v2",
+ "dev_only": true,
+ "excluded_groups": [],
+ "exclusions": [],
+ "file_sha256": {
+  "interventions.json": "dc1cd96d4b9b35f98662b7b45adc0dff8d4b67f43ef9a419a9630907d66210fc",
+  "privileged.jsonl": "1177fd88076192e1246692ce7368ba1c268ddb176d041c2cf32ba0254c8fa7b1",
+  "public.jsonl": "dbcf2220ae4d1acfb14bae4044c35c323665d97d629bb17135acbc3639573694"
+ },
+ "groups_by_family": {
+  "ambiguity": 4,
+  "conflict": 4,
+  "corroborated": 4,
+  "directed_perspective": 4,
+  "distractors": 4,
+  "false_belief": 4,
+  "nested_reliability": 4,
+  "relevance_shift": 4,
+  "stop": 4
+ },
+ "instances": [
+  {
+   "agent_view_sha256": "42f7fc58f3d6163b6c56b3753de627930bc7c52924a21a310722fbdceffe7182",
+   "candidates": [
+    "K(nadia)"
+   ],
+   "family": "stop",
+   "group_id": "dev-v2-stop-g0",
+   "instance_id": "dev-v2-stop-g0-bystander0",
+   "public_prior_sha256": "8180df560cc18e7c05a875b80b6fbdf55143994cc65388ee63d24ab27fb8345e",
+   "variant": {
+    "bystander": false,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "264320957d426d397420a1cfb57df6f9725006dafb7b33c9a347c19ef15d5e1a",
+   "candidates": [
+    "K(alice)",
+    "K(alice->nadia)",
+    "K(nadia)",
+    "K(nadia->alice)"
+   ],
+   "family": "stop",
+   "group_id": "dev-v2-stop-g0",
+   "instance_id": "dev-v2-stop-g0-bystander1",
+   "public_prior_sha256": "8180df560cc18e7c05a875b80b6fbdf55143994cc65388ee63d24ab27fb8345e",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "5bcbc4a74ed1659293a8983dd02e61eafb2f285c977b36db608900d779a90eb3",
+   "candidates": [
+    "K(tomas)"
+   ],
+   "family": "stop",
+   "group_id": "dev-v2-stop-g1",
+   "instance_id": "dev-v2-stop-g1-bystander0",
+   "public_prior_sha256": "44cae22c83dc02d2b2f9b031d6174ffa782a9b970f78fb7e48ac45068edcf07e",
+   "variant": {
+    "bystander": false,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "b3633587a95da0bff1f64b4d6ee7fd0402f303d0a89397c41adc598f54dc1f4e",
+   "candidates": [
+    "K(ivan)",
+    "K(ivan->tomas)",
+    "K(tomas)",
+    "K(tomas->ivan)"
+   ],
+   "family": "stop",
+   "group_id": "dev-v2-stop-g1",
+   "instance_id": "dev-v2-stop-g1-bystander1",
+   "public_prior_sha256": "44cae22c83dc02d2b2f9b031d6174ffa782a9b970f78fb7e48ac45068edcf07e",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "53215a3878c71b4dcdf58dce1d114a0d91fc40253940fea121f56ec6806ba915",
+   "candidates": [
+    "K(dave)"
+   ],
+   "family": "stop",
+   "group_id": "dev-v2-stop-g2",
+   "instance_id": "dev-v2-stop-g2-bystander0",
+   "public_prior_sha256": "bcd5a1f7a6fae9c55b219b22d094f2dad95900b695eff0619ac5170dd2514fce",
+   "variant": {
+    "bystander": false,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "e7e7ad2ab48e55230f70e0f31d3882c605f9d3ef3d88c6066f44b9ef15a02b0b",
+   "candidates": [
+    "K(dave)",
+    "K(dave->omar)",
+    "K(omar)",
+    "K(omar->dave)"
+   ],
+   "family": "stop",
+   "group_id": "dev-v2-stop-g2",
+   "instance_id": "dev-v2-stop-g2-bystander1",
+   "public_prior_sha256": "bcd5a1f7a6fae9c55b219b22d094f2dad95900b695eff0619ac5170dd2514fce",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "0939d7a7ca09393b8a508df73e1c7930af7f564a8d85081fcb17a75defd7dc33",
+   "candidates": [
+    "K(alice)"
+   ],
+   "family": "stop",
+   "group_id": "dev-v2-stop-g3",
+   "instance_id": "dev-v2-stop-g3-bystander0",
+   "public_prior_sha256": "bcd5a1f7a6fae9c55b219b22d094f2dad95900b695eff0619ac5170dd2514fce",
+   "variant": {
+    "bystander": false,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "2c83fde9867d12f9fc2725018009ae425ee711146d768a14bdc660c35f0fedeb",
+   "candidates": [
+    "K(alice)",
+    "K(alice->zane)",
+    "K(zane)",
+    "K(zane->alice)"
+   ],
+   "family": "stop",
+   "group_id": "dev-v2-stop-g3",
+   "instance_id": "dev-v2-stop-g3-bystander1",
+   "public_prior_sha256": "bcd5a1f7a6fae9c55b219b22d094f2dad95900b695eff0619ac5170dd2514fce",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "bf7d40730d4f7d0cfcc8fa1d50ab1b6c7a56d43efd3aaa336194b6ae116426ee",
+   "candidates": [
+    "K(carol)",
+    "K(ivan)"
+   ],
+   "family": "ambiguity",
+   "group_id": "dev-v2-ambiguity-g0",
+   "instance_id": "dev-v2-ambiguity-g0-evidence0",
+   "public_prior_sha256": "871ee65c1d8c45057c4c287ca6297dba3fe9b8b62248353a02c2a476451b007e",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "01096f66bb2c038f68d4ff8ce795dc0fc79942ab61c16151995e1720630f464b",
+   "candidates": [
+    "K(carol)",
+    "K(ivan)"
+   ],
+   "family": "ambiguity",
+   "group_id": "dev-v2-ambiguity-g0",
+   "instance_id": "dev-v2-ambiguity-g0-evidence1",
+   "public_prior_sha256": "871ee65c1d8c45057c4c287ca6297dba3fe9b8b62248353a02c2a476451b007e",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "42c401a50ea62702b5bccad2ccfc9540b2d4569fd5e94e0e5487e0d089ff9eaf",
+   "candidates": [
+    "K(sara)",
+    "K(tomas)"
+   ],
+   "family": "ambiguity",
+   "group_id": "dev-v2-ambiguity-g1",
+   "instance_id": "dev-v2-ambiguity-g1-evidence0",
+   "public_prior_sha256": "643cdf4a39b6bd0cb43026015bf28d6bb680814b08098f225978fca558b85ada",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "8872f6ad311ef9bc11cc0ee4dfbc36e3aa35198055537d968eef317455b9b2b0",
+   "candidates": [
+    "K(sara)",
+    "K(tomas)"
+   ],
+   "family": "ambiguity",
+   "group_id": "dev-v2-ambiguity-g1",
+   "instance_id": "dev-v2-ambiguity-g1-evidence1",
+   "public_prior_sha256": "643cdf4a39b6bd0cb43026015bf28d6bb680814b08098f225978fca558b85ada",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "ba7c8654fbd2cef0bb19ae86059088af44c0129ba112fe878fc5cb403663f6bd",
+   "candidates": [
+    "K(alice)",
+    "K(heidi)"
+   ],
+   "family": "ambiguity",
+   "group_id": "dev-v2-ambiguity-g2",
+   "instance_id": "dev-v2-ambiguity-g2-evidence0",
+   "public_prior_sha256": "32be8922bbe230d1ff7c60d276a2f291f30f61c16158cbaa9dbc486afe08e456",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "05886b1a5a4c4884e07f7dc9b39c21d045aeae361dd72dfb66a0fa3301e6c891",
+   "candidates": [
+    "K(alice)",
+    "K(heidi)"
+   ],
+   "family": "ambiguity",
+   "group_id": "dev-v2-ambiguity-g2",
+   "instance_id": "dev-v2-ambiguity-g2-evidence1",
+   "public_prior_sha256": "32be8922bbe230d1ff7c60d276a2f291f30f61c16158cbaa9dbc486afe08e456",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "3c1dcf3a4f6fab2b8ce26c8e6f20c88cc2b9333908a19db0ee7626536efc86f8",
+   "candidates": [
+    "K(alice)",
+    "K(ravi)"
+   ],
+   "family": "ambiguity",
+   "group_id": "dev-v2-ambiguity-g3",
+   "instance_id": "dev-v2-ambiguity-g3-evidence0",
+   "public_prior_sha256": "7c86f488b90538c38e15d2e54fb4d8c37e5af81df252821eb8fe2eb38181f2c1",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "72b8f1e590073dfd0ad5543363996bc9846e2f4ad944c9493022d750a7a09967",
+   "candidates": [
+    "K(alice)",
+    "K(ravi)"
+   ],
+   "family": "ambiguity",
+   "group_id": "dev-v2-ambiguity-g3",
+   "instance_id": "dev-v2-ambiguity-g3-evidence1",
+   "public_prior_sha256": "7c86f488b90538c38e15d2e54fb4d8c37e5af81df252821eb8fe2eb38181f2c1",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "9c6d39156f1879533257bdf5d10180da95691cf75cc0eee14028832fd6fc42fc",
+   "candidates": [
+    "K(leo)",
+    "K(leo->wen)",
+    "K(quinn)",
+    "K(quinn->wen)",
+    "K(wen)",
+    "K(wen->leo)",
+    "K(wen->quinn)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g0",
+   "instance_id": "dev-v2-false_belief-g0-stakes1-evidence0",
+   "public_prior_sha256": "64ca61561269cf76dd8ed10c8a30ee78db73cefb33c6c89845082bf7ad8cfc75",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "74214af084446c29adb89c1b450ad2efb3c1d86a31a9efcc984102d91a65a7d3",
+   "candidates": [
+    "K(leo)",
+    "K(leo->quinn)",
+    "K(leo->wen)",
+    "K(quinn)",
+    "K(quinn->leo)",
+    "K(quinn->wen)",
+    "K(wen)",
+    "K(wen->leo)",
+    "K(wen->quinn)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g0",
+   "instance_id": "dev-v2-false_belief-g0-stakes1-evidence1",
+   "public_prior_sha256": "64ca61561269cf76dd8ed10c8a30ee78db73cefb33c6c89845082bf7ad8cfc75",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "9c6d39156f1879533257bdf5d10180da95691cf75cc0eee14028832fd6fc42fc",
+   "candidates": [
+    "K(leo)",
+    "K(leo->wen)",
+    "K(quinn)",
+    "K(quinn->wen)",
+    "K(wen)",
+    "K(wen->leo)",
+    "K(wen->quinn)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g0",
+   "instance_id": "dev-v2-false_belief-g0-stakes4-evidence0",
+   "public_prior_sha256": "64ca61561269cf76dd8ed10c8a30ee78db73cefb33c6c89845082bf7ad8cfc75",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "74214af084446c29adb89c1b450ad2efb3c1d86a31a9efcc984102d91a65a7d3",
+   "candidates": [
+    "K(leo)",
+    "K(leo->quinn)",
+    "K(leo->wen)",
+    "K(quinn)",
+    "K(quinn->leo)",
+    "K(quinn->wen)",
+    "K(wen)",
+    "K(wen->leo)",
+    "K(wen->quinn)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g0",
+   "instance_id": "dev-v2-false_belief-g0-stakes4-evidence1",
+   "public_prior_sha256": "64ca61561269cf76dd8ed10c8a30ee78db73cefb33c6c89845082bf7ad8cfc75",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "4d66dea92918bb969ae2ca0fbff81f19d73de0ff16e590d7a694eb1c10b65ce6",
+   "candidates": [
+    "K(alice)",
+    "K(alice->heidi)",
+    "K(alice->wen)",
+    "K(heidi)",
+    "K(heidi->alice)",
+    "K(wen)",
+    "K(wen->alice)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g1",
+   "instance_id": "dev-v2-false_belief-g1-stakes1-evidence0",
+   "public_prior_sha256": "ef938e006bd3c8875ab15f384ce9f1cca11baf349fdec4d142c1fa068d4f1d25",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "3abde6e6246f206a3bb9dd92f6405387a1e4d73fec704044884ac83f61d75f5c",
+   "candidates": [
+    "K(alice)",
+    "K(alice->heidi)",
+    "K(alice->wen)",
+    "K(heidi)",
+    "K(heidi->alice)",
+    "K(heidi->wen)",
+    "K(wen)",
+    "K(wen->alice)",
+    "K(wen->heidi)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g1",
+   "instance_id": "dev-v2-false_belief-g1-stakes1-evidence1",
+   "public_prior_sha256": "ef938e006bd3c8875ab15f384ce9f1cca11baf349fdec4d142c1fa068d4f1d25",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "4d66dea92918bb969ae2ca0fbff81f19d73de0ff16e590d7a694eb1c10b65ce6",
+   "candidates": [
+    "K(alice)",
+    "K(alice->heidi)",
+    "K(alice->wen)",
+    "K(heidi)",
+    "K(heidi->alice)",
+    "K(wen)",
+    "K(wen->alice)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g1",
+   "instance_id": "dev-v2-false_belief-g1-stakes4-evidence0",
+   "public_prior_sha256": "ef938e006bd3c8875ab15f384ce9f1cca11baf349fdec4d142c1fa068d4f1d25",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "3abde6e6246f206a3bb9dd92f6405387a1e4d73fec704044884ac83f61d75f5c",
+   "candidates": [
+    "K(alice)",
+    "K(alice->heidi)",
+    "K(alice->wen)",
+    "K(heidi)",
+    "K(heidi->alice)",
+    "K(heidi->wen)",
+    "K(wen)",
+    "K(wen->alice)",
+    "K(wen->heidi)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g1",
+   "instance_id": "dev-v2-false_belief-g1-stakes4-evidence1",
+   "public_prior_sha256": "ef938e006bd3c8875ab15f384ce9f1cca11baf349fdec4d142c1fa068d4f1d25",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "e8ec55dc884078674f1b61b751e2e818885f9de01c50210a5961f7f7e74a6d65",
+   "candidates": [
+    "K(dave)",
+    "K(dave->vik)",
+    "K(tomas)",
+    "K(tomas->vik)",
+    "K(vik)",
+    "K(vik->dave)",
+    "K(vik->tomas)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g2",
+   "instance_id": "dev-v2-false_belief-g2-stakes1-evidence0",
+   "public_prior_sha256": "ed8a42d1e0faefab1fd6c2ff1290be88a0eb5b00a1b1776a11d234eab357794f",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "035b56234e1c8f9e458c6dcf7e0e1afbd59f2cefa620825fb45dd9967c07e61e",
+   "candidates": [
+    "K(dave)",
+    "K(dave->tomas)",
+    "K(dave->vik)",
+    "K(tomas)",
+    "K(tomas->dave)",
+    "K(tomas->vik)",
+    "K(vik)",
+    "K(vik->dave)",
+    "K(vik->tomas)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g2",
+   "instance_id": "dev-v2-false_belief-g2-stakes1-evidence1",
+   "public_prior_sha256": "ed8a42d1e0faefab1fd6c2ff1290be88a0eb5b00a1b1776a11d234eab357794f",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "e8ec55dc884078674f1b61b751e2e818885f9de01c50210a5961f7f7e74a6d65",
+   "candidates": [
+    "K(dave)",
+    "K(dave->vik)",
+    "K(tomas)",
+    "K(tomas->vik)",
+    "K(vik)",
+    "K(vik->dave)",
+    "K(vik->tomas)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g2",
+   "instance_id": "dev-v2-false_belief-g2-stakes4-evidence0",
+   "public_prior_sha256": "ed8a42d1e0faefab1fd6c2ff1290be88a0eb5b00a1b1776a11d234eab357794f",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "035b56234e1c8f9e458c6dcf7e0e1afbd59f2cefa620825fb45dd9967c07e61e",
+   "candidates": [
+    "K(dave)",
+    "K(dave->tomas)",
+    "K(dave->vik)",
+    "K(tomas)",
+    "K(tomas->dave)",
+    "K(tomas->vik)",
+    "K(vik)",
+    "K(vik->dave)",
+    "K(vik->tomas)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g2",
+   "instance_id": "dev-v2-false_belief-g2-stakes4-evidence1",
+   "public_prior_sha256": "ed8a42d1e0faefab1fd6c2ff1290be88a0eb5b00a1b1776a11d234eab357794f",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "aa9abe70dbd11467c011272bb75cec0b2e0319a8c6dd7750a76fde162299261c",
+   "candidates": [
+    "K(kim)",
+    "K(kim->omar)",
+    "K(leo)",
+    "K(leo->omar)",
+    "K(omar)",
+    "K(omar->kim)",
+    "K(omar->leo)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g3",
+   "instance_id": "dev-v2-false_belief-g3-stakes1-evidence0",
+   "public_prior_sha256": "44ec12cc48c8fc479bddc9875be2373c7ca93fbe4559302c5c15cb3f930df461",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "4a57dddceea285a82aa844dfd84b5437b9795957c41558c1ee5357b869722af1",
+   "candidates": [
+    "K(kim)",
+    "K(kim->leo)",
+    "K(kim->omar)",
+    "K(leo)",
+    "K(leo->kim)",
+    "K(leo->omar)",
+    "K(omar)",
+    "K(omar->kim)",
+    "K(omar->leo)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g3",
+   "instance_id": "dev-v2-false_belief-g3-stakes1-evidence1",
+   "public_prior_sha256": "44ec12cc48c8fc479bddc9875be2373c7ca93fbe4559302c5c15cb3f930df461",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "aa9abe70dbd11467c011272bb75cec0b2e0319a8c6dd7750a76fde162299261c",
+   "candidates": [
+    "K(kim)",
+    "K(kim->omar)",
+    "K(leo)",
+    "K(leo->omar)",
+    "K(omar)",
+    "K(omar->kim)",
+    "K(omar->leo)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g3",
+   "instance_id": "dev-v2-false_belief-g3-stakes4-evidence0",
+   "public_prior_sha256": "44ec12cc48c8fc479bddc9875be2373c7ca93fbe4559302c5c15cb3f930df461",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "4a57dddceea285a82aa844dfd84b5437b9795957c41558c1ee5357b869722af1",
+   "candidates": [
+    "K(kim)",
+    "K(kim->leo)",
+    "K(kim->omar)",
+    "K(leo)",
+    "K(leo->kim)",
+    "K(leo->omar)",
+    "K(omar)",
+    "K(omar->kim)",
+    "K(omar->leo)"
+   ],
+   "family": "false_belief",
+   "group_id": "dev-v2-false_belief-g3",
+   "instance_id": "dev-v2-false_belief-g3-stakes4-evidence1",
+   "public_prior_sha256": "44ec12cc48c8fc479bddc9875be2373c7ca93fbe4559302c5c15cb3f930df461",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "6bc846c994cdda4ae5902067ea0de41f330f12fc39c430d347fe0998191f5c45",
+   "candidates": [
+    "K(heidi)",
+    "K(kim)",
+    "K(kim->mia)",
+    "K(mia)",
+    "K(mia->kim)"
+   ],
+   "family": "distractors",
+   "group_id": "dev-v2-distractors-g0",
+   "instance_id": "dev-v2-distractors-g0-permuted0",
+   "public_prior_sha256": "4e068210c214e5f8cd5df4577125eb60a01ffeda89d9ce0e2d72ee7f6266a82f",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "6bc846c994cdda4ae5902067ea0de41f330f12fc39c430d347fe0998191f5c45",
+   "candidates": [
+    "K(heidi)",
+    "K(kim)",
+    "K(kim->mia)",
+    "K(mia)",
+    "K(mia->kim)"
+   ],
+   "family": "distractors",
+   "group_id": "dev-v2-distractors-g0",
+   "instance_id": "dev-v2-distractors-g0-permuted1",
+   "public_prior_sha256": "4e068210c214e5f8cd5df4577125eb60a01ffeda89d9ce0e2d72ee7f6266a82f",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "40f037d7a09b46b67b3eaaa3b0a3b2dee86f411a9041e2651b84150d2869f9c0",
+   "candidates": [
+    "K(alice)",
+    "K(alice->grace)",
+    "K(grace)",
+    "K(grace->alice)",
+    "K(vik)"
+   ],
+   "family": "distractors",
+   "group_id": "dev-v2-distractors-g1",
+   "instance_id": "dev-v2-distractors-g1-permuted0",
+   "public_prior_sha256": "e9917e919c22c822ffecb50669bdae44ec4b377e87abaf82bb4f58df7bdb3615",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "84a3f50b5f40d7b543e58489275ba96c15c6fd655b9c4247f7b17a865dd77535",
+   "candidates": [
+    "K(alice)",
+    "K(alice->grace)",
+    "K(grace)",
+    "K(grace->alice)",
+    "K(vik)"
+   ],
+   "family": "distractors",
+   "group_id": "dev-v2-distractors-g1",
+   "instance_id": "dev-v2-distractors-g1-permuted1",
+   "public_prior_sha256": "e9917e919c22c822ffecb50669bdae44ec4b377e87abaf82bb4f58df7bdb3615",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "8154d55c9f77506f23b8e2ecb9d1ecc510b364e0149d65fe09a6ca88035b5436",
+   "candidates": [
+    "K(alice)",
+    "K(alice->wen)",
+    "K(frank)",
+    "K(wen)",
+    "K(wen->alice)"
+   ],
+   "family": "distractors",
+   "group_id": "dev-v2-distractors-g2",
+   "instance_id": "dev-v2-distractors-g2-permuted0",
+   "public_prior_sha256": "5052c3d62b1c7c1570b0474e3cfb11a66e4ea561ab735662f1c444552dc51035",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "8154d55c9f77506f23b8e2ecb9d1ecc510b364e0149d65fe09a6ca88035b5436",
+   "candidates": [
+    "K(alice)",
+    "K(alice->wen)",
+    "K(frank)",
+    "K(wen)",
+    "K(wen->alice)"
+   ],
+   "family": "distractors",
+   "group_id": "dev-v2-distractors-g2",
+   "instance_id": "dev-v2-distractors-g2-permuted1",
+   "public_prior_sha256": "5052c3d62b1c7c1570b0474e3cfb11a66e4ea561ab735662f1c444552dc51035",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "29fc94416e840d6cd2831f73b073ab87cf437e05b48fcb54746f581acec453a8",
+   "candidates": [
+    "K(leo)",
+    "K(ravi)",
+    "K(ravi->wen)",
+    "K(wen)",
+    "K(wen->ravi)"
+   ],
+   "family": "distractors",
+   "group_id": "dev-v2-distractors-g3",
+   "instance_id": "dev-v2-distractors-g3-permuted0",
+   "public_prior_sha256": "121bf3c5b295b4875b229e7d07843aef7c109be90e152b5c543ce8bb0f63d29c",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "5bbaa659c6d8492e6e965c81fd2537f5a11efbc8d14bba2d50e261366d25b422",
+   "candidates": [
+    "K(leo)",
+    "K(ravi)",
+    "K(ravi->wen)",
+    "K(wen)",
+    "K(wen->ravi)"
+   ],
+   "family": "distractors",
+   "group_id": "dev-v2-distractors-g3",
+   "instance_id": "dev-v2-distractors-g3-permuted1",
+   "public_prior_sha256": "121bf3c5b295b4875b229e7d07843aef7c109be90e152b5c543ce8bb0f63d29c",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "a8e65122d2899007b7c8336dd2246680f86f07fc9f02f2870b3b8e895b460a49",
+   "candidates": [
+    "K(leo)",
+    "K(mia)",
+    "K(mia->vik)",
+    "K(vik)",
+    "K(vik->mia)"
+   ],
+   "family": "conflict",
+   "group_id": "dev-v2-conflict-g0",
+   "instance_id": "dev-v2-conflict-g0-stakes1",
+   "public_prior_sha256": "ff85f4aae7f971cf4b105ff4506cbc544f73c7fed33b4fa37a80ffd0dbfc8e3c",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "a8e65122d2899007b7c8336dd2246680f86f07fc9f02f2870b3b8e895b460a49",
+   "candidates": [
+    "K(leo)",
+    "K(mia)",
+    "K(mia->vik)",
+    "K(vik)",
+    "K(vik->mia)"
+   ],
+   "family": "conflict",
+   "group_id": "dev-v2-conflict-g0",
+   "instance_id": "dev-v2-conflict-g0-stakes4",
+   "public_prior_sha256": "ff85f4aae7f971cf4b105ff4506cbc544f73c7fed33b4fa37a80ffd0dbfc8e3c",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "c310ddb543b7cdfb0e79a1acc80001b9954fc0e4a9c86f6bad88a83b458efece",
+   "candidates": [
+    "K(judy)",
+    "K(uma)",
+    "R(uma)"
+   ],
+   "family": "conflict",
+   "group_id": "dev-v2-conflict-g1",
+   "instance_id": "dev-v2-conflict-g1-stakes1",
+   "public_prior_sha256": "3cb244d0a3a33977a8b0dea0e4194c22e47b99efe858cbdf08d41d98c49ddfae",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "c310ddb543b7cdfb0e79a1acc80001b9954fc0e4a9c86f6bad88a83b458efece",
+   "candidates": [
+    "K(judy)",
+    "K(uma)",
+    "R(uma)"
+   ],
+   "family": "conflict",
+   "group_id": "dev-v2-conflict-g1",
+   "instance_id": "dev-v2-conflict-g1-stakes4",
+   "public_prior_sha256": "3cb244d0a3a33977a8b0dea0e4194c22e47b99efe858cbdf08d41d98c49ddfae",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "a56eb245171b045d53e24590d8da43cf817a006c4f07fa162602b01f204b17e3",
+   "candidates": [
+    "K(heidi)",
+    "R(heidi)",
+    "K(heidi->wen)",
+    "R(heidi->wen)",
+    "K(quinn)",
+    "K(wen)",
+    "R(wen)",
+    "K(wen->heidi)",
+    "R(wen->heidi)"
+   ],
+   "family": "conflict",
+   "group_id": "dev-v2-conflict-g2",
+   "instance_id": "dev-v2-conflict-g2-stakes1",
+   "public_prior_sha256": "89619eda5321b2eb18cacf685be6622d8ac0a0f5becb27a08ab01990f770d85c",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "a56eb245171b045d53e24590d8da43cf817a006c4f07fa162602b01f204b17e3",
+   "candidates": [
+    "K(heidi)",
+    "R(heidi)",
+    "K(heidi->wen)",
+    "R(heidi->wen)",
+    "K(quinn)",
+    "K(wen)",
+    "R(wen)",
+    "K(wen->heidi)",
+    "R(wen->heidi)"
+   ],
+   "family": "conflict",
+   "group_id": "dev-v2-conflict-g2",
+   "instance_id": "dev-v2-conflict-g2-stakes4",
+   "public_prior_sha256": "89619eda5321b2eb18cacf685be6622d8ac0a0f5becb27a08ab01990f770d85c",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "48219cca2b11e716647d93193bed7511e7c4fb449207411b40202f7a154de8d9",
+   "candidates": [
+    "K(mia)",
+    "R(mia)",
+    "K(omar)"
+   ],
+   "family": "conflict",
+   "group_id": "dev-v2-conflict-g3",
+   "instance_id": "dev-v2-conflict-g3-stakes1",
+   "public_prior_sha256": "884d32c66aed7cb841edef9067a6017c12d84a6b311a4191c13a2b9de1cf6df4",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "48219cca2b11e716647d93193bed7511e7c4fb449207411b40202f7a154de8d9",
+   "candidates": [
+    "K(mia)",
+    "R(mia)",
+    "K(omar)"
+   ],
+   "family": "conflict",
+   "group_id": "dev-v2-conflict-g3",
+   "instance_id": "dev-v2-conflict-g3-stakes4",
+   "public_prior_sha256": "884d32c66aed7cb841edef9067a6017c12d84a6b311a4191c13a2b9de1cf6df4",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "60540887c63d315dfde9dd14b9e548f4601a8bf8711931db40a887e25f506cd2",
+   "candidates": [
+    "K(mia)",
+    "K(nadia)",
+    "R(nadia)",
+    "K(nadia->pia)",
+    "K(pia)",
+    "K(pia->nadia)",
+    "R(pia->nadia)"
+   ],
+   "family": "nested_reliability",
+   "group_id": "dev-v2-nested_reliability-g0",
+   "instance_id": "dev-v2-nested_reliability-g0-permuted0",
+   "public_prior_sha256": "b63a8f245080de03d4287ae4e0a941682108699dc05aa42750f16a2230fa3b24",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "ffb326ca44c094338a0fa0fe126c1cbde86cfbcc52a768c1363991ab282904b4",
+   "candidates": [
+    "K(mia)",
+    "K(nadia)",
+    "K(nadia->pia)",
+    "R(nadia->pia)",
+    "K(pia)",
+    "R(pia)",
+    "K(pia->nadia)"
+   ],
+   "family": "nested_reliability",
+   "group_id": "dev-v2-nested_reliability-g0",
+   "instance_id": "dev-v2-nested_reliability-g0-permuted1",
+   "public_prior_sha256": "b63a8f245080de03d4287ae4e0a941682108699dc05aa42750f16a2230fa3b24",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "1d4255a49c56944986c80c035bad93414cf63e272937d124e314282fb080af9f",
+   "candidates": [
+    "K(leo)",
+    "K(uma)",
+    "K(uma->vik)",
+    "R(uma->vik)",
+    "K(vik)",
+    "R(vik)",
+    "K(vik->uma)"
+   ],
+   "family": "nested_reliability",
+   "group_id": "dev-v2-nested_reliability-g1",
+   "instance_id": "dev-v2-nested_reliability-g1-permuted0",
+   "public_prior_sha256": "3ca19929d1a4f908789efc3e3473c1f29f6a0249c8baa67330fd189754b34ee4",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "a1a3908a2284a69a160a12f97d3051ed46cfa12497e8fa69e83c135372eb9520",
+   "candidates": [
+    "K(leo)",
+    "K(uma)",
+    "R(uma)",
+    "K(uma->vik)",
+    "K(vik)",
+    "K(vik->uma)",
+    "R(vik->uma)"
+   ],
+   "family": "nested_reliability",
+   "group_id": "dev-v2-nested_reliability-g1",
+   "instance_id": "dev-v2-nested_reliability-g1-permuted1",
+   "public_prior_sha256": "3ca19929d1a4f908789efc3e3473c1f29f6a0249c8baa67330fd189754b34ee4",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "8878581f97ece2b409c279092a41a2b1683947e11008efd5c68c47f1001dda32",
+   "candidates": [
+    "K(kim)",
+    "K(ravi)",
+    "R(ravi)",
+    "K(ravi->zane)",
+    "K(zane)",
+    "K(zane->ravi)",
+    "R(zane->ravi)"
+   ],
+   "family": "nested_reliability",
+   "group_id": "dev-v2-nested_reliability-g2",
+   "instance_id": "dev-v2-nested_reliability-g2-permuted0",
+   "public_prior_sha256": "cbe5975dec3e8db9531d27e7901dc623b1bb14551abda170a0a703b9f9bf7d53",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "38ac698bc53e181939a9f0c81a368a40ebb90bedab9d708bc0dac0d3c85140be",
+   "candidates": [
+    "K(kim)",
+    "K(ravi)",
+    "K(ravi->zane)",
+    "R(ravi->zane)",
+    "K(zane)",
+    "R(zane)",
+    "K(zane->ravi)"
+   ],
+   "family": "nested_reliability",
+   "group_id": "dev-v2-nested_reliability-g2",
+   "instance_id": "dev-v2-nested_reliability-g2-permuted1",
+   "public_prior_sha256": "cbe5975dec3e8db9531d27e7901dc623b1bb14551abda170a0a703b9f9bf7d53",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "d04d270225137f48ecb2425a871381e880ca24dbac4e50d4992b25ca8d8bb26a",
+   "candidates": [
+    "K(grace)",
+    "K(grace->ivan)",
+    "R(grace->ivan)",
+    "K(ivan)",
+    "R(ivan)",
+    "K(ivan->grace)",
+    "K(nadia)"
+   ],
+   "family": "nested_reliability",
+   "group_id": "dev-v2-nested_reliability-g3",
+   "instance_id": "dev-v2-nested_reliability-g3-permuted0",
+   "public_prior_sha256": "2b73ed9c374650a8483f549b90cd1647d22529e8ee5e53cf7b22c3856cd691e9",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "0cbcdcedd60aba50f2e00d74f0d613f72c3ec61754124d2b5d6721a55ea99c3e",
+   "candidates": [
+    "K(grace)",
+    "R(grace)",
+    "K(grace->ivan)",
+    "K(ivan)",
+    "K(ivan->grace)",
+    "R(ivan->grace)",
+    "K(nadia)"
+   ],
+   "family": "nested_reliability",
+   "group_id": "dev-v2-nested_reliability-g3",
+   "instance_id": "dev-v2-nested_reliability-g3-permuted1",
+   "public_prior_sha256": "2b73ed9c374650a8483f549b90cd1647d22529e8ee5e53cf7b22c3856cd691e9",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "4daa6d966998916344d19846ff0fa93585518246f4e86d2e56274252261e2c0a",
+   "candidates": [
+    "K(bob)",
+    "K(bob->wen)",
+    "K(wen)",
+    "K(wen->bob)"
+   ],
+   "family": "directed_perspective",
+   "group_id": "dev-v2-directed_perspective-g0",
+   "instance_id": "dev-v2-directed_perspective-g0-permuted0",
+   "public_prior_sha256": "9092916f1813f69d6bee83577274710eba84dfe30ff4fe94827360d1974f681e",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "57f633b50b72eb11c60415a497f6be49f40ac3be53d9c2fb63f930efb1bc7d32",
+   "candidates": [
+    "K(bob)",
+    "K(bob->wen)",
+    "K(wen)",
+    "K(wen->bob)"
+   ],
+   "family": "directed_perspective",
+   "group_id": "dev-v2-directed_perspective-g0",
+   "instance_id": "dev-v2-directed_perspective-g0-permuted1",
+   "public_prior_sha256": "9092916f1813f69d6bee83577274710eba84dfe30ff4fe94827360d1974f681e",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "a424c707cb91596e93a0c23d69511eb299ccaf54958273f33b085c279a46950e",
+   "candidates": [
+    "K(ivan)",
+    "K(ivan->vik)",
+    "K(vik)",
+    "K(vik->ivan)"
+   ],
+   "family": "directed_perspective",
+   "group_id": "dev-v2-directed_perspective-g1",
+   "instance_id": "dev-v2-directed_perspective-g1-permuted0",
+   "public_prior_sha256": "7d9cebe8d3ae5c9eae7f01f380954f3ad0a2e694ba6c3986a8214b9e79fd69e8",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "9eee8f9b471b802c5a0062949e3f870fe48aaf072dc171c034a3a86c4f3662c8",
+   "candidates": [
+    "K(ivan)",
+    "K(ivan->vik)",
+    "K(vik)",
+    "K(vik->ivan)"
+   ],
+   "family": "directed_perspective",
+   "group_id": "dev-v2-directed_perspective-g1",
+   "instance_id": "dev-v2-directed_perspective-g1-permuted1",
+   "public_prior_sha256": "7d9cebe8d3ae5c9eae7f01f380954f3ad0a2e694ba6c3986a8214b9e79fd69e8",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "a4b5f13247533e7cae94bf1df16e733b11f87aecbf652331034aff70ab210cc7",
+   "candidates": [
+    "K(tomas)",
+    "K(tomas->yara)",
+    "K(yara)",
+    "K(yara->tomas)"
+   ],
+   "family": "directed_perspective",
+   "group_id": "dev-v2-directed_perspective-g2",
+   "instance_id": "dev-v2-directed_perspective-g2-permuted0",
+   "public_prior_sha256": "1b82ad53c4d464fe5713fa5be50220e0db86b96ddca204b6ff441d0008fa8637",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "0281e4ebcbda1b51e0b1d7b08809b5d5c156d1927f8acca29b50b0ee3354e2b8",
+   "candidates": [
+    "K(tomas)",
+    "K(tomas->yara)",
+    "K(yara)",
+    "K(yara->tomas)"
+   ],
+   "family": "directed_perspective",
+   "group_id": "dev-v2-directed_perspective-g2",
+   "instance_id": "dev-v2-directed_perspective-g2-permuted1",
+   "public_prior_sha256": "1b82ad53c4d464fe5713fa5be50220e0db86b96ddca204b6ff441d0008fa8637",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "f28f1071dc48abbf6b7fe5a7927442376dbeb6bd14c15d0a78fc62fbbc5cf42f",
+   "candidates": [
+    "K(alice)",
+    "K(alice->heidi)",
+    "K(heidi)",
+    "K(heidi->alice)"
+   ],
+   "family": "directed_perspective",
+   "group_id": "dev-v2-directed_perspective-g3",
+   "instance_id": "dev-v2-directed_perspective-g3-permuted0",
+   "public_prior_sha256": "c52f86ee6bbec743f2828eeab0a2835f4ab07b4eac82c46ace5c03250d88ac7b",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "fe48cb98b482ef70203ea027c28f8ec766ed3a8813fe05c76e0780a9e342a22e",
+   "candidates": [
+    "K(alice)",
+    "K(alice->heidi)",
+    "K(heidi)",
+    "K(heidi->alice)"
+   ],
+   "family": "directed_perspective",
+   "group_id": "dev-v2-directed_perspective-g3",
+   "instance_id": "dev-v2-directed_perspective-g3-permuted1",
+   "public_prior_sha256": "c52f86ee6bbec743f2828eeab0a2835f4ab07b4eac82c46ace5c03250d88ac7b",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": true,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "1476677185108d21ee941cf00e6ea8ea31b1c5b023d04500cd2afaafa8ea7916",
+   "candidates": [
+    "K(leo)",
+    "K(leo->wen)",
+    "K(wen)",
+    "K(wen->leo)"
+   ],
+   "family": "relevance_shift",
+   "group_id": "dev-v2-relevance_shift-g0",
+   "instance_id": "dev-v2-relevance_shift-g0-stakes1",
+   "public_prior_sha256": "199c97d7eb14edf531a2af590b46ff32d1bc8431bbb7c8022dd7d10a71f91042",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "1476677185108d21ee941cf00e6ea8ea31b1c5b023d04500cd2afaafa8ea7916",
+   "candidates": [
+    "K(leo)",
+    "K(leo->wen)",
+    "K(wen)",
+    "K(wen->leo)"
+   ],
+   "family": "relevance_shift",
+   "group_id": "dev-v2-relevance_shift-g0",
+   "instance_id": "dev-v2-relevance_shift-g0-stakes4",
+   "public_prior_sha256": "199c97d7eb14edf531a2af590b46ff32d1bc8431bbb7c8022dd7d10a71f91042",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "d83249a1c8c0fe81370848f970db0eeca8663e0a24680c070e60d627f58dafd8",
+   "candidates": [
+    "K(dave)",
+    "K(dave->yara)",
+    "K(yara)",
+    "K(yara->dave)"
+   ],
+   "family": "relevance_shift",
+   "group_id": "dev-v2-relevance_shift-g1",
+   "instance_id": "dev-v2-relevance_shift-g1-stakes1",
+   "public_prior_sha256": "b099fec7b25c5c150237ee5218e97d31066795adf223957e73528b714ad6d7ad",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "d83249a1c8c0fe81370848f970db0eeca8663e0a24680c070e60d627f58dafd8",
+   "candidates": [
+    "K(dave)",
+    "K(dave->yara)",
+    "K(yara)",
+    "K(yara->dave)"
+   ],
+   "family": "relevance_shift",
+   "group_id": "dev-v2-relevance_shift-g1",
+   "instance_id": "dev-v2-relevance_shift-g1-stakes4",
+   "public_prior_sha256": "b099fec7b25c5c150237ee5218e97d31066795adf223957e73528b714ad6d7ad",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "1cdfa4971f44f536a47f495b729239b147ebc3ce8bddb7eb14349744403aa12b",
+   "candidates": [
+    "K(ivan)",
+    "K(ivan->nadia)",
+    "K(nadia)",
+    "K(nadia->ivan)"
+   ],
+   "family": "relevance_shift",
+   "group_id": "dev-v2-relevance_shift-g2",
+   "instance_id": "dev-v2-relevance_shift-g2-stakes1",
+   "public_prior_sha256": "d8e3a2c029be3f09487d56a2006557294f807a5d7e1cd1923208e2eada3b8641",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "1cdfa4971f44f536a47f495b729239b147ebc3ce8bddb7eb14349744403aa12b",
+   "candidates": [
+    "K(ivan)",
+    "K(ivan->nadia)",
+    "K(nadia)",
+    "K(nadia->ivan)"
+   ],
+   "family": "relevance_shift",
+   "group_id": "dev-v2-relevance_shift-g2",
+   "instance_id": "dev-v2-relevance_shift-g2-stakes4",
+   "public_prior_sha256": "d8e3a2c029be3f09487d56a2006557294f807a5d7e1cd1923208e2eada3b8641",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "b1b4ea8b1b2642773ba34a510884b9a77b7cdce7c270a560ad60298640856935",
+   "candidates": [
+    "K(quinn)",
+    "K(quinn->uma)",
+    "K(uma)",
+    "K(uma->quinn)"
+   ],
+   "family": "relevance_shift",
+   "group_id": "dev-v2-relevance_shift-g3",
+   "instance_id": "dev-v2-relevance_shift-g3-stakes1",
+   "public_prior_sha256": "d7bd65111ce83ff8b3bf46b257bec04436c5ef935f32916d33cdd1de99d9f3b7",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "b1b4ea8b1b2642773ba34a510884b9a77b7cdce7c270a560ad60298640856935",
+   "candidates": [
+    "K(quinn)",
+    "K(quinn->uma)",
+    "K(uma)",
+    "K(uma->quinn)"
+   ],
+   "family": "relevance_shift",
+   "group_id": "dev-v2-relevance_shift-g3",
+   "instance_id": "dev-v2-relevance_shift-g3-stakes4",
+   "public_prior_sha256": "d7bd65111ce83ff8b3bf46b257bec04436c5ef935f32916d33cdd1de99d9f3b7",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 4.0
+   }
+  },
+  {
+   "agent_view_sha256": "5b391c81a9fc48edf0c7b2dfd07c0777e7e4d559a24c7c6a7e325c8af36be239",
+   "candidates": [
+    "K(kim)",
+    "K(tomas)"
+   ],
+   "family": "corroborated",
+   "group_id": "dev-v2-corroborated-g0",
+   "instance_id": "dev-v2-corroborated-g0-evidence0",
+   "public_prior_sha256": "887db3c556be2c83da1a8d5abc85f03fea28ce23b1d7357926173e6729e7e77d",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "ea1261ed54568c8ef1878bfd727704fb9b3dae40e858adce7360eb00fe263b12",
+   "candidates": [
+    "K(ivan)",
+    "K(ivan->kim)",
+    "K(kim)",
+    "K(kim->ivan)",
+    "K(tomas)"
+   ],
+   "family": "corroborated",
+   "group_id": "dev-v2-corroborated-g0",
+   "instance_id": "dev-v2-corroborated-g0-evidence1",
+   "public_prior_sha256": "887db3c556be2c83da1a8d5abc85f03fea28ce23b1d7357926173e6729e7e77d",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "3fb9c5d794319e8da52fefe65b2e8aa419d7047e1c0285cc244ee47a30739935",
+   "candidates": [
+    "K(heidi)",
+    "K(mia)"
+   ],
+   "family": "corroborated",
+   "group_id": "dev-v2-corroborated-g1",
+   "instance_id": "dev-v2-corroborated-g1-evidence0",
+   "public_prior_sha256": "b3734eaeed6d9dc310fdde02f1346aafed48e7d3c1a9ec6a535f2606760f87c1",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "d23694abef09e24fb56fb2802139c86b5f15e466e880bdee372738cd3847665b",
+   "candidates": [
+    "K(alice)",
+    "K(alice->heidi)",
+    "K(heidi)",
+    "K(heidi->alice)",
+    "K(mia)"
+   ],
+   "family": "corroborated",
+   "group_id": "dev-v2-corroborated-g1",
+   "instance_id": "dev-v2-corroborated-g1-evidence1",
+   "public_prior_sha256": "b3734eaeed6d9dc310fdde02f1346aafed48e7d3c1a9ec6a535f2606760f87c1",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "764fc2fd2456c3c80b650ab55d19a84b3b92cec254c845979409a0d1a1bca42c",
+   "candidates": [
+    "K(alice)",
+    "K(wen)"
+   ],
+   "family": "corroborated",
+   "group_id": "dev-v2-corroborated-g2",
+   "instance_id": "dev-v2-corroborated-g2-evidence0",
+   "public_prior_sha256": "9790525ca07d666f0aa0c880d093c1797dc95ecea9c3bce931bc81d39f43e64f",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "3630eca0cdb2f7eeef1818e82ddfa9dd047cc2e94542c3f7294511e60f615ea0",
+   "candidates": [
+    "K(alice)",
+    "K(alice->kim)",
+    "K(kim)",
+    "K(kim->alice)",
+    "K(wen)"
+   ],
+   "family": "corroborated",
+   "group_id": "dev-v2-corroborated-g2",
+   "instance_id": "dev-v2-corroborated-g2-evidence1",
+   "public_prior_sha256": "9790525ca07d666f0aa0c880d093c1797dc95ecea9c3bce931bc81d39f43e64f",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "5abf5bcbc0e3dc0a764e75dfb0a8319e2cea3b19f7b9bb3c5ae7229679dabceb",
+   "candidates": [
+    "K(grace)",
+    "K(zane)"
+   ],
+   "family": "corroborated",
+   "group_id": "dev-v2-corroborated-g3",
+   "instance_id": "dev-v2-corroborated-g3-evidence0",
+   "public_prior_sha256": "4b849dfdc92b12c6b840157f9874e2e920804cb17371978892ca0181e38e28f2",
+   "variant": {
+    "bystander": true,
+    "evidence": false,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  },
+  {
+   "agent_view_sha256": "d014a00ef2cc5d3236d5e6ed65af6c1fde3de3a08f00515c3cbc2f88dbaafe57",
+   "candidates": [
+    "K(grace)",
+    "K(grace->quinn)",
+    "K(quinn)",
+    "K(quinn->grace)",
+    "K(zane)"
+   ],
+   "family": "corroborated",
+   "group_id": "dev-v2-corroborated-g3",
+   "instance_id": "dev-v2-corroborated-g3-evidence1",
+   "public_prior_sha256": "4b849dfdc92b12c6b840157f9874e2e920804cb17371978892ca0181e38e28f2",
+   "variant": {
+    "bystander": true,
+    "evidence": true,
+    "permuted": false,
+    "stakes": 1.0
+   }
+  }
+ ],
+ "instances_by_family": {
+  "ambiguity": 8,
+  "conflict": 8,
+  "corroborated": 8,
+  "directed_perspective": 8,
+  "distractors": 8,
+  "false_belief": 16,
+  "nested_reliability": 8,
+  "relevance_shift": 8,
+  "stop": 8
+ },
+ "interventions": [
+  {
+   "category_record": "grounded_typed/face_value",
+   "decision_state": "t0",
+   "instance_id": "dev-v2-false_belief-g0-stakes4-evidence0",
+   "symbolic_category": "useful_current_action",
+   "unit": "K(wen)"
+  },
+  {
+   "category_record": "grounded_typed/face_value",
+   "decision_state": "t0",
+   "instance_id": "dev-v2-conflict-g1-stakes4",
+   "symbolic_category": "useful_current_action",
+   "unit": "K(judy)"
+  },
+  {
+   "category_record": "grounded_typed/face_value",
+   "decision_state": "t0",
+   "instance_id": "dev-v2-corroborated-g3-evidence0",
+   "symbolic_category": "useful_current_action",
+   "unit": "K(grace)"
+  },
+  {
+   "category_record": "grounded_typed/face_value",
+   "decision_state": "t0",
+   "instance_id": "dev-v2-ambiguity-g0-evidence1",
+   "symbolic_category": "zero_value_stop",
+   "unit": "K(carol)"
+  },
+  {
+   "category_record": "grounded_typed/face_value",
+   "decision_state": "t0",
+   "instance_id": "dev-v2-distractors-g3-permuted1",
+   "symbolic_category": "zero_value_stop",
+   "unit": "K(leo)"
+  },
+  {
+   "category_record": "grounded_typed/face_value",
+   "decision_state": "t0",
+   "instance_id": "dev-v2-conflict-g3-stakes1",
+   "symbolic_category": "zero_value_stop",
+   "unit": "K(mia)"
+  },
+  {
+   "category_record": "grounded_scalar/face_value",
+   "decision_state": "t0",
+   "instance_id": "dev-v2-conflict-g2-stakes1",
+   "symbolic_category": "negative",
+   "unit": "K(heidi)"
+  },
+  {
+   "category_record": "grounded_scalar/hedged",
+   "decision_state": "t0",
+   "instance_id": "dev-v2-directed_perspective-g2-permuted1",
+   "symbolic_category": "negative",
+   "unit": "K(yara)"
+  },
+  {
+   "category_record": "grounded_typed/face_value",
+   "decision_state": "t0",
+   "instance_id": "dev-v2-relevance_shift-g1-stakes1",
+   "symbolic_category": "carryover",
+   "unit": "K(dave)"
+  }
+ ],
+ "jointly_unsatisfiable_defaults": 12,
+ "n_groups": 36,
+ "n_instances": 80,
+ "required_depth_by_family": {
+  "ambiguity:0": 8,
+  "conflict:0": 5,
+  "conflict:1": 3,
+  "corroborated:0": 3,
+  "corroborated:1": 5,
+  "directed_perspective:2": 8,
+  "distractors:0": 8,
+  "false_belief:0": 8,
+  "false_belief:1": 8,
+  "nested_reliability:1": 8,
+  "relevance_shift:1": 8,
+  "stop:0": 8
+ },
+ "seed": 20261028,
+ "set_sha256": "3e8afe544f7e2900df54777048dcaa38a4d73eaa01d33c78fa2d1b36e7e6fd8e",
+ "stakes_instances": {
+  "1.0": 64,
+  "4.0": 16
+ },
+ "symbolic_categories": {
+  "carryover": 8,
+  "mixed_flip_and_carryover": 19,
+  "useful_current_action": 13,
+  "zero_value_stop": 40
+ },
+ "version": "dev-v2"
+}
