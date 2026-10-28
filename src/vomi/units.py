@@ -104,9 +104,13 @@ def generate_candidates(config: WorldConfig, hist: VisibleHistory) -> list[Unit]
     """Structural preconditions (outline §4.1) evaluated on robot-visible information only."""
     observations = [o for _, o in hist.steps]
     utterances = [u for o in observations for u in o.utterances]
-    texts = [hist.brief] + [t for _, t in utterances]
+    notices = [n for o in observations for n in o.notices]  # dev-v3 visible prologue events
+    # statements/remarks in notices count as utterances: (speaker, the quoted text)
+    utterances += [(a, line.split('says: "', 1)[1][:-1]) for k, a, line, _ in notices if k in ("statement", "remark")]
+    texts = [hist.brief] + [t for _, t in utterances] + [line for _, _, line, _ in notices]
 
-    observed = {p for o in observations for p in o.people_present} | {s for s, _ in utterances}
+    observed = ({p for o in observations for p in o.people_present} | {s for s, _ in utterances}
+                | {a for _, a, _, _ in notices} | {p for *_, ps in notices for p in ps})
     mentioned = {p for p in config.roster if any(_mentions(t, p) for t in texts)}
     known = sorted((observed | mentioned) & set(config.roster))
 
@@ -116,7 +120,8 @@ def generate_candidates(config: WorldConfig, hist: VisibleHistory) -> list[Unit]
             if j == k:
                 continue
             talked = any(s in (j, k) and _mentions(t, k if s == j else j) for s, t in utterances)
-            together = any(j in o.people_present and k in o.people_present for o in observations)
+            together = any(j in o.people_present and k in o.people_present for o in observations) or any(
+                {j, k} <= {a, *ps} for _, a, _, ps in notices)
             if talked or together:
                 units.append(K(j, k))
 

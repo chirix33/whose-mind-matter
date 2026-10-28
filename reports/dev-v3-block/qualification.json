@@ -1,0 +1,4658 @@
+{
+ "checks": {
+  "card_only_fixes_best_action": [
+   "dev-v3-1b-stakes1-perm0",
+   "dev-v3-1b-stakes1-perm1",
+   "dev-v3-1b-stakes4-perm0",
+   "dev-v3-1b-stakes4-perm1",
+   "dev-v3-2a-stakes1-perm0",
+   "dev-v3-2a-stakes1-perm1",
+   "dev-v3-2a-stakes4-perm0",
+   "dev-v3-2a-stakes4-perm1",
+   "dev-v3-2c-stakes1-perm0",
+   "dev-v3-2c-stakes1-perm1",
+   "dev-v3-2c-stakes4-perm0",
+   "dev-v3-2c-stakes4-perm1",
+   "dev-v3-3a-stakes1-perm0",
+   "dev-v3-3a-stakes1-perm1",
+   "dev-v3-3a-stakes4-perm0",
+   "dev-v3-3a-stakes4-perm1",
+   "dev-v3-3c-stakes1-perm0",
+   "dev-v3-3c-stakes1-perm1",
+   "dev-v3-3c-stakes4-perm0",
+   "dev-v3-3c-stakes4-perm1"
+  ],
+  "evidence_resolved_access_status_unique_strata_1_3": true,
+  "focal_units_in_visible_candidates_all": true,
+  "groups": 12,
+  "instances": 48,
+  "max_oracle_seconds": 1.224,
+  "permuted_variant_same_optimal_value": true,
+  "self_location_candidates_present": [
+   "dev-v3-1a-stakes1-perm0",
+   "dev-v3-1a-stakes1-perm1",
+   "dev-v3-1a-stakes4-perm0",
+   "dev-v3-1a-stakes4-perm1",
+   "dev-v3-1b-stakes1-perm0",
+   "dev-v3-1b-stakes1-perm1",
+   "dev-v3-1b-stakes4-perm0",
+   "dev-v3-1b-stakes4-perm1",
+   "dev-v3-1c-stakes1-perm0",
+   "dev-v3-1c-stakes1-perm1",
+   "dev-v3-1c-stakes4-perm0",
+   "dev-v3-1c-stakes4-perm1",
+   "dev-v3-2a-stakes1-perm0",
+   "dev-v3-2a-stakes1-perm1",
+   "dev-v3-2a-stakes4-perm0",
+   "dev-v3-2a-stakes4-perm1",
+   "dev-v3-2b-stakes1-perm0",
+   "dev-v3-2b-stakes1-perm1",
+   "dev-v3-2b-stakes4-perm0",
+   "dev-v3-2b-stakes4-perm1",
+   "dev-v3-2c-stakes1-perm0",
+   "dev-v3-2c-stakes1-perm1",
+   "dev-v3-2c-stakes4-perm0",
+   "dev-v3-2c-stakes4-perm1",
+   "dev-v3-3a-stakes1-perm0",
+   "dev-v3-3a-stakes1-perm1",
+   "dev-v3-3a-stakes4-perm0",
+   "dev-v3-3a-stakes4-perm1",
+   "dev-v3-3b-stakes1-perm0",
+   "dev-v3-3b-stakes1-perm1",
+   "dev-v3-3b-stakes4-perm0",
+   "dev-v3-3b-stakes4-perm1",
+   "dev-v3-3c-stakes1-perm0",
+   "dev-v3-3c-stakes1-perm1",
+   "dev-v3-3c-stakes4-perm0",
+   "dev-v3-3c-stakes4-perm1",
+   "dev-v3-4a-stakes1-perm0",
+   "dev-v3-4a-stakes1-perm1",
+   "dev-v3-4a-stakes4-perm0",
+   "dev-v3-4a-stakes4-perm1",
+   "dev-v3-4b-stakes1-perm0",
+   "dev-v3-4b-stakes1-perm1",
+   "dev-v3-4b-stakes4-perm0",
+   "dev-v3-4b-stakes4-perm1",
+   "dev-v3-4c-stakes1-perm0",
+   "dev-v3-4c-stakes1-perm1",
+   "dev-v3-4c-stakes4-perm0",
+   "dev-v3-4c-stakes4-perm1"
+  ],
+  "stratum4_stakes_flip_all": true,
+  "superset_card_only_fixes_best_action": [],
+  "superset_q_and_posterior_match_all": true
+ },
+ "dirty_paths": [
+  " M AGENTS.md",
+  " M src/officeminds/world.py",
+  " M src/vomi/pilot.py",
+  " M src/vomi/units.py",
+  "?? POST_BLOCK_RESEARCH_DECISIONS.md",
+  "?? docs/decisions/2026-10-28-D014-post-block-qualification.md",
+  "?? reports/dev-v3-block/",
+  "?? scripts/qualify_dev_v3.py",
+  "?? src/officeminds/devgen3.py",
+  "?? tests/test_dev_v3.py"
+ ],
+ "generated_at": "2026-10-28T16:33:49-0500",
+ "git_commit": "0b8346cb9fa81876ac332bdb6b6b6e372c97400f",
+ "instances": [
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(frank)",
+    "K(frank->leo)",
+    "K(leo)",
+    "K(leo->frank)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(frank,leo_loc)"
+   ],
+   "construction": "1a",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "desk_3"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "desk_3": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(frank)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1a",
+   "hypothesis_worlds_consistent": 1,
+   "instance_id": "dev-v3-1a-stakes1-perm0",
+   "optimal_first_actions": [
+    "drop(desk_3)"
+   ],
+   "oracle_seconds": 0.012,
+   "permuted": false,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(frank,leo_loc)": 0.9,
+    "drop(desk_14)": -0.55,
+    "drop(desk_3)": 0.95,
+    "drop(desk_9)": -0.55,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(leo)"
+   ],
+   "stakes": 1.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(frank)",
+    "K(frank->leo)",
+    "K(leo)",
+    "K(leo->frank)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(frank,leo_loc)"
+   ],
+   "construction": "1a",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "desk_3"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "desk_3": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(frank)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1a",
+   "hypothesis_worlds_consistent": 1,
+   "instance_id": "dev-v3-1a-stakes4-perm0",
+   "optimal_first_actions": [
+    "drop(desk_3)"
+   ],
+   "oracle_seconds": 0.01,
+   "permuted": false,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(frank,leo_loc)": 0.9,
+    "drop(desk_14)": -2.05,
+    "drop(desk_3)": 0.95,
+    "drop(desk_9)": -2.05,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(leo)"
+   ],
+   "stakes": 4.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(frank)",
+    "K(frank->leo)",
+    "K(leo)",
+    "K(leo->frank)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(leo,frank_loc)"
+   ],
+   "construction": "1a",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "desk_3"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "desk_3": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(leo)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1a",
+   "hypothesis_worlds_consistent": 1,
+   "instance_id": "dev-v3-1a-stakes1-perm1",
+   "optimal_first_actions": [
+    "drop(desk_3)"
+   ],
+   "oracle_seconds": 0.01,
+   "permuted": true,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(leo,frank_loc)": 0.9,
+    "drop(desk_14)": -0.55,
+    "drop(desk_3)": 0.95,
+    "drop(desk_9)": -0.55,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(frank)"
+   ],
+   "stakes": 1.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(frank)",
+    "K(frank->leo)",
+    "K(leo)",
+    "K(leo->frank)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(leo,frank_loc)"
+   ],
+   "construction": "1a",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "desk_3"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "desk_3": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(leo)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1a",
+   "hypothesis_worlds_consistent": 1,
+   "instance_id": "dev-v3-1a-stakes4-perm1",
+   "optimal_first_actions": [
+    "drop(desk_3)"
+   ],
+   "oracle_seconds": 0.011,
+   "permuted": true,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(leo,frank_loc)": 0.9,
+    "drop(desk_14)": -2.05,
+    "drop(desk_3)": 0.95,
+    "drop(desk_9)": -2.05,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(frank)"
+   ],
+   "stakes": 4.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.75,
+   "best_by_family": {
+    "ask": 0.7,
+    "chute": -0.05,
+    "search/walk": 0.75,
+    "wait": 0.7
+   },
+   "candidates": [
+    "K(carol)",
+    "K(dave)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "move(hall)"
+   ],
+   "construction": "1b",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "no_belief"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "unknown"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "unknown": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(carol)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1b",
+   "hypothesis_worlds_consistent": 3,
+   "instance_id": "dev-v3-1b-stakes1-perm0",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.02,
+   "permuted": false,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(carol,dave_loc)": 0.7,
+    "drop(desk_14)": -0.05,
+    "drop(desk_3)": -0.05,
+    "drop(desk_9)": -0.05,
+    "move(hall)": 0.75,
+    "wait()": 0.7
+   },
+   "self_location_candidates": [
+    "K(dave)"
+   ],
+   "stakes": 1.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.75,
+   "best_by_family": {
+    "ask": 0.7,
+    "chute": -1.05,
+    "search/walk": 0.75,
+    "wait": 0.7
+   },
+   "candidates": [
+    "K(carol)",
+    "K(dave)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "move(hall)"
+   ],
+   "construction": "1b",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "no_belief"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "unknown"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "unknown": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(carol)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1b",
+   "hypothesis_worlds_consistent": 3,
+   "instance_id": "dev-v3-1b-stakes4-perm0",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.02,
+   "permuted": false,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(carol,dave_loc)": 0.7,
+    "drop(desk_14)": -1.05,
+    "drop(desk_3)": -1.05,
+    "drop(desk_9)": -1.05,
+    "move(hall)": 0.75,
+    "wait()": 0.7
+   },
+   "self_location_candidates": [
+    "K(dave)"
+   ],
+   "stakes": 4.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.75,
+   "best_by_family": {
+    "ask": 0.7,
+    "chute": -0.05,
+    "search/walk": 0.75,
+    "wait": 0.7
+   },
+   "candidates": [
+    "K(carol)",
+    "K(dave)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "move(hall)"
+   ],
+   "construction": "1b",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "no_belief"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "unknown"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "unknown": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(dave)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1b",
+   "hypothesis_worlds_consistent": 3,
+   "instance_id": "dev-v3-1b-stakes1-perm1",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.018,
+   "permuted": true,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(dave,carol_loc)": 0.7,
+    "drop(desk_14)": -0.05,
+    "drop(desk_3)": -0.05,
+    "drop(desk_9)": -0.05,
+    "move(hall)": 0.75,
+    "wait()": 0.7
+   },
+   "self_location_candidates": [
+    "K(carol)"
+   ],
+   "stakes": 1.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.75,
+   "best_by_family": {
+    "ask": 0.7,
+    "chute": -1.05,
+    "search/walk": 0.75,
+    "wait": 0.7
+   },
+   "candidates": [
+    "K(carol)",
+    "K(dave)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "move(hall)"
+   ],
+   "construction": "1b",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "no_belief"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "unknown"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "unknown": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(dave)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1b",
+   "hypothesis_worlds_consistent": 3,
+   "instance_id": "dev-v3-1b-stakes4-perm1",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.018,
+   "permuted": true,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(dave,carol_loc)": 0.7,
+    "drop(desk_14)": -1.05,
+    "drop(desk_3)": -1.05,
+    "drop(desk_9)": -1.05,
+    "move(hall)": 0.75,
+    "wait()": 0.7
+   },
+   "self_location_candidates": [
+    "K(carol)"
+   ],
+   "stakes": 4.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(alice)",
+    "K(alice->ivan)",
+    "K(ivan)",
+    "K(ivan->alice)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(alice,ivan_loc)"
+   ],
+   "construction": "1c",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_1"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "suite_1": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(alice)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1c",
+   "hypothesis_worlds_consistent": 1,
+   "instance_id": "dev-v3-1c-stakes1-perm0",
+   "optimal_first_actions": [
+    "drop(suite_1)"
+   ],
+   "oracle_seconds": 0.01,
+   "permuted": false,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(alice,ivan_loc)": 0.9,
+    "drop(suite_1)": 0.95,
+    "drop(suite_2)": -0.55,
+    "drop(suite_3)": -0.55,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(ivan)"
+   ],
+   "stakes": 1.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(alice)",
+    "K(alice->ivan)",
+    "K(ivan)",
+    "K(ivan->alice)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(alice,ivan_loc)"
+   ],
+   "construction": "1c",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_1"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "suite_1": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(alice)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1c",
+   "hypothesis_worlds_consistent": 1,
+   "instance_id": "dev-v3-1c-stakes4-perm0",
+   "optimal_first_actions": [
+    "drop(suite_1)"
+   ],
+   "oracle_seconds": 0.011,
+   "permuted": false,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(alice,ivan_loc)": 0.9,
+    "drop(suite_1)": 0.95,
+    "drop(suite_2)": -2.05,
+    "drop(suite_3)": -2.05,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(ivan)"
+   ],
+   "stakes": 4.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(alice)",
+    "K(alice->ivan)",
+    "K(ivan)",
+    "K(ivan->alice)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(ivan,alice_loc)"
+   ],
+   "construction": "1c",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_1"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "suite_1": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(ivan)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1c",
+   "hypothesis_worlds_consistent": 1,
+   "instance_id": "dev-v3-1c-stakes1-perm1",
+   "optimal_first_actions": [
+    "drop(suite_1)"
+   ],
+   "oracle_seconds": 0.01,
+   "permuted": true,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(ivan,alice_loc)": 0.9,
+    "drop(suite_1)": 0.95,
+    "drop(suite_2)": -0.55,
+    "drop(suite_3)": -0.55,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(alice)"
+   ],
+   "stakes": 1.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(alice)",
+    "K(alice->ivan)",
+    "K(ivan)",
+    "K(ivan->alice)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(ivan,alice_loc)"
+   ],
+   "construction": "1c",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_1"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "suite_1": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(ivan)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-1c",
+   "hypothesis_worlds_consistent": 1,
+   "instance_id": "dev-v3-1c-stakes4-perm1",
+   "optimal_first_actions": [
+    "drop(suite_1)"
+   ],
+   "oracle_seconds": 0.01,
+   "permuted": true,
+   "prior_worlds": 3,
+   "q_first_actions": {
+    "ask(ivan,alice_loc)": 0.9,
+    "drop(suite_1)": 0.95,
+    "drop(suite_2)": -2.05,
+    "drop(suite_3)": -2.05,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(alice)"
+   ],
+   "stakes": 4.0,
+   "stratum": 1
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.2,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(judy)",
+    "K(judy->ravi)",
+    "K(judy->yara)",
+    "K(leo)",
+    "K(leo->ravi)",
+    "K(leo->yara)",
+    "K(ravi)",
+    "K(ravi->judy)",
+    "K(ravi->leo)",
+    "K(ravi->yara)",
+    "K(yara)",
+    "K(yara->judy)",
+    "K(yara->leo)",
+    "K(yara->ravi)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(yara)"
+   ],
+   "construction": "2a",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 1.0,
+     "privileged_true_content": [
+      "office_c"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "office_a": 0.5,
+      "office_c": 0.5
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(yara)"
+    },
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "office_b"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "office_b": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(ravi)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2a",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-2a-stakes1-perm0",
+   "optimal_first_actions": [
+    "give(yara)"
+   ],
+   "oracle_seconds": 0.983,
+   "permuted": false,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(judy,leo_loc)": 0.9,
+    "ask(ravi,leo_loc)": 0.9,
+    "ask(yara,leo_loc)": 0.9,
+    "drop(office_a)": 0.2,
+    "drop(office_b)": -0.55,
+    "drop(office_c)": 0.2,
+    "give(ravi)": -0.55,
+    "give(yara)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(leo)"
+   ],
+   "stakes": 1.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(ravi,leo_loc)",
+     "ask(yara,leo_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2a:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": -0.55,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(judy)",
+    "K(judy->ravi)",
+    "K(judy->yara)",
+    "K(leo)",
+    "K(leo->ravi)",
+    "K(leo->yara)",
+    "K(ravi)",
+    "K(ravi->judy)",
+    "K(ravi->leo)",
+    "K(ravi->yara)",
+    "K(yara)",
+    "K(yara->judy)",
+    "K(yara->leo)",
+    "K(yara->ravi)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(yara)"
+   ],
+   "construction": "2a",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 1.0,
+     "privileged_true_content": [
+      "office_c"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "office_a": 0.5,
+      "office_c": 0.5
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(yara)"
+    },
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "office_b"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "office_b": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(ravi)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2a",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-2a-stakes4-perm0",
+   "optimal_first_actions": [
+    "give(yara)"
+   ],
+   "oracle_seconds": 0.955,
+   "permuted": false,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(judy,leo_loc)": 0.9,
+    "ask(ravi,leo_loc)": 0.9,
+    "ask(yara,leo_loc)": 0.9,
+    "drop(office_a)": -0.55,
+    "drop(office_b)": -2.05,
+    "drop(office_c)": -0.55,
+    "give(ravi)": -2.05,
+    "give(yara)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(leo)"
+   ],
+   "stakes": 4.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(ravi,leo_loc)",
+     "ask(yara,leo_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2a:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.2,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(judy)",
+    "K(judy->leo)",
+    "K(judy->ravi)",
+    "K(judy->yara)",
+    "K(leo)",
+    "K(leo->judy)",
+    "K(leo->ravi)",
+    "K(ravi)",
+    "K(ravi->judy)",
+    "K(ravi->leo)",
+    "K(ravi->yara)",
+    "K(yara)",
+    "K(yara->judy)",
+    "K(yara->ravi)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(ravi)"
+   ],
+   "construction": "2a",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 1.0,
+     "privileged_true_content": [
+      "office_c"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "office_a": 0.5,
+      "office_c": 0.5
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(ravi)"
+    },
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "office_b"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "office_b": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(judy)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2a",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-2a-stakes1-perm1",
+   "optimal_first_actions": [
+    "give(ravi)"
+   ],
+   "oracle_seconds": 0.932,
+   "permuted": true,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(judy,yara_loc)": 0.9,
+    "ask(leo,yara_loc)": 0.9,
+    "ask(ravi,yara_loc)": 0.9,
+    "drop(office_a)": 0.2,
+    "drop(office_b)": -0.55,
+    "drop(office_c)": 0.2,
+    "give(judy)": -0.55,
+    "give(ravi)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(yara)"
+   ],
+   "stakes": 1.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(judy,yara_loc)",
+     "ask(ravi,yara_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2a:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": -0.55,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(judy)",
+    "K(judy->leo)",
+    "K(judy->ravi)",
+    "K(judy->yara)",
+    "K(leo)",
+    "K(leo->judy)",
+    "K(leo->ravi)",
+    "K(ravi)",
+    "K(ravi->judy)",
+    "K(ravi->leo)",
+    "K(ravi->yara)",
+    "K(yara)",
+    "K(yara->judy)",
+    "K(yara->ravi)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(ravi)"
+   ],
+   "construction": "2a",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 1.0,
+     "privileged_true_content": [
+      "office_c"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "office_a": 0.5,
+      "office_c": 0.5
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(ravi)"
+    },
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "office_b"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "office_b": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(judy)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2a",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-2a-stakes4-perm1",
+   "optimal_first_actions": [
+    "give(ravi)"
+   ],
+   "oracle_seconds": 0.948,
+   "permuted": true,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(judy,yara_loc)": 0.9,
+    "ask(leo,yara_loc)": 0.9,
+    "ask(ravi,yara_loc)": 0.9,
+    "drop(office_a)": -0.55,
+    "drop(office_b)": -2.05,
+    "drop(office_c)": -0.55,
+    "give(judy)": -2.05,
+    "give(ravi)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(yara)"
+   ],
+   "stakes": 4.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(judy,yara_loc)",
+     "ask(ravi,yara_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2a:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.8,
+   "best_by_family": {
+    "ask": 0.75,
+    "chute": 0.2,
+    "handoff": -0.55,
+    "search/walk": 0.8,
+    "wait": 0.75
+   },
+   "candidates": [
+    "K(bob)",
+    "K(bob->frank)",
+    "K(bob->nadia)",
+    "K(frank)",
+    "K(frank->bob)",
+    "K(frank->nadia)",
+    "K(nadia)",
+    "K(nadia->bob)",
+    "K(nadia->frank)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(bob,frank_loc)",
+    "move(hall)"
+   ],
+   "construction": "2b",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "lab_south"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "lab_south": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(bob)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2b",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-2b-stakes1-perm0",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.071,
+   "permuted": false,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(bob,frank_loc)": 0.75,
+    "drop(lab_north)": 0.2,
+    "drop(lab_south)": -0.55,
+    "drop(lab_west)": 0.2,
+    "give(bob)": -0.55,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "self_location_candidates": [
+    "K(frank)"
+   ],
+   "stakes": 1.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(bob,frank_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2b:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.8,
+   "best_by_family": {
+    "ask": 0.75,
+    "chute": -0.55,
+    "handoff": -2.05,
+    "search/walk": 0.8,
+    "wait": 0.75
+   },
+   "candidates": [
+    "K(bob)",
+    "K(bob->frank)",
+    "K(bob->nadia)",
+    "K(frank)",
+    "K(frank->bob)",
+    "K(frank->nadia)",
+    "K(nadia)",
+    "K(nadia->bob)",
+    "K(nadia->frank)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(bob,frank_loc)",
+    "move(hall)"
+   ],
+   "construction": "2b",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "lab_south"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "lab_south": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(bob)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2b",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-2b-stakes4-perm0",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.074,
+   "permuted": false,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(bob,frank_loc)": 0.75,
+    "drop(lab_north)": -0.55,
+    "drop(lab_south)": -2.05,
+    "drop(lab_west)": -0.55,
+    "give(bob)": -2.05,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "self_location_candidates": [
+    "K(frank)"
+   ],
+   "stakes": 4.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(bob,frank_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2b:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.8,
+   "best_by_family": {
+    "ask": 0.75,
+    "chute": 0.2,
+    "handoff": -0.55,
+    "search/walk": 0.8,
+    "wait": 0.75
+   },
+   "candidates": [
+    "K(bob)",
+    "K(bob->frank)",
+    "K(bob->nadia)",
+    "K(frank)",
+    "K(frank->bob)",
+    "K(frank->nadia)",
+    "K(nadia)",
+    "K(nadia->bob)",
+    "K(nadia->frank)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(frank,nadia_loc)",
+    "move(hall)"
+   ],
+   "construction": "2b",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "lab_south"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "lab_south": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(frank)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2b",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-2b-stakes1-perm1",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.071,
+   "permuted": true,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(frank,nadia_loc)": 0.75,
+    "drop(lab_north)": 0.2,
+    "drop(lab_south)": -0.55,
+    "drop(lab_west)": 0.2,
+    "give(frank)": -0.55,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "self_location_candidates": [
+    "K(nadia)"
+   ],
+   "stakes": 1.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(frank,nadia_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2b:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.8,
+   "best_by_family": {
+    "ask": 0.75,
+    "chute": -0.55,
+    "handoff": -2.05,
+    "search/walk": 0.8,
+    "wait": 0.75
+   },
+   "candidates": [
+    "K(bob)",
+    "K(bob->frank)",
+    "K(bob->nadia)",
+    "K(frank)",
+    "K(frank->bob)",
+    "K(frank->nadia)",
+    "K(nadia)",
+    "K(nadia->bob)",
+    "K(nadia->frank)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(frank,nadia_loc)",
+    "move(hall)"
+   ],
+   "construction": "2b",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "lab_south"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "lab_south": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(frank)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2b",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-2b-stakes4-perm1",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.072,
+   "permuted": true,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(frank,nadia_loc)": 0.75,
+    "drop(lab_north)": -0.55,
+    "drop(lab_south)": -2.05,
+    "drop(lab_west)": -0.55,
+    "give(frank)": -2.05,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "self_location_candidates": [
+    "K(nadia)"
+   ],
+   "stakes": 4.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(frank,nadia_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2b:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.2,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(dave)",
+    "K(dave->frank)",
+    "K(dave->ivan)",
+    "K(dave->judy)",
+    "K(frank)",
+    "K(frank->dave)",
+    "K(frank->ivan)",
+    "K(frank->judy)",
+    "K(ivan)",
+    "K(ivan->dave)",
+    "K(ivan->frank)",
+    "K(ivan->judy)",
+    "K(judy)",
+    "K(judy->dave)",
+    "K(judy->frank)",
+    "K(judy->ivan)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(dave)"
+   ],
+   "construction": "2c",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "desk_9"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "desk_14": 0.5,
+      "desk_9": 0.5
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(ivan)"
+    },
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.5,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 1.0,
+     "privileged_true_content": [
+      "desk_14"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "desk_14": 0.25,
+      "desk_3": 0.5,
+      "desk_9": 0.25
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(dave)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2c",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-2c-stakes1-perm0",
+   "optimal_first_actions": [
+    "give(dave)"
+   ],
+   "oracle_seconds": 1.224,
+   "permuted": false,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(dave,judy_loc)": 0.9,
+    "ask(frank,judy_loc)": 0.9,
+    "ask(ivan,judy_loc)": 0.9,
+    "drop(desk_14)": -0.175,
+    "drop(desk_3)": 0.2,
+    "drop(desk_9)": -0.175,
+    "give(dave)": 0.95,
+    "give(ivan)": -0.55,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(judy)"
+   ],
+   "stakes": 1.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(dave,judy_loc)",
+     "ask(ivan,judy_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2c:0"
+    ],
+    "consistent_worlds": 4,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": -0.55,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(dave)",
+    "K(dave->frank)",
+    "K(dave->ivan)",
+    "K(dave->judy)",
+    "K(frank)",
+    "K(frank->dave)",
+    "K(frank->ivan)",
+    "K(frank->judy)",
+    "K(ivan)",
+    "K(ivan->dave)",
+    "K(ivan->frank)",
+    "K(ivan->judy)",
+    "K(judy)",
+    "K(judy->dave)",
+    "K(judy->frank)",
+    "K(judy->ivan)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(dave)"
+   ],
+   "construction": "2c",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "desk_9"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "desk_14": 0.5,
+      "desk_9": 0.5
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(ivan)"
+    },
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.5,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 1.0,
+     "privileged_true_content": [
+      "desk_14"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "desk_14": 0.25,
+      "desk_3": 0.5,
+      "desk_9": 0.25
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(dave)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2c",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-2c-stakes4-perm0",
+   "optimal_first_actions": [
+    "give(dave)"
+   ],
+   "oracle_seconds": 1.218,
+   "permuted": false,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(dave,judy_loc)": 0.9,
+    "ask(frank,judy_loc)": 0.9,
+    "ask(ivan,judy_loc)": 0.9,
+    "drop(desk_14)": -1.3,
+    "drop(desk_3)": -0.55,
+    "drop(desk_9)": -1.3,
+    "give(dave)": 0.95,
+    "give(ivan)": -2.05,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(judy)"
+   ],
+   "stakes": 4.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(dave,judy_loc)",
+     "ask(ivan,judy_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2c:0"
+    ],
+    "consistent_worlds": 4,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": 0.2,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(dave)",
+    "K(dave->frank)",
+    "K(dave->ivan)",
+    "K(dave->judy)",
+    "K(frank)",
+    "K(frank->dave)",
+    "K(frank->ivan)",
+    "K(frank->judy)",
+    "K(ivan)",
+    "K(ivan->dave)",
+    "K(ivan->frank)",
+    "K(ivan->judy)",
+    "K(judy)",
+    "K(judy->dave)",
+    "K(judy->frank)",
+    "K(judy->ivan)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(frank)"
+   ],
+   "construction": "2c",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "desk_9"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "desk_14": 0.5,
+      "desk_9": 0.5
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(dave)"
+    },
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.5,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 1.0,
+     "privileged_true_content": [
+      "desk_14"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "desk_14": 0.25,
+      "desk_3": 0.5,
+      "desk_9": 0.25
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(frank)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2c",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-2c-stakes1-perm1",
+   "optimal_first_actions": [
+    "give(frank)"
+   ],
+   "oracle_seconds": 1.201,
+   "permuted": true,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(dave,ivan_loc)": 0.9,
+    "ask(frank,ivan_loc)": 0.9,
+    "ask(judy,ivan_loc)": 0.9,
+    "drop(desk_14)": -0.175,
+    "drop(desk_3)": 0.2,
+    "drop(desk_9)": -0.175,
+    "give(dave)": -0.55,
+    "give(frank)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(ivan)"
+   ],
+   "stakes": 1.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(dave,ivan_loc)",
+     "ask(frank,ivan_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2c:0"
+    ],
+    "consistent_worlds": 4,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "chute": -0.55,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(dave)",
+    "K(dave->frank)",
+    "K(dave->ivan)",
+    "K(dave->judy)",
+    "K(frank)",
+    "K(frank->dave)",
+    "K(frank->ivan)",
+    "K(frank->judy)",
+    "K(ivan)",
+    "K(ivan->dave)",
+    "K(ivan->frank)",
+    "K(ivan->judy)",
+    "K(judy)",
+    "K(judy->dave)",
+    "K(judy->frank)",
+    "K(judy->ivan)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(frank)"
+   ],
+   "construction": "2c",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "desk_9"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "desk_14": 0.5,
+      "desk_9": 0.5
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(dave)"
+    },
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.5,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 1.0,
+     "privileged_true_content": [
+      "desk_14"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "desk_14": 0.25,
+      "desk_3": 0.5,
+      "desk_9": 0.25
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(frank)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-2c",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-2c-stakes4-perm1",
+   "optimal_first_actions": [
+    "give(frank)"
+   ],
+   "oracle_seconds": 1.217,
+   "permuted": true,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(dave,ivan_loc)": 0.9,
+    "ask(frank,ivan_loc)": 0.9,
+    "ask(judy,ivan_loc)": 0.9,
+    "drop(desk_14)": -1.3,
+    "drop(desk_3)": -0.55,
+    "drop(desk_9)": -1.3,
+    "give(dave)": -2.05,
+    "give(frank)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(ivan)"
+   ],
+   "stakes": 4.0,
+   "stratum": 2,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(dave,ivan_loc)",
+     "ask(frank,ivan_loc)",
+     "move(hall)"
+    ],
+    "consistent_patterns": [
+     "2c:0"
+    ],
+    "consistent_worlds": 4,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 6,
+    "prior_worlds": 48
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(heidi)",
+    "K(heidi->uma)",
+    "K(heidi->vik)",
+    "K(uma)",
+    "K(uma->heidi)",
+    "K(uma->vik)",
+    "K(vik)",
+    "K(vik->heidi)",
+    "K(vik->uma)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(heidi)"
+   ],
+   "construction": "3a",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "room_7"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "room_12": 0.5,
+      "room_7": 0.5
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(heidi->uma)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3a",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3a-stakes1-perm0",
+   "optimal_first_actions": [
+    "give(heidi)"
+   ],
+   "oracle_seconds": 0.115,
+   "permuted": false,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(heidi,meeting_room)": 0.9,
+    "give(heidi)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(uma)"
+   ],
+   "stakes": 1.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(heidi,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3a:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": 0.2,
+     "handoff": 0.95,
+     "search/walk": 0.85,
+     "wait": 0.9
+    },
+    "optimal": [
+     "give(heidi)"
+    ],
+    "value": 0.95
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(heidi)",
+    "K(heidi->uma)",
+    "K(heidi->vik)",
+    "K(uma)",
+    "K(uma->heidi)",
+    "K(uma->vik)",
+    "K(vik)",
+    "K(vik->heidi)",
+    "K(vik->uma)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(heidi)"
+   ],
+   "construction": "3a",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "room_7"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "room_12": 0.5,
+      "room_7": 0.5
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(heidi->uma)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3a",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3a-stakes4-perm0",
+   "optimal_first_actions": [
+    "give(heidi)"
+   ],
+   "oracle_seconds": 0.114,
+   "permuted": false,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(heidi,meeting_room)": 0.9,
+    "give(heidi)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(uma)"
+   ],
+   "stakes": 4.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(heidi,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3a:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": -0.55,
+     "handoff": 0.95,
+     "search/walk": 0.85,
+     "wait": 0.9
+    },
+    "optimal": [
+     "give(heidi)"
+    ],
+    "value": 0.95
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(heidi)",
+    "K(heidi->uma)",
+    "K(heidi->vik)",
+    "K(uma)",
+    "K(uma->heidi)",
+    "K(uma->vik)",
+    "K(vik)",
+    "K(vik->heidi)",
+    "K(vik->uma)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(uma)"
+   ],
+   "construction": "3a",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "room_7"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "room_12": 0.5,
+      "room_7": 0.5
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(uma->vik)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3a",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3a-stakes1-perm1",
+   "optimal_first_actions": [
+    "give(uma)"
+   ],
+   "oracle_seconds": 0.116,
+   "permuted": true,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(uma,meeting_room)": 0.9,
+    "give(uma)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(vik)"
+   ],
+   "stakes": 1.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(uma,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3a:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": 0.2,
+     "handoff": 0.95,
+     "search/walk": 0.85,
+     "wait": 0.9
+    },
+    "optimal": [
+     "give(uma)"
+    ],
+    "value": 0.95
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(heidi)",
+    "K(heidi->uma)",
+    "K(heidi->vik)",
+    "K(uma)",
+    "K(uma->heidi)",
+    "K(uma->vik)",
+    "K(vik)",
+    "K(vik->heidi)",
+    "K(vik->uma)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(uma)"
+   ],
+   "construction": "3a",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 1.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "room_7"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "room_12": 0.5,
+      "room_7": 0.5
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(uma->vik)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3a",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3a-stakes4-perm1",
+   "optimal_first_actions": [
+    "give(uma)"
+   ],
+   "oracle_seconds": 0.114,
+   "permuted": true,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(uma,meeting_room)": 0.9,
+    "give(uma)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(vik)"
+   ],
+   "stakes": 4.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(uma,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3a:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": -0.55,
+     "handoff": 0.95,
+     "search/walk": 0.85,
+     "wait": 0.9
+    },
+    "optimal": [
+     "give(uma)"
+    ],
+    "value": 0.95
+   }
+  },
+  {
+   "bayes_value_t0": 0.8,
+   "best_by_family": {
+    "ask": 0.8,
+    "handoff": -0.55,
+    "search/walk": 0.8,
+    "wait": 0.75
+   },
+   "candidates": [
+    "K(bob)",
+    "K(bob->carol)",
+    "K(bob->ivan)",
+    "K(bob->tomas)",
+    "K(carol)",
+    "K(carol->bob)",
+    "K(carol->ivan)",
+    "K(carol->tomas)",
+    "K(ivan)",
+    "K(ivan->bob)",
+    "K(ivan->carol)",
+    "K(ivan->tomas)",
+    "K(tomas)",
+    "K(tomas->bob)",
+    "K(tomas->carol)",
+    "K(tomas->ivan)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(tomas,meeting_room)"
+   ],
+   "construction": "3b",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_2"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "suite_2": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(tomas->bob)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3b",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3b-stakes1-perm0",
+   "optimal_first_actions": [
+    "ask(tomas,meeting_room)",
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.27,
+   "permuted": false,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(ivan,meeting_room)": 0.75,
+    "ask(tomas,meeting_room)": 0.8,
+    "give(tomas)": -0.55,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "self_location_candidates": [
+    "K(bob)"
+   ],
+   "stakes": 1.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(tomas,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3b:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": 0.2,
+     "handoff": -0.55,
+     "search/walk": 0.8,
+     "wait": 0.85
+    },
+    "optimal": [
+     "ask(tomas,meeting_room)"
+    ],
+    "value": 0.9
+   }
+  },
+  {
+   "bayes_value_t0": 0.8,
+   "best_by_family": {
+    "ask": 0.8,
+    "handoff": -2.05,
+    "search/walk": 0.8,
+    "wait": 0.75
+   },
+   "candidates": [
+    "K(bob)",
+    "K(bob->carol)",
+    "K(bob->ivan)",
+    "K(bob->tomas)",
+    "K(carol)",
+    "K(carol->bob)",
+    "K(carol->ivan)",
+    "K(carol->tomas)",
+    "K(ivan)",
+    "K(ivan->bob)",
+    "K(ivan->carol)",
+    "K(ivan->tomas)",
+    "K(tomas)",
+    "K(tomas->bob)",
+    "K(tomas->carol)",
+    "K(tomas->ivan)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(tomas,meeting_room)"
+   ],
+   "construction": "3b",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_2"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "suite_2": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(tomas->bob)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3b",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3b-stakes4-perm0",
+   "optimal_first_actions": [
+    "ask(tomas,meeting_room)",
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.277,
+   "permuted": false,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(ivan,meeting_room)": 0.75,
+    "ask(tomas,meeting_room)": 0.8,
+    "give(tomas)": -2.05,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "self_location_candidates": [
+    "K(bob)"
+   ],
+   "stakes": 4.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(tomas,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3b:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": -0.55,
+     "handoff": -2.05,
+     "search/walk": 0.8,
+     "wait": 0.85
+    },
+    "optimal": [
+     "ask(tomas,meeting_room)"
+    ],
+    "value": 0.9
+   }
+  },
+  {
+   "bayes_value_t0": 0.8,
+   "best_by_family": {
+    "ask": 0.8,
+    "handoff": -0.55,
+    "search/walk": 0.8,
+    "wait": 0.75
+   },
+   "candidates": [
+    "K(bob)",
+    "K(bob->carol)",
+    "K(bob->ivan)",
+    "K(bob->tomas)",
+    "K(carol)",
+    "K(carol->bob)",
+    "K(carol->ivan)",
+    "K(carol->tomas)",
+    "K(ivan)",
+    "K(ivan->bob)",
+    "K(ivan->carol)",
+    "K(ivan->tomas)",
+    "K(tomas)",
+    "K(tomas->bob)",
+    "K(tomas->carol)",
+    "K(tomas->ivan)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(ivan,meeting_room)"
+   ],
+   "construction": "3b",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_2"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "suite_2": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(ivan->carol)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3b",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3b-stakes1-perm1",
+   "optimal_first_actions": [
+    "ask(ivan,meeting_room)",
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.27,
+   "permuted": true,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(bob,meeting_room)": 0.75,
+    "ask(ivan,meeting_room)": 0.8,
+    "give(ivan)": -0.55,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "self_location_candidates": [
+    "K(carol)"
+   ],
+   "stakes": 1.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(ivan,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3b:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": 0.2,
+     "handoff": -0.55,
+     "search/walk": 0.8,
+     "wait": 0.85
+    },
+    "optimal": [
+     "ask(ivan,meeting_room)"
+    ],
+    "value": 0.9
+   }
+  },
+  {
+   "bayes_value_t0": 0.8,
+   "best_by_family": {
+    "ask": 0.8,
+    "handoff": -2.05,
+    "search/walk": 0.8,
+    "wait": 0.75
+   },
+   "candidates": [
+    "K(bob)",
+    "K(bob->carol)",
+    "K(bob->ivan)",
+    "K(bob->tomas)",
+    "K(carol)",
+    "K(carol->bob)",
+    "K(carol->ivan)",
+    "K(carol->tomas)",
+    "K(ivan)",
+    "K(ivan->bob)",
+    "K(ivan->carol)",
+    "K(ivan->tomas)",
+    "K(tomas)",
+    "K(tomas->bob)",
+    "K(tomas->carol)",
+    "K(tomas->ivan)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(ivan,meeting_room)"
+   ],
+   "construction": "3b",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_2"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "suite_2": 1.0
+     },
+     "reference_p_correct_now": 0.0,
+     "self_location": false,
+     "unit": "K(ivan->carol)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3b",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3b-stakes4-perm1",
+   "optimal_first_actions": [
+    "ask(ivan,meeting_room)",
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.271,
+   "permuted": true,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(bob,meeting_room)": 0.75,
+    "ask(ivan,meeting_room)": 0.8,
+    "give(ivan)": -2.05,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "self_location_candidates": [
+    "K(carol)"
+   ],
+   "stakes": 4.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(ivan,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3b:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": -0.55,
+     "handoff": -2.05,
+     "search/walk": 0.8,
+     "wait": 0.85
+    },
+    "optimal": [
+     "ask(ivan,meeting_room)"
+    ],
+    "value": 0.9
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(frank)",
+    "K(frank->grace)",
+    "K(frank->nadia)",
+    "K(grace)",
+    "K(grace->frank)",
+    "K(grace->nadia)",
+    "K(heidi)",
+    "K(heidi->nadia)",
+    "K(nadia)",
+    "K(nadia->frank)",
+    "K(nadia->grace)",
+    "K(nadia->heidi)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(nadia)"
+   ],
+   "construction": "3c",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "office_b"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "office_b": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(nadia->frank)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3c",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3c-stakes1-perm0",
+   "optimal_first_actions": [
+    "give(nadia)"
+   ],
+   "oracle_seconds": 0.283,
+   "permuted": false,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(heidi,meeting_room)": 0.9,
+    "ask(nadia,meeting_room)": 0.9,
+    "give(nadia)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(frank)"
+   ],
+   "stakes": 1.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(nadia,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3c:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": 0.95,
+     "handoff": 0.95,
+     "search/walk": 0.85,
+     "wait": 0.9
+    },
+    "optimal": [
+     "drop(office_b)",
+     "give(nadia)"
+    ],
+    "value": 0.95
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(frank)",
+    "K(frank->grace)",
+    "K(frank->nadia)",
+    "K(grace)",
+    "K(grace->frank)",
+    "K(grace->nadia)",
+    "K(heidi)",
+    "K(heidi->nadia)",
+    "K(nadia)",
+    "K(nadia->frank)",
+    "K(nadia->grace)",
+    "K(nadia->heidi)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(nadia)"
+   ],
+   "construction": "3c",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "office_b"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "office_b": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(nadia->frank)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3c",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3c-stakes4-perm0",
+   "optimal_first_actions": [
+    "give(nadia)"
+   ],
+   "oracle_seconds": 0.273,
+   "permuted": false,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(heidi,meeting_room)": 0.9,
+    "ask(nadia,meeting_room)": 0.9,
+    "give(nadia)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(frank)"
+   ],
+   "stakes": 4.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(nadia,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3c:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": 0.95,
+     "handoff": 0.95,
+     "search/walk": 0.85,
+     "wait": 0.9
+    },
+    "optimal": [
+     "drop(office_b)",
+     "give(nadia)"
+    ],
+    "value": 0.95
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(frank)",
+    "K(frank->heidi)",
+    "K(grace)",
+    "K(grace->heidi)",
+    "K(grace->nadia)",
+    "K(heidi)",
+    "K(heidi->frank)",
+    "K(heidi->grace)",
+    "K(heidi->nadia)",
+    "K(nadia)",
+    "K(nadia->grace)",
+    "K(nadia->heidi)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(heidi)"
+   ],
+   "construction": "3c",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "office_b"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "office_b": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(heidi->grace)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3c",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3c-stakes1-perm1",
+   "optimal_first_actions": [
+    "give(heidi)"
+   ],
+   "oracle_seconds": 0.278,
+   "permuted": true,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(frank,meeting_room)": 0.9,
+    "ask(heidi,meeting_room)": 0.9,
+    "give(heidi)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(grace)"
+   ],
+   "stakes": 1.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(heidi,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3c:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": 0.95,
+     "handoff": 0.95,
+     "search/walk": 0.85,
+     "wait": 0.9
+    },
+    "optimal": [
+     "drop(office_b)",
+     "give(heidi)"
+    ],
+    "value": 0.95
+   }
+  },
+  {
+   "bayes_value_t0": 0.95,
+   "best_by_family": {
+    "ask": 0.9,
+    "handoff": 0.95,
+    "search/walk": 0.85,
+    "wait": 0.9
+   },
+   "candidates": [
+    "K(frank)",
+    "K(frank->heidi)",
+    "K(grace)",
+    "K(grace->heidi)",
+    "K(grace->nadia)",
+    "K(heidi)",
+    "K(heidi->frank)",
+    "K(heidi->grace)",
+    "K(heidi->nadia)",
+    "K(nadia)",
+    "K(nadia->grace)",
+    "K(nadia->heidi)"
+   ],
+   "card_only_fixes_best_action": true,
+   "card_only_optimal": [
+    "give(heidi)"
+   ],
+   "construction": "3c",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "office_b"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "office_b": 1.0
+     },
+     "reference_p_correct_now": 1.0,
+     "self_location": false,
+     "unit": "K(heidi->grace)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-3c",
+   "hypothesis_worlds_consistent": 2,
+   "instance_id": "dev-v3-3c-stakes4-perm1",
+   "optimal_first_actions": [
+    "give(heidi)"
+   ],
+   "oracle_seconds": 0.267,
+   "permuted": true,
+   "prior_worlds": 6,
+   "q_first_actions": {
+    "ask(frank,meeting_room)": 0.9,
+    "ask(heidi,meeting_room)": 0.9,
+    "give(heidi)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "self_location_candidates": [
+    "K(grace)"
+   ],
+   "stakes": 4.0,
+   "stratum": 3,
+   "superset": {
+    "card_only_fixes_best_action": false,
+    "card_only_optimal": [
+     "ask(heidi,meeting_room)"
+    ],
+    "consistent_patterns": [
+     "3c:0"
+    ],
+    "consistent_worlds": 2,
+    "focal_posterior_equal": true,
+    "max_abs_q_diff": 0.0,
+    "patterns": 3,
+    "prior_worlds": 18
+   },
+   "with_chute_counterfactual": {
+    "best_by_family": {
+     "ask": 0.9,
+     "chute": 0.95,
+     "handoff": 0.95,
+     "search/walk": 0.85,
+     "wait": 0.9
+    },
+    "optimal": [
+     "drop(office_b)",
+     "give(heidi)"
+    ],
+    "value": 0.95
+   }
+  },
+  {
+   "bayes_value_t0": 0.86,
+   "best_by_family": {
+    "ask": 0.81,
+    "chute": 0.86,
+    "search/walk": 0.841,
+    "wait": 0.81
+   },
+   "candidates": [
+    "K(carol)",
+    "K(carol->quinn)",
+    "K(omar)",
+    "K(omar->quinn)",
+    "K(quinn)",
+    "K(quinn->carol)",
+    "K(quinn->omar)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(quinn,carol_loc)"
+   ],
+   "construction": "4a",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_1"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "suite_1": 1.0
+     },
+     "reference_p_correct_now": 0.94,
+     "self_location": false,
+     "unit": "K(quinn)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4a",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-4a-stakes1-perm0",
+   "optimal_first_actions": [
+    "drop(suite_1)"
+   ],
+   "oracle_seconds": 0.137,
+   "permuted": false,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(omar,carol_loc)": 0.81,
+    "ask(quinn,carol_loc)": 0.81,
+    "drop(suite_1)": 0.86,
+    "drop(suite_2)": -0.505,
+    "drop(suite_3)": -0.505,
+    "move(hall)": 0.841,
+    "wait()": 0.81
+   },
+   "self_location_candidates": [
+    "K(carol)"
+   ],
+   "stakes": 1.0,
+   "stratum": 4
+  },
+  {
+   "bayes_value_t0": 0.841,
+   "best_by_family": {
+    "ask": 0.791,
+    "chute": 0.77,
+    "search/walk": 0.841,
+    "wait": 0.791
+   },
+   "candidates": [
+    "K(carol)",
+    "K(carol->quinn)",
+    "K(omar)",
+    "K(omar->quinn)",
+    "K(quinn)",
+    "K(quinn->carol)",
+    "K(quinn->omar)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(quinn,carol_loc)"
+   ],
+   "construction": "4a",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_1"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "suite_1": 1.0
+     },
+     "reference_p_correct_now": 0.94,
+     "self_location": false,
+     "unit": "K(quinn)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4a",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-4a-stakes4-perm0",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.138,
+   "permuted": false,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(omar,carol_loc)": 0.791,
+    "ask(quinn,carol_loc)": 0.791,
+    "drop(suite_1)": 0.77,
+    "drop(suite_2)": -1.96,
+    "drop(suite_3)": -1.96,
+    "move(hall)": 0.841,
+    "wait()": 0.791
+   },
+   "self_location_candidates": [
+    "K(carol)"
+   ],
+   "stakes": 4.0,
+   "stratum": 4
+  },
+  {
+   "bayes_value_t0": 0.86,
+   "best_by_family": {
+    "ask": 0.81,
+    "chute": 0.86,
+    "search/walk": 0.841,
+    "wait": 0.81
+   },
+   "candidates": [
+    "K(carol)",
+    "K(carol->omar)",
+    "K(omar)",
+    "K(omar->carol)",
+    "K(omar->quinn)",
+    "K(quinn)",
+    "K(quinn->omar)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(omar,quinn_loc)"
+   ],
+   "construction": "4a",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_1"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "suite_1": 1.0
+     },
+     "reference_p_correct_now": 0.94,
+     "self_location": false,
+     "unit": "K(omar)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4a",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-4a-stakes1-perm1",
+   "optimal_first_actions": [
+    "drop(suite_1)"
+   ],
+   "oracle_seconds": 0.14,
+   "permuted": true,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(carol,quinn_loc)": 0.81,
+    "ask(omar,quinn_loc)": 0.81,
+    "drop(suite_1)": 0.86,
+    "drop(suite_2)": -0.505,
+    "drop(suite_3)": -0.505,
+    "move(hall)": 0.841,
+    "wait()": 0.81
+   },
+   "self_location_candidates": [
+    "K(quinn)"
+   ],
+   "stakes": 1.0,
+   "stratum": 4
+  },
+  {
+   "bayes_value_t0": 0.841,
+   "best_by_family": {
+    "ask": 0.791,
+    "chute": 0.77,
+    "search/walk": 0.841,
+    "wait": 0.791
+   },
+   "candidates": [
+    "K(carol)",
+    "K(carol->omar)",
+    "K(omar)",
+    "K(omar->carol)",
+    "K(omar->quinn)",
+    "K(quinn)",
+    "K(quinn->omar)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(omar,quinn_loc)"
+   ],
+   "construction": "4a",
+   "distractor": "plausible",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.0,
+     "privileged_bayes_delta_j": 0.0,
+     "privileged_p_flip": 0.0,
+     "privileged_true_content": [
+      "suite_1"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "suite_1": 1.0
+     },
+     "reference_p_correct_now": 0.94,
+     "self_location": false,
+     "unit": "K(omar)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4a",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-4a-stakes4-perm1",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.137,
+   "permuted": true,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(carol,quinn_loc)": 0.791,
+    "ask(omar,quinn_loc)": 0.791,
+    "drop(suite_1)": 0.77,
+    "drop(suite_2)": -1.96,
+    "drop(suite_3)": -1.96,
+    "move(hall)": 0.841,
+    "wait()": 0.791
+   },
+   "self_location_candidates": [
+    "K(quinn)"
+   ],
+   "stakes": 4.0,
+   "stratum": 4
+  },
+  {
+   "bayes_value_t0": 0.8680064309,
+   "best_by_family": {
+    "ask": 0.8180064309,
+    "chute": 0.8680064309,
+    "search/walk": 0.8435691318,
+    "wait": 0.8180064309
+   },
+   "candidates": [
+    "K(erin)",
+    "K(kim)",
+    "R(kim)",
+    "K(kim->uma)",
+    "R(kim->uma)",
+    "K(kim->zane)",
+    "K(uma)",
+    "R(uma)",
+    "K(uma->kim)",
+    "R(uma->kim)",
+    "K(uma->zane)",
+    "K(zane)",
+    "K(zane->kim)",
+    "R(zane->kim)",
+    "K(zane->uma)",
+    "R(zane->uma)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(kim,erin_loc)"
+   ],
+   "construction": "4b",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.3058815814,
+     "privileged_bayes_delta_j": 0.075562701,
+     "privileged_p_flip": 0.0546623794,
+     "privileged_true_content": [
+      "cooperative"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "cooperative": 0.9453376206,
+      "obstructive": 0.0546623794
+     },
+     "reference_p_correct_now": 0.9453376206,
+     "self_location": false,
+     "unit": "R(kim)"
+    },
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.2648358898,
+     "privileged_bayes_delta_j": 0.0675241158,
+     "privileged_p_flip": 0.0450160772,
+     "privileged_true_content": [
+      "obstructive"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "cooperative": 0.0450160772,
+      "obstructive": 0.9549839228
+     },
+     "reference_p_correct_now": 0.0450160772,
+     "self_location": false,
+     "unit": "R(uma)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4b",
+   "hypothesis_worlds_consistent": 5,
+   "instance_id": "dev-v3-4b-stakes1-perm0",
+   "optimal_first_actions": [
+    "drop(desk_14)"
+   ],
+   "oracle_seconds": 0.786,
+   "permuted": false,
+   "prior_worlds": 30,
+   "q_first_actions": {
+    "ask(kim,erin_loc)": 0.8180064309,
+    "ask(uma,erin_loc)": 0.8180064309,
+    "ask(zane,erin_loc)": 0.8180064309,
+    "drop(desk_14)": 0.8680064309,
+    "drop(desk_3)": -0.5355305466,
+    "drop(desk_9)": -0.4824758842,
+    "move(hall)": 0.8435691318,
+    "wait()": 0.8180064309
+   },
+   "self_location_candidates": [
+    "K(erin)"
+   ],
+   "stakes": 1.0,
+   "stratum": 4
+  },
+  {
+   "bayes_value_t0": 0.8435691318,
+   "best_by_family": {
+    "ask": 0.7935691318,
+    "chute": 0.7860128617,
+    "search/walk": 0.8435691318,
+    "wait": 0.7935691318
+   },
+   "candidates": [
+    "K(erin)",
+    "K(kim)",
+    "R(kim)",
+    "K(kim->uma)",
+    "R(kim->uma)",
+    "K(kim->zane)",
+    "K(uma)",
+    "R(uma)",
+    "K(uma->kim)",
+    "R(uma->kim)",
+    "K(uma->zane)",
+    "K(zane)",
+    "K(zane->kim)",
+    "R(zane->kim)",
+    "K(zane->uma)",
+    "R(zane->uma)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(kim,erin_loc)"
+   ],
+   "construction": "4b",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.3058815814,
+     "privileged_bayes_delta_j": 0.1,
+     "privileged_p_flip": 0.9453376206,
+     "privileged_true_content": [
+      "cooperative"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "cooperative": 0.9453376206,
+      "obstructive": 0.0546623794
+     },
+     "reference_p_correct_now": 0.9453376206,
+     "self_location": false,
+     "unit": "R(kim)"
+    },
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.2648358898,
+     "privileged_bayes_delta_j": 0.0774919614,
+     "privileged_p_flip": 1.0,
+     "privileged_true_content": [
+      "obstructive"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "cooperative": 0.0450160772,
+      "obstructive": 0.9549839228
+     },
+     "reference_p_correct_now": 0.0450160772,
+     "self_location": false,
+     "unit": "R(uma)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4b",
+   "hypothesis_worlds_consistent": 5,
+   "instance_id": "dev-v3-4b-stakes4-perm0",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.8,
+   "permuted": false,
+   "prior_worlds": 30,
+   "q_first_actions": {
+    "ask(kim,erin_loc)": 0.7935691318,
+    "ask(uma,erin_loc)": 0.7935691318,
+    "ask(zane,erin_loc)": 0.7935691318,
+    "drop(desk_14)": 0.7860128617,
+    "drop(desk_3)": -2.0210610932,
+    "drop(desk_9)": -1.9149517685,
+    "move(hall)": 0.8435691318,
+    "wait()": 0.7935691318
+   },
+   "self_location_candidates": [
+    "K(erin)"
+   ],
+   "stakes": 4.0,
+   "stratum": 4
+  },
+  {
+   "bayes_value_t0": 0.8680064309,
+   "best_by_family": {
+    "ask": 0.8180064309,
+    "chute": 0.8680064309,
+    "search/walk": 0.8435691318,
+    "wait": 0.8180064309
+   },
+   "candidates": [
+    "K(erin)",
+    "K(erin->uma)",
+    "R(erin->uma)",
+    "K(erin->zane)",
+    "R(erin->zane)",
+    "K(kim)",
+    "K(uma)",
+    "R(uma)",
+    "K(uma->erin)",
+    "K(uma->zane)",
+    "R(uma->zane)",
+    "K(zane)",
+    "R(zane)",
+    "K(zane->erin)",
+    "K(zane->uma)",
+    "R(zane->uma)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(uma,kim_loc)"
+   ],
+   "construction": "4b",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.3058815814,
+     "privileged_bayes_delta_j": 0.075562701,
+     "privileged_p_flip": 0.0546623794,
+     "privileged_true_content": [
+      "cooperative"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "cooperative": 0.9453376206,
+      "obstructive": 0.0546623794
+     },
+     "reference_p_correct_now": 0.9453376206,
+     "self_location": false,
+     "unit": "R(uma)"
+    },
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.2648358898,
+     "privileged_bayes_delta_j": 0.0675241158,
+     "privileged_p_flip": 0.0450160772,
+     "privileged_true_content": [
+      "obstructive"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "cooperative": 0.0450160772,
+      "obstructive": 0.9549839228
+     },
+     "reference_p_correct_now": 0.0450160772,
+     "self_location": false,
+     "unit": "R(zane)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4b",
+   "hypothesis_worlds_consistent": 5,
+   "instance_id": "dev-v3-4b-stakes1-perm1",
+   "optimal_first_actions": [
+    "drop(desk_14)"
+   ],
+   "oracle_seconds": 0.793,
+   "permuted": true,
+   "prior_worlds": 30,
+   "q_first_actions": {
+    "ask(erin,kim_loc)": 0.8180064309,
+    "ask(uma,kim_loc)": 0.8180064309,
+    "ask(zane,kim_loc)": 0.8180064309,
+    "drop(desk_14)": 0.8680064309,
+    "drop(desk_3)": -0.5355305466,
+    "drop(desk_9)": -0.4824758842,
+    "move(hall)": 0.8435691318,
+    "wait()": 0.8180064309
+   },
+   "self_location_candidates": [
+    "K(kim)"
+   ],
+   "stakes": 1.0,
+   "stratum": 4
+  },
+  {
+   "bayes_value_t0": 0.8435691318,
+   "best_by_family": {
+    "ask": 0.7935691318,
+    "chute": 0.7860128617,
+    "search/walk": 0.8435691318,
+    "wait": 0.7935691318
+   },
+   "candidates": [
+    "K(erin)",
+    "K(erin->uma)",
+    "R(erin->uma)",
+    "K(erin->zane)",
+    "R(erin->zane)",
+    "K(kim)",
+    "K(uma)",
+    "R(uma)",
+    "K(uma->erin)",
+    "K(uma->zane)",
+    "R(uma->zane)",
+    "K(zane)",
+    "R(zane)",
+    "K(zane->erin)",
+    "K(zane->uma)",
+    "R(zane->uma)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(uma,kim_loc)"
+   ],
+   "construction": "4b",
+   "distractor": "obvious",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.3058815814,
+     "privileged_bayes_delta_j": 0.1,
+     "privileged_p_flip": 0.9453376206,
+     "privileged_true_content": [
+      "cooperative"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "cooperative": 0.9453376206,
+      "obstructive": 0.0546623794
+     },
+     "reference_p_correct_now": 0.9453376206,
+     "self_location": false,
+     "unit": "R(uma)"
+    },
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.2648358898,
+     "privileged_bayes_delta_j": 0.0774919614,
+     "privileged_p_flip": 1.0,
+     "privileged_true_content": [
+      "obstructive"
+     ],
+     "privileged_true_correct": false,
+     "reference_content_posterior": {
+      "cooperative": 0.0450160772,
+      "obstructive": 0.9549839228
+     },
+     "reference_p_correct_now": 0.0450160772,
+     "self_location": false,
+     "unit": "R(zane)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4b",
+   "hypothesis_worlds_consistent": 5,
+   "instance_id": "dev-v3-4b-stakes4-perm1",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.81,
+   "permuted": true,
+   "prior_worlds": 30,
+   "q_first_actions": {
+    "ask(erin,kim_loc)": 0.7935691318,
+    "ask(uma,kim_loc)": 0.7935691318,
+    "ask(zane,kim_loc)": 0.7935691318,
+    "drop(desk_14)": 0.7860128617,
+    "drop(desk_3)": -2.0210610932,
+    "drop(desk_9)": -1.9149517685,
+    "move(hall)": 0.8435691318,
+    "wait()": 0.7935691318
+   },
+   "self_location_candidates": [
+    "K(kim)"
+   ],
+   "stakes": 4.0,
+   "stratum": 4
+  },
+  {
+   "bayes_value_t0": 0.875,
+   "best_by_family": {
+    "ask": 0.825,
+    "chute": 0.875,
+    "search/walk": 0.8425,
+    "wait": 0.825
+   },
+   "candidates": [
+    "K(frank)",
+    "K(judy)",
+    "R(judy)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(judy,frank_loc)"
+   ],
+   "construction": "4c",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.2863969571,
+     "privileged_bayes_delta_j": 0.0675,
+     "privileged_p_flip": 0.05,
+     "privileged_true_content": [
+      "cooperative"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "cooperative": 0.95,
+      "obstructive": 0.05
+     },
+     "reference_p_correct_now": 0.95,
+     "self_location": false,
+     "unit": "R(judy)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4c",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-4c-stakes1-perm0",
+   "optimal_first_actions": [
+    "drop(lab_north)"
+   ],
+   "oracle_seconds": 0.062,
+   "permuted": false,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(judy,frank_loc)": 0.825,
+    "drop(lab_north)": 0.875,
+    "drop(lab_south)": -0.5125,
+    "drop(lab_west)": -0.5125,
+    "move(hall)": 0.8425,
+    "wait()": 0.825
+   },
+   "self_location_candidates": [
+    "K(frank)"
+   ],
+   "stakes": 1.0,
+   "stratum": 4
+  },
+  {
+   "bayes_value_t0": 0.8425,
+   "best_by_family": {
+    "ask": 0.7925,
+    "chute": 0.8,
+    "search/walk": 0.8425,
+    "wait": 0.7925
+   },
+   "candidates": [
+    "K(frank)",
+    "K(judy)",
+    "R(judy)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(judy,frank_loc)"
+   ],
+   "construction": "4c",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.2863969571,
+     "privileged_bayes_delta_j": 0.1,
+     "privileged_p_flip": 0.95,
+     "privileged_true_content": [
+      "cooperative"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "cooperative": 0.95,
+      "obstructive": 0.05
+     },
+     "reference_p_correct_now": 0.95,
+     "self_location": false,
+     "unit": "R(judy)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4c",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-4c-stakes4-perm0",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.064,
+   "permuted": false,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(judy,frank_loc)": 0.7925,
+    "drop(lab_north)": 0.8,
+    "drop(lab_south)": -1.975,
+    "drop(lab_west)": -1.975,
+    "move(hall)": 0.8425,
+    "wait()": 0.7925
+   },
+   "self_location_candidates": [
+    "K(frank)"
+   ],
+   "stakes": 4.0,
+   "stratum": 4
+  },
+  {
+   "bayes_value_t0": 0.875,
+   "best_by_family": {
+    "ask": 0.825,
+    "chute": 0.875,
+    "search/walk": 0.8425,
+    "wait": 0.825
+   },
+   "candidates": [
+    "K(frank)",
+    "R(frank)",
+    "K(judy)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(frank,judy_loc)"
+   ],
+   "construction": "4c",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.2863969571,
+     "privileged_bayes_delta_j": 0.0675,
+     "privileged_p_flip": 0.05,
+     "privileged_true_content": [
+      "cooperative"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "cooperative": 0.95,
+      "obstructive": 0.05
+     },
+     "reference_p_correct_now": 0.95,
+     "self_location": false,
+     "unit": "R(frank)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4c",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-4c-stakes1-perm1",
+   "optimal_first_actions": [
+    "drop(lab_north)"
+   ],
+   "oracle_seconds": 0.066,
+   "permuted": true,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(frank,judy_loc)": 0.825,
+    "drop(lab_north)": 0.875,
+    "drop(lab_south)": -0.5125,
+    "drop(lab_west)": -0.5125,
+    "move(hall)": 0.8425,
+    "wait()": 0.825
+   },
+   "self_location_candidates": [
+    "K(judy)"
+   ],
+   "stakes": 1.0,
+   "stratum": 4
+  },
+  {
+   "bayes_value_t0": 0.8425,
+   "best_by_family": {
+    "ask": 0.7925,
+    "chute": 0.8,
+    "search/walk": 0.8425,
+    "wait": 0.7925
+   },
+   "candidates": [
+    "K(frank)",
+    "R(frank)",
+    "K(judy)"
+   ],
+   "card_only_fixes_best_action": false,
+   "card_only_optimal": [
+    "ask(frank,judy_loc)"
+   ],
+   "construction": "4c",
+   "distractor": "none",
+   "focal": [
+    {
+     "access_status_set": [
+      "correct",
+      "incorrect"
+     ],
+     "content_entropy_bits": 0.2863969571,
+     "privileged_bayes_delta_j": 0.1,
+     "privileged_p_flip": 0.95,
+     "privileged_true_content": [
+      "cooperative"
+     ],
+     "privileged_true_correct": true,
+     "reference_content_posterior": {
+      "cooperative": 0.95,
+      "obstructive": 0.05
+     },
+     "reference_p_correct_now": 0.95,
+     "self_location": false,
+     "unit": "R(frank)"
+    }
+   ],
+   "focal_in_candidates": true,
+   "group_id": "dev-v3-4c",
+   "hypothesis_worlds_consistent": 4,
+   "instance_id": "dev-v3-4c-stakes4-perm1",
+   "optimal_first_actions": [
+    "move(hall)"
+   ],
+   "oracle_seconds": 0.064,
+   "permuted": true,
+   "prior_worlds": 12,
+   "q_first_actions": {
+    "ask(frank,judy_loc)": 0.7925,
+    "drop(lab_north)": 0.8,
+    "drop(lab_south)": -1.975,
+    "drop(lab_west)": -1.975,
+    "move(hall)": 0.8425,
+    "wait()": 0.7925
+   },
+   "self_location_candidates": [
+    "K(judy)"
+   ],
+   "stakes": 4.0,
+   "stratum": 4
+  }
+ ],
+ "pairs": [
+  {
+   "2a:0": {
+    "optimal": [
+     "give(yara)"
+    ],
+    "q": {
+     "ask(judy,leo_loc)": 0.9,
+     "ask(ravi,leo_loc)": 0.9,
+     "ask(yara,leo_loc)": 0.9,
+     "drop(office_a)": 0.2,
+     "drop(office_b)": -0.55,
+     "drop(office_c)": 0.2,
+     "give(ravi)": -0.55,
+     "give(yara)": 0.95,
+     "move(hall)": 0.85,
+     "wait()": 0.9
+    },
+    "rooms": {
+     "judy": "lobby",
+     "leo": "office_c",
+     "ravi": "lobby",
+     "yara": "lobby"
+    },
+    "value": 0.95
+   },
+   "2a:1": {
+    "optimal": [
+     "give(ravi)"
+    ],
+    "q": {
+     "ask(judy,leo_loc)": 0.9,
+     "ask(ravi,leo_loc)": 0.9,
+     "ask(yara,leo_loc)": 0.9,
+     "drop(office_a)": 0.2,
+     "drop(office_b)": -0.55,
+     "drop(office_c)": 0.2,
+     "give(ravi)": 0.95,
+     "give(yara)": -0.55,
+     "move(hall)": 0.85,
+     "wait()": 0.9
+    },
+    "rooms": {
+     "judy": "lobby",
+     "leo": "office_c",
+     "ravi": "lobby",
+     "yara": "lobby"
+    },
+    "value": 0.95
+   },
+   "gap_if_a_best_used_in_b": 1.5,
+   "group_spec": "dev-v3-2a",
+   "kind": "same-physical-state social pair (holder swap)",
+   "optimal_sets_differ": true,
+   "patterns": [
+    "2a:0",
+    "2a:1"
+   ],
+   "same_physical_state": true
+  },
+  {
+   "2a:0": {
+    "optimal": [
+     "give(yara)"
+    ],
+    "q": {
+     "ask(judy,leo_loc)": 0.9,
+     "ask(ravi,leo_loc)": 0.9,
+     "ask(yara,leo_loc)": 0.9,
+     "drop(office_a)": 0.2,
+     "drop(office_b)": -0.55,
+     "drop(office_c)": 0.2,
+     "give(ravi)": -0.55,
+     "give(yara)": 0.95,
+     "move(hall)": 0.85,
+     "wait()": 0.9
+    },
+    "rooms": {
+     "judy": "lobby",
+     "leo": "office_c",
+     "ravi": "lobby",
+     "yara": "lobby"
+    },
+    "value": 0.95
+   },
+   "2b:0": {
+    "optimal": [
+     "move(hall)"
+    ],
+    "q": {
+     "ask(judy,leo_loc)": 0.75,
+     "ask(ravi,leo_loc)": 0.75,
+     "drop(office_a)": 0.2,
+     "drop(office_b)": -0.55,
+     "drop(office_c)": 0.2,
+     "give(ravi)": -0.55,
+     "move(hall)": 0.8,
+     "wait()": 0.75
+    },
+    "rooms": {
+     "judy": "lobby",
+     "leo": "office_c",
+     "ravi": "lobby",
+     "yara": "outside"
+    },
+    "value": 0.8
+   },
+   "gap_if_a_best_used_in_b": NaN,
+   "group_spec": "dev-v3-2a",
+   "kind": "physical availability contrast (H departed)",
+   "optimal_sets_differ": true,
+   "patterns": [
+    "2a:0",
+    "2b:0"
+   ],
+   "same_physical_state": false
+  },
+  {
+   "3a:0": {
+    "optimal": [
+     "give(heidi)"
+    ],
+    "q": {
+     "ask(heidi,meeting_room)": 0.9,
+     "give(heidi)": 0.95,
+     "move(hall)": 0.85,
+     "wait()": 0.9
+    },
+    "rooms": {
+     "heidi": "lobby",
+     "uma": "room_7",
+     "vik": "outside"
+    },
+    "value": 0.95
+   },
+   "3b:0": {
+    "optimal": [
+     "ask(heidi,meeting_room)",
+     "move(hall)"
+    ],
+    "q": {
+     "ask(heidi,meeting_room)": 0.8,
+     "give(heidi)": -0.55,
+     "move(hall)": 0.8,
+     "wait()": 0.75
+    },
+    "rooms": {
+     "heidi": "lobby",
+     "uma": "room_7",
+     "vik": "outside"
+    },
+    "value": 0.8
+   },
+   "depth2_contents": {
+    "3a:0": {
+     "K(heidi)": [
+      "room_7"
+     ],
+     "K(heidi->uma)": [
+      "room_7"
+     ],
+     "K(uma)": [
+      "room_7"
+     ],
+     "K(uma->heidi)": [
+      "room_7"
+     ],
+     "K(vik->uma)": [
+      "room_19"
+     ]
+    },
+    "3b:0": {
+     "K(heidi)": [
+      "room_7"
+     ],
+     "K(heidi->uma)": [
+      "room_19"
+     ],
+     "K(uma)": [
+      "room_7"
+     ],
+     "K(uma->heidi)": [
+      "unknown"
+     ],
+     "K(vik->uma)": [
+      "room_7"
+     ]
+    }
+   },
+   "gap_if_a_best_used_in_b": 1.35,
+   "group_spec": "dev-v3-3a",
+   "kind": "same-physical-state social pair (depth-2)",
+   "optimal_sets_differ": true,
+   "patterns": [
+    "3a:0",
+    "3b:0"
+   ],
+   "pi_le1_inputs_equal": true,
+   "same_physical_state": true
+  },
+  {
+   "3a:0": {
+    "optimal": [
+     "give(heidi)"
+    ],
+    "q": {
+     "ask(heidi,meeting_room)": 0.9,
+     "give(heidi)": 0.95,
+     "move(hall)": 0.85,
+     "wait()": 0.9
+    },
+    "rooms": {
+     "heidi": "lobby",
+     "uma": "room_7",
+     "vik": "outside"
+    },
+    "value": 0.95
+   },
+   "3c:0": {
+    "optimal": [
+     "give(heidi)"
+    ],
+    "q": {
+     "ask(heidi,meeting_room)": 0.9,
+     "give(heidi)": 0.95,
+     "move(hall)": 0.85,
+     "wait()": 0.9
+    },
+    "rooms": {
+     "heidi": "lobby",
+     "uma": "room_19",
+     "vik": "outside"
+    },
+    "value": 0.95
+   },
+   "depth2_contents": {
+    "3a:0": {
+     "K(heidi)": [
+      "room_7"
+     ],
+     "K(heidi->uma)": [
+      "room_7"
+     ],
+     "K(uma)": [
+      "room_7"
+     ],
+     "K(uma->heidi)": [
+      "room_7"
+     ],
+     "K(vik->uma)": [
+      "room_19"
+     ]
+    },
+    "3c:0": {
+     "K(heidi)": [
+      "room_7"
+     ],
+     "K(heidi->uma)": [
+      "room_19"
+     ],
+     "K(uma)": [
+      "room_19"
+     ],
+     "K(uma->heidi)": [
+      "unknown"
+     ],
+     "K(vik->uma)": [
+      "room_19"
+     ]
+    }
+   },
+   "gap_if_a_best_used_in_b": 0.0,
+   "group_spec": "dev-v3-3a",
+   "kind": "same courier belief, different recipient belief (not same physical state)",
+   "optimal_sets_differ": false,
+   "patterns": [
+    "3a:0",
+    "3c:0"
+   ],
+   "pi_le1_inputs_equal": false,
+   "same_physical_state": false
+  }
+ ],
+ "round_b_selection": {
+  "stratum1": "1c",
+  "stratum2": "2a",
+  "stratum3": "3c",
+  "stratum4": "4b"
+ },
+ "stakes_pairs": [
+  {
+   "construction": "4a",
+   "flip": true,
+   "rates": {
+    "q_moved": 0.06
+   },
+   "x1": {
+    "optimal": [
+     "drop(suite_1)"
+    ],
+    "q": {
+     "ask(omar,carol_loc)": 0.81,
+     "ask(quinn,carol_loc)": 0.81,
+     "drop(suite_1)": 0.86,
+     "drop(suite_2)": -0.505,
+     "drop(suite_3)": -0.505,
+     "move(hall)": 0.841,
+     "wait()": 0.81
+    }
+   },
+   "x4": {
+    "optimal": [
+     "move(hall)"
+    ],
+    "q": {
+     "ask(omar,carol_loc)": 0.791,
+     "ask(quinn,carol_loc)": 0.791,
+     "drop(suite_1)": 0.77,
+     "drop(suite_2)": -1.96,
+     "drop(suite_3)": -1.96,
+     "move(hall)": 0.841,
+     "wait()": 0.791
+    }
+   }
+  },
+  {
+   "construction": "4b",
+   "flip": true,
+   "rates": {
+    "r_X": 0.02,
+    "r_Y": 0.3
+   },
+   "x1": {
+    "optimal": [
+     "drop(desk_14)"
+    ],
+    "q": {
+     "ask(kim,erin_loc)": 0.8180064309,
+     "ask(uma,erin_loc)": 0.8180064309,
+     "ask(zane,erin_loc)": 0.8180064309,
+     "drop(desk_14)": 0.8680064309,
+     "drop(desk_3)": -0.5355305466,
+     "drop(desk_9)": -0.4824758842,
+     "move(hall)": 0.8435691318,
+     "wait()": 0.8180064309
+    }
+   },
+   "x4": {
+    "optimal": [
+     "move(hall)"
+    ],
+    "q": {
+     "ask(kim,erin_loc)": 0.7935691318,
+     "ask(uma,erin_loc)": 0.7935691318,
+     "ask(zane,erin_loc)": 0.7935691318,
+     "drop(desk_14)": 0.7860128617,
+     "drop(desk_3)": -2.0210610932,
+     "drop(desk_9)": -1.9149517685,
+     "move(hall)": 0.8435691318,
+     "wait()": 0.7935691318
+    }
+   }
+  },
+  {
+   "construction": "4c",
+   "flip": true,
+   "rates": {
+    "r_incentive": 0.05
+   },
+   "x1": {
+    "optimal": [
+     "drop(lab_north)"
+    ],
+    "q": {
+     "ask(judy,frank_loc)": 0.825,
+     "drop(lab_north)": 0.875,
+     "drop(lab_south)": -0.5125,
+     "drop(lab_west)": -0.5125,
+     "move(hall)": 0.8425,
+     "wait()": 0.825
+    }
+   },
+   "x4": {
+    "optimal": [
+     "move(hall)"
+    ],
+    "q": {
+     "ask(judy,frank_loc)": 0.7925,
+     "drop(lab_north)": 0.8,
+     "drop(lab_south)": -1.975,
+     "drop(lab_west)": -1.975,
+     "move(hall)": 0.8425,
+     "wait()": 0.7925
+    }
+   }
+  }
+ ]
+}

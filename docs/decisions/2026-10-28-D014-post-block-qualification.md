@@ -1,0 +1,14 @@
+# D-014 — Post-block research decisions: dev-v3 qualification block
+
+- Status: **accepted** (research-driver ruling via Ashraf, 2026-10-28, `research-reviews/POST_BLOCK_RESEARCH_DECISIONS.md`; repo copy `POST_BLOCK_RESEARCH_DECISIONS.md`, sha256 `caf9b8fdfa38882eba3a379eeb1ae3739e7ee868bd109be696ef1be8b4bc54c1`)
+- Affects: the new generator dev-v3, the public-model reference, the Round B diagnostic, all later reports that cite the autonomous block's s9 result.
+
+Binding points, restated:
+1. The autonomous block is accepted as a negative development result on nine inspected states; it is not a general absence-of-value result. No bulk labels, learned allocation, or further note-prompt search.
+2. r5 rules and pilot-v2.1 are **versioned working diagnostic artifacts**, pending fresh-context validation; report by backbone; keep the five ambiguous contexts in denominators, reported separately.
+3. Out-of-sample terms: a new seed under an old generator is a fresh-instance check; new templates are a new-template development check; dev-v3 becomes development data once used. A confirmatory set is generated later, after the protocol is fixed.
+4. **The primary reference conditions only on information available to every compared actor.** Any prior, rate, response model or template the reference uses is part of a declared shared public model given identically to all arms. Two strata: evidence-resolved (labels follow from visible evidence and explicit rules) and probabilistic (shared disclosed priors). The old generator-informed reference stays a historical diagnostic; the s9 "calibration failure" reading is premature (its 0.70 used an undisclosed base rate).
+5. **Ask-aware labels:** asking, moving to ask, waiting, searching and delivering are all in the reference continuation and realized rollouts. The "at most one 0.05 step" bound for askable informants is not a general theorem.
+6. Doubt/caution: s9 is a presentation-sensitive diagnostic. A caution reminder, if used, goes into the shared instructions for every arm, frozen before outcomes; no unsupported doubt mass in one condition only.
+7. Next block: two rounds. Round A: 12 base groups in four strata (physical/STOP controls; evidence-resolved first-order; evidence-resolved depth-2/relay with a departed informant; probabilistic reliability/staleness with shared priors and stakes), holder/name permutation × stakes ×1/×4, frozen and hashed before LLM outcomes, with the listed qualification checks. Round B: one hash-selected group per stratum, four conditions (none, inferred, public-model reference, privileged), frozen payloads, three fresh policy continuations, local backbone; optional API sanity batch only within the remaining original USD 5 cap.
+8. Return after two rounds with the bundle listed in the ruling; do not begin allocation learning even if Round B is positive.

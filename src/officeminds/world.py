@@ -68,6 +68,9 @@ class Event:
     value: str = ""
     text: str = ""
     present: tuple[str, ...] | None = None
+    # dev-v3: (notice kind, line) shown to the robot when the event happens in the robot's room, with who else is
+    # there. Empty for every dev-v1/v2 event, so their observations are unchanged.
+    visible_as: tuple[str, str] | None = None
 
 
 @dataclass
@@ -79,14 +82,16 @@ class PersonMind:
     perceived: list[str] = field(default_factory=list)
     # other -> intent this person assesses `other` to have (R(j->k) content).
     assessments: dict[str, str] = field(default_factory=dict)
+    # dev-v3 lie model: fact -> the wrong value an obstructive person names (and repeats). Empty: dev-v2 rule.
+    lies: dict[str, str] = field(default_factory=dict)
 
     def copy(self) -> PersonMind:
         return PersonMind(self.intent, dict(self.beliefs), dict(self.nested), list(self.perceived),
-                          dict(self.assessments))
+                          dict(self.assessments), dict(self.lies))
 
     def signature(self) -> tuple:
         return (self.intent, tuple(sorted(self.beliefs.items())), tuple(sorted(self.nested.items())),
-                tuple(sorted(self.assessments.items())))
+                tuple(sorted(self.assessments.items())), tuple(sorted(self.lies.items())))
 
 
 @dataclass(frozen=True)
@@ -98,9 +103,11 @@ class Observation:
     outcome: str = ""  # "" | success | error | timeout
     reward: float = 0.0
     done: bool = False
+    # dev-v3: ordered visible events in the robot's room: (kind, actor, line, others present at that moment)
+    notices: tuple[tuple[str, str, str, tuple[str, ...]], ...] = ()
 
     def to_dict(self) -> dict:
-        return {
+        d = {
             "t": self.t,
             "room": self.room,
             "people_present": list(self.people_present),
@@ -109,6 +116,9 @@ class Observation:
             "reward": round(self.reward, 10),
             "done": self.done,
         }
+        if self.notices:  # absent for dev-v1/v2, so their serializations and hashes are unchanged
+            d["notices"] = [[k, a, line, list(p)] for k, a, line, p in self.notices]
+        return d
 
 
 @dataclass(frozen=True)
@@ -125,6 +135,7 @@ class WorldConfig:
     handoff_routes: dict[str, tuple[str, str]]
     stakes: float = 1.0
     horizon: int = 8
+    public_model: str = ""  # dev-v3: the declared public model of this task, printed in the task card (r6)
 
 
 class World:
@@ -155,12 +166,14 @@ class World:
     # ------------------------------------------------------------------ dynamics
     def reset(self) -> Observation:
         """Apply t=0 events and return the robot's initial observation."""
+        self._notices: list = []
         heard = self._run_timed_events(0)
         return self._observe(heard, reward=0.0, outcome="")
 
     def step(self, action: Action) -> Observation:
         if self.done:
             raise RuntimeError("episode already finished")
+        self._notices = []
         self.t += 1
         reward = -STEP_PENALTY
         outcome = ""
@@ -211,7 +224,9 @@ class World:
         mind = self.minds[person]
         belief = mind.beliefs.get(fact, UNKNOWN)
         if mind.intent == OBSTRUCTIVE and belief != UNKNOWN:
-            # Deterministic lie: the first other value in the fact's domain.
+            if fact in mind.lies:  # dev-v3: the person's own (hidden, uniformly drawn) wrong value, repeated
+                return mind.lies[fact]
+            # dev-v1/v2 deterministic lie: the first other value in the fact's domain.
             return next(v for v in self.config.fact_domains[fact] if v != belief)
         return belief
 
@@ -219,9 +234,14 @@ class World:
         heard = []
         for ev in self.timed_events:
             if ev.t == t:
+                before = self.people_rooms.get(ev.actor)
                 self._apply(ev)
                 if ev.room == self.robot_room and ev.text:
                     heard.append((ev.actor, ev.text))
+                if ev.visible_as and self.robot_room in (ev.room, before if ev.kind == "enter" else None):
+                    others = tuple(sorted(p for p, r in self.people_rooms.items()
+                                          if r == self.robot_room and p != ev.actor))
+                    self._notices.append((ev.visible_as[0], ev.actor, ev.visible_as[1], others))
         return heard
 
     def truth(self, fact: str) -> str:
@@ -275,7 +295,8 @@ class World:
 
     def _observe(self, heard: list[tuple[str, str]], reward: float, outcome: str) -> Observation:
         present = tuple(sorted(p for p, r in self.people_rooms.items() if r == self.robot_room))
-        return Observation(self.t, self.robot_room, present, tuple(heard), outcome, reward, self.done)
+        return Observation(self.t, self.robot_room, present, tuple(heard), outcome, reward, self.done,
+                           tuple(getattr(self, "_notices", ())))
 
     # ------------------------------------------------------------------ utilities
     def clone(self) -> World:
@@ -290,6 +311,7 @@ class World:
         w.minds = {p: m.copy() for p, m in self.minds.items()}
         w.timed_events = self.timed_events
         w.log = list(self.log)
+        w._notices = []
         return w
 
     def signature(self) -> tuple:

@@ -144,6 +144,28 @@ PEOPLE_RULES_R5 = (  # r5 (Round 1 plan-gate fixes): every clause holds over ALL
     "6. Some people may deliberately mislead, especially when they have a reason to.")
 
 
+PEOPLE_RULES_R6 = (  # r6 (dev-v3 block): every clause holds over ALL positive-prior dev-v3 worlds (tests/test_dev_v3.py)
+    "How people come to believe things (the same rules apply to everyone):\n"
+    "1. A person believes a fact if they saw it or heard it announced (an announcement to everyone present, or a quiet "
+    "conversation addressed to them), and keeps that belief until they see or are told otherwise, so a belief can be "
+    "outdated or false. A quiet conversation is heard only by the person addressed: others present see it but do not hear "
+    "it. A person who neither saw nor was told anything about a fact has no belief about it.\n"
+    "2. The recipient knows which office they are in. Nobody else learns that someone moved unless they saw it or were "
+    "told.\n"
+    "3. When someone states a value for a fact (shown as: X says: \"fact = value\", including answers to the robot's "
+    "questions, where \"I don't know.\" means no belief), everyone else present then thinks the speaker believes that "
+    "value (or has no belief), but does not adopt it. A statement gives the speaker no belief about the listeners.\n"
+    "4. Ordinary remarks (any other sentence) change no one's beliefs and no one's beliefs about beliefs. They still "
+    "tell the robot what was said, which may or may not be accurate.\n"
+    "5. Seeing someone, or hearing the same announcement as someone, does not tell a person what that other person "
+    "believes. People form beliefs about others' beliefs only from statements and announcements: listeners think the "
+    "speaker believes what the speaker stated or announced, and the speaker of an announcement or quiet conversation "
+    "thinks the listeners now believe it. Watching a quiet conversation tells a bystander nothing about what the "
+    "listener now believes.\n"
+    "6. Some people may deliberately mislead; the public model of the task says who may, how likely it is, and how "
+    "they answer.")
+
+
 def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
     rev = RENDER_REVISION if rev is None else rev
     err = 0.5 * cfg.stakes
@@ -164,7 +186,11 @@ def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
         f"Facts that can be asked about: {', '.join(cfg.query_facts)} (possible values: "
         + "; ".join(f"{f}: {', '.join(cfg.fact_domains[f])}" for f in cfg.query_facts) + ").",
     ]
-    if rev >= 5:
+    if rev >= 6:
+        lines.append(PEOPLE_RULES_R6)
+        if cfg.public_model:
+            lines.append(cfg.public_model)
+    elif rev >= 5:
         lines.append(PEOPLE_RULES_R5)
     elif rev == 4:
         lines.append(PEOPLE_RULES_R4)
@@ -182,6 +208,9 @@ RENDER_REVISION = 5  # default for NEW runs only; every script records the revis
 # r4 (autonomous block Round 1, shared by ALL arms and packages): numbered people-rules that state the simulator's
 #     belief contract (statements vs. ordinary remarks; beliefs about beliefs only from statements; recipient
 #     self-location at the start only). Notes rendering is unchanged from r3.
+# r6 (dev-v3 block, D-014): dev-v3 only. Rules restated for the dev-v3 event semantics (announcements and quiet
+#     conversations during the visible prologue) plus the task's declared PUBLIC MODEL. Same rule numbering themes.
+#     Ledger: dev-v3 prologue notices render as [t0:note<i>] lines with who else was present (only dev-v3 has them).
 # r5 (Round 1 plan gate): r4 clauses were tested only on realized draws; over the full prior, rule 5 failed for
 #     backstory updates passed on as claims and for distrusting listeners. r5 scopes rule 1 to before the task,
 #     rule 2/3 to during it, and qualifies rule 5. Rule numbering is unchanged (pilot-v2.1 cites RULE1..RULE6).
@@ -194,6 +223,10 @@ def ledger(hist: VisibleHistory) -> tuple[str, list[str]]:
         if a is not None:
             ids.append(f"t{o.t}:action")
             lines.append(f"  [t{o.t}:action] robot did {a}")
+        for i, (_, _, text, others) in enumerate(o.notices):  # dev-v3 only
+            eid = f"t{o.t}:note{i}"
+            ids.append(eid)
+            lines.append(f"  [{eid}] {text} ({'others present: ' + ', '.join(others) if others else 'nobody else present'})")
         for p in o.people_present:
             eid = f"t{o.t}:seen:{p}"
             ids.append(eid)
