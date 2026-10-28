@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import os
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -124,25 +125,41 @@ class BudgetExceeded(RuntimeError):
 
 class SpendLedger:
     """Persistent USD spend ledger with a hard cap (estimated from reported usage x configured prices).
-    Before each call it refuses if spent + worst-case cost of that call would exceed the cap."""
+    Before each call it refuses if spent + in-flight reservations + worst-case cost of that call would exceed
+    the cap. Thread-safe within one process; one process per ledger file at a time (state is loaded once)."""
 
     def __init__(self, path: str, cap_usd: float, price_in: float, price_out: float):
         self.path, self.cap = path, cap_usd
         self.price_in, self.price_out = price_in / 1e6, price_out / 1e6
         self.state = json.loads(open(path).read()) if os.path.exists(path) else {"spent_usd": 0.0, "calls": 0}
+        self.reserved = 0.0
+        self._lock = threading.Lock()
 
-    def check(self, est_in: int, max_out: int) -> None:
+    def check(self, est_in: int, max_out: int) -> float:
+        """Reserve the call's worst-case cost; returns the reservation to pass to record() or release()."""
         worst = est_in * self.price_in + max_out * self.price_out
-        if self.state["spent_usd"] + worst > self.cap:
-            raise BudgetExceeded(f"cap {self.cap} USD: spent {self.state['spent_usd']:.4f} + worst-case {worst:.4f}")
+        with self._lock:
+            if self.state["spent_usd"] + self.reserved + worst > self.cap:
+                raise BudgetExceeded(f"cap {self.cap} USD: spent {self.state['spent_usd']:.4f} + in-flight "
+                                     f"{self.reserved:.4f} + worst-case {worst:.4f}")
+            self.reserved += worst
+        return worst
 
-    def record(self, tokens_in: int | None, tokens_out: int | None) -> float:
+    def release(self, reservation: float) -> None:
+        with self._lock:
+            self.reserved -= reservation
+
+    def record(self, tokens_in: int | None, tokens_out: int | None, reservation: float = 0.0) -> float:
         cost = (tokens_in or 0) * self.price_in + (tokens_out or 0) * self.price_out
-        self.state["spent_usd"] += cost
-        self.state["calls"] += 1
-        os.makedirs(os.path.dirname(self.path) or ".", exist_ok=True)
-        with open(self.path, "w") as f:
-            json.dump(self.state, f)
+        with self._lock:
+            self.reserved -= reservation
+            self.state["spent_usd"] += cost
+            self.state["calls"] += 1
+            os.makedirs(os.path.dirname(self.path) or ".", exist_ok=True)
+            tmp = self.path + ".tmp"
+            with open(tmp, "w") as f:
+                json.dump(self.state, f)
+            os.replace(tmp, self.path)
         return cost
 
 
@@ -181,7 +198,7 @@ class OpenAIResponsesClient:
     def chat(self, messages: list[dict], **params) -> ChatResult:
         body = self.request_body(self.model, messages, params)
         est_in = sum(len(m["content"]) for m in messages) // 3 + 200  # conservative chars->tokens
-        self.ledger.check(est_in, params.get("max_tokens", 4096))
+        reservation = self.ledger.check(est_in, params.get("max_tokens", 4096))
         req = urllib.request.Request(self.URL, data=json.dumps(body).encode(), method="POST")
         req.add_header("Content-Type", "application/json")
         req.add_header("Authorization", f"Bearer {self.api_key}")
@@ -190,13 +207,14 @@ class OpenAIResponsesClient:
             with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
                 out = json.loads(resp.read())
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+            self.ledger.release(reservation)
             detail = e.read().decode(errors="replace")[:500] if isinstance(e, urllib.error.HTTPError) else ""
             return ChatResult("", None, self.model, None, None, None, None, time.monotonic() - start,
                               error=f"{type(e).__name__}: {e} {detail}".strip())
         latency = time.monotonic() - start
         usage = out.get("usage") or {}
         rin, rout = usage.get("input_tokens"), usage.get("output_tokens")
-        self.ledger.record(rin, rout)
+        self.ledger.record(rin, rout, reservation)
         text, refusal = "", None
         for item in out.get("output", []):
             if item.get("type") == "message":

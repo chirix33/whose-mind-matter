@@ -119,6 +119,19 @@ def test_responses_adapter_mapping_incomplete_refusal_and_cap(tmp_path, monkeypa
         c.chat([{"role": "user", "content": "u" * 3000}], max_tokens=4096)
 
 
+def test_ledger_reservations_cover_in_flight_calls_and_are_released(tmp_path):
+    ledger = SpendLedger(str(tmp_path / "ledger.json"), cap_usd=0.1, price_in=2.0, price_out=10.0)
+    a = ledger.check(0, 4000)  # worst case 0.04
+    b = ledger.check(0, 4000)  # in flight: 0.08
+    with pytest.raises(BudgetExceeded):  # a third concurrent call could overshoot the cap
+        ledger.check(0, 4000)
+    ledger.release(a)  # transport error: nothing billed
+    ledger.record(0, 1000, b)  # billed 0.01, reservation settled
+    assert ledger.reserved == pytest.approx(0.0) and ledger.state["spent_usd"] == pytest.approx(0.01)
+    assert json.loads((tmp_path / "ledger.json").read_text()) == {"spent_usd": pytest.approx(0.01), "calls": 1}
+    ledger.check(0, 4000)
+
+
 def test_missing_api_key_is_reported_not_guessed(monkeypatch, tmp_path):
     monkeypatch.delenv("NO_SUCH_KEY", raising=False)
     with pytest.raises(RuntimeError, match="not set"):
