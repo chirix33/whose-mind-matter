@@ -123,22 +123,31 @@ def score_output_v3(parsed: dict | None, truth: str, posterior: dict[str, float]
     tied = sorted(v for v, p in dist.items() if abs(p - s["top_p"]) <= 1e-9)
     tied_sup = [v for v in tied if posterior.get(v, 0.0) >= SUPPORT_MIN]
     if len(tied) > 1:
-        s["top"] = truth if truth in tied_sup else (tied_sup[0] if tied_sup else (truth if truth in tied else tied[0]))
+        # all tied values unsupported: prefer a robot-known value when the truth is "unknown" (leakage over committed,
+        # independent of alphabetical order; Round 1 Opus gate, optional item)
+        leak = [v for v in tied if truth == "unknown" and v != "unknown" and v in known]
+        s["top"] = truth if truth in tied_sup else (tied_sup[0] if tied_sup else
+                                                    (truth if truth in tied else (leak[0] if leak else tied[0])))
     s["tied_top"] = tied if len(tied) > 1 else None
     post_top = posterior.get(s["top"], 0.0)
-    if s["abstained"]:
-        cat = "abstained"
-    elif s["top"] == truth:
-        cat = ("supported_spread" if len(tied) > 1 else "correct_supported") if post_top >= SUPPORT_MIN else "correct_unsupported"
-    elif post_top >= SUPPORT_MIN:
-        cat = "incorrect_supported"
-    elif reference_ambiguous:
-        cat = "ambiguous_reference"
-    elif truth == "unknown" and s["top"] != "unknown" and s["top"] in known:
-        cat = "leakage"
-    else:
-        cat = "unsupported_committed" if s["top_p"] >= COMMIT_P else "unsupported_hedged"
-    s["category"] = cat
+
+    def content_category() -> str:
+        if s["top"] == truth:
+            return ("supported_spread" if len(tied) > 1 else "correct_supported") if post_top >= SUPPORT_MIN else "correct_unsupported"
+        if post_top >= SUPPORT_MIN:
+            return "incorrect_supported"
+        if reference_ambiguous:
+            return "ambiguous_reference"
+        if truth == "unknown" and s["top"] != "unknown" and s["top"] in known:
+            return "leakage"
+        return "unsupported_committed" if s["top_p"] >= COMMIT_P else "unsupported_hedged"
+
+    # status-agnostic content category for EVERY valid output (Round 1 Opus gate item 3): pilot-v2's
+    # insufficient_evidence covers what v2.1 calls uncertain, so package comparisons must not hide content in abstentions
+    s["content_category"] = content_category()
+    s["category"] = "abstained" if s["abstained"] else s["content_category"]
     s["status"] = parsed.get("status")
+    # mass on values the reference gives < SUPPORT_MIN (Opus gate item 4): complements the top-p commit line
+    s["unsupported_mass"] = sum(p for v, p in dist.items() if posterior.get(v, 0.0) < SUPPORT_MIN)
     s["tv_posterior"] = 0.5 * sum(abs(dist.get(c, 0.0) - posterior.get(c, 0.0)) for c in set(dist) | set(posterior))
     return s

@@ -119,6 +119,30 @@ PEOPLE_RULES_R4 = (  # r4 (autonomous block Round 1): each clause is checked aga
     "believes it. Statements made during the task give the speaker no belief about the listeners.\n"
     "6. Some people may deliberately mislead, especially when they have a reason to.")
 
+PEOPLE_RULES_R5 = (  # r5 (Round 1 plan-gate fixes): every clause holds over ALL positive-prior dev-v2 worlds (tests/test_r4_rules.py)
+    "How people come to believe things (the same rules apply to everyone):\n"
+    "1. Before the task (none of this appears in the robot's history): a person came to believe a fact if they saw it "
+    "happen or were sincerely told it, and keeps that belief until they see or are told otherwise, so a belief can be "
+    "outdated or false. A person with no belief of their own may have adopted what someone told them; if they thought "
+    "that person was obstructive, they instead assumed the opposite and took the speaker to believe the opposite. When "
+    "someone said whether a person is cooperative or obstructive, listeners adopted that assessment. A person who "
+    "neither saw nor was told anything about a fact has no belief about it.\n"
+    "2. At the start of the task the recipient knows where they themselves are. During the task, moving does not update "
+    "anyone's beliefs, including the mover's own.\n"
+    "3. During the task, when someone states a value for a fact in front of others (shown in the history as "
+    "\"fact = value\", or \"I don't know.\" in answer to a question), everyone else present then thinks the speaker "
+    "believes that value (or has no belief), but does not adopt it.\n"
+    "4. Remarks in ordinary sentences (for example about where someone was, what someone saw, or an earlier "
+    "conversation) change no one's beliefs: listeners do not form beliefs about the speaker's or anyone else's beliefs "
+    "from them. They still tell the robot what the speaker said, which may or may not be accurate.\n"
+    "5. Seeing someone, or seeing the same thing as someone, does not tell a person what that other person believes. "
+    "People form beliefs about others' beliefs only from statements: a listener thinks a speaker believes what the "
+    "speaker stated (except in the distrust case of rule 1), and a person who told someone a fact before the task "
+    "thinks that listener now believes it; but if they later only mentioned an update in passing, they may still think "
+    "the listener holds the earlier value. Statements made during the task give the speaker no belief about the "
+    "listeners.\n"
+    "6. Some people may deliberately mislead, especially when they have a reason to.")
+
 
 def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
     rev = RENDER_REVISION if rev is None else rev
@@ -140,14 +164,16 @@ def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
         f"Facts that can be asked about: {', '.join(cfg.query_facts)} (possible values: "
         + "; ".join(f"{f}: {', '.join(cfg.fact_domains[f])}" for f in cfg.query_facts) + ").",
     ]
-    if rev >= 4:
+    if rev >= 5:
+        lines.append(PEOPLE_RULES_R5)
+    elif rev == 4:
         lines.append(PEOPLE_RULES_R4)
     elif rev >= 3:
         lines.append(PEOPLE_RULES)
     return "\n".join(lines)
 
 
-RENDER_REVISION = 4
+RENDER_REVISION = 5  # default for NEW runs only; every script records the revision it rendered in its manifest
 # r2: utterance IDs t{t}:said{i} (r1 appended ":{speaker}"; the model cited the short form and valid citations
 #     were rejected); action/outcome IDs are citable too. Used by the pilot-v1 full run (kept reproducible: rev=2).
 # r3 (pilot review A/C/D, shared by ALL arms and packages): public people-rules paragraph in the task card; mind
@@ -156,6 +182,9 @@ RENDER_REVISION = 4
 # r4 (autonomous block Round 1, shared by ALL arms and packages): numbered people-rules that state the simulator's
 #     belief contract (statements vs. ordinary remarks; beliefs about beliefs only from statements; recipient
 #     self-location at the start only). Notes rendering is unchanged from r3.
+# r5 (Round 1 plan gate): r4 clauses were tested only on realized draws; over the full prior, rule 5 failed for
+#     backstory updates passed on as claims and for distrusting listeners. r5 scopes rule 1 to before the task,
+#     rule 2/3 to during it, and qualifies rule 5. Rule numbering is unchanged (pilot-v2.1 cites RULE1..RULE6).
 
 
 def ledger(hist: VisibleHistory) -> tuple[str, list[str]]:
@@ -361,11 +390,16 @@ class EpisodeResult:
 
 def run_episode_arm(client, inst, arm: str, decoding: dict, reference_set: list[str] | None = None,
                     initial_units: list[Unit] | None = None, allocate: bool = True, seed: int = 0,
-                    package: str = "pilot-v1", rev: int | None = None, unit_client=None) -> EpisodeResult:
+                    package: str = "pilot-v1", rev: int | None = None, unit_client=None,
+                    frozen_notes: dict[str, dict] | None = None) -> EpisodeResult:
     """One controlled episode. `initial_units` + allocate=False gives the fixed-graph continuation used by
     paired interventions (instantiate exactly those units at t0, then no further allocation).
     `unit_client` (default: `client`) produces mental notes; `client` makes routing and policy decisions.
-    Mixed clients are a DIAGNOSTIC only (pilot review): main experiments use one backbone for both."""
+    Mixed clients are a DIAGNOSTIC only (pilot review): main experiments use one backbone for both.
+    `frozen_notes` (autonomous block Round 2): unit -> a note payload frozen BEFORE any policy outcome. Those
+    initial units are instantiated from the payload with no inference call in this episode (the note's generation
+    cost is accounted where it was produced). Requires refutation_mode fact_only (r>=3), under which no note is
+    ever forced into a refresh, so frozen notes stay exactly as frozen; any refresh would raise."""
     rev = RENDER_REVISION if rev is None else rev
     unit_client = unit_client or client
     prompts = load_prompts(package)
@@ -392,7 +426,18 @@ def run_episode_arm(client, inst, arm: str, decoding: dict, reference_set: list[
                          "output": rec.parsed, "history_steps": len(hist.steps)})
         return rec
 
+    if frozen_notes and rev < 3:
+        raise ValueError("frozen notes need refutation_mode fact_only (render revision >= 3)")
     for u in initial_units or []:
+        if frozen_notes is not None and str(u) in frozen_notes:
+            note = frozen_notes[str(u)]
+            graph.instantiate(u, note, note.get("evidence_ids", []), t=hist.last.t, cost=0.0)
+            truth = content(world, u)  # PRIVILEGED: fidelity scoring only
+            top = max(note["hypotheses"], key=lambda h: h["p"])["value"]
+            fidelity.append({"unit": str(u), "step": hist.last.t, "kind": "frozen", "ok": True, "top": top,
+                             "truth": list(truth), "top_matches_truth": top == truth[0], "output": note,
+                             "history_steps": len(hist.steps)})
+            continue
         rec = infer(u, "unit")
         if rec.ok:
             graph.instantiate(u, rec.parsed, rec.parsed.get("evidence_ids", []), t=hist.last.t)
@@ -405,6 +450,8 @@ def run_episode_arm(client, inst, arm: str, decoding: dict, reference_set: list[
                 graph.advance(hist)
             for name, r in list(graph.units.items()):
                 if r.status == "contradicted":
+                    if frozen_notes is not None:
+                        raise RuntimeError("a frozen note was contradicted; frozen-note runs must not refresh")
                     u = Unit(tuple(r.path), r.variable)
                     rec = infer(u, "refresh")
                     if rec.ok:

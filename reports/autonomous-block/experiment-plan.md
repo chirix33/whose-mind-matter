@@ -77,3 +77,23 @@ Each entry is written before the round's new outputs are inspected. Brief: `AUTO
   - **Scope:** the rule applies identically to every row, old and new, and the old categories stay reconstructible from the raw records.
   - **Effect:** it moves some outputs between "correct" and "incorrect"/"spread" in every cell. It does not use outputs selectively.
 - *Reference-audit wording* (uc01, uc10, uc11): corrected after the Sonnet facts check. No flag changed.
+
+**Plan-gate outcome and amendment** (2026-10-28; Opus gate: PASS WITH REQUIRED CHANGES; review in `reviews/round1-plan-opus.md`)
+- *Timing disclosure:*
+  - The local r4 cells (run `unit-contexts-20261028-083007-1512c0`) ran after the plan commit `03a52c1` but **before** the gate returned. The checkpoint had said the gate came first.
+  - The v3.1 tie rule came after those outputs.
+  - The Opus reviewer read `round1-results.md` and some local v2.1 records, but only to confirm defects it had already found in the code.
+- *Amendment A, before any API output in this block: rules r5 replace r4.*
+  - The r4 clause tests checked only realized draws. Over the full prior support, which the reference averages over, rule 5 was false in two cases: backstory updates passed on as claims (directed-perspective `heard_told` worlds), and distrusting listeners.
+  - r5 scopes rule 1 to before the task, rules 2 and 3 to during it, and qualifies rule 5. Rule numbering is unchanged.
+  - Every clause is now tested over **all positive-prior worlds** (`tests/test_r4_rules.py`, 9 tests).
+  - The remaining Round 1 cells (local and API, all three packages) and all of Round 2 use r5: `reports/autonomous-block/unit-contexts-v1-r5.jsonl`, sha256 `bb7835eb…eee8`, same 24 contexts.
+  - The local r4 run is kept and reported as a superseded contract.
+  - No reference or flag changes. uc15 stays consistent because rule 5 was qualified, not dropped.
+- *Amendment B, analysis (items 3–6):*
+  - **H1b is judged on the status-agnostic content category and on CE/TV over the 19 consistent contexts.** Status-based coverage is reported separately.
+  - Unsupported mass is reported per output and per cell. The committed/hedged categories stay as declared, with the limitation stated.
+  - Proper scores are reported for the 19 consistent contexts separately.
+  - The API r3 → r5 comparison is labelled "rules + output cap + fresh sampled draw (descriptive only)".
+  - The Round 2 fallback threshold now reads "≥ 3/24 invalid on API".
+- *Pinned revisions:* every runner records the render revision it used (`render_revision` in its manifest). The global default is now r5 for new runs only.

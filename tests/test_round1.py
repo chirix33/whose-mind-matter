@@ -98,9 +98,39 @@ def test_v31_tied_top_category_does_not_depend_on_list_order():
     assert e["category"] == f["category"] == "unsupported_committed"
 
 
+def test_content_category_and_unsupported_mass_ignore_status():
+    post = {"unknown": 1.0}
+    a = score([{"value": "office_a", "p": 0.4}, {"value": "office_b", "p": 0.4}, {"value": "unknown", "p": 0.2}],
+              "insufficient_evidence", "unknown", post)
+    assert a["category"] == "abstained" and a["content_category"] == "unsupported_hedged"
+    assert a["unsupported_mass"] == pytest.approx(0.8)
+    # all-unsupported tie: a robot-known value makes it leakage whatever the alphabetical order
+    b = score([{"value": "office_a", "p": 0.5}, {"value": "office_b", "p": 0.5}], "grounded", "unknown", post,
+              known=("office_b",))
+    assert b["category"] == "leakage"
+
+
 def test_v3_supported_wrong_answer_is_not_hallucination_even_in_ambiguous_contexts():
     s = score([{"value": "office_b", "p": 0.9}], "grounded", "office_a", {"office_a": 0.5, "office_b": 0.5}, ambiguous=True)
     assert s["category"] == "incorrect_supported"
+
+
+def test_frozen_notes_are_injected_without_inference_calls():
+    from vomi.clients import MockClient
+    from vomi.pilot import run_episode_arm
+    inst = generate(version="dev-v2")[0]
+    u = Unit((inst.scenario.config.recipient,), "knowledge")
+    note = {"path": list(u.path), "variable": "knowledge", "about": "x", "as_of_step": 0, "status": "grounded",
+            "hypotheses": [{"value": "zz_marker_room", "p": 1.0}], "unresolved": [], "evidence_ids": [], "rule_ids": []}
+    client = MockClient(['{"action": "wait()"}'] * 20)
+    res = run_episode_arm(client, inst, "fixed", {}, initial_units=[u], allocate=False, package="pilot-v2.1", rev=4,
+                          frozen_notes={str(u): note})
+    assert all(c["kind"] == "decision" for c in res.calls)  # no unit / refresh calls
+    assert "zz_marker_room: 1.00" in client.calls[0][1]["content"]
+    assert res.privileged["unit_fidelity"][0]["kind"] == "frozen"
+    with pytest.raises(ValueError):
+        run_episode_arm(MockClient([]), inst, "fixed", {}, initial_units=[u], allocate=False, rev=2,
+                        frozen_notes={str(u): note})
 
 
 def test_uncertain_status_is_rendered_and_not_shown_as_abstention():
