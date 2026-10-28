@@ -1,18 +1,13 @@
 # Autonomous block checkpoint
 
-**Updated:** 2026-10-28, Round 1 declared; no new model outputs yet.
+**Updated:** 2026-10-28. Round 1 is complete (its results gate has been started); Round 2 is declared and gated (PASS WITH REQUIRED CHANGES, all applied).
+
+**Spend:** ledger `~/officeminds-runs/api-spend-ledger.json`. USD 1.8570 spent in total (block: USD 0.5446). No reservations, no unresolved charges. Cap USD 5.
 
 **State**
-- Block registered: `AUTONOMOUS_RESEARCH_BRIEF.md`, with a pointer in `AGENTS.md`.
-- Round 1 is declared in `experiment-plan.md`. Code ready: r4 rules, pilot-v2.1, scoring v3, re-rendered contexts, cross-process ledger. 275 tests pass.
-- Running jobs: none.
-- **Spend** (ledger `~/officeminds-runs/api-spend-ledger.json`, WSL): USD 1.3123 spent before the block, 0 in this block, no reservations. Cap USD 5; USD 3.69 remains.
+- Round 1 summary: `round1-summary.md`; registry entries r1-a/b/c.
+- vLLM is stopped.
 
-**Next action**
-1. Opus reviewer gate on the Round 1 plan, plus Sonnet check of the reference-audit facts.
-2. Local cells:
-   ```bash
-   python3 scripts/run_unit_contexts.py --config configs/models/local_gpt_oss_20b.json --effort low --max-tokens 4096 --contexts reports/autonomous-block/unit-contexts-v1-r4.jsonl --packages pilot-v1 pilot-v2 pilot-v2.1
-   ```
-   The local server must be running (`scripts/serve_local_model.sh`).
-3. After the plan review, the API cells: same command with `--config configs/models/api_gpt_6_1_sol.json --max-tokens 6000`.
+**Next actions**
+1. Round 2 `notes` stage (API, 9 inferred notes; writes `round2-notes-freeze.json`); commit the proof.
+2. Round 2 `policy` stage, with `OFFICEMINDS_API_CAP_USD` = spent + 1.40.

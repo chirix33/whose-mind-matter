@@ -36,6 +36,40 @@
    "run": "crossed-20261028-065424-77d5cb + crossed-20261028-071537-f647df",
    "commit": "b2c3ea6 / dffe4c6",
    "cost_usd": 0.923
+  },
+  {
+   "id": "r1-a",
+   "round": 1,
+   "status": "complete; superseded contract (r4 rule 5 false on part of the prior)",
+   "what": "fixed contexts, local gpt-oss-20b low, temp 0, 4096 cap, pilot-v1/v2/v2.1, rules r4",
+   "contexts": "unit-contexts-v1-r4 (sha e8e0dfd5)",
+   "run": "unit-contexts-20261028-083007-1512c0",
+   "commit": "03a52c1",
+   "cost_usd": 0,
+   "outcome": "r4 hurt local pilot-v1 (-0.39 log, +3 hallucination-type vs r3); v2.1 full coverage, 4 hallucination-type"
+  },
+  {
+   "id": "r1-b",
+   "round": 1,
+   "status": "complete",
+   "what": "fixed contexts, local gpt-oss-20b low, temp 0, 4096 cap, pilot-v1/v2/v2.1, rules r5",
+   "contexts": "unit-contexts-v1-r5 (sha bb7835eb)",
+   "run": "unit-contexts-20261028-084100-d7f4d5",
+   "commit": "611838e",
+   "cost_usd": 0,
+   "outcome": "v2.1: coverage 24/24, 3 committed unsupported (unknown 1.0 where person has a belief), unsupported mass 0.18 vs v1 0.29"
+  },
+  {
+   "id": "r1-c",
+   "round": 1,
+   "status": "complete",
+   "what": "fixed contexts, API gpt-6.1-sol low, 6000 cap, single draw, pilot-v1/v2/v2.1, rules r5",
+   "contexts": "unit-contexts-v1-r5 (sha bb7835eb)",
+   "run": "unit-contexts-20261028-084229-e8ab65",
+   "commit": "611838e",
+   "cost_usd": 0.5446,
+   "failures": "2 pilot-v1 attempts hit the 6000-token cap (incomplete, retried successfully)",
+   "outcome": "v2.1: coverage 24/24, 0 hallucination-type, log -0.49 / TV 0.14 on 19 consistent contexts; v2 abstains 19/24"
   }
  ]
 }
