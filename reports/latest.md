@@ -46,8 +46,8 @@ Values that differ from the legacy record, as the review predicted:
 - This differs from the review's design table in direction: the high-flip unit loses value with stakes, rather than the low-flip unit gaining it.
 
 **Not found in the `grounded` record.**
-- Main search: MAIN_SEARCH_COUNTS.
-- Per-criterion diagnostic (300 configs × 4 record/testimony settings, run DIAG_RUN):
+- Main search (run `search-20261028-042429-1e7541`, 1000 configs × 4 settings = 4000 combinations): **95 isolating hits, all in `privileged_bounded`** (81 face value, 14 hedged; most common pairs R(carol)/K(bob) 32 and R(bob)/K(carol) 31), and **0 in `grounded`**.
+- Per-criterion diagnostic (300 configs × 4 record/testimony settings, run `search-diagnose-20261028-043029-c8ed60`, commit `bea0537`):
 
 | Setting | raw VoMI reversals | pass all isolating criteria | fail: a unit never flips | fail: base action changes | fail: flip pattern changes |
 |---|---|---|---|---|---|
@@ -63,8 +63,17 @@ Structural reason:
 
 The grounded record does give **general** pairs: in `reversal_m*`, K(bob), K(bob→carol) and R(carol) are worth +0.029 at ×1 and 0 at ×4. Alternatives are put to review as Q5.
 
-## Commands run and outcomes
-_(filled in at the clean-commit rerun)_
+## Commands run and outcomes (WSL, CPU)
+| Command | Commit (clean tree) | Outcome |
+|---|---|---|
+| `~/venvs/officeminds/bin/python -m pytest -q` | `bea0537` | **143 passed** in 37 s |
+| `python scripts/run_tiny_cases.py --seed 0` | `bea0537` | run **`tiny-20261028-043121-b0040b`**: 10 legacy + 8 grounded/reversal cases; every episode replays identically and equals its label rollout; no early-failure incentive |
+| `python3 scripts/search_stakes_reversal.py --samples 1000 --seed 0` | `5da73f1` (search logic identical at `bea0537`) | run `search-20261028-042429-1e7541`: 4000 combinations, 95 isolating hits (all privileged_bounded), 0 grounded |
+| `python3 scripts/search_stakes_reversal.py --samples 300 --seed 0 --diagnose` | `bea0537` | run `search-diagnose-20261028-043029-c8ed60`: counts identical to the table in § D-006 (grounded: 0 isolating reversals of 322; privileged_bounded: 18 of 744) |
+
+- Manifests: `~/officeminds-runs/{tiny,search}/<run_id>/manifest.json`.
+- Review bundle: `reports/bundle/tiny-manifest.json` (copy of the tiny manifest: commit `bea0537`, `git_dirty: false`) and `reports/bundle/trace-false_belief.json`. The trace keeps the agent view (no hidden names), the privileged block, and the robot graph separate: K(rec) is created at t0 with P(accurate) = 0.7, then goes stale as rec is seen again.
+- Superseded (dirty-tree or pre-fix) runs kept on disk: `tiny-20261028-041404-4acb07`, `-041847-4f924f`, `-042301-2691f6` (pre-reversal), `-042818-825622`; `search-20261028-041107-078a13` (timing); the two killed searches (pre-fix definitions).
 
 ## Failures and problems found (all fixed or flagged)
 1. **Leak in my first grounded-output definition.** Unit outputs initially included the content marginal. K(alice), whose belief equals the target, then handed the actor the whole-scene posterior (+0.045 in `stakes_m4_q0.95`). Fixed: outputs are now P(default holds | h) only. A regression test covers it.

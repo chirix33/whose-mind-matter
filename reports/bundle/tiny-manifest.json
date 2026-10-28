@@ -1,7 +1,7 @@
 {
-  "run_id": "tiny-20261028-042301-2691f6",
+  "run_id": "tiny-20261028-043121-b0040b",
   "kind": "tiny",
-  "git_commit": "159c229dbffbd35b9fd053f25d048a7744f6f65c",
+  "git_commit": "bea053719da7787e64b03cbd55a7569218347138",
   "git_dirty": false,
   "config": {
     "legacy_cases": [
@@ -28,6 +28,8 @@
       "nested_reliability",
       "path_asymmetry",
       "relevance_shift",
+      "reversal_m1",
+      "reversal_m4",
       "stakes_m1_q0.95",
       "stakes_m1_q0.975",
       "stakes_m4_q0.95",
@@ -40,19 +42,19 @@
       "hedged"
     ]
   },
-  "config_hash": "e97d08d3da98033a",
+  "config_hash": "e3b67e27326b4c46",
   "python": "3.12.3",
   "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
-  "started_at": "2026-10-28T09:23:01.606307+00:00",
+  "started_at": "2026-10-28T09:31:21.071692+00:00",
   "gpu_at_start": [
     {
       "name": "NVIDIA GeForce RTX 5090",
       "driver": "610.60",
       "memory_total_mib": 32607,
-      "memory_used_mib": 2131
+      "memory_used_mib": 2139
     }
   ],
   "all_replays_identical": true,
   "any_early_failure_incentive": false,
-  "ended_at": "2026-10-28T09:23:27.685650+00:00"
+  "ended_at": "2026-10-28T09:32:03.459412+00:00"
 }

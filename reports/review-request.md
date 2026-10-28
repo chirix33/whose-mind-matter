@@ -60,7 +60,7 @@ A Bayes-optimal actor cannot be hurt this way. These are symbolic instances of t
 - The flip ranking V > U is fixed, while the VoMI ranking reverses.
 - This mirrors the design table: here the high-flip unit *loses* with stakes, instead of the low-flip unit gaining.
 
-**Grounded record: no isolating reversal** in the search (`scripts/search_stakes_reversal.py`; counts in `reports/latest.md` § D-006). The per-criterion diagnostic shows why:
+**Grounded record: no isolating reversal** in the search (`scripts/search_stakes_reversal.py`: 0 grounded hits of 2000 grounded combinations; 95 privileged-bounded hits). The per-criterion diagnostic shows why:
 - Grounded outputs are a function of h, so a grounded current-action flip at a given state has probability 0 or 1.
 - An isolating reversal would need two units that both flip deterministically, at both stakes, to targets with different error exposure. Under face-value trust, the two doubt-raising units either share a target or one of them stops flipping at ×4.
 - The grounded record does yield **general** stakes pairs: in `reversal_m*`, K(bob), K(bob→carol) and R(carol) are worth +0.029 at ×1 and 0 at ×4.
