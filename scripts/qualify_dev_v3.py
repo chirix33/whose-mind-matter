@@ -34,7 +34,7 @@ from vomi.units import K, R as Rel, content, default_holds, generate_candidates 
 
 OUT = ROOT / "reports" / "dev-v3-block"
 TOL = 1e-9
-FAMILY = {"ask": "ask", "move": "search/walk", "drop": "chute", "give": "handoff", "deliver": "deliver", "wait": "wait"}
+FAMILY = {"ask": "ask", "move": "move", "drop": "chute", "give": "handoff", "deliver": "deliver", "wait": "wait"}
 
 
 def t0(scenario: Scenario, hidden):
@@ -162,7 +162,8 @@ def pair(spec, n, stakes, hidden, pa, pb, kind):
     res["same_physical_state"] = worlds[pa].people_rooms == worlds[pb].people_rooms
     res["optimal_sets_differ"] = res[pa]["optimal"] != res[pb]["optimal"]
     best_a = res[pa]["optimal"][0]
-    res["gap_if_a_best_used_in_b"] = round(res[pb]["value"] - res[pb]["q"].get(best_a, float("nan")), 10)
+    res["gap_if_a_best_used_in_b"] = (round(res[pb]["value"] - res[pb]["q"][best_a], 10) if best_a in res[pb]["q"]
+                                      else "n/a: action illegal in b")
     if spec.stratum == 3:  # R3: depth certification relative to the shallow class
         wa, wb = worlds[pa], worlds[pb]
         res["pi_le1_inputs_equal"] = (
@@ -215,13 +216,13 @@ def write_md(q, path):
          f"{' (dirty)' if q['dirty_paths'] else ''}. Values are exact Bayes (plain posterior, asks legal) under each "
          "group's declared public model. Privileged columns reveal true content.", "",
          "## Instances (stakes ×1, unpermuted; all 48 in qualification.json)", "",
-         "| group | distr. | worlds | optimal first action(s) | V* | best ask / search / chute / handoff | focal: reference P(content), P(correct) | priv. ΔJ | card-only fixes? | superset ok |",
+         "| group | distr. | worlds | optimal first action(s) | V* | best first ask / move / drop / give (any continuation) | focal: reference P(content), P(correct) | privileged ex-ante ΔJ | card-only fixes? | superset ok |",
          "|---|---|---|---|---|---|---|---|---|---|"]
     for r in q["instances"]:
         if r["stakes"] != 1.0 or r["permuted"]:
             continue
         fam = r["best_by_family"]
-        fams = " / ".join(f"{fam.get(k, float('nan')):.3f}" if k in fam else "–" for k in ("ask", "search/walk", "chute", "handoff"))
+        fams = " / ".join(f"{fam.get(k, float('nan')):.3f}" if k in fam else "–" for k in ("ask", "move", "chute", "handoff"))
         foc = "; ".join(f"{f['unit']}: {f['reference_content_posterior']}, {f['reference_p_correct_now']:.2f}" for f in r["focal"])
         dj = "; ".join(f"{f['privileged_bayes_delta_j']:+.3f}" for f in r["focal"])
         ss = r.get("superset")
@@ -235,7 +236,7 @@ def write_md(q, path):
         a, b = p["patterns"]
         L.append(f"- **{p['kind']}** ({p['group_spec']}: {a} vs {b}): same physical state: {p['same_physical_state']}; "
                  f"optimal {p[a]['optimal']} ({p[a]['value']:.3f}) vs {p[b]['optimal']} ({p[b]['value']:.3f}); "
-                 f"loss of using {a}'s best action in {b}: {p['gap_if_a_best_used_in_b']:.3f}"
+                 f"loss of using {a}'s best action in {b}: {p['gap_if_a_best_used_in_b']}"
                  + (f"; Π≤1 inputs equal: {p['pi_le1_inputs_equal']}; depth-2 contents: {p['depth2_contents']}"
                     if "pi_le1_inputs_equal" in p else ""))
     L += ["", "## Stakes pairs (stratum 4)", ""]
@@ -248,6 +249,16 @@ def write_md(q, path):
             c = r["with_chute_counterfactual"]
             L.append(f"- {r['construction']}: as built {r['optimal_first_actions']} ({r['bayes_value_t0']:.3f}); "
                      f"with a chute {c['optimal']} ({c['value']:.3f})")
+    L += ["", "## Reading notes (Entry 1b)", "",
+          "- Card-only 'fixes?' = the Bayes optimal first-action set with every prologue notice removed equals the full "
+          "optimal set. Under the construction-specific prior this can hold because that prior encodes the role pattern "
+          "(not disclosed by the card text); under the card-consistent superset prior (strata 2-3) no group is fixed. "
+          "Set equality does not detect containment.",
+          "- Stratum-3 superset: 3 patterns without an A<->F swap (the courier is named publicly, so a swap would change "
+          "the public action set). Stratum 2: 6 patterns (H<->N swap; both are couriers).",
+          "- Strata 1-3 labels and the 3a/3b Pi<=1 certification are evidence-resolved GIVEN the declared rules (everyone "
+          "cooperative; quiet-conversation content; rule 5 bystander clause; rule 2 lobby-sighting clause), not without them.",
+          "- 'move' includes walking back to the lobby; privileged ΔJ is ex-ante (expected over the posterior)."]
     L += ["", "## Checks", ""] + [f"- {k}: {v}" for k, v in q["checks"].items()]
     L += ["", f"Round B selection: {q['round_b_selection']}", ""]
     path.write_text("\n".join(L) + "\n", encoding="utf-8")
@@ -309,7 +320,8 @@ def freeze(insts, q):
                                    for u in G.focal_units(inst)}}
     src = ["src/officeminds/devgen3.py", "src/officeminds/world.py", "src/officeminds/scenarios.py",
            "src/officeminds/episode.py", "src/vomi/oracle.py", "src/vomi/units.py", "src/vomi/pilot.py",
-           "src/vomi/fidelity.py", "src/vomi/unit_schema.py", "src/vomi/graph.py", "scripts/qualify_dev_v3.py",
+           "src/vomi/fidelity.py", "src/vomi/unit_schema.py", "src/vomi/graph.py", "src/vomi/clients.py",
+           "scripts/qualify_dev_v3.py", "scripts/run_dev_v3_notes.py", "scripts/report_dev_v3.py",
            "prompts/pilot-v1/policy_system.txt", "prompts/pilot-v2.1/unit_system.txt"]
     model = json.loads((ROOT / "configs" / "models" / "local_gpt_oss_20b.json").read_text())
     fz = {"version": G.DEV_VERSION, "base_seed": G.BASE_SEED, "created_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),

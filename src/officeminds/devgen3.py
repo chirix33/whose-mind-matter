@@ -134,7 +134,8 @@ class _Script:
 
     def quiet(self, actor, listener, fact, value):
         self._add("tell", "lobby", actor, fact, value, present=(actor, listener),
-                  visible=("quiet", f"{actor} talks quietly with {listener}; the robot cannot hear what is said"))
+                  visible=("quiet", f"{actor} talks quietly to {listener}; only {listener} can hear it, and the robot "
+                                    f"cannot hear what is said"))
 
     def leave(self, actor, dest, building=False):
         self._add("enter", dest, actor,
@@ -216,8 +217,8 @@ def process_text(spec: PublicSpec, n: dict) -> list[str]:
     coop = "Everyone in this task is cooperative: they answer questions sincerely (with what they believe)."
     if spec.stratum in (1, 4):
         coop += " Nobody accepts handed-over packages."
-    quiet = (f"A quiet conversation started by {R} always tells the listener (and only the listener) the office {R} "
-             f"is about to go to.")
+    quiet = (f"A quiet conversation started by {R} always tells the person addressed (and only that person) the "
+             f"office {R} is about to go to.")
     out = {
         "1a": [f"{R} announced the office they were going to, went there, and stays there. {coop}"],
         "1b": [f"{R} went to one of the offices without telling anyone, and stays there. {coop}"],
@@ -237,8 +238,8 @@ def process_text(spec: PublicSpec, n: dict) -> list[str]:
     if c.startswith("3"):
         return [f"{n['A']} organizes a meeting that {R} attends. {n['A']} announced the meeting office, later changed "
                 f"it to one of the two other offices, and conveyed the change only in the quiet conversations shown. "
-                f"A quiet conversation in this task always tells the listener (and only the listener) the current "
-                f"meeting office. Then {n['A']} left the building and does not come back during the task.",
+                f"A quiet conversation started by {n['A']} or {n['F']} in this task always tells the person addressed "
+                f"(and only that person) the current meeting office. Then {n['A']} left the building and does not come back during the task.",
                 f"{R} goes to, and stays in, the office where {R} believes the meeting is.",
                 f"{n['F']} accepts handed-over packages and forwards them to the office where {n['F']} thinks {R} "
                 f"will go, that is, to what {n['F']} thinks {R} believes about meeting_room. Nobody else accepts "
@@ -264,7 +265,8 @@ def _fmt(p: Fraction) -> str:
 
 
 def public_model_text(spec: PublicSpec, n: dict) -> str:
-    lines = ["PUBLIC MODEL OF THIS TASK (shared by everyone; describes how this situation was generated):"]
+    lines = ["PUBLIC MODEL OF THIS TASK (given to the robot identically in every condition; it describes how this "
+             "situation was generated. People in the scene form beliefs only as rules 1-5 describe.):"]
     lines += [f"- {s}" for s in process_text(spec, n)]
     lines.append("- After the prologue shown in the history, nobody but the robot moves, and people's beliefs change "
                  "only through what is said in answer to the robot's questions. Everyone shown in the lobby at the end "

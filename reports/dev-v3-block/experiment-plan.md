@@ -170,3 +170,29 @@ Gate report: `reviews/roundA-plan-opus.md` (PASS WITH REQUIRED CHANGES R1–R15)
   - Fixed design proportions: 25% per stratum, one distractor level per construction (so level is confounded with construction).
   - Latency is descriptive only.
   - The allocation is designer-chosen with privileged relevance knowledge. The note header itself is a cue.
+
+## Entry 1b — Round A results gate (2026-10-28; before the freeze and before any LLM call on dev-v3)
+Gate reports:
+- `reviews/roundA-results-opus.md`: PASS WITH REQUIRED CHANGES RC1–RC4.
+- `reviews/roundA-results-sonnet.md`: CONSISTENT. An independent expectimax over all 48 instances matches to within 5e-11. The hand derivations, stakes flips, pairs and Round B selection (1c, 2a, 3c, 4b) all match.
+
+Applied before the freeze:
+- **RC1 Agent-visible text now matches the simulator.**
+  - (a) Quiet notices read "X talks quietly to Y; only Y can hear it…". "Others present" excludes both parties, and r6 rule 1 names the addressee.
+  - (b) The public-model header says it is given to the robot identically in every condition, and that people in the scene form beliefs only as rules 1–5 describe. Characters do not reason from the public model, consistent with rule 5's bystander clause and the 3b label.
+  - (c) r6 rule 2 adds that seeing someone in, arriving at or leaving the lobby changes nobody's belief about which office that person is in. This was already the simulator semantics: K(N) in 2a stays at the announced office. Reference values are unchanged.
+- **RC2 Tests.**
+  - The rule-1/5 quiet test now checks addressee adoption, both nested beliefs, and unchanged bystander beliefs and nested beliefs.
+  - The rule-3 test now covers t0 statements and every first-question answer in every prior world, each on a fresh world.
+  - The rule-5 test now traces every nested-belief change to its cause, using recorded presence.
+  - New tests cover lobby sightings and quiet-notice rendering.
+  - An earlier rewrite of these tests had never reached the file because of a shell-quoting failure; the gate caught this.
+- **RC3 Documentation.**
+  - (a) *Deviation from R1a:* the stratum-3 superset mixes 3 patterns (3a, 3b, 3c) without an A↔F swap. The card names the courier publicly, so swapping A and F would change the public action set (who accepts give), not a hidden variable. The stratum-2 superset keeps the 6 patterns (H↔N swap), because both are couriers.
+  - (b) *Card-only column:* "fixes" means that the Bayes optimal first-action set computed with the prologue notices removed equals the full optimal set. Under a construction-specific prior this happens for 1b, 2a, 2c, 3a and 3c, because that prior encodes the role pattern; the card text does not disclose it. Under the card-consistent superset prior no group is fixed, so the visible prologue resolves each case. Caveat: set equality does not catch containment (for 2b and 3b the card-only set can contain the full set without being equal).
+  - (c) *R7 statement:* the strata 1–3 labels and the 3a/3b Π≤1 certification are evidence-resolved **given the declared rules**: everyone is cooperative, the content of quiet conversations, rule 5's bystander clause and rule 2's lobby-sighting clause. They are stipulations of the public model, not entailments of the history without them.
+- **RC4 Provenance.** Everything is committed, the qualification is regenerated at a clean commit, `dev-v3-freeze.json` is written, `run_dev_v3_notes.py verify` passes, and the freeze is committed before any LLM call.
+- **Sonnet presentation notes** are applied to the qualification report:
+  - the move family is labeled "move" (it includes walking back to the lobby);
+  - the 2a-vs-2b loss reads "n/a: action illegal" instead of nan;
+  - the privileged ΔJ column is labeled ex-ante.

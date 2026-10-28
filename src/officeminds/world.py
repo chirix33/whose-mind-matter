@@ -239,8 +239,10 @@ class World:
                 if ev.room == self.robot_room and ev.text:
                     heard.append((ev.actor, ev.text))
                 if ev.visible_as and self.robot_room in (ev.room, before if ev.kind == "enter" else None):
+                    # people who saw it but did not take part (a quiet conversation's addressee is not "other")
+                    party = {ev.actor, *(ev.present or ())}
                     others = tuple(sorted(p for p, r in self.people_rooms.items()
-                                          if r == self.robot_room and p != ev.actor))
+                                          if r == self.robot_room and p not in party))
                     self._notices.append((ev.visible_as[0], ev.actor, ev.visible_as[1], others))
         return heard
 

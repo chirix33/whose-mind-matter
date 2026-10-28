@@ -95,15 +95,54 @@ def test_card_has_r6_and_public_model_and_no_hidden_values():
         assert len(cards) == 1
 
 
-def test_rule1_and_rule5_quiet_content_reaches_only_listener():
+def traced(w):
+    """Wrap World._apply to record (event, people present when it applied, minds before, minds after)."""
+    rec = []
+    orig = w._apply
+
+    def spy(ev):
+        before = {p: m.copy() for p, m in w.minds.items()}
+        orig(ev)
+        present = ev.present if ev.present is not None else tuple(p for p, r in w.people_rooms.items() if r == ev.room)
+        rec.append((ev, present, before, {p: m.copy() for p, m in w.minds.items()}))
+    w._apply = spy
+    return rec
+
+
+def all_traces(inst):
+    """Traced t0 prologue of every prior world, plus (on a fresh world each) every legal first ask's answer."""
+    for params, _ in inst.scenario.prior:
+        w = inst.scenario.build(params)
+        rec = traced(w)
+        o = w.reset()
+        yield rec
+        for act in [x for x in legal_actions(w.config, o) if x.kind == "ask"]:
+            w2 = inst.scenario.build(params)
+            rec2 = traced(w2)
+            w2.reset()
+            del rec2[:]  # only the answer
+            w2.step(act)
+            yield rec2
+
+
+def test_rule1_and_rule5_quiet_conversations():
+    """Only the addressee adopts; speaker and addressee form the stated nested beliefs; bystanders' beliefs and
+    nested beliefs are unchanged (rule 1, rule 5 bystander clause)."""
+    n_quiet = 0
     for inst in INSTS:
-        for _, w in worlds(inst):
-            w.reset()
-            for ev in w.log:
-                if ev.visible_as and ev.visible_as[0] == "quiet":
-                    others = [p for p in w.minds if p not in ev.present]
-                    for p in others:  # bystanders gain no belief from a quiet conversation
-                        assert ev.id not in w.minds[p].perceived
+        for rec in all_traces(inst):
+            for ev, present, before, after in rec:
+                if not (ev.visible_as and ev.visible_as[0] == "quiet"):
+                    continue
+                n_quiet += 1
+                speaker, addressee = ev.present
+                assert ev.actor == speaker and after[addressee].beliefs[ev.fact] == ev.value
+                assert after[addressee].nested[(speaker, ev.fact)] == ev.value
+                assert after[speaker].nested[(addressee, ev.fact)] == ev.value
+                lobby = [p for p in after if p not in ev.present]
+                for p in lobby:
+                    assert after[p].beliefs == before[p].beliefs and after[p].nested == before[p].nested
+    assert n_quiet > 0
 
 
 def test_rule2_recipient_knows_own_office():
@@ -115,68 +154,66 @@ def test_rule2_recipient_knows_own_office():
                 assert w.minds[R].beliefs.get(lf) == w.people_rooms[R]
 
 
-def test_rule3_statements_are_not_adopted_and_give_speaker_nothing():
+def test_rule2_lobby_sightings_change_no_beliefs():
+    """Arriving, leaving and being seen (enter events) change no one's beliefs or nested beliefs."""
+    n = 0
     for inst in INSTS:
-        for params, w in worlds(inst):
-            w0 = inst.scenario.build(params)
-            w.reset()
-            # replay event by event and check each statement's effect
-            w0.minds = {p: m.copy() for p, m in w0.minds.items()}
-            for ev in w.log:
-                if ev.kind == "claim":
-                    pass
-            for ev in [e for e in w.log if e.kind == "claim"]:
-                listeners = [p for p in ev.present or () if p != ev.actor]
-                assert all(w.minds[p].nested.get((ev.actor, ev.fact)) is not None for p in listeners)
-        # direct semantic check on the world code: a claim never changes a listener's own belief
-        params = inst.scenario.prior[0][0]
-        w = inst.scenario.build(params)
-        before = {}
-        orig_apply = w._apply
+        for rec in all_traces(inst):
+            for ev, present, before, after in rec:
+                if ev.kind == "enter":
+                    n += 1
+                    assert all(after[p].signature() == before[p].signature() for p in after)
+    assert n > 0
 
-        def spy(ev, orig=orig_apply):
-            snap = {p: dict(m.beliefs) for p, m in w.minds.items()}
-            nested_speaker = dict(w.minds[ev.actor].nested) if ev.actor in w.minds else None
-            orig(ev)
-            if ev.kind == "claim":
-                assert {p: dict(m.beliefs) for p, m in w.minds.items()} == snap
-                assert w.minds[ev.actor].nested == nested_speaker
-        w._apply = spy
-        o = w.reset()
-        for a in legal_actions(w.config, o):
-            if a.kind == "ask":
-                w.clone().step(a)
+
+def test_rule3_statements_are_not_adopted_and_give_speaker_nothing():
+    """t0 statements and every first-question answer, in every prior world."""
+    n = 0
+    for inst in INSTS:
+        for rec in all_traces(inst):
+            for ev, present, before, after in rec:
+                if ev.kind != "claim":
+                    continue
+                listeners = [p for p in present if p != ev.actor]
+                n += len(listeners)
+                for p in after:
+                    assert after[p].beliefs == before[p].beliefs
+                assert after[ev.actor].nested == before[ev.actor].nested
+                for p in listeners:
+                    assert after[p].nested[(ev.actor, ev.fact)] == ev.value
+    assert n > 0
 
 
 def test_rule4_remarks_change_nothing():
     for inst in INSTS:
-        for _, w in worlds(inst):
-            orig = w._apply
-
-            def spy(ev, orig=orig, w=w):
-                snap = {p: m.signature() for p, m in w.minds.items()}
-                orig(ev)
+        for rec in all_traces(inst):
+            for ev, present, before, after in rec:
                 if ev.kind == "say":
-                    assert {p: m.signature() for p, m in w.minds.items()} == snap
-            w._apply = spy
-            w.reset()
+                    assert all(after[p].signature() == before[p].signature() for p in after)
 
 
 def test_rule5_nested_beliefs_only_from_statements_and_announcements():
-    """Every nested belief j->k at t0 traces to a statement/announcement by k heard by j, or to j's own
-    announcement/quiet conversation to k."""
+    """Every change to a nested belief j->k is caused by a statement/announcement BY k that j heard, or by j's own
+    announcement/quiet conversation that k heard (t0 prologue and every first-question answer)."""
     for inst in INSTS:
-        for _, w in worlds(inst):
-            w.reset()
-            for j, m in w.minds.items():
-                for (k, f), v in m.nested.items():
-                    src = [e for e in w.log if e.fact == f and e.value == v and e.kind in ("tell", "claim") and (
-                        (e.actor == k and j in (e.present or ())) or (e.actor == j and e.kind == "tell"
-                                                                    and k in (e.present or ())))]
-                    if not src:  # default-present events: recompute presence from the log order is overkill;
-                        src = [e for e in w.log if e.fact == f and e.value == v and e.actor in (j, k)
-                               and e.kind in ("tell", "claim")]
-                    assert src, (inst.instance_id, j, k, f, v)
+        for rec in all_traces(inst):
+            for ev, present, before, after in rec:
+                for j in after:
+                    for key, v in after[j].nested.items():
+                        if before[j].nested.get(key) == v:
+                            continue
+                        k, f = key
+                        assert ev.kind in ("tell", "claim") and ev.fact == f and ev.value == v, (inst.instance_id, ev)
+                        assert (ev.actor == k and j in present) or (ev.actor == j and ev.kind == "tell" and k in present)
+
+
+def test_quiet_notice_names_speaker_and_excludes_addressee_from_others():
+    for inst in INSTS:
+        o = inst.scenario.build(inst.hidden).reset()
+        for kind, actor, line, others in o.notices:
+            if kind == "quiet":
+                addressee = line.split(" talks quietly to ")[1].split(";")[0]
+                assert line.startswith(f"{actor} talks quietly to ") and addressee not in others and actor not in others
 
 
 def test_rule6_only_declared_people_may_mislead():
