@@ -51,6 +51,7 @@ def _confidence(output) -> float:
 @dataclass
 class PerspectiveGraph:
     units: dict[str, UnitRecord] = field(default_factory=dict)
+    recipient: str = "alice"  # public task recipient (WorldConfig.recipient)
 
     def instantiate(self, u: Unit, output, evidence: list[str], t: int, cost: float = 1.0) -> UnitRecord:
         if str(u) in self.units:
@@ -83,7 +84,8 @@ class PerspectiveGraph:
             if rec.status == "abstain":
                 continue
             new = [e for e in visible_evidence(hist, rec.path) if int(e.split(":")[0][1:]) > rec.timestamp]
-            refuted = [c for c in contradicted_claims(hist, rec.path[-1]) if c.observed_after > rec.timestamp]
+            refuted = [c for c in contradicted_claims(hist, rec.path[-1], self.recipient)
+                       if c.observed_after > rec.timestamp]
             if refuted:
                 rec.status = "contradicted"
             elif new:
