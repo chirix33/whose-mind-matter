@@ -1,5 +1,7 @@
 # Pilot model diagnostic: interface repairs, fixed unit contexts, crossed comparison (2026-10-28)
 
+> **Erratum (2026-10-28, autonomous block):** in the §2 table, the local medium pilot-v2 row showed Incorrect (supported) = 0, so the row summed to 23. The raw records and the generated `unit-contexts-results.md` give **1** (14 abstained + 8 + 1 + 1 + 0 = 24). It was a transcription error in this hand-copied table; the generated table was correct. Corrected in place. Verified independently from the raw records.
+
 This follows the pilot review (`docs/decisions/2026-10-28-D013-pilot-review-repairs.md`). It is exploratory work on development data (dev-v2). The original pilot-v1 results, traces and reports are unchanged; an erratum sits at the top of `reports/pilot/pilot-report.md`.
 
 **Status:** every planned cell has now run, local and API.
@@ -45,7 +47,7 @@ Full table: `reports/pilot/unit-contexts-results.md`.
 | gpt-oss-20b | low | pilot-v1 (r3 replay) | 0 | 13 | 2 | 9 | 0 | 0.54 | −1.36 | 1.38 | 785 / 199 / 111 |
 | gpt-oss-20b | low | pilot-v2 | 12 | 8 | 1 | 3 | 0 | 0.67 | −1.34 | 1.33 | 1,285 / 327 / 187 |
 | gpt-oss-20b | medium | pilot-v1 | 0 | 13 | 2 | 9 | 0 | 0.54 | −2.49 | 2.44 | 820 / 1,049 / 946 |
-| gpt-oss-20b | medium | pilot-v2 | 14 | 8 | 0 | 1 | 0 | 0.54 | −1.21 | 1.21 | 1,393 / 1,618 / 1,407 |
+| gpt-oss-20b | medium | pilot-v2 | 14 | 8 | **1** | 1 | 0 | 0.54 | −1.21 | 1.21 | 1,393 / 1,618 / 1,407 |
 | **gpt-6.1-sol** | low | pilot-v1 | 0 | 14 | 3 | 7 | 0 | 0.58 | **−0.95** | **0.93** | 891 / 828* / 12 |
 | **gpt-6.1-sol** | low | pilot-v2 | **20** | 4 | 0 | 0 | 0 | 0.50 | −1.09 | 1.08 | 1,411 / 334 / 3 |
 

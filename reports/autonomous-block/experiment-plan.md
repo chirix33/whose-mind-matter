@@ -69,3 +69,11 @@ Each entry is written before the round's new outputs are inspected. Brief: `AUTO
 - If coverage rises (abstained ≤ 6/24 on API) and committed unsupported content does not increase relative to pilot-v1, the uncertainty package works as intended.
 - If v2.1 still abstains on most contexts, or replaces abstention with committed unsupported content, inference quality is a likely bottleneck. Round 2's grounded-reference condition then tests whether better content would matter.
 - If r4 changes pilot-v1/v2 outputs at uc14/uc16 toward `unknown`, the contract repair reached the model. If not, the earlier errors were not caused by the wording alone.
+
+**Post-declaration changes (disclosed)**
+- *Scoring v3.1 tie rule, found after inspecting the Round 1 local outputs.*
+  - **The bug:** when several values share the top probability, v2 and v3 picked the "top" value by JSON list order. The same 0.5/0.5 output could therefore be scored correct or incorrect. Examples: uc01 vs. uc24, local v2.1.
+  - **The fix:** a supported tied value is preferred over an unsupported one. When the truth is among the supported tied values, the new category `supported_spread` applies, not a top-1 hit. When all tied values are unsupported, the tie does not change the category.
+  - **Scope:** the rule applies identically to every row, old and new, and the old categories stay reconstructible from the raw records.
+  - **Effect:** it moves some outputs between "correct" and "incorrect"/"spread" in every cell. It does not use outputs selectively.
+- *Reference-audit wording* (uc01, uc10, uc11): corrected after the Sonnet facts check. No flag changed.

@@ -3,29 +3,109 @@
   "scope": "unit-contexts-v1 (24 contexts) under public rules r4; written before any r4 or pilot-v2.1 output existed",
   "policy": "A context is 'ambiguous' when its scoring reference (the exact evidence posterior under the dev-v2 generator) depends on generator knowledge that neither the r4 rules nor the visible history give the model, in a way that moves a defensible value across the SUPPORT_MIN = 0.2 threshold. In ambiguous contexts an answer whose posterior is < 0.2 is scored 'ambiguous_reference' (reported apart, never counted as a model error); answers with posterior >= 0.2 are scored normally. Primary category counts use the non-ambiguous contexts.",
   "contexts": {
-    "uc01": {"flag": "consistent", "basis": "Remark 'I saw <recipient> head to the office' implies the speaker holds an office belief; generator says are truthful (undisclosed base rate) but the support set {offices} is what a reader infers."},
-    "uc02": {"flag": "ambiguous", "class": "undisclosed_base_rate", "basis": "K(recipient) rests only on one claim by a speaker who states an incentive; the 0.95/0.05 split is the generator's accuracy base rate for such claimants. The other office is publicly defensible but scores < 0.2."},
-    "uc03": {"flag": "consistent", "basis": "Speaker states the value; honest-claimant base rate undisclosed, but the top value is the stated one."},
-    "uc04": {"flag": "consistent", "basis": "Rule 2 (recipient knows own start location); robot cannot tell which office: both offices supported. Undisclosed under r3."},
-    "uc05": {"flag": "consistent", "basis": "Rule 2, as uc04. Undisclosed under r3."},
-    "uc06": {"flag": "ambiguous", "class": "undisclosed_base_rate", "basis": "K(claimant with stated incentive): whether she believes her own claim is the generator's base rate (0.975/0.025). The other value is publicly defensible but scores < 0.2."},
-    "uc07": {"flag": "ambiguous", "class": "undisclosed_base_rate", "basis": "Two people state conflicting values; which one is accurate (0.867/0.133) comes from the generator's role assignment, not visible evidence. The minority value scores < 0.2."},
-    "uc08": {"flag": "consistent", "basis": "'<j> told me this morning where the meeting is' implies j holds a meeting-room belief; offices 0.5/0.5."},
-    "uc09": {"flag": "consistent", "basis": "Speaker saw the recipient head to an office; offices 0.5/0.5."},
-    "uc10": {"flag": "ambiguous", "class": "undisclosed_template", "basis": "R(j->k): the assessment comes from a hidden vouch/warn backstory template; no visible event links j to k beyond co-presence and an incentive remark."},
-    "uc11": {"flag": "ambiguous", "class": "undisclosed_template", "basis": "R(j->k) with no visible link at all; the posterior excludes 'unknown' only because the template always gives j an assessment, while r4 rule 1 ('neither saw nor was told') points to unknown."},
-    "uc12": {"flag": "consistent", "basis": "R(j) intent of a person with a stated incentive; both intents supported (0.5/0.5)."},
-    "uc13": {"flag": "consistent", "basis": "As uc12."},
-    "uc14": {"flag": "consistent", "basis": "Rule 5: seeing someone gives no belief about their belief -> unknown. Conflicted with the r3 wording."},
-    "uc15": {"flag": "consistent", "basis": "Rule 5: j told k before the task -> j thinks k believes it; offices 0.5/0.5."},
-    "uc16": {"flag": "consistent", "basis": "Rule 4: ordinary remarks create no beliefs about beliefs -> unknown. Conflicted with the r3 wording."},
-    "uc17": {"flag": "consistent", "basis": "Rule 5: no statement between the two people -> unknown."},
-    "uc18": {"flag": "consistent", "basis": "Rule 5: co-witnessing gives no belief about the other's belief -> unknown."},
-    "uc19": {"flag": "consistent", "basis": "Rule 5, last sentence: an in-task statement gives the speaker no belief about listeners -> unknown."},
-    "uc20": {"flag": "consistent", "basis": "Speaker stated the value and reported seeing it."},
-    "uc21": {"flag": "consistent", "basis": "Rule 2 plus a statement of the recipient's location. Undisclosed under r3."},
-    "uc22": {"flag": "consistent", "basis": "Speaker stated the value."},
-    "uc23": {"flag": "consistent", "basis": "'I was out of the building all morning' -> saw nothing -> unknown."},
-    "uc24": {"flag": "consistent", "basis": "Rule 2; robot cannot tell which office."}
-  }
+    "uc01": {
+      "flag": "consistent",
+      "basis": "Remark 'I saw <recipient> head to the office' implies the speaker holds an office belief; the robot cannot tell which office (0.5/0.5). A reader might put a little mass on the remark being inaccurate, but the support set {offices} is what the remark implies."
+    },
+    "uc02": {
+      "flag": "ambiguous",
+      "class": "undisclosed_base_rate",
+      "basis": "K(recipient) rests only on one claim by a speaker who states an incentive; the 0.95/0.05 split is the generator's accuracy base rate for such claimants. The other office is publicly defensible but scores < 0.2."
+    },
+    "uc03": {
+      "flag": "consistent",
+      "basis": "Speaker states the value; honest-claimant base rate undisclosed, but the top value is the stated one."
+    },
+    "uc04": {
+      "flag": "consistent",
+      "basis": "Rule 2 (recipient knows own start location); robot cannot tell which office: both offices supported. Undisclosed under r3."
+    },
+    "uc05": {
+      "flag": "consistent",
+      "basis": "Rule 2, as uc04. Undisclosed under r3."
+    },
+    "uc06": {
+      "flag": "ambiguous",
+      "class": "undisclosed_base_rate",
+      "basis": "K(claimant with stated incentive): whether she believes her own claim is the generator's base rate (0.975/0.025). The other value is publicly defensible but scores < 0.2."
+    },
+    "uc07": {
+      "flag": "ambiguous",
+      "class": "undisclosed_base_rate",
+      "basis": "Two people state conflicting values; which one is accurate (0.867/0.133) comes from the generator's role assignment, not visible evidence. The minority value scores < 0.2."
+    },
+    "uc08": {
+      "flag": "consistent",
+      "basis": "'<j> told me this morning where the meeting is' implies j holds a meeting-room belief; offices 0.5/0.5."
+    },
+    "uc09": {
+      "flag": "consistent",
+      "basis": "Speaker saw the recipient head to an office; offices 0.5/0.5."
+    },
+    "uc10": {
+      "flag": "ambiguous",
+      "class": "undisclosed_template",
+      "basis": "R(j->k): the assessment comes from a hidden vouch/warn backstory template; no visible statement links j's view to k (they are co-present, k states an incentive, and j answers the robot's location question)."
+    },
+    "uc11": {
+      "flag": "ambiguous",
+      "class": "undisclosed_template",
+      "basis": "R(j->k): the two people are only co-present, with k's incentive remark; no visible statement links j's view to k. The assessment comes from a hidden vouch/warn backstory template, and the posterior excludes 'unknown' only because the template always gives j an assessment. r4 rule 1's 'neither saw nor was told' is phrased about facts, so it points to 'unknown' only by a loose reading."
+    },
+    "uc12": {
+      "flag": "consistent",
+      "basis": "R(j) intent of a person with a stated incentive; both intents supported (0.5/0.5)."
+    },
+    "uc13": {
+      "flag": "consistent",
+      "basis": "As uc12."
+    },
+    "uc14": {
+      "flag": "consistent",
+      "basis": "Rule 5: seeing someone gives no belief about their belief -> unknown. Conflicted with the r3 wording."
+    },
+    "uc15": {
+      "flag": "consistent",
+      "basis": "Rule 5: j told k before the task -> j thinks k believes it; offices 0.5/0.5."
+    },
+    "uc16": {
+      "flag": "consistent",
+      "basis": "Rule 4: ordinary remarks create no beliefs about beliefs -> unknown. Conflicted with the r3 wording."
+    },
+    "uc17": {
+      "flag": "consistent",
+      "basis": "Rule 5: no statement between the two people -> unknown."
+    },
+    "uc18": {
+      "flag": "consistent",
+      "basis": "Rule 5: co-witnessing gives no belief about the other's belief -> unknown."
+    },
+    "uc19": {
+      "flag": "consistent",
+      "basis": "Rule 5, last sentence: an in-task statement gives the speaker no belief about listeners -> unknown."
+    },
+    "uc20": {
+      "flag": "consistent",
+      "basis": "Speaker stated the value and reported seeing it."
+    },
+    "uc21": {
+      "flag": "consistent",
+      "basis": "Rule 2 plus a statement of the recipient's location. Undisclosed under r3."
+    },
+    "uc22": {
+      "flag": "consistent",
+      "basis": "Speaker stated the value."
+    },
+    "uc23": {
+      "flag": "consistent",
+      "basis": "'I was out of the building all morning' -> saw nothing -> unknown."
+    },
+    "uc24": {
+      "flag": "consistent",
+      "basis": "Rule 2; robot cannot tell which office."
+    }
+  },
+  "wording_revisions": [
+    "2026-10-28, after the Sonnet facts check and after Round 1 local outputs existed: basis wording of uc01, uc10, uc11 made accurate; no flag changed."
+  ]
 }

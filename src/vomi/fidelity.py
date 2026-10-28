@@ -103,8 +103,8 @@ def score_output(parsed: dict | None, truth: str, posterior: dict[str, float], k
 # "uncertain" (v2.1) is an attributed status: a broad distribution is scored, not treated as abstention.
 COMMIT_P = 0.5
 ABSTAIN = ("insufficient_evidence", "abstain")
-CATS_V3 = ("correct_supported", "correct_unsupported", "incorrect_supported", "leakage", "unsupported_committed",
-           "unsupported_hedged", "ambiguous_reference", "abstained", "invalid")
+CATS_V3 = ("correct_supported", "supported_spread", "correct_unsupported", "incorrect_supported", "leakage",
+           "unsupported_committed", "unsupported_hedged", "ambiguous_reference", "abstained", "invalid")
 
 
 def score_output_v3(parsed: dict | None, truth: str, posterior: dict[str, float], known: set[str], values: list[str],
@@ -113,11 +113,23 @@ def score_output_v3(parsed: dict | None, truth: str, posterior: dict[str, float]
         return {"valid": False, "category": "invalid"}
     s = score_output(parsed, truth, posterior, known, values)
     s["abstained"] = parsed.get("status") in ABSTAIN
+    dist = {}
+    for h in parsed.get("hypotheses", []):
+        dist[h["value"]] = dist.get(h["value"], 0.0) + float(h["p"])
+    # v3.1 tie rule (found after inspecting Round 1 local outputs; applies to every row): when several values share
+    # the top mass, the category must not depend on list order. A supported tied value is preferred over an
+    # unsupported one; among supported tied values the truth (if present) gives `supported_spread` (an honest split
+    # that includes the realized state), never a top-1 hit.
+    tied = sorted(v for v, p in dist.items() if abs(p - s["top_p"]) <= 1e-9)
+    tied_sup = [v for v in tied if posterior.get(v, 0.0) >= SUPPORT_MIN]
+    if len(tied) > 1:
+        s["top"] = truth if truth in tied_sup else (tied_sup[0] if tied_sup else (truth if truth in tied else tied[0]))
+    s["tied_top"] = tied if len(tied) > 1 else None
     post_top = posterior.get(s["top"], 0.0)
     if s["abstained"]:
         cat = "abstained"
     elif s["top"] == truth:
-        cat = "correct_supported" if post_top >= SUPPORT_MIN else "correct_unsupported"
+        cat = ("supported_spread" if len(tied) > 1 else "correct_supported") if post_top >= SUPPORT_MIN else "correct_unsupported"
     elif post_top >= SUPPORT_MIN:
         cat = "incorrect_supported"
     elif reference_ambiguous:
@@ -128,8 +140,5 @@ def score_output_v3(parsed: dict | None, truth: str, posterior: dict[str, float]
         cat = "unsupported_committed" if s["top_p"] >= COMMIT_P else "unsupported_hedged"
     s["category"] = cat
     s["status"] = parsed.get("status")
-    dist = {}
-    for h in parsed.get("hypotheses", []):
-        dist[h["value"]] = dist.get(h["value"], 0.0) + float(h["p"])
     s["tv_posterior"] = 0.5 * sum(abs(dist.get(c, 0.0) - posterior.get(c, 0.0)) for c in set(dist) | set(posterior))
     return s

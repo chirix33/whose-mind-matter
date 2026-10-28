@@ -83,6 +83,21 @@ def test_v3_categories_partition_and_separate_hedged_from_committed():
     assert set(CATS_V3) >= {"correct_supported", "unsupported_committed", "ambiguous_reference", "abstained", "invalid"}
 
 
+def test_v31_tied_top_category_does_not_depend_on_list_order():
+    post = {"office_a": 0.5, "office_b": 0.5}
+    a = score([{"value": "office_a", "p": 0.5}, {"value": "office_b", "p": 0.5}], "uncertain", "office_b", post)
+    b = score([{"value": "office_b", "p": 0.5}, {"value": "office_a", "p": 0.5}], "uncertain", "office_b", post)
+    assert a["category"] == b["category"] == "supported_spread"
+    # an unsupported value tied with a supported one does not decide the category
+    c = score([{"value": "unknown", "p": 0.5}, {"value": "office_a", "p": 0.5}], "uncertain", "office_b", post)
+    d = score([{"value": "office_a", "p": 0.5}, {"value": "unknown", "p": 0.5}], "uncertain", "office_b", post)
+    assert c["category"] == d["category"] == "incorrect_supported"
+    # all tied values unsupported: committed unsupported content regardless of order
+    e = score([{"value": "office_a", "p": 0.5}, {"value": "office_b", "p": 0.5}], "grounded", "unknown", {"unknown": 1.0})
+    f = score([{"value": "office_b", "p": 0.5}, {"value": "office_a", "p": 0.5}], "grounded", "unknown", {"unknown": 1.0})
+    assert e["category"] == f["category"] == "unsupported_committed"
+
+
 def test_v3_supported_wrong_answer_is_not_hallucination_even_in_ambiguous_contexts():
     s = score([{"value": "office_b", "p": 0.9}], "grounded", "office_a", {"office_a": 0.5, "office_b": 0.5}, ambiguous=True)
     assert s["category"] == "incorrect_supported"
