@@ -23,7 +23,7 @@
 
 Manifests: `~/officeminds-runs/{tiny,smoke}/<run_id>/manifest.json` (WSL). The runs cited here record a commit hash and `git_dirty: false`.
 
-Earlier runs on the uncommitted tree are kept on disk but superseded: `tiny-20261028-032629-565fb8`, `tiny-20261028-032310-90b650`, `tiny-20261028-032315-8982a4`, `smoke-20261028-031813-05c2f6`. The clean re-runs reproduced every label value. Episode returns differ only by seed. The smoke numbers stayed within ±0.02 s median latency.
+Earlier runs on the uncommitted tree are kept on disk but superseded: `tiny-20261028-031743-88659e`, `tiny-20261028-032310-90b650`, `tiny-20261028-032315-8982a4`, `smoke-20261028-031813-05c2f6`, plus `smoke-20261028-032641-1b513b` (committed code, but the tree was dirty from a regenerated report). The clean re-runs reproduced every label value. Episode returns differ only by seed. The smoke numbers stayed within ±0.02 s median latency.
 
 ## Results (exact symbolic oracle, record A — see D-001 before interpreting)
 | Case | J(∅) | J(all candidates) | ℓ* | Minimal sufficient sets |
