@@ -1,0 +1,2078 @@
+diff --git a/scripts/describe_dev_v3_roundB.py b/scripts/describe_dev_v3_roundB.py
+new file mode 100644
+index 0000000..9acd7b0
+--- /dev/null
++++ b/scripts/describe_dev_v3_roundB.py
+@@ -0,0 +1,74 @@
++"""POST-HOC DESCRIPTIVES for dev-v3 Round B (written after seeing the outcomes; not part of the pre-declared reading).
++
++    python3 scripts/describe_dev_v3_roundB.py <run_dir>   -> reports/dev-v3-block/roundB-descriptive-local.json/.md
++
++1. Outcome counts (success / error / timeout) and mean steps per condition x stratum.
++2. Rate at which the first action is in the exact Bayes-optimal first-action set (qualification.json).
++3. Empirical noise floor: in the 8 states where the reference and privileged MIND NOTES are byte-identical (1c, 3c),
++   the two conditions are the same prompt, so their per-state mean difference is pure policy-sampling noise.
++4. Robustness of the pre-declared stratum classes to single catastrophic draws: the R10 classification recomputed
++   with each state's per-condition mean taken as the MEDIAN of its 3 draws (descriptive sensitivity only).
++"""
++
++from __future__ import annotations
++
++import json
++import statistics
++import sys
++from collections import defaultdict
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "scripts"))
++from report_dev_v3 import CONDITIONS, classify, overall  # noqa: E402
++
++
++def main():
++    run = Path(sys.argv[1])
++    eps = [json.loads(l) for l in (run / "episodes.jsonl").read_text().splitlines() if l.strip()]
++    qual = {r["instance_id"]: r for r in json.loads((ROOT / "reports/dev-v3-block/qualification.json").read_text())["instances"]}
++    stratum = {sid: qual[sid]["stratum"] for sid in qual}
++    out = {"label": "POST-HOC DESCRIPTIVE (after outcomes; not the pre-declared reading)"}
++    oc = defaultdict(lambda: defaultdict(int))
++    steps = defaultdict(list)
++    opt = defaultdict(lambda: [0, 0])
++    for e in eps:
++        k = f"{e['condition']}|{stratum[e['state_id']]}"
++        oc[k][e["outcome"]] += 1
++        steps[k].append(e["steps"])
++        o = opt[e["condition"]]
++        o[0] += e["actions"][0] in qual[e["state_id"]]["optimal_first_actions"]
++        o[1] += 1
++    out["outcomes"] = {k: dict(v) for k, v in sorted(oc.items())}
++    out["mean_steps"] = {k: round(statistics.mean(v), 3) for k, v in sorted(steps.items())}
++    out["first_action_bayes_optimal_rate"] = {c: f"{a}/{b}" for c, (a, b) in opt.items()}
++    cell = defaultdict(list)
++    for e in eps:
++        cell[(e["state_id"], e["condition"])].append(e["return_"])
++    ident = [s for s in qual if (s, "reference") in cell and qual[s]["construction"] in ("1c", "3c")]
++    diffs = [statistics.mean(cell[(s, "reference")]) - statistics.mean(cell[(s, "privileged")]) for s in ident]
++    out["noise_floor_identical_prompts"] = {"states": len(ident), "ref_minus_priv": [round(d, 4) for d in diffs],
++                                            "mean_abs": round(statistics.mean(abs(d) for d in diffs), 4),
++                                            "max_abs": round(max(abs(d) for d in diffs), 4)}
++    med = {}
++    for c in CONDITIONS[1:]:
++        cls = {}
++        for s in (1, 2, 3, 4):
++            sids = sorted({sid for sid, _ in cell if stratum[sid] == s})
++            ds = [statistics.median(cell[(sid, c)]) - statistics.median(cell[(sid, "none")]) for sid in sids]
++            cls[s] = classify(ds)
++        med[c] = {"classes": cls, "reading": overall(cls)}
++    out["median_sensitivity"] = med
++    (ROOT / "reports/dev-v3-block/roundB-descriptive-local.json").write_text(json.dumps(out, indent=1, sort_keys=True) + "\n")
++    L = ["# Round B (local): post-hoc descriptives", "", f"**{out['label']}.** Run `{run.name}`.", "",
++         "## Outcomes per condition | stratum", ""]
++    L += [f"- {k}: {v}; mean steps {out['mean_steps'][k]}" for k, v in out["outcomes"].items()]
++    L += ["", f"First action in the exact Bayes-optimal set: {out['first_action_bayes_optimal_rate']}", "",
++          f"Noise floor (identical prompts, reference vs privileged in 1c/3c): {out['noise_floor_identical_prompts']}", "",
++          "Median-of-draws sensitivity of the R10 classes: " + json.dumps(med)]
++    (ROOT / "reports/dev-v3-block/roundB-descriptive-local.md").write_text("\n".join(L) + "\n", encoding="utf-8")
++    print("\n".join(L))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/export_dev_v3_evidence.py b/scripts/export_dev_v3_evidence.py
+new file mode 100644
+index 0000000..fad7548
+--- /dev/null
++++ b/scripts/export_dev_v3_evidence.py
+@@ -0,0 +1,80 @@
++"""Export the dev-v3 block evidence bundle pieces (no model calls).
++
++    python3 scripts/export_dev_v3_evidence.py <round_b_run_dir>
++
++Writes reports/dev-v3-block/evidence/:
++  matched-traces.json   agent-visible t0 view + card vs the privileged minds of the same world, with the exact
++                        ask-aware first-action Q table, for the 2a holder-swap pair and the 3a/3b depth pair
++  episodes-roundB-local.csv   one row per Round B episode (no privileged content beyond the hidden-world id)
++  roundB-example-episodes.json   one complete 3c episode per condition (agent view + calls; privileged block kept
++                        separate under "privileged")
++  hashes.json           sha256 of every evidence and report file of the block
++"""
++
++from __future__ import annotations
++
++import csv
++import hashlib
++import json
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++sys.path.insert(0, str(ROOT / "scripts"))
++
++from officeminds import devgen3 as G  # noqa: E402
++from officeminds.episode import _minds_snapshot  # noqa: E402
++from qualify_dev_v3 import opt_set, q_table, t0  # noqa: E402
++from vomi.oracle import ExactOracle  # noqa: E402
++from vomi.pilot import ledger, task_card  # noqa: E402
++
++EV = ROOT / "reports" / "dev-v3-block" / "evidence"
++
++
++def matched(spec, n, hidden, pattern):
++    ss = G.superset_scenario(spec, n, 1.0)
++    truth = (("pattern", pattern),) + hidden
++    w, h = t0(ss, truth)
++    o = ExactOracle(ss, h)
++    qs = q_table(o)
++    return {"pattern": pattern, "agent_visible": {"ledger": ledger(h)[0],
++                                                   "card": task_card(w.config, ss.brief, rev=6)},
++            "privileged": {"hidden": dict(truth), "minds_t0": _minds_snapshot(w)},
++            "exact_q_first_actions_public_model": qs, "optimal": opt_set(qs)}
++
++
++def main():
++    run = Path(sys.argv[1])
++    EV.mkdir(parents=True, exist_ok=True)
++    by = {(i.construction, i.variant.stakes, i.variant.permuted): i for i in G.generate()}
++    i2a, i3a = by[("2a", 1.0, False)], by[("3a", 1.0, False)]
++    traces = {"note": "Same names, labels and hidden draw within each pair; Q values are exact Bayes (plain posterior, "
++                      "asks legal) under the stratum superset public model. 'privileged' is evaluator-only.",
++              "2a_holder_swap": [matched(i2a.spec, i2a.role, i2a.hidden, p) for p in ("2a:0", "2a:1")],
++              "3a_vs_3b_depth2": [matched(i3a.spec, i3a.role, i3a.hidden, p) for p in ("3a:0", "3b:0")]}
++    (EV / "matched-traces.json").write_text(json.dumps(traces, indent=1, sort_keys=True) + "\n")
++    eps = [json.loads(l) for l in (run / "episodes.jsonl").read_text().splitlines() if l.strip()]
++    with (EV / "episodes-roundB-local.csv").open("w", newline="") as f:
++        wr = csv.writer(f)
++        wr.writerow(["state_id", "condition", "replicate", "dispatch_index", "return", "outcome", "steps", "actions",
++                     "fallbacks", "failed_attempts", "decision_prompt_tokens", "decision_completion_tokens", "wall_clock_s"])
++        for e in sorted(eps, key=lambda e: (e["state_id"], e["condition"], e["replicate"])):
++            u = e["usage"].get("decision", {})
++            wr.writerow([e["state_id"], e["condition"], e["replicate"], e["dispatch_index"], round(e["return_"], 4),
++                         e["outcome"], e["steps"], " ".join(e["actions"]),
++                         sum(v.get("fallbacks", 0) for v in e["usage"].values()),
++                         sum(v.get("attempts_failed", 0) for v in e["usage"].values()),
++                         u.get("prompt_tokens"), u.get("completion_tokens"), round(e["wall_clock_s"], 2)])
++    ex = {c: next(e for e in eps if e["state_id"] == "dev-v3-3c-stakes1-perm0" and e["condition"] == c and e["replicate"] == 0)
++          for c in ("none", "inferred", "reference", "privileged")}
++    (EV / "roundB-example-episodes.json").write_text(json.dumps(ex, indent=1, sort_keys=True, default=str) + "\n")
++    files = sorted(p for p in (ROOT / "reports" / "dev-v3-block").rglob("*") if p.is_file() and p.name != "hashes.json"
++                   and p.suffix != ".zip")
++    hashes = {str(p.relative_to(ROOT)).replace("\\", "/"): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
++    (EV / "hashes.json").write_text(json.dumps(hashes, indent=1, sort_keys=True) + "\n")
++    print("wrote", EV, len(hashes), "hashed files")
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/qualify_dev_v3.py b/scripts/qualify_dev_v3.py
+new file mode 100644
+index 0000000..a0535e9
+--- /dev/null
++++ b/scripts/qualify_dev_v3.py
+@@ -0,0 +1,343 @@
++"""dev-v3 Round A qualification (reports/dev-v3-block/experiment-plan.md, Entry 1 A.3 + Entry 1a). Symbolic only.
++
++    python3 scripts/qualify_dev_v3.py            # writes reports/dev-v3-block/qualification.{json,md}
++    python3 scripts/qualify_dev_v3.py --freeze   # also writes reports/dev-v3-block/dev-v3-freeze.json
++
++Every value is exact under the declared public model: ExactOracle's plain posterior b_h over the group prior
++conditioned on the visible t0 history, with belief-space expectimax and every legal action (ask, move/search, drop,
++give, deliver, wait). These are symbolic references for an ideal Bayes actor, not LLM values. Privileged quantities
++(true content revealed) are labeled as such.
++"""
++
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import os
++import sys
++import time
++from dataclasses import replace
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++
++from officeminds import devgen3 as G  # noqa: E402
++from officeminds.episode import VisibleHistory  # noqa: E402
++from officeminds.scenarios import Scenario  # noqa: E402
++from officeminds.world import legal_actions  # noqa: E402
++from vomi.oracle import PRIVILEGED_BAYES, ExactOracle  # noqa: E402
++from vomi.pilot import (PEOPLE_RULES_R6, load_prompts, policy_messages, prompt_hashes, task_card,  # noqa: E402
++                        unit_messages)
++from vomi.units import K, R as Rel, content, default_holds, generate_candidates  # noqa: E402
++
++OUT = ROOT / "reports" / "dev-v3-block"
++TOL = 1e-9
++FAMILY = {"ask": "ask", "move": "move", "drop": "chute", "give": "handoff", "deliver": "deliver", "wait": "wait"}
++
++
++def t0(scenario: Scenario, hidden):
++    w = scenario.build(hidden)
++    return w, VisibleHistory(scenario.brief, [(None, w.reset())])
++
++
++def q_table(o: ExactOracle) -> dict[str, float]:
++    return {str(a): round(q, 10) for a, q in o.ranked_actions(o.belief, o.obs)}
++
++
++def opt_set(qs: dict[str, float]) -> list[str]:
++    best = max(qs.values())
++    return sorted(a for a, q in qs.items() if q >= best - TOL)
++
++
++def families(qs):
++    out = {}
++    for a, q in qs.items():
++        f = FAMILY[a.split("(")[0]]
++        out[f] = max(out.get(f, -9), q)
++    return out
++
++
++def unit_posterior(o: ExactOracle, u):
++    dist, correct = {}, 0.0
++    for p, w in o.belief:
++        v = content(w, u)[0]
++        dist[v] = dist.get(v, 0.0) + p
++        correct += p * default_holds(w, u)
++    return {k: round(v, 10) for k, v in sorted(dist.items())}, round(correct, 10)
++
++
++def stripped(scenario: Scenario) -> Scenario:
++    def build(p):
++        w = scenario.build(p)
++        w.timed_events = tuple(replace(e, visible_as=None) for e in w.timed_events)
++        return w
++    return Scenario(scenario.id + "-cardonly", scenario.brief, "card-only", scenario.prior, build)
++
++
++def with_chute(scenario: Scenario) -> Scenario:
++    def build(p):
++        w = scenario.build(p)
++        w.config = replace(w.config, chute_room="lobby")
++        return w
++    return Scenario(scenario.id + "-chute", scenario.brief, "with-chute counterfactual", scenario.prior, build)
++
++
++def all_shallow_units(world):
++    people = sorted(world.minds)
++    return [u for j in people for u in (K(j), Rel(j))]
++
++
++def instance_record(inst) -> dict:
++    sc = inst.scenario
++    t = time.monotonic()
++    w, h = t0(sc, inst.hidden)
++    o = ExactOracle(sc, h)
++    qs = q_table(o)
++    rec = {"instance_id": inst.instance_id, "group_id": inst.group_id, "stratum": inst.stratum,
++           "construction": inst.construction, "distractor": inst.distractor, "stakes": inst.variant.stakes,
++           "permuted": inst.variant.permuted, "hypothesis_worlds_consistent": len(o.worlds),
++           "prior_worlds": len(sc.prior), "q_first_actions": qs, "optimal_first_actions": opt_set(qs),
++           "bayes_value_t0": max(qs.values()), "best_by_family": families(qs), "focal": []}
++    for u in G.focal_units(inst):
++        dist, correct = unit_posterior(o, u)
++        ur = o.unit_report(u, record=PRIVILEGED_BAYES)  # PRIVILEGED: true content revealed to the Bayes actor
++        rec["focal"].append({
++            "unit": str(u), "self_location": u.depth == 1 and u.path[0] == sc.config.recipient,
++            "reference_content_posterior": dist, "reference_p_correct_now": correct,
++            "access_status_set": sorted({G.access_status(x, u) for x in o.worlds}),
++            "privileged_true_content": list(content(w, u)), "privileged_true_correct": default_holds(w, u),
++            "privileged_bayes_delta_j": round(ur.delta_j, 10), "privileged_p_flip": round(ur.p_flip, 10),
++            "content_entropy_bits": round(ur.content_entropy_bits, 10)})
++    cands = generate_candidates(sc.config, h)
++    rec["candidates"] = [str(u) for u in cands]
++    rec["self_location_candidates"] = [str(u) for u in cands if u.depth == 1 and u.path[0] == sc.config.recipient]
++    rec["focal_in_candidates"] = all(str(u) in rec["candidates"] for u in G.focal_units(inst))
++    # card-only triviality (R1b): the construction prior with every prologue notice removed
++    co = ExactOracle(stripped(sc), t0(stripped(sc), inst.hidden)[1])
++    rec["card_only_optimal"] = opt_set(q_table(co))
++    rec["card_only_fixes_best_action"] = rec["card_only_optimal"] == rec["optimal_first_actions"]
++    if inst.stratum in (2, 3):  # superset public model (R1a) and its card-only version
++        n = inst.role
++        ss = G.superset_scenario(inst.spec, n, inst.variant.stakes)
++        truth = (("pattern", f"{inst.construction}:0"),) + inst.hidden
++        so = ExactOracle(ss, t0(ss, truth)[1])
++        sq = q_table(so)
++        diffs = [abs(sq[a] - qs[a]) for a in qs] + [abs(len(sq) - len(qs))]
++        post = {str(u): unit_posterior(so, u) for u in G.focal_units(inst)}
++        rec["superset"] = {
++            "patterns": len(G.SUPERSET_PATTERNS[inst.stratum]), "prior_worlds": len(ss.prior),
++            "consistent_worlds": len(so.worlds),
++            "consistent_patterns": sorted({dict(p)["pattern"] for p in so.params}),
++            "max_abs_q_diff": max(diffs),
++            "focal_posterior_equal": all(post[f["unit"]][0] == f["reference_content_posterior"]
++                                         and abs(post[f["unit"]][1] - f["reference_p_correct_now"]) < TOL
++                                         for f in rec["focal"])}
++        sco = ExactOracle(stripped(ss), t0(stripped(ss), truth)[1])
++        rec["superset"]["card_only_optimal"] = opt_set(q_table(sco))
++        rec["superset"]["card_only_fixes_best_action"] = rec["superset"]["card_only_optimal"] == rec["optimal_first_actions"]
++    if inst.stratum == 3:
++        ch = with_chute(sc)
++        cq = q_table(ExactOracle(ch, t0(ch, inst.hidden)[1]))
++        rec["with_chute_counterfactual"] = {"optimal": opt_set(cq), "value": max(cq.values()),
++                                            "best_by_family": families(cq)}
++    rec["oracle_seconds"] = round(time.monotonic() - t, 3)
++    return rec
++
++
++def pair(spec, n, stakes, hidden, pa, pb, kind):
++    """Two patterns of one superset (shared names, labels, distractor and hidden draw)."""
++    ss = G.superset_scenario(spec, n, stakes)
++    res = {"kind": kind, "patterns": [pa, pb], "group_spec": spec.group_id}
++    worlds = {}
++    for pat in (pa, pb):
++        truth = (("pattern", pat),) + hidden
++        w, h = t0(ss, truth)
++        o = ExactOracle(ss, h)
++        qs = q_table(o)
++        worlds[pat] = w
++        res[pat] = {"optimal": opt_set(qs), "value": max(qs.values()), "q": qs,
++                    "rooms": dict(sorted(w.people_rooms.items()))}
++    res["same_physical_state"] = worlds[pa].people_rooms == worlds[pb].people_rooms
++    res["optimal_sets_differ"] = res[pa]["optimal"] != res[pb]["optimal"]
++    best_a = res[pa]["optimal"][0]
++    res["gap_if_a_best_used_in_b"] = (round(res[pb]["value"] - res[pb]["q"][best_a], 10) if best_a in res[pb]["q"]
++                                      else "n/a: action illegal in b")
++    if spec.stratum == 3:  # R3: depth certification relative to the shallow class
++        wa, wb = worlds[pa], worlds[pb]
++        res["pi_le1_inputs_equal"] = (
++            all(content(wa, u) == content(wb, u) for u in all_shallow_units(wa))
++            and t0(ss, (("pattern", pa),) + hidden)[1].last.people_present
++            == t0(ss, (("pattern", pb),) + hidden)[1].last.people_present)
++        res["depth2_contents"] = {
++            pat: {str(u): list(content(worlds[pat], u)) for u in
++                  (K(n["F"], n["R"]), K(n["R"], n["F"]), K(n["A"], n["R"]), K(n["F"]), K(n["R"]))}
++            for pat in (pa, pb)}
++    return res
++
++
++def pairs(insts):
++    by = {(i.construction, i.variant.stakes, i.variant.permuted): i for i in insts}
++    out = []
++    i2a = by[("2a", 1.0, False)]
++    out.append(pair(i2a.spec, i2a.role, 1.0, i2a.hidden, "2a:0", "2a:1", "same-physical-state social pair (holder swap)"))
++    out.append(pair(i2a.spec, i2a.role, 1.0, i2a.hidden, "2a:0", "2b:0", "physical availability contrast (H departed)"))
++    i3a = by[("3a", 1.0, False)]
++    out.append(pair(i3a.spec, i3a.role, 1.0, i3a.hidden, "3a:0", "3b:0", "same-physical-state social pair (depth-2)"))
++    out.append(pair(i3a.spec, i3a.role, 1.0, i3a.hidden, "3a:0", "3c:0",
++                    "same courier belief, different recipient belief (not same physical state)"))
++    stakes = []
++    for c in ("4a", "4b", "4c"):
++        a, b = by[(c, 1.0, False)], by[(c, 4.0, False)]
++        qa, qb = (q_table(ExactOracle(x.scenario, t0(x.scenario, x.hidden)[1])) for x in (a, b))
++        stakes.append({"construction": c, "rates": {k: float(v) for k, v in a.spec.rates},
++                       "x1": {"optimal": opt_set(qa), "q": qa}, "x4": {"optimal": opt_set(qb), "q": qb},
++                       "flip": opt_set(qa) != opt_set(qb)})
++    return out, stakes
++
++
++def round_b_selection():
++    return {f"stratum{s}": G.CONSTRUCTIONS[s][int(hashlib.sha256(f"dev-v3:roundB:stratum{s}".encode()).hexdigest(), 16) % 3]
++            for s in (1, 2, 3, 4)}
++
++
++def sha_text(t: str) -> str:
++    return hashlib.sha256(t.encode()).hexdigest()
++
++
++def sha_file(rel: str) -> str:
++    return hashlib.sha256((ROOT / rel).read_bytes()).hexdigest()
++
++
++def write_md(q, path):
++    L = ["# dev-v3 Round A qualification (symbolic, exact; no LLM)", "",
++         f"Generated by `scripts/qualify_dev_v3.py` at commit `{q['git_commit'][:10]}`"
++         f"{' (dirty)' if q['dirty_paths'] else ''}. Values are exact Bayes (plain posterior, asks legal) under each "
++         "group's declared public model. Privileged columns reveal true content.", "",
++         "## Instances (stakes ×1, unpermuted; all 48 in qualification.json)", "",
++         "| group | distr. | worlds | optimal first action(s) | V* | best first ask / move / drop / give (any continuation) | focal: reference P(content), P(correct) | privileged ex-ante ΔJ | card-only fixes? | superset ok |",
++         "|---|---|---|---|---|---|---|---|---|---|"]
++    for r in q["instances"]:
++        if r["stakes"] != 1.0 or r["permuted"]:
++            continue
++        fam = r["best_by_family"]
++        fams = " / ".join(f"{fam.get(k, float('nan')):.3f}" if k in fam else "–" for k in ("ask", "move", "chute", "handoff"))
++        foc = "; ".join(f"{f['unit']}: {f['reference_content_posterior']}, {f['reference_p_correct_now']:.2f}" for f in r["focal"])
++        dj = "; ".join(f"{f['privileged_bayes_delta_j']:+.3f}" for f in r["focal"])
++        ss = r.get("superset")
++        sso = "–" if not ss else ("yes" if ss["max_abs_q_diff"] < TOL and ss["focal_posterior_equal"] else "NO")
++        co = ("yes" if r["card_only_fixes_best_action"] else "no") + (
++            f" (superset: {'yes' if ss['card_only_fixes_best_action'] else 'no'})" if ss else "")
++        L.append(f"| {r['construction']} | {r['distractor']} | {r['hypothesis_worlds_consistent']} | "
++                 f"{', '.join(r['optimal_first_actions'])} | {r['bayes_value_t0']:.3f} | {fams} | {foc} | {dj} | {co} | {sso} |")
++    L += ["", "## Pairs (shared names, labels and hidden draw)", ""]
++    for p in q["pairs"]:
++        a, b = p["patterns"]
++        L.append(f"- **{p['kind']}** ({p['group_spec']}: {a} vs {b}): same physical state: {p['same_physical_state']}; "
++                 f"optimal {p[a]['optimal']} ({p[a]['value']:.3f}) vs {p[b]['optimal']} ({p[b]['value']:.3f}); "
++                 f"loss of using {a}'s best action in {b}: {p['gap_if_a_best_used_in_b']}"
++                 + (f"; Π≤1 inputs equal: {p['pi_le1_inputs_equal']}; depth-2 contents: {p['depth2_contents']}"
++                    if "pi_le1_inputs_equal" in p else ""))
++    L += ["", "## Stakes pairs (stratum 4)", ""]
++    for s in q["stakes_pairs"]:
++        L.append(f"- {s['construction']} rates {s['rates']}: ×1 {s['x1']['optimal']} vs ×4 {s['x4']['optimal']}; "
++                 f"flip: {s['flip']}")
++    L += ["", "## With-chute counterfactual (stratum 3)", ""]
++    for r in q["instances"]:
++        if r["stratum"] == 3 and r["stakes"] == 1.0 and not r["permuted"]:
++            c = r["with_chute_counterfactual"]
++            L.append(f"- {r['construction']}: as built {r['optimal_first_actions']} ({r['bayes_value_t0']:.3f}); "
++                     f"with a chute {c['optimal']} ({c['value']:.3f})")
++    L += ["", "## Reading notes (Entry 1b)", "",
++          "- Card-only 'fixes?' = the Bayes optimal first-action set with every prologue notice removed equals the full "
++          "optimal set. Under the construction-specific prior this can hold because that prior encodes the role pattern "
++          "(not disclosed by the card text); under the card-consistent superset prior (strata 2-3) no group is fixed. "
++          "Set equality does not detect containment.",
++          "- Stratum-3 superset: 3 patterns without an A<->F swap (the courier is named publicly, so a swap would change "
++          "the public action set). Stratum 2: 6 patterns (H<->N swap; both are couriers).",
++          "- Strata 1-3 labels and the 3a/3b Pi<=1 certification are evidence-resolved GIVEN the declared rules (everyone "
++          "cooperative; quiet-conversation content; rule 5 bystander clause; rule 2 lobby-sighting clause), not without them.",
++          "- 'move' includes walking back to the lobby; privileged ΔJ is ex-ante (expected over the posterior)."]
++    L += ["", "## Checks", ""] + [f"- {k}: {v}" for k, v in q["checks"].items()]
++    L += ["", f"Round B selection: {q['round_b_selection']}", ""]
++    path.write_text("\n".join(L) + "\n", encoding="utf-8")
++
++
++def main():
++    ap = argparse.ArgumentParser()
++    ap.add_argument("--freeze", action="store_true")
++    args = ap.parse_args()
++    insts = G.generate()
++    head = os.popen(f'git -C "{ROOT}" rev-parse HEAD').read().strip()
++    dirty = [x for x in os.popen(f'git -C "{ROOT}" status --porcelain').read().split("\n") if x.strip()]
++    recs = [instance_record(i) for i in insts]
++    prs, stakes = pairs(insts)
++    by_id = {r["instance_id"]: r for r in recs}
++    checks = {
++        "instances": len(recs), "groups": len({r["group_id"] for r in recs}),
++        "superset_q_and_posterior_match_all": all(r["superset"]["max_abs_q_diff"] < TOL and r["superset"]["focal_posterior_equal"]
++                                                  for r in recs if "superset" in r),
++        "evidence_resolved_access_status_unique_strata_1_3": all(len(f["access_status_set"]) == 1 for r in recs
++                                                                if r["stratum"] < 4 for f in r["focal"]),
++        "stratum4_stakes_flip_all": all(s["flip"] for s in stakes),
++        "focal_units_in_visible_candidates_all": all(r["focal_in_candidates"] for r in recs),
++        "permuted_variant_same_optimal_value": all(
++            abs(by_id[r["instance_id"]]["bayes_value_t0"] - by_id[r["instance_id"].replace("perm0", "perm1")]["bayes_value_t0"]) < TOL
++            for r in recs if not r["permuted"]),
++        "card_only_fixes_best_action": sorted(r["instance_id"] for r in recs if r["card_only_fixes_best_action"]),
++        "superset_card_only_fixes_best_action": sorted(r["instance_id"] for r in recs
++                                                       if r.get("superset", {}).get("card_only_fixes_best_action")),
++        "self_location_candidates_present": sorted({r["instance_id"] for r in recs if r["self_location_candidates"]}),
++        "max_oracle_seconds": max(r["oracle_seconds"] for r in recs),
++    }
++    q = {"generated_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "git_commit": head, "dirty_paths": dirty,
++         "instances": recs, "pairs": prs, "stakes_pairs": stakes, "checks": checks,
++         "round_b_selection": round_b_selection()}
++    (OUT / "qualification.json").write_text(json.dumps(q, indent=1, sort_keys=True) + "\n", encoding="utf-8")
++    write_md(q, OUT / "qualification.md")
++    print(json.dumps(checks, indent=1))
++    if args.freeze:
++        freeze(insts, q)
++
++
++def freeze(insts, q):
++    prompts = load_prompts("pilot-v2.1")
++    inst_rows = {}
++    for inst in insts:
++        w, h = t0(inst.scenario, inst.hidden)
++        cfg = inst.scenario.config
++        card = task_card(cfg, inst.scenario.brief, rev=6)
++        pol = policy_messages(prompts, cfg, inst.scenario.brief, h, None, 6)[0][1]["content"]
++        inst_rows[inst.instance_id] = {
++            "group_id": inst.group_id, "stratum": inst.stratum, "construction": inst.construction,
++            "distractor": inst.distractor, "variant": inst.variant.tag, "hidden_sha256": sha_text(json.dumps(inst.hidden)),
++            "agent_view_t0_sha256": sha_text(json.dumps(h.to_agent_dict(), sort_keys=True)),
++            "card_sha256": sha_text(card), "public_model_sha256": sha_text(cfg.public_model),
++            "policy_prompt_t0_direct_sha256": sha_text(pol),
++            "focal_units": [str(u) for u in G.focal_units(inst)],
++            "unit_prompt_sha256": {str(u): sha_text(unit_messages(prompts, cfg, inst.scenario.brief, h, u, "pilot-v2.1", 6)[0][1]["content"])
++                                   for u in G.focal_units(inst)}}
++    src = ["src/officeminds/devgen3.py", "src/officeminds/world.py", "src/officeminds/scenarios.py",
++           "src/officeminds/episode.py", "src/vomi/oracle.py", "src/vomi/units.py", "src/vomi/pilot.py",
++           "src/vomi/fidelity.py", "src/vomi/unit_schema.py", "src/vomi/graph.py", "src/vomi/clients.py",
++           "scripts/qualify_dev_v3.py", "scripts/run_dev_v3_notes.py", "scripts/report_dev_v3.py",
++           "prompts/pilot-v1/policy_system.txt", "prompts/pilot-v2.1/unit_system.txt"]
++    model = json.loads((ROOT / "configs" / "models" / "local_gpt_oss_20b.json").read_text())
++    fz = {"version": G.DEV_VERSION, "base_seed": G.BASE_SEED, "created_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
++          "git_commit": q["git_commit"], "dirty_paths": q["dirty_paths"],
++          "source_sha256": {f: sha_file(f) for f in src}, "people_rules_r6_sha256": sha_text(PEOPLE_RULES_R6),
++          "prompt_sha256": prompt_hashes("pilot-v2.1"), "render_revision": 6, "package": "pilot-v2.1",
++          "strata": G.STRATA, "constructions": G.CONSTRUCTIONS, "distractor_rule": "LEVELS[(g + stratum) % 3]",
++          "round_b_selection": q["round_b_selection"],
++          "round_b_model": {"config": "configs/models/local_gpt_oss_20b.json", "model": model["model"],
++                            "hf_snapshot": model["hf_snapshot"], "notes_decoding": model["decoding"],
++                            "policy_decoding": {**model["decoding"], "temperature": 1.0}},
++          "qualification_sha256": sha_file("reports/dev-v3-block/qualification.json"),
++          "instances": inst_rows}
++    (OUT / "dev-v3-freeze.json").write_text(json.dumps(fz, indent=1, sort_keys=True) + "\n", encoding="utf-8")
++    print("freeze written", OUT / "dev-v3-freeze.json")
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/report_dev_v3.py b/scripts/report_dev_v3.py
+new file mode 100644
+index 0000000..3916421
+--- /dev/null
++++ b/scripts/report_dev_v3.py
+@@ -0,0 +1,170 @@
++"""dev-v3 Round B report (analysis fixed before outcomes: experiment-plan.md Entry 2 + Entry 1a R10).
++
++    python3 scripts/report_dev_v3.py <run_dir> [--tag local|api]   -> reports/dev-v3-block/roundB-results-<tag>.md/.json
++"""
++
++from __future__ import annotations
++
++import argparse
++import json
++import random
++import sys
++from collections import defaultdict
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++
++from officeminds import devgen3 as G  # noqa: E402
++from vomi.fidelity import robot_known_values, score_output_v3  # noqa: E402
++from vomi.pilot import PACKAGES  # noqa: E402
++
++sys.path.insert(0, str(ROOT / "scripts"))
++from run_dev_v3_notes import CONDITIONS, notes_path, reference_and_privileged, states, t0  # noqa: E402
++
++EPS = 0.05
++
++
++def classify(ds: list[float]) -> str:
++    """R10 stratum classification from per-state paired differences (condition - none, mean over draws)."""
++    m = round(sum(ds) / len(ds), 9)  # exact-decimal boundary (fixed after Round B: 0.04999999999999999 is +0.05)
++    ds = [round(d, 9) for d in ds]
++    if m >= EPS and sum(d > 0 for d in ds) >= 3:
++        return "positive"
++    if m <= -EPS and sum(d < 0 for d in ds) >= 3:
++        return "negative"
++    if abs(m) < EPS and all(abs(d) <= 0.10 for d in ds):
++        return "null"
++    return "inconclusive"
++
++
++def overall(cls: dict[int, str]) -> str:
++    pos = sum(cls[s] == "positive" for s in (2, 3, 4))
++    nulneg = sum(cls[s] in ("null", "negative") for s in (2, 3, 4))
++    if pos >= 2 and cls[1] != "negative":
++        return "headroom present"
++    if pos == 0 and nulneg >= 2:
++        return "no measurable explicit-note headroom"
++    return "inconclusive"
++
++
++def boot_mean(ds, n=2000, seed=0):
++    rng = random.Random(seed)
++    xs = sorted(sum(rng.choice(ds) for _ in ds) / len(ds) for _ in range(n))
++    return xs[int(0.025 * n)], xs[int(0.975 * n) - 1]
++
++
++def main():
++    ap = argparse.ArgumentParser()
++    ap.add_argument("run_dir")
++    ap.add_argument("--tag", default="local")
++    args = ap.parse_args()
++    run = Path(args.run_dir)
++    eps = [json.loads(l) for l in (run / "episodes.jsonl").read_text().splitlines() if l.strip()]
++    manifest = json.loads((run / "manifest.json").read_text())
++    frozen = json.loads(notes_path(args.tag).read_text())
++    qual = {r["instance_id"]: r for r in json.loads((ROOT / "reports/dev-v3-block/qualification.json").read_text())["instances"]}
++    sts = {st["state_id"]: st for st in states()}
++    cell = defaultdict(list)
++    blocked = [e for e in eps if "blocked" in e]
++    for e in eps:
++        if "blocked" not in e:
++            cell[(e["state_id"], e["condition"])].append(e)
++    rows, per_state = [], {}
++    for sid, st in sts.items():
++        per_state[sid] = {}
++        for c in CONDITIONS:
++            es = cell[(sid, c)]
++            rets = [e["return_"] for e in es]
++            per_state[sid][c] = sum(rets) / len(rets) if rets else None
++            rows.append({"state_id": sid, "stratum": st["inst"].stratum, "construction": st["inst"].construction,
++                         "condition": c, "n": len(es), "returns": [round(r, 3) for r in rets],
++                         "outcomes": [e["outcome"] for e in es], "steps": [e["steps"] for e in es],
++                         "first_actions": [e["actions"][0] if e["actions"] else None for e in es],
++                         "fallbacks": sum(v.get("fallbacks", 0) for e in es for v in e["usage"].values()),
++                         "failed_attempts": sum(v.get("attempts_failed", 0) for e in es for v in e["usage"].values()),
++                         "bayes_v_t0": qual[sid]["bayes_value_t0"], "bayes_optimal": qual[sid]["optimal_first_actions"]})
++    readings, strata_tab = {}, {}
++    for c in CONDITIONS[1:]:
++        cls = {}
++        for s in (1, 2, 3, 4):
++            ds = [per_state[sid][c] - per_state[sid]["none"] for sid, st in sts.items() if st["inst"].stratum == s
++                  and per_state[sid][c] is not None and per_state[sid]["none"] is not None]
++            cls[s] = classify(ds) if len(ds) == 4 else "incomplete"
++            strata_tab[(c, s)] = {"d_s": [round(d, 4) for d in ds], "mean": round(sum(ds) / len(ds), 4) if ds else None,
++                                  "boot95": [round(x, 4) for x in boot_mean(ds)] if ds else None, "class": cls[s]}
++        readings[c] = overall(cls) if "incomplete" not in cls.values() else "incomplete"
++    # note fidelity vs the aligned public-model posterior (scoring v3.1) and truth
++    fid = []
++    for sid, st in sts.items():
++        inst = st["inst"]
++        w, h = t0(inst)
++        for u in st["units"]:
++            note = frozen["states"][sid]["notes"]["inferred"].get(str(u))
++            _, _, post = reference_and_privileged(inst, u)
++            cfg = inst.scenario.config
++            domain = list(cfg.fact_domains[cfg.query_facts[0]])
++            vals = PACKAGES["pilot-v2.1"].schema(domain, u.variable)["properties"]["hypotheses"]["items"]["properties"]["value"]["enum"]
++            from vomi.units import content
++            s = score_output_v3(note, content(w, u)[0], post, robot_known_values(h, cfg.recipient), vals, False)
++            fid.append({"state_id": sid, "unit": str(u), "status": (note or {}).get("status"),
++                        "category": s.get("category"), "content_category": s.get("content_category"),
++                        "top": s.get("top"), "truth": content(w, u)[0], "posterior": post,
++                        "tv_posterior": s.get("tv_posterior"), "unsupported_mass": s.get("unsupported_mass")})
++    usage = defaultdict(lambda: defaultdict(float))
++    for e in eps:
++        if "blocked" in e:
++            continue
++        for k, v in e["usage"].items():
++            for f in ("calls", "prompt_tokens", "completion_tokens", "latency_s"):
++                usage[e["condition"]][f"{k}_{f}"] += v.get(f, 0)
++    note_usage = defaultdict(float)
++    for sid, v in frozen["states"].items():
++        for u, call in v["calls"].items():
++            for a in call["attempts"]:
++                note_usage["calls"] += 1
++                note_usage["prompt_tokens"] += a.get("prompt_tokens") or 0
++                note_usage["completion_tokens"] += a.get("completion_tokens") or 0
++    identical = {}
++    for sid, v in frozen["states"].items():
++        r = v["rendered_notes_sha256"]
++        identical[sid] = [(a, b) for i, a in enumerate(CONDITIONS) for b in CONDITIONS[i + 1:] if r[a] == r[b]]
++    res = {"run_id": manifest["run_id"], "tag": args.tag, "episodes": len(eps) - len(blocked), "blocked": len(blocked),
++           "rows": rows, "strata": {f"{c}|{s}": v for (c, s), v in strata_tab.items()}, "readings": readings,
++           "fidelity": fid, "usage_by_condition": usage, "note_usage": note_usage, "identical_conditions": identical,
++           "wall_clock_s": manifest.get("wall_clock_s")}
++    outj = ROOT / "reports" / "dev-v3-block" / f"roundB-results-{args.tag}.json"
++    outj.write_text(json.dumps(res, indent=1, sort_keys=True, default=float) + "\n")
++    L = [f"# Round B results ({args.tag}) — run `{manifest['run_id']}`", "",
++         f"Generated by `scripts/report_dev_v3.py`. {res['episodes']} episodes, {res['blocked']} blocked. Development data; "
++         "per-state draws first; the bootstrap is descriptive (4 dependent states per stratum).", "",
++         "## Per state and condition (raw returns per draw)", "",
++         "| state | Bayes V* (opt) | none | inferred | reference | privileged |", "|---|---|---|---|---|---|"]
++    for sid, st in sts.items():
++        cells = []
++        for c in CONDITIONS:
++            r = next(x for x in rows if x["state_id"] == sid and x["condition"] == c)
++            cells.append(" ".join(f"{v:+.2f}" for v in r["returns"]) + f" ({'/'.join(sorted(set(r['first_actions']), key=str))})")
++        q = qual[sid]
++        L.append(f"| {sid.replace('dev-v3-', '')} | {q['bayes_value_t0']:.3f} ({', '.join(q['optimal_first_actions'])}) | " + " | ".join(cells) + " |")
++    L += ["", "## Stratum classification (R10; d_s = condition − none per state, mean over draws)", "",
++          "| condition | stratum | d_s | mean | boot95 (descr.) | class |", "|---|---|---|---|---|---|"]
++    for (c, s), v in strata_tab.items():
++        L.append(f"| {c} | {s} | {v['d_s']} | {v['mean']} | {v['boot95']} | {v['class']} |")
++    L += ["", "**Readings (pre-declared rule):** " + "; ".join(f"{c}: {r}" for c, r in readings.items())
++          + " (privileged is never counted as deployable value).", "",
++          "## Inferred-note fidelity (vs the aligned public-model posterior; scoring v3.1)", "",
++          "| state | unit | status | category | content cat. | top | truth | posterior |", "|---|---|---|---|---|---|---|---|"]
++    for f in fid:
++        L.append(f"| {f['state_id'].replace('dev-v3-', '')} | {f['unit']} | {f['status']} | {f['category']} | "
++                 f"{f['content_category']} | {f['top']} | {f['truth']} | {f['posterior']} |")
++    L += ["", f"Identical rendered conditions: { {k.replace('dev-v3-', ''): v for k, v in identical.items() if v} or 'none'}", "",
++          f"Note generation usage: {dict(note_usage)}", "", "Policy usage by condition (sums):"]
++    for c, u in usage.items():
++        L.append(f"- {c}: " + ", ".join(f"{k} {v:.0f}" for k, v in sorted(u.items())))
++    (ROOT / "reports" / "dev-v3-block" / f"roundB-results-{args.tag}.md").write_text("\n".join(L) + "\n", encoding="utf-8")
++    print(json.dumps(readings), outj)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/run_dev_v3_notes.py b/scripts/run_dev_v3_notes.py
+new file mode 100644
+index 0000000..fd6db78
+--- /dev/null
++++ b/scripts/run_dev_v3_notes.py
+@@ -0,0 +1,301 @@
++"""dev-v3 Round B: fresh-context value-of-notes sanity check (experiment-plan.md Entry 2 + Entry 1a R8-R12).
++
++    python3 scripts/run_dev_v3_notes.py verify                  # frozen dev-v3 hashes == current code (no calls)
++    python3 scripts/run_dev_v3_notes.py notes                   # freeze note payloads (local model, temperature 0)
++    python3 scripts/run_dev_v3_notes.py render                  # rendered MIND NOTES per state/condition (no calls)
++    python3 scripts/run_dev_v3_notes.py policy --replicates 3   # local policy, temperature 1.0, unseeded
++    (--config configs/models/api_gpt_6_1_sol.json --tag api for the optional B2 batch, after its own notes stage)
++
++States: the 4 variants of each hash-selected group (dev-v3-freeze.json round_b_selection): 16 t0 states.
++Conditions (fixed allocation = the construction's focal units at t0; no further allocation; no refresh; notes retained
++and shown at every step with their t0 timestamp):
++  none        no explicit notes (direct rendering)
++  inferred    pilot-v2.1 note from the same backbone, r6 rules + public model, legal visible history only
++  reference   exact public-model posterior of the unit's content given the t0 history (plain posterior b_h), plus
++              one `unresolved` line giving P(the belief / view is correct now) for K units (R8)
++  privileged  the true content (p = 1) and its true correctness, same format. PRIVILEGED diagnostic only.
++Payloads are frozen (sha256) before any policy outcome. Every attempt is logged; truncated outputs count as failed
++attempts; after 3 failed attempts the policy falls back to wait() (flagged) and a note is null (no note shown).
++"""
++
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import os
++import sys
++import time
++from concurrent.futures import ThreadPoolExecutor
++from dataclasses import asdict
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++
++from officeminds import devgen3 as G  # noqa: E402
++from officeminds.episode import VisibleHistory  # noqa: E402
++from vomi import runlog  # noqa: E402
++from vomi.clients import BudgetExceeded, make_client  # noqa: E402
++from vomi.graph import PerspectiveGraph  # noqa: E402
++from vomi.oracle import ExactOracle  # noqa: E402
++from vomi.pilot import (PACKAGES, call_with_protocol, describe_unit, load_prompts, policy_messages,  # noqa: E402
++                        prompt_hashes, run_episode_arm, task_card, unit_messages)
++from vomi.units import KNOWLEDGE, Unit, content, default_holds  # noqa: E402
++
++PACKAGE, REV = "pilot-v2.1", 6
++MARKERS = ("Watching a quiet conversation tells a bystander nothing", "PUBLIC MODEL OF THIS TASK")
++CONDITIONS = ("none", "inferred", "reference", "privileged")
++FREEZE = ROOT / "reports" / "dev-v3-block" / "dev-v3-freeze.json"
++DATA = ROOT / "data" / "dev-v3-block"  # PRIVILEGED payloads (gitignored)
++RUNS = Path(os.environ.get("OFFICEMINDS_RUNS", Path.home() / "officeminds-runs")) / "dev-v3-notes"
++
++
++def sha(obj) -> str:
++    return hashlib.sha256((obj if isinstance(obj, str) else json.dumps(obj, sort_keys=True)).encode()).hexdigest()
++
++
++class LengthGuard:
++    """R11: an output cut off at max_tokens is a failed attempt even if its prefix happens to parse."""
++
++    def __init__(self, inner):
++        self.inner, self.model = inner, getattr(inner, "model", "?")
++        self.ledger = getattr(inner, "ledger", None)
++
++    def chat(self, messages, **params):
++        r = self.inner.chat(messages, **params)
++        if (r.finish_reason == "length" or str(r.finish_reason or "").startswith("incomplete")) and not r.error:
++            r.error = "truncated: finish_reason=length"
++        return r
++
++
++def states():
++    fz = json.loads(FREEZE.read_text())
++    sel = set(fz["round_b_selection"].values())
++    out = []
++    for inst in G.generate():
++        if inst.construction in sel:
++            out.append({"state_id": inst.instance_id, "inst": inst, "units": G.focal_units(inst)})
++    assert len(out) == 16, len(out)
++    return out
++
++
++def t0(inst):
++    w = inst.scenario.build(inst.hidden)
++    return w, VisibleHistory(inst.scenario.brief, [(None, w.reset())])
++
++
++def verify(_args=None):
++    """The frozen manifest must match what the current code renders (refuse to run otherwise)."""
++    fz = json.loads(FREEZE.read_text())
++    bad = [f for f, h in fz["source_sha256"].items() if hashlib.sha256((ROOT / f).read_bytes()).hexdigest() != h]
++    prompts = load_prompts(PACKAGE)
++    for inst in G.generate():
++        row = fz["instances"][inst.instance_id]
++        w, h = t0(inst)
++        cfg = inst.scenario.config
++        if sha(json.dumps(h.to_agent_dict(), sort_keys=True)) != row["agent_view_t0_sha256"]:
++            bad.append(inst.instance_id + ":agent_view")
++        if sha(task_card(cfg, inst.scenario.brief, rev=6)) != row["card_sha256"]:
++            bad.append(inst.instance_id + ":card")
++        pol = policy_messages(prompts, cfg, inst.scenario.brief, h, None, REV)[0][1]["content"]
++        if sha(pol) != row["policy_prompt_t0_direct_sha256"]:
++            bad.append(inst.instance_id + ":policy_prompt")
++        if [str(u) for u in G.focal_units(inst)] != row["focal_units"]:
++            bad.append(inst.instance_id + ":focal")
++    if prompt_hashes(PACKAGE) != fz["prompt_sha256"]:
++        bad.append("prompts")
++    if bad:
++        raise SystemExit(f"FREEZE MISMATCH: {bad}")
++    print("freeze verified:", FREEZE.name, "instances", len(fz["instances"]))
++    return fz
++
++
++def computed_note(u: Unit, cfg, dist: dict[str, float], p_correct: float | None, kind: str) -> dict:
++    hyps = [{"value": v, "p": round(p, 4)} for v, p in sorted(dist.items()) if p > 0]
++    big = max(hyps, key=lambda h: h["p"])
++    big["p"] = round(big["p"] + 1.0 - sum(h["p"] for h in hyps), 4)
++    unresolved = []
++    if u.variable == KNOWLEDGE and p_correct is not None:
++        what = "this belief" if u.depth == 1 else f"this view of {u.path[1]}'s belief"
++        unresolved = [f"Under the public model, the probability that {what} is correct now is {p_correct:.2f}"]
++    return {"path": list(u.path), "variable": u.variable, "about": describe_unit(u, cfg)[1], "as_of_step": 0,
++            "status": "grounded" if max(dist.values()) >= 0.8 else "uncertain", "hypotheses": hyps,
++            "unresolved": unresolved, "evidence_ids": [], "rule_ids": [], "source": kind}
++
++
++def reference_and_privileged(inst, u):
++    w, h = t0(inst)
++    o = ExactOracle(inst.scenario, h)  # plain posterior b_h under the declared public model (R7)
++    dist, corr = {}, 0.0
++    for p, x in o.belief:
++        v = content(x, u)[0]
++        dist[v] = dist.get(v, 0.0) + p
++        corr += p * default_holds(x, u)
++    cfg = inst.scenario.config
++    ref = computed_note(u, cfg, dist, corr, "reference")
++    priv = computed_note(u, cfg, {content(w, u)[0]: 1.0}, 1.0 if default_holds(w, u) else 0.0, "privileged")
++    return ref, priv, dist
++
++
++def notes_path(tag):
++    return DATA / f"roundB-notes-{tag}.json"
++
++
++def stage_notes(args):
++    verify()
++    path = notes_path(args.tag)
++    if path.exists():
++        raise SystemExit(f"{path} exists: payloads are frozen; refusing to regenerate")
++    cfg_m = json.loads(Path(args.config).read_text())
++    decoding = dict(cfg_m["decoding"])
++    if args.tag == "api":
++        decoding = {**decoding, "reasoning_effort": "low", "max_tokens": 6000}
++    client = LengthGuard(make_client(cfg_m))
++    pkg, prompts = PACKAGES[PACKAGE], load_prompts(PACKAGE)
++    out = {"package": PACKAGE, "render_revision": REV, "model": cfg_m["model"], "decoding": decoding, "tag": args.tag,
++           "prompt_sha256": prompt_hashes(PACKAGE)["unit_system"], "started_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
++           "freeze_sha256": hashlib.sha256(FREEZE.read_bytes()).hexdigest(), "states": {}}
++    for st in states():
++        inst = st["inst"]
++        cfg = inst.scenario.config
++        w, h = t0(inst)
++        row = {"notes": {c: {} for c in CONDITIONS[1:]}, "calls": {}}
++        for u in st["units"]:
++            msgs, domain, ids = unit_messages(prompts, cfg, inst.scenario.brief, h, u, PACKAGE, REV)
++            assert all(m in msgs[1]["content"] for m in MARKERS)
++            rec = call_with_protocol(client, "unit", 0, str(u), msgs, pkg.schema(domain, u.variable),
++                                     lambda t, u=u, domain=domain, ids=ids: pkg.validate(t, u.path, u.variable, domain, ids),
++                                     decoding)
++            ref, priv, _ = reference_and_privileged(inst, u)
++            row["notes"]["inferred"][str(u)] = dict(rec.parsed, source="inferred") if rec.ok else None
++            row["notes"]["reference"][str(u)] = ref
++            row["notes"]["privileged"][str(u)] = priv
++            row["calls"][str(u)] = asdict(rec)
++            print(st["state_id"], u, "inferred ok" if rec.ok else "inferred FAILED", flush=True)
++        row["note_sha256"] = {c: sha(v) for c, v in row["notes"].items()}
++        out["states"][st["state_id"]] = row
++    out["ended_at"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
++    sts = {st["state_id"]: st for st in states()}
++    for sid, v in out["states"].items():
++        v["rendered_notes_sha256"] = {c: sha(rendered(sts[sid], c, out)[1]) for c in CONDITIONS}
++    path.parent.mkdir(parents=True, exist_ok=True)
++    path.write_text(json.dumps(out, indent=1, sort_keys=True))
++    proof = {k: out[k] for k in ("package", "render_revision", "model", "decoding", "tag", "prompt_sha256", "started_at",
++                                 "ended_at", "freeze_sha256")}
++    proof["notes_file_sha256"] = sha(out["states"])
++    proof["states"] = {s: {"note_sha256": v["note_sha256"], "rendered_notes_sha256": v["rendered_notes_sha256"],
++                           "inferred_ok": {u: n is not None for u, n in v["notes"]["inferred"].items()}}
++                       for s, v in out["states"].items()}
++    pp = ROOT / "reports" / "dev-v3-block" / f"roundB-notes-freeze-{args.tag}.json"
++    pp.write_text(json.dumps(proof, indent=1, sort_keys=True) + "\n")
++    print(path, proof["notes_file_sha256"], pp)
++
++
++def condition_kwargs(st, cond, frozen):
++    if cond == "none":
++        return {"arm": "direct"}
++    notes = frozen["states"][st["state_id"]]["notes"][cond]
++    units = [u for u in st["units"] if notes.get(str(u)) is not None]  # a failed inferred note is not shown (R11)
++    return {"arm": "fixed", "initial_units": units, "allocate": False,
++            "frozen_notes": {str(u): notes[str(u)] for u in units}}
++
++
++def rendered(st, cond, frozen) -> tuple[str, str]:
++    inst = st["inst"]
++    kw = condition_kwargs(st, cond, frozen)
++    _, h = t0(inst)
++    g = None
++    if kw["arm"] != "direct":
++        g = PerspectiveGraph(recipient=inst.scenario.config.recipient, refutation_mode="fact_only")
++        for u in kw["initial_units"]:
++            note = kw["frozen_notes"][str(u)]
++            g.instantiate(u, note, note.get("evidence_ids", []), t=0, cost=0.0)
++    user = policy_messages(load_prompts(PACKAGE), inst.scenario.config, inst.scenario.brief, h, g, REV)[0][1]["content"]
++    return user, "MIND NOTES" + user.split("MIND NOTES", 1)[1].split("LEGAL ACTIONS NOW", 1)[0].rstrip()
++
++
++def stage_render(args):
++    frozen = json.loads(notes_path(args.tag).read_text())
++    out = DATA / f"roundB-policy-prompts-{args.tag}.md"  # PRIVILEGED note content: kept out of reports/
++    L = [f"# Round B ({args.tag}): t0 MIND NOTES per state and condition (rendered locally, no model calls)", ""]
++    for st in states():
++        sec = {}
++        for cond in CONDITIONS:
++            user, notes_part = rendered(st, cond, frozen)
++            assert all(m in user for m in MARKERS)
++            sec[cond] = notes_part
++            L += [f"## {st['state_id']} — {cond}", "", "```", notes_part, "```", ""]
++        same = [(a, b) for i, a in enumerate(CONDITIONS) for b in CONDITIONS[i + 1:] if sec[a] == sec[b]]
++        L += [f"identical conditions: {same or 'none'}", ""]
++    out.write_text("\n".join(L) + "\n", encoding="utf-8")
++    print(out)
++
++
++def stage_policy(args):
++    fz = verify()
++    frozen = json.loads(notes_path(args.tag).read_text())
++    cfg_m = json.loads(Path(args.config).read_text())
++    decoding = {**cfg_m["decoding"], "temperature": 1.0} if args.tag == "local" else {
++        **cfg_m["decoding"], "reasoning_effort": "low", "max_tokens": 2000}
++    sts = states()
++    for st in sts:
++        for c in CONDITIONS:
++            user, part = rendered(st, c, frozen)
++            assert all(m in user for m in MARKERS)
++            if c != "none":
++                assert sha(part) == frozen["states"][st["state_id"]]["rendered_notes_sha256"][c]
++    jobs = []  # counterbalanced: conditions rotated by (state index + replicate); full passes in order (resource rule)
++    for r in range(args.replicates):
++        for i, st in enumerate(sts):
++            for j in range(len(CONDITIONS)):
++                jobs.append((st, CONDITIONS[(i + r + j) % len(CONDITIONS)], r))
++    meta = {"stage": "policy", "tag": args.tag, "model": cfg_m["model"], "decoding": decoding, "package": PACKAGE,
++            "render_revision": REV, "replicates": args.replicates, "concurrency": args.concurrency,
++            "freeze_sha256": hashlib.sha256(FREEZE.read_bytes()).hexdigest(), "round_b_selection": fz["round_b_selection"],
++            "notes_file_sha256": sha(frozen["states"]), "prompt_sha256": prompt_hashes(PACKAGE),
++            "stage_cap_usd_env": os.environ.get("OFFICEMINDS_API_CAP_USD"),
++            "dispatch_order": [(s["state_id"], c, r) for s, c, r in jobs]}
++    manifest = runlog.new_manifest("dev-v3-notes", meta)
++    out = RUNS / manifest["run_id"]
++    out.mkdir(parents=True, exist_ok=True)
++    client = LengthGuard(make_client(cfg_m))
++
++    def job(item):
++        n, (st, cond, r) = item
++        base = {"state_id": st["state_id"], "condition": cond, "replicate": r, "dispatch_index": n}
++        try:
++            res = run_episode_arm(client, st["inst"], decoding=decoding, package=PACKAGE, rev=REV,
++                                  **condition_kwargs(st, cond, frozen))
++        except BudgetExceeded as e:
++            return {**base, "blocked": str(e)}
++        except Exception as e:  # recorded, never silently retried
++            return {**base, "blocked": f"error: {type(e).__name__}: {e}"}
++        return {**base, "units": [str(u) for u in st["units"]],
++                "note_sha256": frozen["states"][st["state_id"]]["note_sha256"].get(cond), **asdict(res)}
++
++    t_start = time.monotonic()
++    results = []
++    with (out / "episodes.jsonl").open("w") as f, ThreadPoolExecutor(args.concurrency) as pool:
++        for res in pool.map(job, enumerate(jobs)):
++            results.append(res)
++            f.write(json.dumps(res, default=str) + "\n")
++            f.flush()
++    runlog.finish(manifest, out, wall_clock_s=time.monotonic() - t_start,
++                  episodes=sum("blocked" not in r for r in results), blocked=sum("blocked" in r for r in results))
++    print(f"episodes {sum('blocked' not in r for r in results)}; blocked {sum('blocked' in r for r in results)}; out: {out}")
++
++
++def main():
++    ap = argparse.ArgumentParser()
++    ap.add_argument("stage", choices=("verify", "notes", "render", "policy"))
++    ap.add_argument("--config", default=str(ROOT / "configs" / "models" / "local_gpt_oss_20b.json"))
++    ap.add_argument("--tag", default="local", choices=("local", "api"))
++    ap.add_argument("--replicates", type=int, default=3)
++    ap.add_argument("--concurrency", type=int, default=4)
++    args = ap.parse_args()
++    {"verify": verify, "notes": stage_notes, "render": stage_render, "policy": stage_policy}[args.stage](args)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/src/officeminds/devgen3.py b/src/officeminds/devgen3.py
+new file mode 100644
+index 0000000..c501f7f
+--- /dev/null
++++ b/src/officeminds/devgen3.py
+@@ -0,0 +1,509 @@
++"""dev-v3 development generator: visible prologue + declared public model (D-014; reports/dev-v3-block).
++
++DEVELOPMENT DATA ONLY. Design: reports/dev-v3-block/experiment-plan.md, Entry 1 (fixed before any dev-v3 output).
++
++- 4 strata x 3 constructions = 12 base groups. Variants per group: stakes x1/x4 x name rotation = 4 instances.
++- One public draw per group (names, office labels and order, disclosed rates), then ONE hidden draw from a separate
++  RNG stream, shared by the group's four variants.
++- The prior of every group is built from its PublicSpec, and the "PUBLIC MODEL OF THIS TASK" text in the task card
++  is generated from the same spec, so every hidden variable, its support and its probabilities are disclosed. The
++  realized hidden values are not.
++- The robot watched a prologue in the lobby. Every lobby event is a visible notice with who else was present (see
++  world.Event.visible_as); events elsewhere are not shown.
++- No group is selected, replaced or dropped by method performance.
++"""
++
++from __future__ import annotations
++
++import random
++from dataclasses import dataclass, field
++from fractions import Fraction
++
++from .scenarios import Params, Scenario, grid
++from .world import COOPERATIVE, OBSTRUCTIVE, Event, PersonMind, World, WorldConfig
++
++DEV_VERSION = "dev-v3"
++BASE_SEED = 20261029
++NAME_POOL = ("alice", "bob", "carol", "dave", "erin", "frank", "grace", "heidi", "ivan", "judy", "kim", "leo",
++             "mia", "nadia", "omar", "pia", "quinn", "ravi", "sara", "tomas", "uma", "vik", "wen", "yara", "zane")
++OFFICE_POOL = (("office_a", "office_b", "office_c"), ("room_7", "room_12", "room_19"),
++               ("lab_north", "lab_south", "lab_west"), ("suite_1", "suite_2", "suite_3"),
++               ("desk_3", "desk_9", "desk_14"))
++STRATA = {1: "physical_stop", 2: "first_order", 3: "depth2_relay", 4: "probabilistic"}
++CONSTRUCTIONS = {1: ("1a", "1b", "1c"), 2: ("2a", "2b", "2c"), 3: ("3a", "3b", "3c"), 4: ("4a", "4b", "4c")}
++LEVELS = ("none", "plausible", "obvious")
++BASE_ROLES = {"1": ("R",), "1c": ("R", "C"), "2": ("R", "H", "N"), "3": ("R", "A", "F"), "4a": ("R", "W"),
++              "4b": ("R", "X", "Y"), "4c": ("R", "X")}
++DISTRACTOR_ROLE = {"none": (), "plausible": ("P",), "obvious": ("D",)}
++
++
++def roles_for(construction: str, level: str) -> tuple[str, ...]:
++    """Role order (names are assigned in this order and rotated by one for the permuted variant)."""
++    base = BASE_ROLES.get(construction) or BASE_ROLES[construction[0]]
++    return base + DISTRACTOR_ROLE[level]
++
++
++ROLES = {c: roles_for(c, LEVELS[(g + s) % 3]) for s, cs in {1: ("1a", "1b", "1c"), 2: ("2a", "2b", "2c"),
++         3: ("3a", "3b", "3c"), 4: ("4a", "4b", "4c")}.items() for g, c in enumerate(cs)}
++PURPOSE = {  # privileged documentation; never shown to agents
++    "1a": "physical control: announced office (drop); plausible distractor heard it too",
++    "1b": "physical control: unannounced (search); obvious distractor knows nothing",
++    "1c": "physical control: announced and corroborated by a colleague; zero mental value",
++    "2a": "first-order: quiet update to one of two couriers (give to the informed one)",
++    "2b": "first-order: informed courier departed; stale courier remains (search the other offices)",
++    "2c": "first-order recency: two quiet updates; the later listener is current",
++    "3a": "depth-2: organizer -> F -> R relay; F->R current (give F)",
++    "3b": "depth-2: F and R told separately; F current but F->R stale (do not give F)",
++    "3c": "depth-2: only F told; R uninformed; F->R = R's (stale) belief = R's location (give F)",
++    "4a": "probabilistic staleness: disclosed move rate q; stakes flip drop vs walk",
++    "4b": "probabilistic reliability: two conflicting reporters with disclosed obstruction rates",
++    "4c": "probabilistic reliability: one reporter with a stated incentive; disclosed obstruction rate",
++}
++HORIZON = 8
++
++
++def distractor_level(stratum: int, g: int) -> str:
++    return LEVELS[(g + stratum) % 3]
++
++
++# ----------------------------------------------------------------------------- public specification
++@dataclass(frozen=True)
++class HiddenVar:
++    name: str
++    description: str  # public wording used in the task card
++    dist: tuple[tuple[str, Fraction], ...]  # value -> probability (exact; disclosed)
++
++
++@dataclass(frozen=True)
++class PublicSpec:
++    group_id: str
++    stratum: int
++    construction: str
++    distractor: str
++    names: tuple[str, ...]  # role-ordered (ROLES[construction]), before any variant rotation
++    offices: tuple[str, str, str]  # listing order is part of the public draw
++    rates: tuple[tuple[str, Fraction], ...] = ()
++    version: str = DEV_VERSION
++
++    def rate(self, k: str) -> Fraction:
++        return dict(self.rates)[k]
++
++
++def _f(x) -> Fraction:
++    return Fraction(x).limit_denominator(1000)
++
++
++def draw_spec(stratum: int, g: int, seed: int = BASE_SEED) -> PublicSpec:
++    c = CONSTRUCTIONS[stratum][g]
++    level = distractor_level(stratum, g)
++    rng = random.Random(f"{seed}:{DEV_VERSION}:public:{c}")
++    names = tuple(rng.sample(NAME_POOL, len(roles_for(c, level))))
++    offices = list(OFFICE_POOL[rng.randrange(len(OFFICE_POOL))])
++    rng.shuffle(offices)
++    rates = ()
++    if c == "4a":
++        rates = (("q_moved", _f(rng.choice(("0.05", "0.06")))),)
++    elif c == "4b":
++        rx, ry = rng.choice((("0.02", "0.3"), ("0.03", "0.4")))
++        rates = (("r_X", _f(rx)), ("r_Y", _f(ry)))
++    elif c == "4c":
++        rates = (("r_incentive", _f(rng.choice(("0.05", "0.06")))),)
++    return PublicSpec(f"{DEV_VERSION}-{c}", stratum, c, level, names, tuple(offices), rates)
++
++
++# ----------------------------------------------------------------------------- visible event helpers
++class _Script:
++    """Builds an ordered t=0 prologue; lobby events carry robot-visible notices."""
++
++    def __init__(self):
++        self.events: list[Event] = []
++
++    def _add(self, kind, room, actor="", fact="", value="", text="", present=None, visible=None, t=0):
++        self.events.append(Event(f"t{t}-{len(self.events)}-{kind}", t, kind, room, actor, fact, value, text,
++                                 present, visible))
++
++    def announce(self, actor, fact, value):
++        self._add("tell", "lobby", actor, fact, value,
++                  visible=("announce", f'{actor} announces to everyone present: "{fact} = {value}"'))
++
++    def statement(self, actor, fact, value):
++        self._add("claim", "lobby", actor, fact, value, visible=("statement", f'{actor} says: "{fact} = {value}"'))
++
++    def remark(self, actor, text):
++        self._add("say", "lobby", actor, visible=("remark", f'{actor} says: "{text}"'))
++
++    def quiet(self, actor, listener, fact, value):
++        self._add("tell", "lobby", actor, fact, value, present=(actor, listener),
++                  visible=("quiet", f"{actor} talks quietly to {listener}; only {listener} can hear it, and the robot "
++                                    f"cannot hear what is said"))
++
++    def leave(self, actor, dest, building=False):
++        self._add("enter", dest, actor,
++                  visible=("leave", f"{actor} leaves the lobby" + (" and the building" if building else "")))
++
++    def arrive(self, actor):
++        self._add("enter", "lobby", actor, visible=("arrive", f"{actor} arrives in the lobby"))
++
++    def offscreen_move(self, actor, room):
++        self._add("enter", room, actor)
++
++    def self_sees(self, actor, fact, room):
++        """The mover sees where they are (r6 rule 2); off-screen."""
++        self._add("witness", room, actor, fact, room, present=(actor,))
++
++
++def _others(offices, room):
++    return [o for o in offices if o != room]
++
++
++def _uniform(values) -> tuple[tuple[str, Fraction], ...]:
++    values = list(values)
++    return tuple((v, Fraction(1, len(values))) for v in values)
++
++
++# ----------------------------------------------------------------------------- constructions
++def hidden_vars(spec: PublicSpec, n: dict) -> list[HiddenVar]:
++    """Every hidden variable of the group with its disclosed distribution (`n`: role -> name)."""
++    o, c, R = spec.offices, spec.construction, n["R"]
++    first = HiddenVar("a", f"the office {R} first went to / was first seen in", _uniform(o))
++    other = lambda nm, desc: HiddenVar(nm, desc, (("0", Fraction(1, 2)), ("1", Fraction(1, 2))))
++    yn = lambda nm, desc, p: HiddenVar(nm, desc, (("yes", p), ("no", 1 - p)))
++    intent = lambda nm, desc, p: HiddenVar(nm, desc, ((OBSTRUCTIVE, p), (COOPERATIVE, 1 - p)))
++    if c in ("1a", "1b", "1c"):
++        return [first]
++    if c in ("2a", "2b"):
++        return [first, other("m1", f"which of the two other offices {R} moved to (each equally likely)")]
++    if c == "2c":
++        return [first, other("m1", f"which of the two other offices {R} moved to first (each equally likely)"),
++                other("m2", f"which of the two offices other than that one {R} moved to next (each equally likely)")]
++    if c in ("3a", "3b", "3c"):
++        return [HiddenVar("a", f"the meeting office {n['A']} first announced", _uniform(o)),
++                other("m1", f"which of the two other offices {n['A']} changed the meeting to (each equally likely)")]
++    if c == "4a":
++        return [HiddenVar("a", f"the office {n['W']} saw {R} go into", _uniform(o)),
++                yn("moved", f"whether {R} has since moved to a different office", spec.rate("q_moved")),
++                other("m1", f"if {R} moved, which of the two other offices (each equally likely)")]
++    if c == "4b":
++        x1, x2 = sorted((n["X"], n["Y"]))
++        return [HiddenVar("a", f"the office {R} is in (both {x1} and {x2} saw {R} go there)", _uniform(o)),
++                intent("x_intent", f"whether {n['X']} is obstructive", spec.rate("r_X")),
++                intent("y_intent", f"whether {n['Y']} is obstructive", spec.rate("r_Y")),
++                other("x_lie", f"the wrong office {n['X']} names if obstructive (each other office equally likely)"),
++                other("y_lie", f"the wrong office {n['Y']} names if obstructive (each other office equally likely)")]
++    if c == "4c":
++        return [HiddenVar("a", f"the office {R} is in ({n['X']} saw {R} go there)", _uniform(o)),
++                intent("x_intent", f"whether {n['X']} is obstructive", spec.rate("r_incentive")),
++                other("x_lie", f"the wrong office {n['X']} names if obstructive (each other office equally likely)")]
++    raise ValueError(c)
++
++
++def _keep(spec: PublicSpec):
++    if spec.construction != "4b":
++        return lambda p: True
++    o = spec.offices
++
++    def claims_differ(p):
++        a = p["a"]
++        cx = a if p["x_intent"] == COOPERATIVE else _others(o, a)[int(p["x_lie"])]
++        cy = a if p["y_intent"] == COOPERATIVE else _others(o, a)[int(p["y_lie"])]
++        return cx != cy
++    return claims_differ
++
++
++def process_text(spec: PublicSpec, n: dict) -> list[str]:
++    """Public description of how this task's prologue was generated (no realized hidden values)."""
++    c, R = spec.construction, n["R"]
++    lf = f"{R}_loc"
++    coop = "Everyone in this task is cooperative: they answer questions sincerely (with what they believe)."
++    if spec.stratum in (1, 4):
++        coop += " Nobody accepts handed-over packages."
++    quiet = (f"A quiet conversation started by {R} always tells the person addressed (and only that person) the "
++             f"office {R} is about to go to.")
++    out = {
++        "1a": [f"{R} announced the office they were going to, went there, and stays there. {coop}"],
++        "1b": [f"{R} went to one of the offices without telling anyone, and stays there. {coop}"],
++        "1c": [f"{R} announced the office they were going to, went there, and stays there. {coop}"],
++        "2a": [f"{R} announced an office and went there. Later {R} moved to one of the two other offices, stopping in "
++               f"the lobby on the way. {quiet} {R} stays in the new office. {coop}"],
++        "2b": [f"{R} announced an office and went there. Later {R} moved to one of the two other offices, stopping in "
++               f"the lobby on the way. {quiet} {R} stays in the new office. People who leave the building do not "
++               f"come back during the task. {coop}"],
++        "2c": [f"{R} announced an office and went there. Later {R} moved twice, each time to an office other than the "
++               f"one they were in, stopping in the lobby before each move. {quiet} {R} stays in the last office. {coop}"],
++    }.get(c)
++    if out:
++        c1, c2 = sorted((n.get("H", ""), n.get("N", "")))  # alphabetical: role order would mark the informed courier
++        return out + [f"{c1} and {c2} accept handed-over packages and forward them to the office where they "
++                      f"believe {R} is. Nobody else accepts handed-over packages."] if c.startswith("2") else out
++    if c.startswith("3"):
++        return [f"{n['A']} organizes a meeting that {R} attends. {n['A']} announced the meeting office, later changed "
++                f"it to one of the two other offices, and conveyed the change only in the quiet conversations shown. "
++                f"A quiet conversation started by {n['A']} or {n['F']} in this task always tells the person addressed "
++                f"(and only that person) the current meeting office. Then {n['A']} left the building and does not come back during the task.",
++                f"{R} goes to, and stays in, the office where {R} believes the meeting is.",
++                f"{n['F']} accepts handed-over packages and forwards them to the office where {n['F']} thinks {R} "
++                f"will go, that is, to what {n['F']} thinks {R} believes about meeting_room. Nobody else accepts "
++                f"handed-over packages. There is no chute in this building. {coop}"]
++    if c == "4a":
++        return [f"Earlier {n['W']} saw {R} go into an office. Since then {R} may have moved to a different office "
++                f"(probability below); if so, {n['W']} did not see it. {coop}"]
++    lie = ("An obstructive person names a wrong office (each other office equally likely) and names the same wrong "
++           "office again if asked; a cooperative person answers with what they believe.")
++    if c == "4b":
++        x1, x2 = sorted((n["X"], n["Y"]))
++        return [f"Both {x1} and {x2} saw which office {R} went into; {R} stays there. Each of them is "
++                f"obstructive independently with the probability below. {lie} This task shows a case where their "
++                f"two statements differ; everyone else is cooperative."]
++    if c == "4c":
++        return [f"{n['X']} saw which office {R} went into; {R} stays there. A person who says they would rather keep "
++                f"the package is obstructive with the probability below; everyone else is cooperative. {lie}"]
++    raise ValueError(c)
++
++
++def _fmt(p: Fraction) -> str:
++    return f"{float(p):.4g}"
++
++
++def public_model_text(spec: PublicSpec, n: dict) -> str:
++    lines = ["PUBLIC MODEL OF THIS TASK (given to the robot identically in every condition; it describes how this "
++             "situation was generated. People in the scene form beliefs only as rules 1-5 describe.):"]
++    lines += [f"- {s}" for s in process_text(spec, n)]
++    lines.append("- After the prologue shown in the history, nobody but the robot moves, and people's beliefs change "
++                 "only through what is said in answer to the robot's questions. Everyone shown in the lobby at the end "
++                 "of the prologue stays there.")
++    if spec.distractor == "obvious":
++        lines.append(f"- {n['D']} was elsewhere during everything before arriving and saw and heard nothing about it.")
++    lines.append("- Hidden quantities and their probabilities (the robot does not see the realized values):")
++    for hv in hidden_vars(spec, n):
++        lines.append(f"  - {hv.description}: " + ", ".join(f"{v} {_fmt(p)}" for v, p in hv.dist)
++                     if hv.name not in ("m1", "m2", "x_lie", "y_lie") else
++                     f"  - {hv.description}")
++    return "\n".join(lines)
++
++
++def build_world(spec: PublicSpec, n: dict, stakes: float, p: dict) -> World:
++    o, c, R = spec.offices, spec.construction, n["R"]
++    lf = f"{R}_loc"
++    s = _Script()
++    people = [n[r] for r in roles_for(c, spec.distractor)]
++    rooms = {x: "lobby" for x in people}
++    minds = {x: PersonMind() for x in people}
++    facts, handoff, chute, query = {}, {}, True, [lf]
++    backstory: list[Event] = []
++    a = p["a"]
++    if spec.distractor == "obvious":
++        rooms[n["D"]] = "outside"
++
++    if c in ("1a", "1c"):
++        s.announce(R, lf, a)
++        s.leave(R, a)
++        s.self_sees(R, lf, a)
++        if c == "1c":
++            s.statement(n["C"], lf, a)
++    elif c == "1b":
++        s.leave(R, a)
++        s.self_sees(R, lf, a)
++    elif c in ("2a", "2b", "2c"):
++        s.announce(R, lf, a)
++        s.leave(R, a)
++        s.self_sees(R, lf, a)
++        m1 = _others(o, a)[int(p["m1"])]
++        s.arrive(R)
++        s.quiet(R, n["H"], lf, m1)
++        s.leave(R, m1)
++        s.self_sees(R, lf, m1)
++        if c == "2b":
++            s.leave(n["H"], "outside", building=True)
++        if c == "2c":
++            m2 = _others(o, m1)[int(p["m2"])]
++            s.arrive(R)
++            s.quiet(R, n["N"], lf, m2)
++            s.leave(R, m2)
++            s.self_sees(R, lf, m2)
++        handoff = {n["H"]: ("", lf), n["N"]: ("", lf)}
++    elif c in ("3a", "3b", "3c"):
++        A, F = n["A"], n["F"]
++        b = _others(o, a)[int(p["m1"])]
++        query, chute, facts = ["meeting_room"], False, {"meeting_room": b}
++        s.announce(A, "meeting_room", a)
++        s.statement(R, "meeting_room", a)
++        s.quiet(A, F, "meeting_room", b)
++        if c == "3a":
++            s.quiet(F, R, "meeting_room", b)
++        elif c == "3b":
++            s.quiet(A, R, "meeting_room", b)
++        s.leave(A, "outside", building=True)
++        s.leave(R, a if c == "3c" else b)
++        handoff = {F: (R, "meeting_room")}
++    elif c == "4a":
++        W = n["W"]
++        final = _others(o, a)[int(p["m1"])] if p["moved"] == "yes" else a
++        rooms[R] = final
++        backstory = [Event("bs-0-sees", -3, "witness", "hall", R, lf, a, present=(R, W))]
++        if p["moved"] == "yes":
++            backstory.append(Event("bs-1-moves", -1, "witness", final, R, lf, final, present=(R,)))
++        s.statement(W, lf, a)
++        s.remark(W, f"I saw {R} go into {a} earlier.")
++    elif c in ("4b", "4c"):
++        rooms[R] = a
++        reporters = [n["X"], n["Y"]] if c == "4b" else [n["X"]]
++        backstory = [Event("bs-0-sees", -3, "witness", "hall", R, lf, a, present=(R, *reporters))]
++        for who, key in zip(reporters, ("x", "y")):
++            minds[who] = PersonMind(intent=p[f"{key}_intent"])
++            minds[who].lies[lf] = _others(o, a)[int(p[f"{key}_lie"])]
++        for who in sorted(reporters):  # alphabetical speaking order: role order would mark the low-rate reporter
++            s.statement(who, lf, a if minds[who].intent == COOPERATIVE else minds[who].lies[lf])
++        if c == "4c":
++            s.remark(n["X"], "I'd rather keep that package myself.")
++    if spec.distractor == "obvious":
++        s.arrive(n["D"])
++        s.remark(n["D"], "I just got here.")
++    roster = tuple(sorted(people))
++    cfg = WorldConfig(adjacency={"lobby": ("hall",), "hall": ("lobby", *o), **{x: ("hall",) for x in o}},
++                      offices=tuple(o), chute_room="lobby" if chute else None, recipient=R, roster=roster,
++                      query_facts=tuple(query), fact_domains={f: tuple(o) for f in query}, handoff_routes=handoff,
++                      stakes=stakes, horizon=HORIZON, public_model=public_model_text(spec, n))
++    return World(cfg, "lobby", rooms, minds, tuple(backstory), tuple(s.events), facts)
++
++
++def prior_of(spec: PublicSpec, n: dict) -> tuple[tuple[Params, float], ...]:
++    domains = {hv.name: {v: float(pr) for v, pr in hv.dist} for hv in hidden_vars(spec, n)}
++    return grid(domains, _keep(spec))
++
++
++# ----------------------------------------------------------------------------- superset public models (R1, R2)
++SUPERSET_PATTERNS = {2: [(c, sw) for c in ("2a", "2b", "2c") for sw in (False, True)],  # H<->N swap: both couriers
++                     3: [(c, False) for c in ("3a", "3b", "3c")]}  # the courier is public, so no A<->F swap
++
++
++def pattern_names(n: dict, stratum: int, swap: bool) -> dict:
++    if not swap:
++        return dict(n)
++    m = dict(n)
++    m["H"], m["N"] = n["N"], n["H"]
++    return m
++
++
++def superset_scenario(spec: PublicSpec, n: dict, stakes: float, strip_notices: bool = False) -> Scenario:
++    """Stratum-level public model for qualification only (never shown to agents): the communication pattern
++    (construction, holder swap) is uniform over SUPERSET_PATTERNS[stratum], times that pattern's own disclosed hidden
++    variables. With strip_notices, every prologue notice is removed from the robot's observations (card-only check)."""
++    from dataclasses import replace
++    rows = []
++    pats = SUPERSET_PATTERNS[spec.stratum]
++    for c, sw in pats:
++        sp = replace(spec, construction=c)
++        for params, w in prior_of(sp, pattern_names(n, spec.stratum, sw)):
++            rows.append(((("pattern", f"{c}:{int(sw)}"),) + params, w / len(pats)))
++
++    def build(p: dict) -> World:
++        c, sw = p["pattern"].split(":")
++        sp = replace(spec, construction=c)
++        w = build_world(sp, pattern_names(n, spec.stratum, sw == "1"), stakes,
++                        {k: v for k, v in p.items() if k != "pattern"})
++        if strip_notices:
++            w.timed_events = tuple(replace(e, visible_as=None) for e in w.timed_events)
++        return w
++    return Scenario(f"{spec.group_id}-superset", f"Deliver the package to {n['R'].capitalize()}.", "superset",
++                    tuple(rows), build)
++
++
++# ----------------------------------------------------------------------------- instances
++@dataclass(frozen=True)
++class Variant3:
++    stakes: float
++    permuted: bool
++
++    @property
++    def tag(self) -> str:
++        return f"stakes{self.stakes:g}-perm{int(self.permuted)}"
++
++
++VARIANTS = (Variant3(1.0, False), Variant3(4.0, False), Variant3(1.0, True), Variant3(4.0, True))
++
++
++def role_names(spec: PublicSpec, permuted: bool) -> dict[str, str]:
++    names = list(spec.names)
++    if permuted:
++        names = names[1:] + names[:1]
++    return dict(zip(roles_for(spec.construction, spec.distractor), names))
++
++
++@dataclass(frozen=True)
++class Instance3:
++    instance_id: str
++    group_id: str
++    stratum: int
++    construction: str
++    distractor: str
++    variant: Variant3
++    roles: tuple[tuple[str, str], ...]
++    scenario: Scenario
++    hidden: Params  # PRIVILEGED: sampled once per group, shared by its variants
++    spec: PublicSpec = field(compare=False)
++
++    @property
++    def role(self) -> dict[str, str]:
++        return dict(self.roles)
++
++
++def make_scenario(spec: PublicSpec, v: Variant3) -> tuple[Scenario, dict]:
++    n = role_names(spec, v.permuted)
++    prior = prior_of(spec, n)
++    iid = f"{spec.group_id}-{v.tag}"
++    return Scenario(iid, f"Deliver the package to {n['R'].capitalize()}.", PURPOSE[spec.construction], prior,
++                    lambda prm, n=n: build_world(spec, n, v.stakes, prm)), n
++
++
++def sample_hidden(spec: PublicSpec, prior, seed: int = BASE_SEED) -> Params:
++    rng = random.Random(f"{seed}:{DEV_VERSION}:hidden:{spec.construction}")
++    params, weights = zip(*prior)
++    return rng.choices(params, weights=weights, k=1)[0]
++
++
++def generate(seed: int = BASE_SEED) -> list[Instance3]:
++    out = []
++    for stratum, cons in CONSTRUCTIONS.items():
++        for g in range(len(cons)):
++            spec = draw_spec(stratum, g, seed)
++            made = [(v, *make_scenario(spec, v)) for v in VARIANTS]
++            # the prior depends only on the public spec: identical across variants up to role names
++            hidden = sample_hidden(spec, made[0][1].prior, seed)
++            assert all(sc.prior == made[0][1].prior for _, sc, _ in made), spec.group_id
++            out += [Instance3(sc.id, spec.group_id, stratum, spec.construction, spec.distractor, v,
++                              tuple(sorted(n.items())), sc, hidden, spec) for v, sc, n in made]
++    return out
++
++
++def access_status(world: World, u) -> str:
++    """Evidence-resolution label of a unit in one world: no belief / correct now / incorrect now (the unit's
++    face-value default: a K belief matches the truth; a K(j->k) view matches k's actual belief)."""
++    from vomi.units import content, default_holds
++    if content(world, u)[0] == "unknown":
++        return "no_belief"
++    return "correct" if default_holds(world, u) else "incorrect"
++
++
++def focal_units(inst: Instance3):
++    """Fixed allocation for Round B (experiment-plan Entry 1, A.2), from the construction only."""
++    from vomi.units import K, R as Rel  # local import: officeminds must not depend on vomi at import time
++    n, c = inst.role, inst.construction
++    if inst.stratum == 1:
++        return [K(n[r]) for r in roles_for(c, inst.distractor)[1:]]
++    if c in ("2a", "2c"):
++        return [K(n["H"]), K(n["N"])]
++    if c == "2b":
++        return [K(n["N"])]
++    if inst.stratum == 3:
++        return [K(n["F"], n["R"])]
++    if c == "4a":
++        return [K(n["W"])]
++    if c == "4b":
++        return [Rel(n["X"]), Rel(n["Y"])]
++    if c == "4c":
++        return [Rel(n["X"])]
++    raise ValueError(c)
++
++
++def registry(seed: int = BASE_SEED) -> dict:
++    return {i.instance_id: (lambda s=i.scenario: s) for i in generate(seed)}
+diff --git a/src/officeminds/world.py b/src/officeminds/world.py
+index 3ee4aca..db61f5c 100644
+--- a/src/officeminds/world.py
++++ b/src/officeminds/world.py
+@@ -68,6 +68,9 @@ class Event:
+     value: str = ""
+     text: str = ""
+     present: tuple[str, ...] | None = None
++    # dev-v3: (notice kind, line) shown to the robot when the event happens in the robot's room, with who else is
++    # there. Empty for every dev-v1/v2 event, so their observations are unchanged.
++    visible_as: tuple[str, str] | None = None
+ 
+ 
+ @dataclass
+@@ -79,14 +82,16 @@ class PersonMind:
+     perceived: list[str] = field(default_factory=list)
+     # other -> intent this person assesses `other` to have (R(j->k) content).
+     assessments: dict[str, str] = field(default_factory=dict)
++    # dev-v3 lie model: fact -> the wrong value an obstructive person names (and repeats). Empty: dev-v2 rule.
++    lies: dict[str, str] = field(default_factory=dict)
+ 
+     def copy(self) -> PersonMind:
+         return PersonMind(self.intent, dict(self.beliefs), dict(self.nested), list(self.perceived),
+-                          dict(self.assessments))
++                          dict(self.assessments), dict(self.lies))
+ 
+     def signature(self) -> tuple:
+         return (self.intent, tuple(sorted(self.beliefs.items())), tuple(sorted(self.nested.items())),
+-                tuple(sorted(self.assessments.items())))
++                tuple(sorted(self.assessments.items())), tuple(sorted(self.lies.items())))
+ 
+ 
+ @dataclass(frozen=True)
+@@ -98,9 +103,11 @@ class Observation:
+     outcome: str = ""  # "" | success | error | timeout
+     reward: float = 0.0
+     done: bool = False
++    # dev-v3: ordered visible events in the robot's room: (kind, actor, line, others present at that moment)
++    notices: tuple[tuple[str, str, str, tuple[str, ...]], ...] = ()
+ 
+     def to_dict(self) -> dict:
+-        return {
++        d = {
+             "t": self.t,
+             "room": self.room,
+             "people_present": list(self.people_present),
+@@ -109,6 +116,9 @@ class Observation:
+             "reward": round(self.reward, 10),
+             "done": self.done,
+         }
++        if self.notices:  # absent for dev-v1/v2, so their serializations and hashes are unchanged
++            d["notices"] = [[k, a, line, list(p)] for k, a, line, p in self.notices]
++        return d
+ 
+ 
+ @dataclass(frozen=True)
+@@ -125,6 +135,7 @@ class WorldConfig:
+     handoff_routes: dict[str, tuple[str, str]]
+     stakes: float = 1.0
+     horizon: int = 8
++    public_model: str = ""  # dev-v3: the declared public model of this task, printed in the task card (r6)
+ 
+ 
+ class World:
+@@ -155,12 +166,14 @@ class World:
+     # ------------------------------------------------------------------ dynamics
+     def reset(self) -> Observation:
+         """Apply t=0 events and return the robot's initial observation."""
++        self._notices: list = []
+         heard = self._run_timed_events(0)
+         return self._observe(heard, reward=0.0, outcome="")
+ 
+     def step(self, action: Action) -> Observation:
+         if self.done:
+             raise RuntimeError("episode already finished")
++        self._notices = []
+         self.t += 1
+         reward = -STEP_PENALTY
+         outcome = ""
+@@ -211,7 +224,9 @@ class World:
+         mind = self.minds[person]
+         belief = mind.beliefs.get(fact, UNKNOWN)
+         if mind.intent == OBSTRUCTIVE and belief != UNKNOWN:
+-            # Deterministic lie: the first other value in the fact's domain.
++            if fact in mind.lies:  # dev-v3: the person's own (hidden, uniformly drawn) wrong value, repeated
++                return mind.lies[fact]
++            # dev-v1/v2 deterministic lie: the first other value in the fact's domain.
+             return next(v for v in self.config.fact_domains[fact] if v != belief)
+         return belief
+ 
+@@ -219,9 +234,16 @@ class World:
+         heard = []
+         for ev in self.timed_events:
+             if ev.t == t:
++                before = self.people_rooms.get(ev.actor)
+                 self._apply(ev)
+                 if ev.room == self.robot_room and ev.text:
+                     heard.append((ev.actor, ev.text))
++                if ev.visible_as and self.robot_room in (ev.room, before if ev.kind == "enter" else None):
++                    # people who saw it but did not take part (a quiet conversation's addressee is not "other")
++                    party = {ev.actor, *(ev.present or ())}
++                    others = tuple(sorted(p for p, r in self.people_rooms.items()
++                                          if r == self.robot_room and p not in party))
++                    self._notices.append((ev.visible_as[0], ev.actor, ev.visible_as[1], others))
+         return heard
+ 
+     def truth(self, fact: str) -> str:
+@@ -275,7 +297,8 @@ class World:
+ 
+     def _observe(self, heard: list[tuple[str, str]], reward: float, outcome: str) -> Observation:
+         present = tuple(sorted(p for p, r in self.people_rooms.items() if r == self.robot_room))
+-        return Observation(self.t, self.robot_room, present, tuple(heard), outcome, reward, self.done)
++        return Observation(self.t, self.robot_room, present, tuple(heard), outcome, reward, self.done,
++                           tuple(getattr(self, "_notices", ())))
+ 
+     # ------------------------------------------------------------------ utilities
+     def clone(self) -> World:
+@@ -290,6 +313,7 @@ class World:
+         w.minds = {p: m.copy() for p, m in self.minds.items()}
+         w.timed_events = self.timed_events
+         w.log = list(self.log)
++        w._notices = []
+         return w
+ 
+     def signature(self) -> tuple:
+diff --git a/src/vomi/pilot.py b/src/vomi/pilot.py
+index b4cde79..b54d158 100644
+--- a/src/vomi/pilot.py
++++ b/src/vomi/pilot.py
+@@ -144,6 +144,29 @@ PEOPLE_RULES_R5 = (  # r5 (Round 1 plan-gate fixes): every clause holds over ALL
+     "6. Some people may deliberately mislead, especially when they have a reason to.")
+ 
+ 
++PEOPLE_RULES_R6 = (  # r6 (dev-v3 block): every clause holds over ALL positive-prior dev-v3 worlds (tests/test_dev_v3.py)
++    "How people come to believe things (the same rules apply to everyone):\n"
++    "1. A person believes a fact if they saw it or heard it announced (an announcement to everyone present, or a quiet "
++    "conversation addressed to them), and keeps that belief until they see or are told otherwise, so a belief can be "
++    "outdated or false. A quiet conversation (shown as: X talks quietly to Y) is heard only by Y, the person addressed: "
++    "others present see it but do not hear it. A person who neither saw nor was told anything about a fact has no belief about it.\n"
++    "2. The recipient knows which office they are in. Nobody else learns that someone moved unless they saw it or were "
++    "told. Seeing someone in the lobby, arriving there or leaving it, does not change what anyone believes about which "
++    "office that person is in.\n"
++    "3. When someone states a value for a fact (shown as: X says: \"fact = value\", including answers to the robot's "
++    "questions, where \"I don't know.\" means no belief), everyone else present then thinks the speaker believes that "
++    "value (or has no belief), but does not adopt it. A statement gives the speaker no belief about the listeners.\n"
++    "4. Ordinary remarks (any other sentence) change no one's beliefs and no one's beliefs about beliefs. They still "
++    "tell the robot what was said, which may or may not be accurate.\n"
++    "5. Seeing someone, or hearing the same announcement as someone, does not tell a person what that other person "
++    "believes. People form beliefs about others' beliefs only from statements and announcements: listeners think the "
++    "speaker believes what the speaker stated or announced, and the speaker of an announcement or quiet conversation "
++    "thinks the listeners now believe it. Watching a quiet conversation tells a bystander nothing about what the "
++    "listener now believes.\n"
++    "6. Some people may deliberately mislead; the public model of the task says who may, how likely it is, and how "
++    "they answer.")
++
++
+ def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
+     rev = RENDER_REVISION if rev is None else rev
+     err = 0.5 * cfg.stakes
+@@ -164,7 +187,11 @@ def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
+         f"Facts that can be asked about: {', '.join(cfg.query_facts)} (possible values: "
+         + "; ".join(f"{f}: {', '.join(cfg.fact_domains[f])}" for f in cfg.query_facts) + ").",
+     ]
+-    if rev >= 5:
++    if rev >= 6:
++        lines.append(PEOPLE_RULES_R6)
++        if cfg.public_model:
++            lines.append(cfg.public_model)
++    elif rev >= 5:
+         lines.append(PEOPLE_RULES_R5)
+     elif rev == 4:
+         lines.append(PEOPLE_RULES_R4)
+@@ -182,6 +209,9 @@ RENDER_REVISION = 5  # default for NEW runs only; every script records the revis
+ # r4 (autonomous block Round 1, shared by ALL arms and packages): numbered people-rules that state the simulator's
+ #     belief contract (statements vs. ordinary remarks; beliefs about beliefs only from statements; recipient
+ #     self-location at the start only). Notes rendering is unchanged from r3.
++# r6 (dev-v3 block, D-014): dev-v3 only. Rules restated for the dev-v3 event semantics (announcements and quiet
++#     conversations during the visible prologue) plus the task's declared PUBLIC MODEL. Same rule numbering themes.
++#     Ledger: dev-v3 prologue notices render as [t0:note<i>] lines with who else was present (only dev-v3 has them).
+ # r5 (Round 1 plan gate): r4 clauses were tested only on realized draws; over the full prior, rule 5 failed for
+ #     backstory updates passed on as claims and for distrusting listeners. r5 scopes rule 1 to before the task,
+ #     rule 2/3 to during it, and qualifies rule 5. Rule numbering is unchanged (pilot-v2.1 cites RULE1..RULE6).
+@@ -194,6 +224,10 @@ def ledger(hist: VisibleHistory) -> tuple[str, list[str]]:
+         if a is not None:
+             ids.append(f"t{o.t}:action")
+             lines.append(f"  [t{o.t}:action] robot did {a}")
++        for i, (_, _, text, others) in enumerate(o.notices):  # dev-v3 only
++            eid = f"t{o.t}:note{i}"
++            ids.append(eid)
++            lines.append(f"  [{eid}] {text} ({'others present: ' + ', '.join(others) if others else 'nobody else present'})")
+         for p in o.people_present:
+             eid = f"t{o.t}:seen:{p}"
+             ids.append(eid)
+diff --git a/src/vomi/units.py b/src/vomi/units.py
+index 6b085b5..1809e82 100644
+--- a/src/vomi/units.py
++++ b/src/vomi/units.py
+@@ -104,9 +104,13 @@ def generate_candidates(config: WorldConfig, hist: VisibleHistory) -> list[Unit]
+     """Structural preconditions (outline §4.1) evaluated on robot-visible information only."""
+     observations = [o for _, o in hist.steps]
+     utterances = [u for o in observations for u in o.utterances]
+-    texts = [hist.brief] + [t for _, t in utterances]
++    notices = [n for o in observations for n in o.notices]  # dev-v3 visible prologue events
++    # statements/remarks in notices count as utterances: (speaker, the quoted text)
++    utterances += [(a, line.split('says: "', 1)[1][:-1]) for k, a, line, _ in notices if k in ("statement", "remark")]
++    texts = [hist.brief] + [t for _, t in utterances] + [line for _, _, line, _ in notices]
+ 
+-    observed = {p for o in observations for p in o.people_present} | {s for s, _ in utterances}
++    observed = ({p for o in observations for p in o.people_present} | {s for s, _ in utterances}
++                | {a for _, a, _, _ in notices} | {p for *_, ps in notices for p in ps})
+     mentioned = {p for p in config.roster if any(_mentions(t, p) for t in texts)}
+     known = sorted((observed | mentioned) & set(config.roster))
+ 
+@@ -116,7 +120,8 @@ def generate_candidates(config: WorldConfig, hist: VisibleHistory) -> list[Unit]
+             if j == k:
+                 continue
+             talked = any(s in (j, k) and _mentions(t, k if s == j else j) for s, t in utterances)
+-            together = any(j in o.people_present and k in o.people_present for o in observations)
++            together = any(j in o.people_present and k in o.people_present for o in observations) or any(
++                {j, k} <= {a, *ps} for _, a, _, ps in notices)
+             if talked or together:
+                 units.append(K(j, k))
+ 
+diff --git a/tests/test_dev_v3.py b/tests/test_dev_v3.py
+new file mode 100644
+index 0000000..1807f40
+--- /dev/null
++++ b/tests/test_dev_v3.py
+@@ -0,0 +1,336 @@
++"""dev-v3 qualification invariants (reports/dev-v3-block/experiment-plan.md, A.3 checks 1-4, 8-10).
++
++Every check runs over ALL positive-prior worlds of every dev-v3 instance, at t0 and after every legal first action.
++"""
++
++from __future__ import annotations
++
++import re
++from fractions import Fraction
++
++import pytest
++
++from officeminds.devgen3 import (CONSTRUCTIONS, ROLES, VARIANTS, draw_spec, generate, hidden_vars, role_names)
++from officeminds.episode import VisibleHistory, episode_record, fixed_policy, replay, run_episode
++from officeminds.world import COOPERATIVE, UNKNOWN, Action, legal_actions
++from vomi.oracle import ExactOracle
++from vomi.pilot import PEOPLE_RULES_R6, ledger, task_card
++from vomi.units import K, content
++
++INSTS = generate()
++BY_ID = {i.instance_id: i for i in INSTS}
++
++
++def worlds(inst):
++    for params, _ in inst.scenario.prior:
++        yield params, inst.scenario.build(params)
++
++
++def after_first_actions(inst):
++    """(world, history) at t0 and after each legal first action, for every prior world."""
++    for params, w in worlds(inst):
++        o0 = w.reset()
++        yield w, VisibleHistory(inst.scenario.brief, [(None, o0)])
++        for a in legal_actions(w.config, o0):
++            w2 = inst.scenario.build(params)
++            o = w2.reset()
++            yield w2, VisibleHistory(inst.scenario.brief, [(None, o), (a, w2.step(a))])
++
++
++def test_counts_and_balance():
++    assert len(INSTS) == 48 and len({i.group_id for i in INSTS}) == 12
++    levels = {}
++    for i in INSTS:
++        levels.setdefault(i.stratum, set()).add(i.distractor)
++    assert all(v == {"none", "plausible", "obvious"} for v in levels.values())
++
++
++def test_variants_share_hidden_draw_and_prior():
++    for g in {i.group_id for i in INSTS}:
++        members = [i for i in INSTS if i.group_id == g]
++        assert len(members) == 4 and len({i.hidden for i in members}) == 1
++        assert len({i.scenario.prior for i in members}) == 1
++
++
++def test_reference_inputs_are_the_disclosed_spec():
++    """A.3 check 3: hidden variables, supports and probabilities in the prior == the disclosed spec in the card."""
++    for inst in INSTS:
++        n = inst.role
++        hv = hidden_vars(inst.spec, n)
++        card = task_card(inst.scenario.config, inst.scenario.brief, rev=6)
++        names = sorted(p[0] for p in inst.scenario.prior[0][0])
++        assert names == sorted(h.name for h in hv)
++        for h in hv:
++            assert h.description in card
++            assert sum(p for _, p in h.dist) == 1
++            if h.name not in ("m1", "m2", "x_lie", "y_lie"):  # these are printed as "each equally likely"
++                for v, p in h.dist:
++                    assert f"{v} {float(p):.4g}" in card
++            else:
++                assert "equally likely" in h.description and all(p == Fraction(1, 2) for _, p in h.dist)
++        # the prior is the product of the disclosed distributions (filtered by the disclosed 4b conflict rule)
++        total = 0.0
++        for params, w in inst.scenario.prior:
++            d = dict(params)
++            prod = 1.0
++            for h in hv:
++                prod *= float(dict(h.dist)[d[h.name]])
++            total += prod
++        for params, w in inst.scenario.prior:
++            d = dict(params)
++            prod = 1.0
++            for h in hv:
++                prod *= float(dict(h.dist)[d[h.name]])
++            assert abs(w - prod / total) < 1e-12
++
++
++def test_card_has_r6_and_public_model_and_no_hidden_values():
++    for inst in INSTS:
++        cfg = inst.scenario.config
++        card = task_card(cfg, inst.scenario.brief, rev=6)
++        assert PEOPLE_RULES_R6 in card and "PUBLIC MODEL OF THIS TASK" in card
++        assert cfg.roster == tuple(sorted(cfg.roster))
++        # card and brief identical in every world of the instance (no world-specific text)
++        cards = {task_card(w.config, inst.scenario.brief, rev=6) for _, w in worlds(inst)}
++        assert len(cards) == 1
++
++
++def traced(w):
++    """Wrap World._apply to record (event, people present when it applied, minds before, minds after)."""
++    rec = []
++    orig = w._apply
++
++    def spy(ev):
++        before = {p: m.copy() for p, m in w.minds.items()}
++        orig(ev)
++        present = ev.present if ev.present is not None else tuple(p for p, r in w.people_rooms.items() if r == ev.room)
++        rec.append((ev, present, before, {p: m.copy() for p, m in w.minds.items()}))
++    w._apply = spy
++    return rec
++
++
++def all_traces(inst):
++    """Traced t0 prologue of every prior world, plus (on a fresh world each) every legal first ask's answer."""
++    for params, _ in inst.scenario.prior:
++        w = inst.scenario.build(params)
++        rec = traced(w)
++        o = w.reset()
++        yield rec
++        for act in [x for x in legal_actions(w.config, o) if x.kind == "ask"]:
++            w2 = inst.scenario.build(params)
++            rec2 = traced(w2)
++            w2.reset()
++            del rec2[:]  # only the answer
++            w2.step(act)
++            yield rec2
++
++
++def test_rule1_and_rule5_quiet_conversations():
++    """Only the addressee adopts; speaker and addressee form the stated nested beliefs; bystanders' beliefs and
++    nested beliefs are unchanged (rule 1, rule 5 bystander clause)."""
++    n_quiet = 0
++    for inst in INSTS:
++        for rec in all_traces(inst):
++            for ev, present, before, after in rec:
++                if not (ev.visible_as and ev.visible_as[0] == "quiet"):
++                    continue
++                n_quiet += 1
++                speaker, addressee = ev.present
++                assert ev.actor == speaker and after[addressee].beliefs[ev.fact] == ev.value
++                assert after[addressee].nested[(speaker, ev.fact)] == ev.value
++                assert after[speaker].nested[(addressee, ev.fact)] == ev.value
++                lobby = [p for p in after if p not in ev.present]
++                for p in lobby:
++                    assert after[p].beliefs == before[p].beliefs and after[p].nested == before[p].nested
++    assert n_quiet > 0
++
++
++def test_rule2_recipient_knows_own_office():
++    for inst in INSTS:
++        R = inst.scenario.config.recipient
++        lf = f"{R}_loc"
++        for w, h in after_first_actions(inst):
++            if lf in w.config.query_facts:
++                assert w.minds[R].beliefs.get(lf) == w.people_rooms[R]
++
++
++def test_rule2_lobby_sightings_change_no_beliefs():
++    """Arriving, leaving and being seen (enter events) change no one's beliefs or nested beliefs."""
++    n = 0
++    for inst in INSTS:
++        for rec in all_traces(inst):
++            for ev, present, before, after in rec:
++                if ev.kind == "enter":
++                    n += 1
++                    assert all(after[p].signature() == before[p].signature() for p in after)
++    assert n > 0
++
++
++def test_rule3_statements_are_not_adopted_and_give_speaker_nothing():
++    """t0 statements and every first-question answer, in every prior world."""
++    n = 0
++    for inst in INSTS:
++        for rec in all_traces(inst):
++            for ev, present, before, after in rec:
++                if ev.kind != "claim":
++                    continue
++                listeners = [p for p in present if p != ev.actor]
++                n += len(listeners)
++                for p in after:
++                    assert after[p].beliefs == before[p].beliefs
++                assert after[ev.actor].nested == before[ev.actor].nested
++                for p in listeners:
++                    assert after[p].nested[(ev.actor, ev.fact)] == ev.value
++    assert n > 0
++
++
++def test_rule4_remarks_change_nothing():
++    for inst in INSTS:
++        for rec in all_traces(inst):
++            for ev, present, before, after in rec:
++                if ev.kind == "say":
++                    assert all(after[p].signature() == before[p].signature() for p in after)
++
++
++def test_rule5_nested_beliefs_only_from_statements_and_announcements():
++    """Every change to a nested belief j->k is caused by a statement/announcement BY k that j heard, or by j's own
++    announcement/quiet conversation that k heard (t0 prologue and every first-question answer)."""
++    for inst in INSTS:
++        for rec in all_traces(inst):
++            for ev, present, before, after in rec:
++                for j in after:
++                    for key, v in after[j].nested.items():
++                        if before[j].nested.get(key) == v:
++                            continue
++                        k, f = key
++                        assert ev.kind in ("tell", "claim") and ev.fact == f and ev.value == v, (inst.instance_id, ev)
++                        assert (ev.actor == k and j in present) or (ev.actor == j and ev.kind == "tell" and k in present)
++
++
++def test_quiet_notice_names_speaker_and_excludes_addressee_from_others():
++    for inst in INSTS:
++        o = inst.scenario.build(inst.hidden).reset()
++        for kind, actor, line, others in o.notices:
++            if kind == "quiet":
++                addressee = line.split(" talks quietly to ")[1].split(";")[0]
++                assert line.startswith(f"{actor} talks quietly to ") and addressee not in others and actor not in others
++
++
++def test_rule6_only_declared_people_may_mislead():
++    for inst in INSTS:
++        allowed = {inst.role[r] for r in ("X", "Y") if r in inst.role and inst.construction in ("4b", "4c")}
++        if inst.construction == "4c":
++            allowed = {inst.role["X"]}
++        for _, w in worlds(inst):
++            for p, m in w.minds.items():
++                if m.intent != COOPERATIVE:
++                    assert p in allowed
++
++
++def test_designed_contents():
++    """A.3 check 2: the designed first-order and depth-2 contents (t0, every world)."""
++    for inst in INSTS:
++        n, c, o = inst.role, inst.construction, inst.scenario.config.offices
++        for params, w in worlds(inst):
++            w.reset()
++            p = dict(params)
++            a = p["a"]
++            if c in ("2a", "2b"):
++                assert content(w, K(n["N"])) == (a,)  # stale
++                assert content(w, K(n["H"]))[0] == w.people_rooms[n["R"]] != a  # current
++            if c == "2c":
++                assert content(w, K(n["N"]))[0] == w.people_rooms[n["R"]]
++            if c.startswith("3"):
++                fr = content(w, K(n["F"], n["R"]))[0]
++                assert w.people_rooms[n["R"]] == (fr if c in ("3a", "3c") else w.facts["meeting_room"])
++                if c == "3b":
++                    assert fr == a and content(w, K(n["F"]))[0] == w.facts["meeting_room"] != a
++            if c == "1b":
++                assert all(content(w, K(x)) == (UNKNOWN,) for x in w.minds if x != n["R"])
++
++
++def test_evidence_resolved_access_status():
++    """A.3 check 4 (strata 1-3): each focal unit's access status is identical in every world consistent with t0."""
++    from officeminds.devgen3 import focal_units
++
++    from officeminds.devgen3 import access_status
++
++    for inst in INSTS:
++        if inst.stratum == 4:
++            continue
++        w0 = inst.scenario.build(inst.hidden)
++        h = VisibleHistory(inst.scenario.brief, [(None, w0.reset())])
++        o = ExactOracle(inst.scenario, h)
++        for u in focal_units(inst):
++            sts = {access_status(x, u) for x in o.worlds}
++            assert len(sts) == 1, (inst.instance_id, str(u), sts)
++
++
++def test_no_bounded_actor_in_dev_v3_primary_code():
++    """R7: primary dev-v3 quantities use the plain posterior; no GROUNDED_* record or face-value epsilon."""
++    from pathlib import Path
++    root = Path(__file__).resolve().parents[1]
++    for f in ("scripts/qualify_dev_v3.py", "scripts/run_dev_v3_notes.py", "src/officeminds/devgen3.py"):
++        p = root / f
++        if p.exists():
++            src = p.read_text(encoding="utf-8")
++            assert "GROUNDED" not in src and "TESTIMONY_DEFAULTS" not in src and "testimony=" not in src, f
++
++
++def test_agent_visible_text_has_no_design_labels():
++    """R15: no instance/group/construction IDs, stratum names, construction labels, purpose text or focal lists."""
++    from officeminds.devgen3 import PURPOSE, STRATA, focal_units
++    from vomi.pilot import load_prompts, policy_messages, unit_messages
++    prompts = load_prompts("pilot-v2.1")
++    banned = [r"\bdev-v3\b", r"\b[1-4][abc]\b", r"\bfocal\b", r"\brelayed\b", r"\bstale\b", r"\buninformed\b",
++              r"\bdeparted\b", r"\bdistractor\b", r"\bsuperset\b"] + [rf"\b{v}\b" for v in STRATA.values()]
++    for inst in INSTS:
++        w = inst.scenario.build(inst.hidden)
++        h = VisibleHistory(inst.scenario.brief, [(None, w.reset())])
++        cfg = inst.scenario.config
++        texts = [policy_messages(prompts, cfg, inst.scenario.brief, h, None, 6)[0][1]["content"]]
++        texts += [unit_messages(prompts, cfg, inst.scenario.brief, h, u, "pilot-v2.1", 6)[0][1]["content"]
++                  for u in focal_units(inst)]
++        for t in texts:
++            assert inst.instance_id not in t and inst.group_id not in t and PURPOSE[inst.construction] not in t
++            for b in banned:
++                assert not re.search(b, t), (inst.instance_id, b)
++
++
++def test_hidden_stream_independent_of_variant():
++    import inspect
++    from officeminds import devgen3
++    src = inspect.getsource(devgen3.sample_hidden)
++    assert "variant" not in src and "permuted" not in src and "stakes" not in src
++
++
++def test_permuted_variant_is_isomorphic():
++    for g in {i.group_id for i in INSTS}:
++        base = BY_ID[f"{g}-stakes1-perm0"]
++        perm = BY_ID[f"{g}-stakes1-perm1"]
++        m = {base.role[r]: perm.role[r] for r in base.role}
++        hb = ledger(VisibleHistory(base.scenario.brief, [(None, base.scenario.build(base.hidden).reset())]))[0]
++        hp = ledger(VisibleHistory(perm.scenario.brief, [(None, perm.scenario.build(perm.hidden).reset())]))[0]
++        assert hb != hp
++        mapped = re.sub(r"(?<![A-Za-z])(" + "|".join(m) + r")(?![A-Za-z])", lambda x: m[x[0]], hb)  # incl. <name>_loc
++
++        def norm(text):  # name lists are sorted alphabetically, so compare them as sets; seen-lines as a multiset
++            out = []
++            for line in text.splitlines():
++                line = re.sub(r"\[t0:seen:\w+\]", "[t0:seen]", line)
++                line = re.sub(r"others present: ([\w, ]+)\)", lambda x: "others present: "
++                              + ", ".join(sorted(x[1].split(", "))) + ")", line)
++                out.append(line)
++            return sorted(out)
++        assert norm(mapped) == norm(hp)
++
++
++def test_replay_reproduces_rollouts():
++    for inst in INSTS[:: 4]:
++        w = inst.scenario.build(inst.hidden)
++        acts = [a for a in legal_actions(w.config, w.reset()) if a.kind in ("move", "ask", "wait")][:1]
++        acts += [Action("wait")] * (w.config.horizon - 1)
++        hist, trace, _ = run_episode(inst.scenario, inst.hidden, fixed_policy(acts))
++        rec = episode_record(hist, trace)
++        reg = {inst.instance_id: (lambda s=inst.scenario: s)}
++        assert replay(rec, reg) == rec
