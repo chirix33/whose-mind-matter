@@ -1,13 +1,15 @@
 # Autonomous block checkpoint
 
-**Updated:** 2026-10-28. Round 1 is complete (its results gate has been started); Round 2 is declared and gated (PASS WITH REQUIRED CHANGES, all applied).
+**Updated:** 2026-10-28, at block end.
+- All three rounds are complete.
+- **Final gate complete:** Opus passed with required changes, all applied; Sonnet CONSISTENT. Reports: `reviews/final-opus.md`, `reviews/final-sonnet.md`.
+- **Stopping rule met:** three methodological rounds are complete, and the questions have a development-level answer.
 
-**Spend:** ledger `~/officeminds-runs/api-spend-ledger.json`. USD 1.8570 spent in total (block: USD 0.5446). No reservations, no unresolved charges. Cap USD 5.
+**Spend:** ledger `~/officeminds-runs/api-spend-ledger.json` (copy in `evidence/api-spend-ledger-final.json`).
+- USD 3.8690 of 5.00; this block spent USD 2.5566.
+- 0 reservations, 0 unresolved charges. USD 1.1311 remains.
+- No billable work is pending or running.
 
-**State**
-- Round 1 summary: `round1-summary.md`; registry entries r1-a/b/c.
-- vLLM is stopped.
+**Services:** the vLLM server is stopped. No cloud sessions were used.
 
-**Next actions**
-1. Round 2 `notes` stage (API, 9 inferred notes; writes `round2-notes-freeze.json`); commit the proof.
-2. Round 2 `policy` stage, with `OFFICEMINDS_API_CAP_USD` = spent + 1.40.
+**Resume:** nothing to resume inside this block. The next step is the research review of `FINAL_REVIEW.md` → "Decisions that need research review". Do not restart completed comparisons, and do not reset the budget.

@@ -7,4 +7,5 @@
 - `manifests/`: run manifests (commit, dirty paths, configuration, prompt hashes, timing) for every run in this block.
 - `api-spend-ledger-final.json`: the authoritative spend ledger at block end.
 - `block-source-diff.patch`: focused diff of `src/`, `scripts/`, `prompts/`, `tests/` and `AGENTS.md`, from the pre-block commit `9bb0193` to the end of the block.
-- Source archive: `reports/autonomous-block/source-<commit>.zip` (gitignored; regenerate with `git archive`).
+- `ambiguous-example-uc02.json`: one ambiguous-context example. It contains the visible history, the model output, the audit entry, and the reference posterior and truth (PRIVILEGED, labelled).
+- No source archive was generated. `block-source-diff.patch` is the focused diff; regenerate an archive with `git archive <final commit>`.

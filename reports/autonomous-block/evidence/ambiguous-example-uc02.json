@@ -1,0 +1,110 @@
+{
+ "context_id": "uc02",
+ "unit": "K(judy)",
+ "visible_history": {
+  "brief": "Deliver the package to Judy.",
+  "steps": [
+   {
+    "action": null,
+    "obs": {
+     "done": false,
+     "outcome": "",
+     "people_present": [
+      "uma"
+     ],
+     "reward": 0.0,
+     "room": "lobby",
+     "t": 0,
+     "utterances": [
+      [
+       "uma",
+       "I'd rather keep that package myself."
+      ],
+      [
+       "uma",
+       "judy_loc = office_b"
+      ]
+     ]
+    }
+   }
+  ]
+ },
+ "model_output_api_r5_pilot_v2_1": {
+  "about": "judy_loc",
+  "as_of_step": 0,
+  "hypotheses": [
+   {
+    "p": 0.5,
+    "support": [
+     {
+      "evidence_id": "RULE2",
+      "kind": "public_rule",
+      "note": "Judy knows her own location at the start, but the robot has not observed which office it is."
+     }
+    ],
+    "value": "office_a"
+   },
+   {
+    "p": 0.5,
+    "support": [
+     {
+      "evidence_id": "RULE2",
+      "kind": "public_rule",
+      "note": "Judy knows her own location at the start; office_b remains possible."
+     },
+     {
+      "evidence_id": "t0:said1",
+      "kind": "testimony",
+      "note": "Uma states office_b, but the statement is not independently verified."
+     },
+     {
+      "evidence_id": "t0:said0",
+      "kind": "testimony",
+      "note": "Uma expresses a desire to keep the package, limiting confidence in her location report."
+     },
+     {
+      "evidence_id": "RULE6",
+      "kind": "public_rule",
+      "note": "A person with a reason to mislead may do so; Uma's report does not clearly favor office_b."
+     }
+    ],
+    "value": "office_b"
+   },
+   {
+    "p": 0,
+    "support": [],
+    "value": "unknown"
+   }
+  ],
+  "path": [
+   "judy"
+  ],
+  "status": "uncertain",
+  "unresolved": [
+   "Judy's starting office has not been directly observed.",
+   "Uma's location report may be accurate or misleading; the history does not establish which."
+  ],
+  "variable": "knowledge",
+  "evidence_ids": [
+   "t0:said0",
+   "t0:said1"
+  ],
+  "rule_ids": [
+   "RULE2",
+   "RULE6"
+  ]
+ },
+ "run": "unit-contexts-20261028-084229-e8ab65",
+ "PRIVILEGED_reference_posterior": {
+  "office_a": 0.050000000000000044,
+  "office_b": 0.95
+ },
+ "PRIVILEGED_truth": "office_b",
+ "audit_entry": {
+  "flag": "ambiguous",
+  "class": "undisclosed_base_rate",
+  "basis": "K(recipient) rests only on one claim by a speaker who states an incentive; the 0.95/0.05 split is the generator's accuracy base rate for such claimants. The other office is publicly defensible but scores < 0.2."
+ },
+ "scored_category": "supported_spread (top tied 0.5/0.5; truth office_b supported)",
+ "note": "Ambiguous context: the reference's 0.95 on office_b is the generator's accuracy base rate for claimants with incentives, not disclosed in the public rules."
+}

@@ -1,4 +1,12 @@
-# Milestone report — Stage 2 pilot, steps 1–4 (2026-10-28)
+# Milestone report — Stage 2 pilot, steps 1–4, and the autonomous research block (2026-10-28)
+
+> **Latest: autonomous research block complete.** See **[reports/autonomous-block/FINAL_REVIEW.md](autonomous-block/FINAL_REVIEW.md)** (recommendation first).
+> - Three rounds were pre-registered and gated (Opus + Sonnet reviewers).
+> - On the nine prespecified states, legally inferred notes give no reproducible decision value beyond direct reasoning. The diagnosis is little headroom, privileged-information (target) leakage, and one policy risk-calibration failure that a doubt cue fixes.
+> - Recommendation: no allocation learning yet; first a causally justified state design and an out-of-sample rerun (for review).
+> - Block API spend USD 2.5566; ledger USD 3.8690 of 5.00.
+> - The sections below are the earlier pilot record.
+
 
 **Scope.** The five corrections and Q1–Q6 rulings from the Stage 1 research review (recorded as D-007…D-012), plus one reporting error of mine found while updating memory. This is step 1 of the authorized Stage 2 pilot. **The pilot itself has not started:** no dev-group generation, no LLM calls, and the model server is still stopped. Nothing here is a C1–C5 result.
 
