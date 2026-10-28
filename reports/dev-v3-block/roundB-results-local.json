@@ -1,0 +1,2735 @@
+{
+ "blocked": 0,
+ "episodes": 192,
+ "fidelity": [
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "suite_1": 1.0
+   },
+   "state_id": "dev-v3-1c-stakes1-perm0",
+   "status": "grounded",
+   "top": "suite_1",
+   "truth": "suite_1",
+   "tv_posterior": 0.0,
+   "unit": "K(alice)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "suite_1": 1.0
+   },
+   "state_id": "dev-v3-1c-stakes4-perm0",
+   "status": "grounded",
+   "top": "suite_1",
+   "truth": "suite_1",
+   "tv_posterior": 0.0,
+   "unit": "K(alice)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "suite_1": 1.0
+   },
+   "state_id": "dev-v3-1c-stakes1-perm1",
+   "status": "grounded",
+   "top": "suite_1",
+   "truth": "suite_1",
+   "tv_posterior": 0.0,
+   "unit": "K(ivan)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "suite_1": 1.0
+   },
+   "state_id": "dev-v3-1c-stakes4-perm1",
+   "status": "grounded",
+   "top": "suite_1",
+   "truth": "suite_1",
+   "tv_posterior": 0.0,
+   "unit": "K(ivan)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "state_id": "dev-v3-2a-stakes1-perm0",
+   "status": "grounded",
+   "top": "office_c",
+   "truth": "office_c",
+   "tv_posterior": 0.33330000000000004,
+   "unit": "K(yara)",
+   "unsupported_mass": 0.3333
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "office_b": 1.0
+   },
+   "state_id": "dev-v3-2a-stakes1-perm0",
+   "status": "grounded",
+   "top": "office_b",
+   "truth": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(ravi)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "supported_spread",
+   "content_category": "supported_spread",
+   "posterior": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "state_id": "dev-v3-2a-stakes4-perm0",
+   "status": "uncertain",
+   "top": "office_c",
+   "truth": "office_c",
+   "tv_posterior": 0.33335000000000004,
+   "unit": "K(yara)",
+   "unsupported_mass": 0.3333
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "office_b": 1.0
+   },
+   "state_id": "dev-v3-2a-stakes4-perm0",
+   "status": "grounded",
+   "top": "office_b",
+   "truth": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(ravi)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "supported_spread",
+   "content_category": "supported_spread",
+   "posterior": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "state_id": "dev-v3-2a-stakes1-perm1",
+   "status": "uncertain",
+   "top": "office_c",
+   "truth": "office_c",
+   "tv_posterior": 0.0,
+   "unit": "K(ravi)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "office_b": 1.0
+   },
+   "state_id": "dev-v3-2a-stakes1-perm1",
+   "status": "grounded",
+   "top": "office_b",
+   "truth": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(judy)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "supported_spread",
+   "content_category": "supported_spread",
+   "posterior": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "state_id": "dev-v3-2a-stakes4-perm1",
+   "status": "uncertain",
+   "top": "office_c",
+   "truth": "office_c",
+   "tv_posterior": 0.0,
+   "unit": "K(ravi)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "office_b": 1.0
+   },
+   "state_id": "dev-v3-2a-stakes4-perm1",
+   "status": "grounded",
+   "top": "office_b",
+   "truth": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(judy)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "office_b": 1.0
+   },
+   "state_id": "dev-v3-3c-stakes1-perm0",
+   "status": "grounded",
+   "top": "office_b",
+   "truth": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(nadia->frank)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "office_b": 1.0
+   },
+   "state_id": "dev-v3-3c-stakes4-perm0",
+   "status": "grounded",
+   "top": "office_b",
+   "truth": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(nadia->frank)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "office_b": 1.0
+   },
+   "state_id": "dev-v3-3c-stakes1-perm1",
+   "status": "grounded",
+   "top": "office_b",
+   "truth": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(heidi->grace)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "office_b": 1.0
+   },
+   "state_id": "dev-v3-3c-stakes4-perm1",
+   "status": "grounded",
+   "top": "office_b",
+   "truth": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(heidi->grace)",
+   "unsupported_mass": 0
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "cooperative": 0.9453376205787781,
+    "obstructive": 0.05466237942122187
+   },
+   "state_id": "dev-v3-4b-stakes1-perm0",
+   "status": "grounded",
+   "top": "cooperative",
+   "truth": "cooperative",
+   "tv_posterior": 0.03466237942122186,
+   "unit": "R(kim)",
+   "unsupported_mass": 0.02
+  },
+  {
+   "category": "invalid",
+   "content_category": null,
+   "posterior": {
+    "cooperative": 0.04501607717041801,
+    "obstructive": 0.954983922829582
+   },
+   "state_id": "dev-v3-4b-stakes1-perm0",
+   "status": null,
+   "top": null,
+   "truth": "obstructive",
+   "tv_posterior": null,
+   "unit": "R(uma)",
+   "unsupported_mass": null
+  },
+  {
+   "category": "invalid",
+   "content_category": null,
+   "posterior": {
+    "cooperative": 0.9453376205787781,
+    "obstructive": 0.05466237942122187
+   },
+   "state_id": "dev-v3-4b-stakes4-perm0",
+   "status": null,
+   "top": null,
+   "truth": "cooperative",
+   "tv_posterior": null,
+   "unit": "R(kim)",
+   "unsupported_mass": null
+  },
+  {
+   "category": "invalid",
+   "content_category": null,
+   "posterior": {
+    "cooperative": 0.04501607717041801,
+    "obstructive": 0.954983922829582
+   },
+   "state_id": "dev-v3-4b-stakes4-perm0",
+   "status": null,
+   "top": null,
+   "truth": "obstructive",
+   "tv_posterior": null,
+   "unit": "R(uma)",
+   "unsupported_mass": null
+  },
+  {
+   "category": "correct_supported",
+   "content_category": "correct_supported",
+   "posterior": {
+    "cooperative": 0.9453376205787781,
+    "obstructive": 0.05466237942122187
+   },
+   "state_id": "dev-v3-4b-stakes1-perm1",
+   "status": "grounded",
+   "top": "cooperative",
+   "truth": "cooperative",
+   "tv_posterior": 0.023662379421221857,
+   "unit": "R(uma)",
+   "unsupported_mass": 0.031
+  },
+  {
+   "category": "unsupported_committed",
+   "content_category": "unsupported_committed",
+   "posterior": {
+    "cooperative": 0.04501607717041801,
+    "obstructive": 0.954983922829582
+   },
+   "state_id": "dev-v3-4b-stakes1-perm1",
+   "status": "uncertain",
+   "top": "cooperative",
+   "truth": "obstructive",
+   "tv_posterior": 0.654983922829582,
+   "unit": "R(zane)",
+   "unsupported_mass": 0.7
+  },
+  {
+   "category": "invalid",
+   "content_category": null,
+   "posterior": {
+    "cooperative": 0.9453376205787781,
+    "obstructive": 0.05466237942122187
+   },
+   "state_id": "dev-v3-4b-stakes4-perm1",
+   "status": null,
+   "top": null,
+   "truth": "cooperative",
+   "tv_posterior": null,
+   "unit": "R(uma)",
+   "unsupported_mass": null
+  },
+  {
+   "category": "invalid",
+   "content_category": null,
+   "posterior": {
+    "cooperative": 0.04501607717041801,
+    "obstructive": 0.954983922829582
+   },
+   "state_id": "dev-v3-4b-stakes4-perm1",
+   "status": null,
+   "top": null,
+   "truth": "obstructive",
+   "tv_posterior": null,
+   "unit": "R(zane)",
+   "unsupported_mass": null
+  }
+ ],
+ "identical_conditions": {
+  "dev-v3-1c-stakes1-perm0": [
+   [
+    "reference",
+    "privileged"
+   ]
+  ],
+  "dev-v3-1c-stakes1-perm1": [
+   [
+    "reference",
+    "privileged"
+   ]
+  ],
+  "dev-v3-1c-stakes4-perm0": [
+   [
+    "reference",
+    "privileged"
+   ]
+  ],
+  "dev-v3-1c-stakes4-perm1": [
+   [
+    "reference",
+    "privileged"
+   ]
+  ],
+  "dev-v3-2a-stakes1-perm0": [],
+  "dev-v3-2a-stakes1-perm1": [],
+  "dev-v3-2a-stakes4-perm0": [],
+  "dev-v3-2a-stakes4-perm1": [],
+  "dev-v3-3c-stakes1-perm0": [
+   [
+    "reference",
+    "privileged"
+   ]
+  ],
+  "dev-v3-3c-stakes1-perm1": [
+   [
+    "reference",
+    "privileged"
+   ]
+  ],
+  "dev-v3-3c-stakes4-perm0": [
+   [
+    "reference",
+    "privileged"
+   ]
+  ],
+  "dev-v3-3c-stakes4-perm1": [
+   [
+    "reference",
+    "privileged"
+   ]
+  ],
+  "dev-v3-4b-stakes1-perm0": [],
+  "dev-v3-4b-stakes1-perm1": [],
+  "dev-v3-4b-stakes4-perm0": [],
+  "dev-v3-4b-stakes4-perm1": []
+ },
+ "note_usage": {
+  "calls": 37.0,
+  "completion_tokens": 14911.0,
+  "prompt_tokens": 79143.0
+ },
+ "readings": {
+  "inferred": "inconclusive",
+  "privileged": "headroom present",
+  "reference": "headroom present"
+ },
+ "rows": [
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "drop(suite_1)",
+    "ask(alice,ivan_loc)",
+    "drop(suite_1)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.95,
+    0.8,
+    0.95
+   ],
+   "state_id": "dev-v3-1c-stakes1-perm0",
+   "steps": [
+    1,
+    4,
+    1
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(alice,ivan_loc)",
+    "ask(alice,ivan_loc)",
+    "ask(alice,ivan_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.75,
+    0.75,
+    0.85
+   ],
+   "state_id": "dev-v3-1c-stakes1-perm0",
+   "steps": [
+    5,
+    5,
+    3
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "move(hall)",
+    "ask(alice,ivan_loc)",
+    "ask(alice,ivan_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.9,
+    0.9
+   ],
+   "state_id": "dev-v3-1c-stakes1-perm0",
+   "steps": [
+    4,
+    2,
+    2
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(alice,ivan_loc)",
+    "ask(alice,ivan_loc)",
+    "move(hall)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.9,
+    0.85
+   ],
+   "state_id": "dev-v3-1c-stakes1-perm0",
+   "steps": [
+    4,
+    2,
+    3
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(alice,ivan_loc)",
+    "ask(alice,ivan_loc)",
+    "ask(alice,ivan_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.8,
+    0.9
+   ],
+   "state_id": "dev-v3-1c-stakes4-perm0",
+   "steps": [
+    2,
+    4,
+    2
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "drop(suite_1)",
+    "drop(suite_1)",
+    "drop(suite_1)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.95,
+    0.95,
+    0.95
+   ],
+   "state_id": "dev-v3-1c-stakes4-perm0",
+   "steps": [
+    1,
+    1,
+    1
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(alice,ivan_loc)",
+    "ask(alice,ivan_loc)",
+    "ask(alice,ivan_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.9,
+    0.9
+   ],
+   "state_id": "dev-v3-1c-stakes4-perm0",
+   "steps": [
+    4,
+    2,
+    2
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "move(hall)",
+    "ask(alice,ivan_loc)",
+    "ask(alice,ivan_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.9,
+    0.9
+   ],
+   "state_id": "dev-v3-1c-stakes4-perm0",
+   "steps": [
+    4,
+    2,
+    2
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ivan,alice_loc)",
+    "ask(ivan,alice_loc)",
+    "ask(ivan,alice_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.8,
+    0.9
+   ],
+   "state_id": "dev-v3-1c-stakes1-perm1",
+   "steps": [
+    2,
+    4,
+    2
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ivan,alice_loc)",
+    "ask(ivan,alice_loc)",
+    "drop(suite_1)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.9,
+    0.95
+   ],
+   "state_id": "dev-v3-1c-stakes1-perm1",
+   "steps": [
+    2,
+    2,
+    1
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "drop(suite_1)",
+    "ask(ivan,alice_loc)",
+    "ask(ivan,alice_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.95,
+    0.9,
+    0.9
+   ],
+   "state_id": "dev-v3-1c-stakes1-perm1",
+   "steps": [
+    1,
+    2,
+    2
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ivan,alice_loc)",
+    "ask(ivan,alice_loc)",
+    "ask(ivan,alice_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.9,
+    0.9
+   ],
+   "state_id": "dev-v3-1c-stakes1-perm1",
+   "steps": [
+    2,
+    2,
+    2
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ivan,alice_loc)",
+    "ask(ivan,alice_loc)",
+    "drop(suite_1)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.9,
+    0.95
+   ],
+   "state_id": "dev-v3-1c-stakes4-perm1",
+   "steps": [
+    2,
+    2,
+    1
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "move(hall)",
+    "ask(ivan,alice_loc)",
+    "drop(suite_1)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.85,
+    0.9,
+    0.95
+   ],
+   "state_id": "dev-v3-1c-stakes4-perm1",
+   "steps": [
+    3,
+    2,
+    1
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ivan,alice_loc)",
+    "ask(ivan,alice_loc)",
+    "drop(suite_1)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.8,
+    0.95
+   ],
+   "state_id": "dev-v3-1c-stakes4-perm1",
+   "steps": [
+    4,
+    4,
+    1
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "drop(suite_1)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "1c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ivan,alice_loc)",
+    "drop(suite_1)",
+    "move(hall)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.95,
+    0.85
+   ],
+   "state_id": "dev-v3-1c-stakes4-perm1",
+   "steps": [
+    2,
+    1,
+    3
+   ],
+   "stratum": 1
+  },
+  {
+   "bayes_optimal": [
+    "give(yara)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(yara,leo_loc)",
+    "ask(ravi,leo_loc)",
+    "ask(yara,leo_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.85,
+    0.9
+   ],
+   "state_id": "dev-v3-2a-stakes1-perm0",
+   "steps": [
+    2,
+    3,
+    2
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(yara)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(yara,leo_loc)",
+    "ask(yara,leo_loc)",
+    "ask(yara,leo_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.8,
+    0.9
+   ],
+   "state_id": "dev-v3-2a-stakes1-perm0",
+   "steps": [
+    4,
+    4,
+    2
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(yara)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "2a",
+   "failed_attempts": 1,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(yara,leo_loc)",
+    "ask(ravi,leo_loc)",
+    "ask(yara,leo_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "error"
+   ],
+   "returns": [
+    0.8,
+    0.75,
+    -0.6
+   ],
+   "state_id": "dev-v3-2a-stakes1-perm0",
+   "steps": [
+    4,
+    5,
+    2
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(yara)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(yara,leo_loc)",
+    "ask(yara,leo_loc)",
+    "ask(yara,leo_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.85,
+    0.9
+   ],
+   "state_id": "dev-v3-2a-stakes1-perm0",
+   "steps": [
+    4,
+    3,
+    2
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(yara)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(yara,leo_loc)",
+    "ask(ravi,leo_loc)",
+    "ask(yara,leo_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.85,
+    0.8
+   ],
+   "state_id": "dev-v3-2a-stakes4-perm0",
+   "steps": [
+    2,
+    3,
+    4
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(yara)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(yara,leo_loc)",
+    "ask(yara,leo_loc)",
+    "ask(ravi,leo_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.9,
+    0.85
+   ],
+   "state_id": "dev-v3-2a-stakes4-perm0",
+   "steps": [
+    2,
+    2,
+    3
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(yara)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(yara,leo_loc)",
+    "ask(yara,leo_loc)",
+    "ask(yara,leo_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.9,
+    0.9
+   ],
+   "state_id": "dev-v3-2a-stakes4-perm0",
+   "steps": [
+    2,
+    2,
+    2
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(yara)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(yara,leo_loc)",
+    "ask(yara,leo_loc)",
+    "ask(yara,leo_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.8,
+    0.9
+   ],
+   "state_id": "dev-v3-2a-stakes4-perm0",
+   "steps": [
+    4,
+    4,
+    2
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(ravi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "give(ravi)",
+    "ask(ravi,yara_loc)",
+    "ask(ravi,yara_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.95,
+    0.9,
+    0.8
+   ],
+   "state_id": "dev-v3-2a-stakes1-perm1",
+   "steps": [
+    1,
+    2,
+    4
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(ravi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ravi,yara_loc)",
+    "ask(ravi,yara_loc)",
+    "ask(ravi,yara_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.85,
+    0.9
+   ],
+   "state_id": "dev-v3-2a-stakes1-perm1",
+   "steps": [
+    2,
+    3,
+    2
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(ravi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ravi,yara_loc)",
+    "ask(ravi,yara_loc)",
+    "ask(ravi,yara_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.9,
+    0.8
+   ],
+   "state_id": "dev-v3-2a-stakes1-perm1",
+   "steps": [
+    2,
+    2,
+    4
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(ravi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ravi,yara_loc)",
+    "ask(ravi,yara_loc)",
+    "ask(ravi,yara_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.8,
+    0.9
+   ],
+   "state_id": "dev-v3-2a-stakes1-perm1",
+   "steps": [
+    2,
+    4,
+    2
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(ravi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ravi,yara_loc)",
+    "give(judy)",
+    "give(ravi)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "error",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    -2.05,
+    0.95
+   ],
+   "state_id": "dev-v3-2a-stakes4-perm1",
+   "steps": [
+    4,
+    1,
+    1
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(ravi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ravi,yara_loc)",
+    "ask(ravi,yara_loc)",
+    "ask(ravi,yara_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.9,
+    0.9
+   ],
+   "state_id": "dev-v3-2a-stakes4-perm1",
+   "steps": [
+    4,
+    2,
+    2
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(ravi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(ravi,yara_loc)",
+    "ask(ravi,yara_loc)",
+    "ask(ravi,yara_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.9,
+    0.9
+   ],
+   "state_id": "dev-v3-2a-stakes4-perm1",
+   "steps": [
+    2,
+    2,
+    2
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(ravi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "2a",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "give(ravi)",
+    "ask(ravi,yara_loc)",
+    "drop(office_c)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.95,
+    0.85,
+    0.95
+   ],
+   "state_id": "dev-v3-2a-stakes4-perm1",
+   "steps": [
+    1,
+    3,
+    1
+   ],
+   "stratum": 2
+  },
+  {
+   "bayes_optimal": [
+    "give(nadia)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(nadia,meeting_room)",
+    "move(hall)",
+    "give(nadia)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.85,
+    0.95
+   ],
+   "state_id": "dev-v3-3c-stakes1-perm0",
+   "steps": [
+    4,
+    3,
+    1
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(nadia)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(nadia,meeting_room)",
+    "move(hall)",
+    "ask(nadia,meeting_room)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.7,
+    0.8
+   ],
+   "state_id": "dev-v3-3c-stakes1-perm0",
+   "steps": [
+    4,
+    6,
+    4
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(nadia)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "move(hall)",
+    "move(hall)",
+    "move(hall)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.85,
+    0.85,
+    0.85
+   ],
+   "state_id": "dev-v3-3c-stakes1-perm0",
+   "steps": [
+    3,
+    3,
+    3
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(nadia)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "move(hall)",
+    "move(hall)",
+    "give(nadia)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.85,
+    0.85,
+    0.95
+   ],
+   "state_id": "dev-v3-3c-stakes1-perm0",
+   "steps": [
+    3,
+    3,
+    1
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(nadia)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "move(hall)",
+    "ask(nadia,meeting_room)",
+    "ask(nadia,meeting_room)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "timeout"
+   ],
+   "returns": [
+    0.85,
+    0.9,
+    -0.4
+   ],
+   "state_id": "dev-v3-3c-stakes4-perm0",
+   "steps": [
+    3,
+    2,
+    8
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(nadia)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "give(nadia)",
+    "move(hall)",
+    "give(nadia)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.95,
+    0.8,
+    0.95
+   ],
+   "state_id": "dev-v3-3c-stakes4-perm0",
+   "steps": [
+    1,
+    4,
+    1
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(nadia)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "move(hall)",
+    "give(nadia)",
+    "ask(nadia,meeting_room)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.95,
+    0.8
+   ],
+   "state_id": "dev-v3-3c-stakes4-perm0",
+   "steps": [
+    4,
+    1,
+    4
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(nadia)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "move(hall)",
+    "move(hall)",
+    "move(hall)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.85,
+    0.85,
+    0.85
+   ],
+   "state_id": "dev-v3-3c-stakes4-perm0",
+   "steps": [
+    3,
+    3,
+    3
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(heidi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(heidi,meeting_room)",
+    "ask(heidi,meeting_room)",
+    "move(hall)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.65,
+    0.8,
+    0.85
+   ],
+   "state_id": "dev-v3-3c-stakes1-perm1",
+   "steps": [
+    7,
+    4,
+    3
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(heidi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "give(heidi)",
+    "move(hall)",
+    "ask(heidi,meeting_room)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.95,
+    0.85,
+    0.8
+   ],
+   "state_id": "dev-v3-3c-stakes1-perm1",
+   "steps": [
+    1,
+    3,
+    4
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(heidi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "move(hall)",
+    "give(heidi)",
+    "ask(heidi,meeting_room)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.85,
+    0.95,
+    0.9
+   ],
+   "state_id": "dev-v3-3c-stakes1-perm1",
+   "steps": [
+    3,
+    1,
+    2
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(heidi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(heidi,meeting_room)",
+    "move(hall)",
+    "ask(heidi,meeting_room)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.85,
+    0.9
+   ],
+   "state_id": "dev-v3-3c-stakes1-perm1",
+   "steps": [
+    2,
+    3,
+    2
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(heidi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "none",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(heidi,meeting_room)",
+    "move(hall)",
+    "ask(heidi,meeting_room)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.65,
+    0.85,
+    0.8
+   ],
+   "state_id": "dev-v3-3c-stakes4-perm1",
+   "steps": [
+    7,
+    3,
+    4
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(heidi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "inferred",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "give(heidi)",
+    "ask(heidi,meeting_room)",
+    "ask(heidi,meeting_room)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.95,
+    0.9,
+    0.8
+   ],
+   "state_id": "dev-v3-3c-stakes4-perm1",
+   "steps": [
+    1,
+    2,
+    4
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(heidi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "reference",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(heidi,meeting_room)",
+    "ask(heidi,meeting_room)",
+    "ask(heidi,meeting_room)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.8,
+    0.9
+   ],
+   "state_id": "dev-v3-3c-stakes4-perm1",
+   "steps": [
+    2,
+    4,
+    2
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "give(heidi)"
+   ],
+   "bayes_v_t0": 0.95,
+   "condition": "privileged",
+   "construction": "3c",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(heidi,meeting_room)",
+    "move(hall)",
+    "move(hall)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.85,
+    0.8
+   ],
+   "state_id": "dev-v3-3c-stakes4-perm1",
+   "steps": [
+    4,
+    3,
+    4
+   ],
+   "stratum": 3
+  },
+  {
+   "bayes_optimal": [
+    "drop(desk_14)"
+   ],
+   "bayes_v_t0": 0.8680064309,
+   "condition": "none",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.8,
+    0.8
+   ],
+   "state_id": "dev-v3-4b-stakes1-perm0",
+   "steps": [
+    4,
+    4,
+    4
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "drop(desk_14)"
+   ],
+   "bayes_v_t0": 0.8680064309,
+   "condition": "inferred",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.85,
+    0.8,
+    0.8
+   ],
+   "state_id": "dev-v3-4b-stakes1-perm0",
+   "steps": [
+    3,
+    4,
+    4
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "drop(desk_14)"
+   ],
+   "bayes_v_t0": 0.8680064309,
+   "condition": "reference",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.8,
+    0.85,
+    0.8
+   ],
+   "state_id": "dev-v3-4b-stakes1-perm0",
+   "steps": [
+    4,
+    3,
+    4
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "drop(desk_14)"
+   ],
+   "bayes_v_t0": 0.8680064309,
+   "condition": "privileged",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.85,
+    0.8
+   ],
+   "state_id": "dev-v3-4b-stakes1-perm0",
+   "steps": [
+    2,
+    3,
+    4
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "bayes_v_t0": 0.8435691318,
+   "condition": "none",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "error"
+   ],
+   "returns": [
+    0.85,
+    0.8,
+    -2.15
+   ],
+   "state_id": "dev-v3-4b-stakes4-perm0",
+   "steps": [
+    3,
+    4,
+    3
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "bayes_v_t0": 0.8435691318,
+   "condition": "inferred",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "error",
+    "success",
+    "success"
+   ],
+   "returns": [
+    -2.1,
+    0.8,
+    0.8
+   ],
+   "state_id": "dev-v3-4b-stakes4-perm0",
+   "steps": [
+    2,
+    4,
+    4
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "bayes_v_t0": 0.8435691318,
+   "condition": "reference",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.85,
+    0.8,
+    0.85
+   ],
+   "state_id": "dev-v3-4b-stakes4-perm0",
+   "steps": [
+    3,
+    4,
+    3
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "bayes_v_t0": 0.8435691318,
+   "condition": "privileged",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)",
+    "ask(kim,erin_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.85,
+    0.85,
+    0.85
+   ],
+   "state_id": "dev-v3-4b-stakes4-perm0",
+   "steps": [
+    3,
+    3,
+    3
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "drop(desk_14)"
+   ],
+   "bayes_v_t0": 0.8680064309,
+   "condition": "none",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(uma,kim_loc)",
+    "ask(uma,kim_loc)",
+    "ask(uma,kim_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "error",
+    "success",
+    "success"
+   ],
+   "returns": [
+    -0.7,
+    0.85,
+    0.9
+   ],
+   "state_id": "dev-v3-4b-stakes1-perm1",
+   "steps": [
+    4,
+    3,
+    2
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "drop(desk_14)"
+   ],
+   "bayes_v_t0": 0.8680064309,
+   "condition": "inferred",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(zane,kim_loc)",
+    "ask(zane,kim_loc)",
+    "ask(uma,kim_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "error"
+   ],
+   "returns": [
+    0.85,
+    0.8,
+    -0.7
+   ],
+   "state_id": "dev-v3-4b-stakes1-perm1",
+   "steps": [
+    3,
+    4,
+    4
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "drop(desk_14)"
+   ],
+   "bayes_v_t0": 0.8680064309,
+   "condition": "reference",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "drop(desk_14)",
+    "drop(desk_14)",
+    "ask(uma,kim_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.95,
+    0.95,
+    0.85
+   ],
+   "state_id": "dev-v3-4b-stakes1-perm1",
+   "steps": [
+    1,
+    1,
+    3
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "drop(desk_14)"
+   ],
+   "bayes_v_t0": 0.8680064309,
+   "condition": "privileged",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(uma,kim_loc)",
+    "ask(zane,kim_loc)",
+    "ask(uma,kim_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.8,
+    0.8
+   ],
+   "state_id": "dev-v3-4b-stakes1-perm1",
+   "steps": [
+    2,
+    4,
+    4
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "bayes_v_t0": 0.8435691318,
+   "condition": "none",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(zane,kim_loc)",
+    "ask(uma,kim_loc)",
+    "ask(zane,kim_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.6,
+    0.85,
+    0.9
+   ],
+   "state_id": "dev-v3-4b-stakes4-perm1",
+   "steps": [
+    8,
+    3,
+    2
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "bayes_v_t0": 0.8435691318,
+   "condition": "inferred",
+   "construction": "4b",
+   "failed_attempts": 0,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(zane,kim_loc)",
+    "ask(uma,kim_loc)",
+    "ask(uma,kim_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "error",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    -2.3,
+    0.8
+   ],
+   "state_id": "dev-v3-4b-stakes4-perm1",
+   "steps": [
+    2,
+    6,
+    4
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "bayes_v_t0": 0.8435691318,
+   "condition": "reference",
+   "construction": "4b",
+   "failed_attempts": 1,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(uma,kim_loc)",
+    "ask(uma,kim_loc)",
+    "ask(uma,kim_loc)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.9,
+    0.75,
+    0.85
+   ],
+   "state_id": "dev-v3-4b-stakes4-perm1",
+   "steps": [
+    2,
+    5,
+    3
+   ],
+   "stratum": 4
+  },
+  {
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "bayes_v_t0": 0.8435691318,
+   "condition": "privileged",
+   "construction": "4b",
+   "failed_attempts": 1,
+   "fallbacks": 0,
+   "first_actions": [
+    "ask(uma,kim_loc)",
+    "ask(uma,kim_loc)",
+    "drop(desk_14)"
+   ],
+   "n": 3,
+   "outcomes": [
+    "success",
+    "success",
+    "success"
+   ],
+   "returns": [
+    0.85,
+    0.85,
+    0.95
+   ],
+   "state_id": "dev-v3-4b-stakes4-perm1",
+   "steps": [
+    3,
+    3,
+    1
+   ],
+   "stratum": 4
+  }
+ ],
+ "run_id": "dev-v3-notes-20261028-165208-67f601",
+ "strata": {
+  "inferred|1": {
+   "boot95": [
+    -0.075,
+    0.0667
+   ],
+   "class": "inconclusive",
+   "d_s": [
+    -0.1167,
+    0.0833,
+    0.05,
+    -0.0167
+   ],
+   "mean": 0.0
+  },
+  "inferred|2": {
+   "boot95": [
+    -0.0292,
+    0.725
+   ],
+   "class": "inconclusive",
+   "d_s": [
+    -0.05,
+    0.0333,
+    0.0,
+    0.9667
+   ],
+   "mean": 0.2375
+  },
+  "inferred|3": {
+   "boot95": [
+    -0.0458,
+    0.3625
+   ],
+   "class": "positive",
+   "d_s": [
+    -0.1,
+    0.45,
+    0.1,
+    0.1167
+   ],
+   "mean": 0.1417
+  },
+  "inferred|4": {
+   "boot95": [
+    -0.7375,
+    0.0083
+   ],
+   "class": "inconclusive",
+   "d_s": [
+    0.0167,
+    0.0,
+    -0.0333,
+    -0.9833
+   ],
+   "mean": -0.25
+  },
+  "privileged|1": {
+   "boot95": [
+    -0.0375,
+    0.0208
+   ],
+   "class": "null",
+   "d_s": [
+    -0.05,
+    0.0,
+    0.0333,
+    -0.0167
+   ],
+   "mean": -0.0083
+  },
+  "privileged|2": {
+   "boot95": [
+    -0.0292,
+    0.7583
+   ],
+   "class": "inconclusive",
+   "d_s": [
+    -0.0333,
+    -0.0167,
+    -0.0167,
+    1.0167
+   ],
+   "mean": 0.2375
+  },
+  "privileged|3": {
+   "boot95": [
+    0.0333,
+    0.3125
+   ],
+   "class": "positive",
+   "d_s": [
+    0.0167,
+    0.4,
+    0.1167,
+    0.05
+   ],
+   "mean": 0.1458
+  },
+  "privileged|4": {
+   "boot95": [
+    0.075,
+    0.7875
+   ],
+   "class": "positive",
+   "d_s": [
+    0.05,
+    1.0167,
+    0.4833,
+    0.1
+   ],
+   "mean": 0.4125
+  },
+  "reference|1": {
+   "boot95": [
+    -0.05,
+    0.0292
+   ],
+   "class": "null",
+   "d_s": [
+    -0.0333,
+    0.0,
+    0.05,
+    -0.0667
+   ],
+   "mean": -0.0125
+  },
+  "reference|2": {
+   "boot95": [
+    -0.4125,
+    0.7458
+   ],
+   "class": "inconclusive",
+   "d_s": [
+    -0.5667,
+    0.05,
+    -0.0167,
+    1.0
+   ],
+   "mean": 0.1167
+  },
+  "reference|3": {
+   "boot95": [
+    0.0208,
+    0.325
+   ],
+   "class": "positive",
+   "d_s": [
+    -0.0167,
+    0.4,
+    0.1333,
+    0.1
+   ],
+   "mean": 0.1542
+  },
+  "reference|4": {
+   "boot95": [
+    0.0333,
+    0.7833
+   ],
+   "class": "positive",
+   "d_s": [
+    0.0167,
+    1.0,
+    0.5667,
+    0.05
+   ],
+   "mean": 0.4083
+  }
+ },
+ "tag": "local",
+ "usage_by_condition": {
+  "inferred": {
+   "decision_calls": 138.0,
+   "decision_completion_tokens": 23057.0,
+   "decision_latency_s": 140.69365358500033,
+   "decision_prompt_tokens": 220514.0
+  },
+  "none": {
+   "decision_calls": 149.0,
+   "decision_completion_tokens": 23509.0,
+   "decision_latency_s": 143.83106955100038,
+   "decision_prompt_tokens": 222181.0
+  },
+  "privileged": {
+   "decision_calls": 131.0,
+   "decision_completion_tokens": 22272.0,
+   "decision_latency_s": 136.7657601349996,
+   "decision_prompt_tokens": 202496.0
+  },
+  "reference": {
+   "decision_calls": 131.0,
+   "decision_completion_tokens": 19892.0,
+   "decision_latency_s": 123.25947318699991,
+   "decision_prompt_tokens": 204395.0
+  }
+ },
+ "wall_clock_s": 138.74335025200003
+}

@@ -1,0 +1,126 @@
+{
+ "first_action_bayes_optimal_rate": {
+  "inferred": "9/48",
+  "none": "6/48",
+  "privileged": "3/48",
+  "reference": "6/48"
+ },
+ "label": "POST-HOC DESCRIPTIVE (after outcomes; not the pre-declared reading)",
+ "mean_steps": {
+  "inferred|1": 2.25,
+  "inferred|2": 2.667,
+  "inferred|3": 2.917,
+  "inferred|4": 3.667,
+  "none|1": 2.25,
+  "none|2": 2.417,
+  "none|3": 4.083,
+  "none|4": 3.667,
+  "privileged|1": 2.417,
+  "privileged|2": 2.667,
+  "privileged|3": 2.833,
+  "privileged|4": 2.917,
+  "reference|1": 2.5,
+  "reference|2": 2.583,
+  "reference|3": 2.667,
+  "reference|4": 3
+ },
+ "median_sensitivity": {
+  "inferred": {
+   "classes": {
+    "1": "inconclusive",
+    "2": "null",
+    "3": "null",
+    "4": "null"
+   },
+   "reading": "no measurable explicit-note headroom"
+  },
+  "privileged": {
+   "classes": {
+    "1": "null",
+    "2": "inconclusive",
+    "3": "null",
+    "4": "null"
+   },
+   "reading": "no measurable explicit-note headroom"
+  },
+  "reference": {
+   "classes": {
+    "1": "null",
+    "2": "inconclusive",
+    "3": "null",
+    "4": "null"
+   },
+   "reading": "no measurable explicit-note headroom"
+  }
+ },
+ "noise_floor_identical_prompts": {
+  "max_abs": 0.05,
+  "mean_abs": 0.0229,
+  "ref_minus_priv": [
+   0.0167,
+   0.0,
+   0.0167,
+   -0.05,
+   -0.0333,
+   0.0,
+   0.0167,
+   0.05
+  ],
+  "states": 8
+ },
+ "outcomes": {
+  "inferred|1": {
+   "success": 12
+  },
+  "inferred|2": {
+   "success": 12
+  },
+  "inferred|3": {
+   "success": 12
+  },
+  "inferred|4": {
+   "error": 3,
+   "success": 9
+  },
+  "none|1": {
+   "success": 12
+  },
+  "none|2": {
+   "error": 1,
+   "success": 11
+  },
+  "none|3": {
+   "success": 11,
+   "timeout": 1
+  },
+  "none|4": {
+   "error": 2,
+   "success": 10
+  },
+  "privileged|1": {
+   "success": 12
+  },
+  "privileged|2": {
+   "success": 12
+  },
+  "privileged|3": {
+   "success": 12
+  },
+  "privileged|4": {
+   "success": 12
+  },
+  "reference|1": {
+   "success": 12
+  },
+  "reference|2": {
+   "error": 1,
+   "success": 11
+  },
+  "reference|3": {
+   "success": 12
+  },
+  "reference|4": {
+   "success": 12
+  }
+ }
+}
