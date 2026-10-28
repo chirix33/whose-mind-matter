@@ -3,6 +3,8 @@
     python3 scripts/run_notes_value.py notes  --config configs/models/api_gpt_6_1_sol.json   # freeze note payloads
     python3 scripts/run_notes_value.py render                                               # policy prompts, no calls
     python3 scripts/run_notes_value.py policy --config configs/models/api_gpt_6_1_sol.json --replicates 3
+    python3 scripts/run_notes_value.py doubt                                                # Round 3 control payloads
+    python3 scripts/run_notes_value.py policy --round 3 --replicates 4
 
 States: data/pilot/dev-v2/interventions.json (instance, t0, unit; original labels kept). Conditions, same API policy,
 fixed allocation (the state's one unit at t0, no further allocation, no refresh):
@@ -167,6 +169,57 @@ def stage_notes(args):
     print(NOTES, proof["notes_file_sha256"], proof_path)
 
 
+NOTES3 = ROOT / "data" / "autonomous-block" / "round3-notes.json"  # PRIVILEGED-derived diagnostic payloads
+DOUBT = 0.2
+
+
+def doubt_note(ref: dict) -> dict:
+    """Round 3 matched control: the frozen reference distribution scaled by 1 - DOUBT plus DOUBT on "unknown".
+    Status is copied from the reference note so that only the distribution changes (no new banner)."""
+    hyps = [{"value": h["value"], "p": round(h["p"] * (1 - DOUBT), 4)} for h in ref["hypotheses"] if h["value"] != "unknown"]
+    prior_unknown = sum(h["p"] for h in ref["hypotheses"] if h["value"] == "unknown")
+    hyps.append({"value": "unknown", "p": round(DOUBT + prior_unknown * (1 - DOUBT), 4)})
+    big = max(hyps, key=lambda h: h["p"])
+    big["p"] = round(big["p"] + 1.0 - sum(h["p"] for h in hyps), 4)
+    assert all(h["p"] >= 0 for h in hyps) and abs(sum(h["p"] for h in hyps) - 1.0) < 1e-6
+    return {**ref, "hypotheses": sorted(hyps, key=lambda h: h["value"]), "source": "reference_doubt"}
+
+
+def merged_frozen() -> dict:
+    """Round 2 payloads plus the Round 3 reference_doubt payloads (when frozen)."""
+    frozen = json.loads(NOTES.read_text())
+    if NOTES3.exists():
+        r3 = json.loads(NOTES3.read_text())
+        for sid, v in r3["states"].items():
+            frozen["states"][sid]["notes"]["reference_doubt"] = v["note"]
+            frozen["states"][sid]["note_sha256"]["reference_doubt"] = v["note_sha256"]
+    return frozen
+
+
+def stage_doubt(args):
+    if NOTES3.exists():
+        raise SystemExit(f"{NOTES3} exists: payloads are frozen; refusing to regenerate")
+    frozen = json.loads(NOTES.read_text())
+    out = {"derived_from_notes_file_sha256": sha(frozen["states"]), "doubt_mass": DOUBT, "created_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+           **git_state(), "states": {}}
+    for sid, v in frozen["states"].items():
+        note = doubt_note(v["notes"]["reference"])
+        out["states"][sid] = {"unit": v["unit"], "note": note, "note_sha256": sha(note)}
+    NOTES3.write_text(json.dumps(out, indent=1, sort_keys=True))
+    merged = merged_frozen()
+    proof = {k: out[k] for k in ("derived_from_notes_file_sha256", "doubt_mass", "created_at", "git_commit", "dirty_paths")}
+    proof["states"] = {}
+    for st in states():
+        sid = st["state_id"]
+        proof["states"][sid] = {"unit": st["unit"], "note_sha256": out["states"][sid]["note_sha256"],
+                                "rendered_notes_sha256": hashlib.sha256(rendered_notes(st, "reference_doubt", merged)[1].encode()).hexdigest(),
+                                "distribution": {h["value"]: h["p"] for h in out["states"][sid]["note"]["hypotheses"]},
+                                "status": out["states"][sid]["note"]["status"]}
+    path = ROOT / "reports" / "autonomous-block" / "round3-notes-freeze.json"
+    path.write_text(json.dumps(proof, indent=1, sort_keys=True) + "\n")
+    print(NOTES3, path)
+
+
 def condition_kwargs(st, cond, frozen):
     if cond == "none":
         return {"arm": "direct"}
@@ -190,18 +243,21 @@ def stage_render(args):
 
 
 def stage_policy(args):
-    frozen = json.loads(NOTES.read_text())
+    frozen = merged_frozen()
     cfg_m = json.loads(Path(args.config).read_text())
     decoding = {**cfg_m["decoding"], "reasoning_effort": "low", "max_tokens": args.max_tokens}
     sts = states()
+    conds = CONDITIONS if args.round == 2 else ("none", "reference", "reference_doubt")
+    extra = [] if args.round == 2 else [("s9", "inferred_bare")]  # Round 3: replicate the s9 inferred_bare cell only
     for st in sts:  # the policy must render the same rules revision the notes cite
-        assert all(R5_MARKER in rendered_notes(st, c, frozen)[0] for c in CONDITIONS)
+        assert all(R5_MARKER in rendered_notes(st, c, frozen)[0] for c in conds)
     jobs = []  # counterbalanced dispatch order: conditions rotated by (state index + replicate)
     for r in range(args.replicates):
         for i, st in enumerate(sts):
-            for j in range(len(CONDITIONS)):
-                jobs.append((st, CONDITIONS[(i + r + j) % len(CONDITIONS)], r))
-    meta = {"stage": "policy", "model": cfg_m["model"], "decoding": decoding, "package": PACKAGE, "render_revision": REV,
+            for j in range(len(conds)):
+                jobs.append((st, conds[(i + r + j) % len(conds)], r))
+            jobs += [(st, c, r) for sid, c in extra if sid == st["state_id"]]
+    meta = {"stage": "policy", "round": args.round, "conditions": list(conds), "extra_cells": extra, "model": cfg_m["model"], "decoding": decoding, "package": PACKAGE, "render_revision": REV,
             "replicates": args.replicates, "concurrency": args.concurrency, "notes_file_sha256": sha(frozen["states"]),
             "stage_cap_usd_env": os.environ.get("OFFICEMINDS_API_CAP_USD"),
             "note_sha256": {s: v["note_sha256"] for s, v in frozen["states"].items()},
@@ -239,13 +295,14 @@ def stage_policy(args):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=("notes", "render", "policy"))
+    ap.add_argument("stage", choices=("notes", "render", "policy", "doubt"))
+    ap.add_argument("--round", type=int, choices=(2, 3), default=2)
     ap.add_argument("--config", default=str(ROOT / "configs" / "models" / "api_gpt_6_1_sol.json"))
     ap.add_argument("--max-tokens", type=int, default=6000)
     ap.add_argument("--replicates", type=int, default=3)
     ap.add_argument("--concurrency", type=int, default=4)
     args = ap.parse_args()
-    {"notes": stage_notes, "render": stage_render, "policy": stage_policy}[args.stage](args)
+    {"notes": stage_notes, "render": stage_render, "policy": stage_policy, "doubt": stage_doubt}[args.stage](args)
 
 
 if __name__ == "__main__":

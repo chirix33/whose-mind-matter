@@ -222,3 +222,22 @@ Each entry is written before the round's new outputs are inspected. Brief: `AUTO
 - **H3b holds and H3c does not** (no cost in confident states): doubt presentation is a cheap, useful integration change. It is still not evidence for content value; record it as a candidate note-integration repair for the next milestone.
 - **H3b does not hold:** the Round 2 s9 effect is not explained by the `unknown` mass alone (possibly sampling, or the 0.4 vs. 0.5 split). Conclusion: inconclusive for s9; the overall reading rests on Round 2's "little headroom" plus "privileged-information dependence".
 - **H3a fails** (none or reference now succeed at s9): Round 2's s9 failures were partly sampling, and the inferred_bare gain is not robust.
+
+**Round 3 plan-gate outcome and amendment** (Opus gate Part B: PASS WITH REQUIRED CHANGES; `reviews/round2-results-r3plan-opus.md`). Made before any Round 3 output.
+1. **Status.** reference_doubt copies the reference note's status (as implemented in `doubt_note`), so only the distribution changes and no banner is added. The earlier text ("status `uncertain`") is corrected.
+   - Disclosed: the copied `grounded` status at s2, s6 and s7 (max p 0.76 / 0.78 / 0.69 after scaling) departs from the ≥ 0.8 threshold rule; s3 sits at exactly 0.80.
+2. **At s1 and s9, reference_doubt is byte-identical to inferred_bare** (the full t0 user message).
+   - So Round 3 at s9 is a pure **replication**. The matched control (same banner and bare format, only the distribution differs) was already Round 2's inferred_bare vs. reference at s9.
+   - The extra s9 inferred_bare cell is kept and **pooled with reference_doubt as one 8-draw arm**.
+   - reference_doubt contains both the 0.4/0.4 split and the unknown mass, so the split and the doubt mass cannot be separated; the earlier "0.4 vs. 0.5" branch is deleted.
+3. **Outcome mapping corrected.** No outcome can yield "integration-limited".
+   - H3b and H3c both hold: "generic caution cue; s9 is a risk-calibration failure".
+   - H3b holds and H3c does not: "a candidate cheap caution presentation, not evidence of content value".
+4. **Thresholds.**
+   - **H3a replicates** when none ≤ 1/4 and reference ≤ 1/4 successes at s9, and the pooled doubt arm has ≥ 6/8.
+   - **H3b holds** when the pooled doubt arm has ≥ 6/8 while reference has ≤ 1/4. It fails when the pooled arm has ≤ 2/8. Any other result is inconclusive, including none or reference reaching ≥ 2/4.
+   - **H3c holds** only when the 8-state mean of (reference_doubt − reference) is ≤ −0.025 (about half a step per episode) **and** negative states outnumber positive ones. It is reported against `none` as well.
+5. **H3c is stratified:**
+   - {s2, s4, s5}: K(recipient) about their own location. Here unknown mass contradicts r5 rule 2, so the manipulation does not fit the public rules.
+   - {s3, s6, s7, s8}.
+   - **s1 on its own**: the public twin of s9, with the recipient not moved. It is the key cost check.
