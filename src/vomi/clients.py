@@ -95,6 +95,29 @@ class MockClient:
         return ChatResult(text, None, self.model, "stop", None, None, None, 0.0)
 
 
+REPO_DOTENV = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), ".env")
+
+
+def load_dotenv(path: str) -> list[str]:
+    """Minimal KEY=value loader for the gitignored repo .env. Sets only variables not already set;
+    returns the NAMES it set (never values)."""
+    if not os.path.exists(path):
+        return []
+    names = []
+    for line in open(path, encoding="utf-8-sig"):
+        s = line.strip()
+        if not s or s.startswith("#") or "=" not in s:
+            continue
+        key, val = s.removeprefix("export ").split("=", 1)
+        key, val = key.strip(), val.strip()
+        if len(val) >= 2 and val[0] == val[-1] and val[0] in "'\"":
+            val = val[1:-1]
+        if key and key not in os.environ:
+            os.environ[key] = val
+            names.append(key)
+    return names
+
+
 class BudgetExceeded(RuntimeError):
     pass
 
@@ -197,6 +220,8 @@ def make_client(cfg: dict) -> ChatClient:
     if cfg["provider"] == "openai_compat":
         return OpenAICompatClient(cfg["base_url"], cfg["model"], cfg.get("api_key_env"), cfg.get("timeout_s", 300.0))
     if cfg["provider"] == "openai_responses":
+        if not os.environ.get(cfg["api_key_env"]):
+            load_dotenv(REPO_DOTENV)
         b = cfg["budget"]
         ledger = SpendLedger(os.path.expanduser(b["ledger_path"]), float(os.environ.get(b.get("cap_env", ""), b["cap_usd"])),
                              cfg["price_per_mtok"]["input"], cfg["price_per_mtok"]["output"])
