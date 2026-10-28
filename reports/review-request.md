@@ -9,7 +9,7 @@ Write-up: `reports/pilot/model-diagnostic.md`. Supporting files:
 All local cells ran. **All API cells are blocked** because `OPENAI_API_KEY` is not configured. No paid call was made.
 
 ## Needed from Ashraf (not a research question)
-- Configure `OPENAI_API_KEY` in WSL, and confirm the cap: USD 5, or set `OFFICEMINDS_API_CAP_USD`. The estimated spend for all API cells is about USD 1.4–2.9 (illustrative).
+- The key is configured (repo `.env`), but the OpenAI account has no credits (HTTP 429 `credit_balance_exhausted`). Add credit; the cap stays USD 5 unless `OFFICEMINDS_API_CAP_USD` is set. The estimated spend for all API cells is about USD 1.4–2.9 (illustrative).
 
 ## Q1. The scoring reference conflicts with the r3 public rules (audit uc14, uc16)
 The simulator creates nested beliefs only through tell/claim/assert events. Statements people overhear (`say` events) update no one, yet the r3 rules say listeners "learn what was said". The evidence posterior therefore scores some publicly reasonable nested attributions as unsupported.

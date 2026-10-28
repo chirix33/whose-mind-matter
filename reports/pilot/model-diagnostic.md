@@ -2,7 +2,11 @@
 
 This follows the pilot review (`docs/decisions/2026-10-28-D013-pilot-review-repairs.md`). It is exploratory work on development data (dev-v2). The original pilot-v1 results, traces and reports are unchanged; an erratum sits at the top of `reports/pilot/pilot-report.md`.
 
-**Status:** all local cells are done. **Every API cell is blocked:** `OPENAI_API_KEY` is not configured on this workstation (checked in both the Windows and WSL environments), so no paid call was made. The adapter, configuration, spend cap and frozen requests are ready (§5).
+**Status:** all local cells are done. **Every API cell is still blocked.**
+- At first, `OPENAI_API_KEY` was not configured.
+- Ashraf then added it to the gitignored repo `.env`, and the scripts now load it from there (commit `11bc5ee`).
+- A single smoke call on 2026-10-28 authenticated but returned **HTTP 429 `insufficient_quota` / `credit_balance_exhausted`** ("no credits remaining").
+- Spend so far: **USD 0.00**; the ledger shows 0 billed calls. The API cells need credit added to the OpenAI account. The adapter, configuration, spend cap and frozen requests are ready (§5).
 
 ## 1. Repairs (shared renderer r3; package pilot-v2; scoring v2)
 - **A. Evidence in the policy interface:**
