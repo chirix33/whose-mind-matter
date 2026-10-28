@@ -70,6 +70,27 @@
    "cost_usd": 0.5446,
    "failures": "2 pilot-v1 attempts hit the 6000-token cap (incomplete, retried successfully)",
    "outcome": "v2.1: coverage 24/24, 0 hallucination-type, log -0.49 / TV 0.14 on 19 consistent contexts; v2 abstains 19/24"
+  },
+  {
+   "id": "r2-notes",
+   "round": 2,
+   "status": "complete",
+   "what": "freeze 9 inferred pilot-v2.1 notes (API, r5) + reference + privileged + inferred_bare payloads",
+   "proof": "reports/autonomous-block/round2-notes-freeze.json",
+   "commit": "7c22105 (notes stage ran at 08:52-08:53 from 15dfcc3 + plan-gate fixes)",
+   "cost_usd": 0.061,
+   "failures": "none"
+  },
+  {
+   "id": "r2-policy",
+   "round": 2,
+   "status": "complete",
+   "what": "9 states x 5 conditions x 3 draws, API policy gpt-6.1-sol low, r5, fixed allocation, frozen notes",
+   "run": "notes-value-20261028-085354-5b41df",
+   "commit": "7c22105",
+   "cost_usd": 1.0379,
+   "failures": "0 blocked, 0 failed attempts",
+   "outcome": "no condition reliable; ceiling 24/27 for none; privileged +0.057 (fewer steps; K(recipient) reveals target); inferred_bare +0.130 entirely from s9 (3/3 vs 0/3), where true content also failed 0/3"
   }
  ]
 }

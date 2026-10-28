@@ -181,3 +181,44 @@ Each entry is written before the round's new outputs are inspected. Brief: `AUTO
    - It writes the tracked proof file `reports/autonomous-block/round2-notes-freeze.json`, which is committed before the `policy` stage runs.
    - The rendered note text itself stays in gitignored `data/` (it contains privileged content).
 - *Also recorded:* if an inferred note fails, the fallback renders "MIND NOTES: (none instantiated)". That is not identical to the `none` condition's text, and it would be reported per state.
+
+---
+
+## Round 3 — replication and one matched control for the s9 effect (declared 2026-10-28, after the Round 2 results and before any Round 3 output)
+
+**Reason for this choice (brief §6 Round 3, fourth option).** The only apparent Round 2 gain (inferred_bare +0.130) comes entirely from one state (s9: 3/3 vs. 0/3), and it looks driven by presentation or uncertainty: the successful notes add 0.2 `unknown` mass that the reference does not support. The brief says to spend Round 3 on replication or one matched control rather than another prompt variant. No new package, rules, policy or router change.
+
+**Question / hypothesis.**
+- **H3a:** the s9 pattern replicates: none and reference fail; inferred_bare succeeds.
+- **H3b (matched control):** adding expressed doubt (0.2 mass on `unknown`) to an otherwise identical computed note causes physical verification at s9.
+- **H3c:** the same manipulation costs return (extra steps) in the confident states. That would make it a generic caution trigger, not value from mental content.
+
+**Change from the preceding version.** One new diagnostic payload type, `reference_doubt`: the frozen reference distribution scaled by 0.8, plus 0.2 on `unknown`, rendered bare with status `uncertain`. It is computed deterministically from the frozen reference payload before any Round 3 output; its sha256 is recorded in a tracked proof file before the policy stage.
+- At s1 and s9 it equals the inferred_bare distribution exactly (0.4/0.4/0.2).
+- It is a constructed diagnostic, not an inference; its 0.2 `unknown` is unsupported by the reference by design.
+- Everything else is identical to Round 2: the policy (gpt-6.1-sol, low effort, 6,000 cap, default sampling), r5 rules, the pilot-v2.1 note format, fixed allocation, no refresh, concurrency 4, and counterbalanced dispatch (rotation by state index + replicate).
+
+**Configurations and data**
+- States s1–s9 as in Round 2.
+- Conditions:
+  - `none` and `reference`: the Round 2 frozen payloads, fresh draws, so this replicates Round 2;
+  - `reference_doubt`: new;
+  - `inferred_bare` **at s9 only**: the Round 2 frozen payload, fresh draws.
+- 4 fresh policy draws per state × condition: 9 × 3 × 4 = 108 episodes, plus 4 at s9 for inferred_bare = 112.
+- Round 2 draws are **not** pooled with Round 3 draws in the primary table. They are shown side by side, with an explicitly labelled descriptive combined column.
+
+**Metrics.**
+- **Primary:**
+  - s9 success counts per condition (H3a, H3b);
+  - mean over the other 8 states of (reference_doubt − reference) return, with step counts (H3c);
+  - all 9 states' (reference_doubt − reference) per state.
+- **Also reported:** none − reference per state, as a replication check of Round 2's ≈ 0; first-action change; cost per condition.
+- Descriptive only; 4 draws per cell.
+
+**Expected cost and maximum allocation.** 112 episodes × about $0.0078 ≈ **$0.87**. **Maximum $1.20**, enforced with `OFFICEMINDS_API_CAP_USD` = spent at dispatch + $1.20. The remaining allowance before Round 3 is $2.044, so about $0.84 stays in reserve. If billing stops the run, only complete replicate layers are analysed.
+
+**What each outcome would imply.**
+- **H3b holds** (reference_doubt at s9 ≥ 3/4 successes while reference ≤ 1/4) **and H3c holds** (8-state mean reference_doubt − reference < 0): the s9 gain is a generic doubt or caution trigger, not mental-content value. Conclusion: **integration-limited**. The policy does not use accurate false-belief content, and expressed doubt substitutes for it at a cost elsewhere.
+- **H3b holds and H3c does not** (no cost in confident states): doubt presentation is a cheap, useful integration change. It is still not evidence for content value; record it as a candidate note-integration repair for the next milestone.
+- **H3b does not hold:** the Round 2 s9 effect is not explained by the `unknown` mass alone (possibly sampling, or the 0.4 vs. 0.5 split). Conclusion: inconclusive for s9; the overall reading rests on Round 2's "little headroom" plus "privileged-information dependence".
+- **H3a fails** (none or reference now succeed at s9): Round 2's s9 failures were partly sampling, and the inferred_bare gain is not robust.
