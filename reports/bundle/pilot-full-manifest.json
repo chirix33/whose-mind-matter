@@ -1,0 +1,91 @@
+{
+  "run_id": "pilot-full-20261028-060517-3237fb",
+  "kind": "pilot-full",
+  "git_commit": "151846bbdacd8779386a0c77824823f54db6d525",
+  "git_dirty": true,
+  "config": {
+    "version": "dev-v2",
+    "set_sha256": "3e8afe544f7e2900df54777048dcaa38a4d73eaa01d33c78fa2d1b36e7e6fd8e",
+    "model": "gpt-oss-20b",
+    "decoding": {
+      "temperature": 0.0,
+      "max_tokens": 1024,
+      "reasoning_effort": "low"
+    },
+    "concurrency": 8,
+    "budget": 2,
+    "max_attempts": 3,
+    "prompt_version": "pilot-v1",
+    "render_revision": 2,
+    "prompt_sha256": {
+      "policy_system": "d6c4000c3bc6c0c716d340a8658851d1a8860c09eb1976cee1481d3270208c05",
+      "unit_system": "f355453dfefa9d4ff592231d2a3fb7b3b980148f96bf5a7c457afa728454a9b3",
+      "router_system": "4ab2aa62d2ac2741d6e6fd707c95d690c2373b5629bd721f4f66312525107c8d"
+    },
+    "served_models": [
+      "gpt-oss-20b"
+    ],
+    "serve": {
+      "venv": "~/venvs/vllm",
+      "vllm_version": "0.32.0",
+      "env": {
+        "HF_HUB_OFFLINE": "1",
+        "CUDA_HOME": "~/venvs/vllm/lib/python3.12/site-packages/nvidia/cu13",
+        "PATH_prepend": [
+          "~/venvs/vllm/bin",
+          "$CUDA_HOME/bin"
+        ]
+      },
+      "args": [
+        "--served-model-name",
+        "gpt-oss-20b",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8000",
+        "--max-model-len",
+        "16384",
+        "--gpu-memory-utilization",
+        "0.85",
+        "--attention-backend",
+        "TRITON_ATTN"
+      ]
+    },
+    "response_cache": "none (every call fresh)",
+    "git_commit": "151846bbdacd8779386a0c77824823f54db6d525"
+  },
+  "config_hash": "7a65c043a22d3901",
+  "python": "3.12.3",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "started_at": "2026-10-28T11:05:17.727710+00:00",
+  "gpu_at_start": [
+    {
+      "name": "NVIDIA GeForce RTX 5090",
+      "driver": "610.60",
+      "memory_total_mib": 32607,
+      "memory_used_mib": 30277
+    }
+  ],
+  "episodes": 400,
+  "interventions": 9,
+  "episodes_wall_clock_s": 288.78772867799995,
+  "total_wall_clock_s": 337.37383977199994,
+  "gpu_before": [
+    {
+      "name": "NVIDIA GeForce RTX 5090",
+      "driver": "610.60",
+      "memory_total_mib": 32607,
+      "memory_used_mib": 30277
+    }
+  ],
+  "gpu_after": [
+    {
+      "name": "NVIDIA GeForce RTX 5090",
+      "driver": "610.60",
+      "memory_total_mib": 32607,
+      "memory_used_mib": 30397
+    }
+  ],
+  "note_gpu": "nvidia-smi memory.used is the vLLM reservation (gpu-memory-utilization), not an activation peak",
+  "ended_at": "2026-10-28T11:10:55.195471+00:00"
+}

@@ -1,0 +1,276 @@
+{
+ "by_arm": {
+  "direct": {
+   "episodes": 80,
+   "success_rate": 0.85,
+   "error_rate": 0.0375,
+   "timeout_rate": 0.1125,
+   "mean_return": 0.616875,
+   "mean_steps": 3.5375,
+   "mean_wall_clock_s": 2.4274367520124898,
+   "median_wall_clock_s": 1.8713363309999522,
+   "mean_units_instantiated": 0,
+   "router_stops": 0,
+   "unit_calls_ok": 0,
+   "unit_calls": 0,
+   "unit_top_matches_truth": null,
+   "per_episode": {
+    "decision": {
+     "calls": 3.5375,
+     "prompt_tokens": 2264.5875,
+     "completion_tokens": 321.25,
+     "reasoning_tokens": 243.5625,
+     "reasoning_tokens_known": true,
+     "latency_s": 2.427105039637491
+    }
+   },
+   "failed_attempts": 0,
+   "fallbacks": 0
+  },
+  "dense": {
+   "episodes": 80,
+   "success_rate": 0.8375,
+   "error_rate": 0.075,
+   "timeout_rate": 0.0875,
+   "mean_return": 0.5662499999999999,
+   "mean_steps": 3.55,
+   "mean_wall_clock_s": 9.794975393587498,
+   "median_wall_clock_s": 8.24239865100003,
+   "mean_units_instantiated": 4.925,
+   "router_stops": 0,
+   "unit_calls_ok": 407,
+   "unit_calls": 407,
+   "unit_top_matches_truth": 0.43243243243243246,
+   "per_episode": {
+    "decision": {
+     "calls": 3.55,
+     "prompt_tokens": 3044.5125,
+     "completion_tokens": 362.275,
+     "reasoning_tokens": 284.1,
+     "reasoning_tokens_known": true,
+     "latency_s": 2.717254728724998
+    },
+    "refresh": {
+     "calls": 0.1625,
+     "prompt_tokens": 126.9625,
+     "completion_tokens": 31.0375,
+     "reasoning_tokens": 15.0,
+     "reasoning_tokens_known": true,
+     "latency_s": 0.22957575878749878
+    },
+    "unit": {
+     "calls": 4.95,
+     "prompt_tokens": 3237.8,
+     "completion_tokens": 915.1,
+     "reasoning_tokens": 490.2625,
+     "reasoning_tokens_known": true,
+     "latency_s": 6.846966514800023
+    }
+   },
+   "failed_attempts": 2,
+   "fallbacks": 0
+  },
+  "random": {
+   "episodes": 80,
+   "success_rate": 0.85,
+   "error_rate": 0.0875,
+   "timeout_rate": 0.0625,
+   "mean_return": 0.559375,
+   "mean_steps": 3.4375,
+   "mean_wall_clock_s": 5.336025560712502,
+   "median_wall_clock_s": 4.860382569499961,
+   "mean_units_instantiated": 1.95,
+   "router_stops": 0,
+   "unit_calls_ok": 160,
+   "unit_calls": 160,
+   "unit_top_matches_truth": 0.41875,
+   "per_episode": {
+    "decision": {
+     "calls": 3.4375,
+     "prompt_tokens": 2454.75,
+     "completion_tokens": 348.6375,
+     "reasoning_tokens": 273.1,
+     "reasoning_tokens_known": true,
+     "latency_s": 2.6065464126625004
+    },
+    "refresh": {
+     "calls": 0.05,
+     "prompt_tokens": 36.3375,
+     "completion_tokens": 10.95,
+     "reasoning_tokens": 6.275,
+     "reasoning_tokens_known": true,
+     "latency_s": 0.08063049961250073
+    },
+    "unit": {
+     "calls": 1.975,
+     "prompt_tokens": 1274.0875,
+     "completion_tokens": 353.75,
+     "reasoning_tokens": 185.8125,
+     "reasoning_tokens_known": true,
+     "latency_s": 2.6480790898125135
+    }
+   },
+   "failed_attempts": 2,
+   "fallbacks": 0
+  },
+  "router": {
+   "episodes": 80,
+   "success_rate": 0.825,
+   "error_rate": 0.1,
+   "timeout_rate": 0.075,
+   "mean_return": 0.549375,
+   "mean_steps": 3.3875,
+   "mean_wall_clock_s": 7.777099315387509,
+   "median_wall_clock_s": 6.650213354000016,
+   "mean_units_instantiated": 1.425,
+   "router_stops": 62,
+   "unit_calls_ok": 118,
+   "unit_calls": 118,
+   "unit_top_matches_truth": 0.3728813559322034,
+   "per_episode": {
+    "decision": {
+     "calls": 3.4125,
+     "prompt_tokens": 2397.6,
+     "completion_tokens": 385.45,
+     "reasoning_tokens": 310.3125,
+     "reasoning_tokens_known": true,
+     "latency_s": 2.880075164424998
+    },
+    "refresh": {
+     "calls": 0.05,
+     "prompt_tokens": 37.1375,
+     "completion_tokens": 9.0,
+     "reasoning_tokens": 4.575,
+     "reasoning_tokens_known": true,
+     "latency_s": 0.06743234103750098
+    },
+    "router": {
+     "calls": 1.825,
+     "prompt_tokens": 1235.2625,
+     "completion_tokens": 398.4125,
+     "reasoning_tokens": 350.925,
+     "reasoning_tokens_known": true,
+     "latency_s": 2.9623422450749985
+    },
+    "unit": {
+     "calls": 1.425,
+     "prompt_tokens": 933.4125,
+     "completion_tokens": 250.25,
+     "reasoning_tokens": 131.325,
+     "reasoning_tokens_known": true,
+     "latency_s": 1.8663964243124944
+    }
+   },
+   "failed_attempts": 2,
+   "fallbacks": 0
+  },
+  "symbolic": {
+   "episodes": 80,
+   "success_rate": 0.85,
+   "error_rate": 0.05,
+   "timeout_rate": 0.1,
+   "mean_return": 0.63625,
+   "mean_steps": 3.4,
+   "mean_wall_clock_s": 3.2990610045250057,
+   "median_wall_clock_s": 2.666841113500027,
+   "mean_units_instantiated": 0.5,
+   "router_stops": 0,
+   "unit_calls_ok": 44,
+   "unit_calls": 44,
+   "unit_top_matches_truth": 0.5681818181818182,
+   "per_episode": {
+    "decision": {
+     "calls": 3.4,
+     "prompt_tokens": 2221.05,
+     "completion_tokens": 338.5125,
+     "reasoning_tokens": 263.9625,
+     "reasoning_tokens_known": true,
+     "latency_s": 2.5317572064249867
+    },
+    "refresh": {
+     "calls": 0.05,
+     "prompt_tokens": 36.6625,
+     "completion_tokens": 9.9,
+     "reasoning_tokens": 5.6,
+     "reasoning_tokens_known": true,
+     "latency_s": 0.07464574953749974
+    },
+    "unit": {
+     "calls": 0.5,
+     "prompt_tokens": 321.25,
+     "completion_tokens": 92.75,
+     "reasoning_tokens": 53.05,
+     "reasoning_tokens_known": true,
+     "latency_s": 0.6920903677749933
+    }
+   },
+   "failed_attempts": 0,
+   "fallbacks": 0
+  }
+ },
+ "by_family": {
+  "ambiguity": {
+   "direct": 0.7999999999999999,
+   "dense": 0.79375,
+   "random": 0.79375,
+   "router": 0.5812499999999999,
+   "symbolic": 0.8124999999999999
+  },
+  "conflict": {
+   "direct": 0.31875,
+   "dense": 0.14999999999999997,
+   "random": 0.2875,
+   "router": 0.29374999999999996,
+   "symbolic": 0.31875
+  },
+  "corroborated": {
+   "direct": 0.91875,
+   "dense": 0.8875,
+   "random": 0.91875,
+   "router": 0.9249999999999999,
+   "symbolic": 0.9375
+  },
+  "directed_perspective": {
+   "direct": 0.49999999999999994,
+   "dense": 0.49999999999999994,
+   "random": 0.44999999999999996,
+   "router": 0.50625,
+   "symbolic": 0.5125
+  },
+  "distractors": {
+   "direct": 0.7875,
+   "dense": 0.7999999999999999,
+   "random": 0.78125,
+   "router": 0.7875,
+   "symbolic": 0.81875
+  },
+  "false_belief": {
+   "direct": 0.5249999999999999,
+   "dense": 0.28125,
+   "random": 0.28437499999999993,
+   "router": 0.38749999999999996,
+   "symbolic": 0.490625
+  },
+  "nested_reliability": {
+   "direct": 0.8062499999999999,
+   "dense": 0.79375,
+   "random": 0.8062499999999999,
+   "router": 0.6625,
+   "symbolic": 0.8062499999999999
+  },
+  "relevance_shift": {
+   "direct": 0.03749999999999999,
+   "dense": 0.22499999999999992,
+   "random": 0.03749999999999999,
+   "router": 0.012499999999999983,
+   "symbolic": 0.22499999999999992
+  },
+  "stop": {
+   "direct": 0.95,
+   "dense": 0.95,
+   "random": 0.95,
+   "router": 0.95,
+   "symbolic": 0.95
+  }
+ }
+}

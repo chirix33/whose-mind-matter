@@ -1,4 +1,4 @@
-# Milestone report — Stage 2 pilot, steps 1–2 (2026-10-28)
+# Milestone report — Stage 2 pilot, steps 1–3 (2026-10-28)
 
 **Scope.** The five corrections and Q1–Q6 rulings from the Stage 1 research review (recorded as D-007…D-012), plus one reporting error of mine found while updating memory. This is step 1 of the authorized Stage 2 pilot. **The pilot itself has not started:** no dev-group generation, no LLM calls, and the model server is still stopped. Nothing here is a C1–C5 result.
 
@@ -87,8 +87,30 @@ Frozen by `scripts/freeze_dev_groups.py` at clean commit `4f1ae8a`, seed 2026102
 
 Tests: `tests/test_devgen.py` (determinism, prior independent of the hidden stream, balance, pairing, no hidden parameters in agent views, true world in support, registry replay, stakes variants differ only in stakes). Full suite: **235 passed** at `4f1ae8a`.
 
+## Step 3: input check, dev-v2, and the five-arm local pilot
+Full write-up: **[reports/pilot/pilot-report.md](pilot/pilot-report.md)**. Questions for review: `reports/review-request.md`.
+
+- **Input check** over fully rendered requests (`scripts/check_pilot_inputs.py`):
+  - dev-v1 had 10 evidence-pair violations and a roster role-order cue.
+  - **dev-v2** fixes both and has 0 violations. It was frozen at `4bb749c` before any LLM call; dev-v1 is preserved and byte-reproducible.
+  - Stakes pairs differ in the rendered reward line.
+- **Integration run**, one episode per arm: it found rejected-but-valid evidence citations. Renderer r2 fixed them, and both integration runs are kept.
+- **Full pilot** (`pilot-full-20261028-060517-3237fb`, code `151846b`): 400 episodes + 9 paired interventions, 337 s.
+
+  | Arm | Mean return | Mean diff vs. direct |
+  |---|---|---|
+  | direct | +0.617 | — |
+  | dense | +0.566 | −0.051 |
+  | random | +0.559 | −0.058 |
+  | router | +0.549 | −0.068 |
+  | symbolic-reference | +0.636 | +0.019 (15% token overhead) |
+
+  - Typed-unit fidelity is about 0.43, and is poorly calibrated.
+  - Unsupported unit content is the main failure mode.
+  - Retained state helps in the carryover family (+0.225 vs. +0.037, n = 8).
+- Exploratory development data only; no C1–C5 claim.
+
 ## Not done (next steps of the authorized pilot)
 1. ~~Freeze dev groups~~ (done, step 2).
-2. Restart the existing gpt-oss-20b server, and test the typed-unit and policy prompts.
-3. Five arms (direct, dense, random, prompted router with STOP, symbolic-reference allocation passing LLM-inferred content), with full compute accounting.
-4. 8–12 paired intervention states; the report and bundle the review specified.
+2. ~~Server, prompts, five arms, accounting, paired interventions, report and bundle~~ (done, step 3).
+3. Next: research review of the pilot results (`reports/review-request.md`).

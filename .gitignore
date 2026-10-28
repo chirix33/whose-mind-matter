@@ -26,3 +26,5 @@ hf_cache/
 .claude/
 
 research-reviews/
+# Source archives for the research conversation (regenerable)
+reports/bundle/*.zip

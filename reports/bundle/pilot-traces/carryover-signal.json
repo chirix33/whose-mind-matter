@@ -1,0 +1,1152 @@
+{
+ "selection": "carryover-signal",
+ "instance_id": "dev-v2-relevance_shift-g1-stakes1",
+ "source_run": "pilot-full-20261028-060517-3237fb",
+ "arms": {
+  "direct": {
+   "agent_view": {
+    "brief": "Deliver the package to Yara.",
+    "steps": [
+     {
+      "action": null,
+      "obs": {
+       "t": 0,
+       "room": "lobby",
+       "people_present": [
+        "dave"
+       ],
+       "utterances": [
+        [
+         "dave",
+         "I saw Yara head to the office earlier."
+        ]
+       ],
+       "outcome": "",
+       "reward": 0.0,
+       "done": false
+      }
+     },
+     {
+      "action": "ask(dave,yara_loc)",
+      "obs": {
+       "t": 1,
+       "room": "lobby",
+       "people_present": [
+        "dave"
+       ],
+       "utterances": [
+        [
+         "dave",
+         "yara_loc = lab_north"
+        ]
+       ],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(hall)",
+      "obs": {
+       "t": 2,
+       "room": "hall",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(lab_north)",
+      "obs": {
+       "t": 3,
+       "room": "lab_north",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(hall)",
+      "obs": {
+       "t": 4,
+       "room": "hall",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(lab_north)",
+      "obs": {
+       "t": 5,
+       "room": "lab_north",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(hall)",
+      "obs": {
+       "t": 6,
+       "room": "hall",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(lab_north)",
+      "obs": {
+       "t": 7,
+       "room": "lab_north",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(hall)",
+      "obs": {
+       "t": 8,
+       "room": "hall",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "timeout",
+       "reward": -0.05,
+       "done": true
+      }
+     }
+    ]
+   },
+   "actions": [
+    "ask(dave,yara_loc)",
+    "move(hall)",
+    "move(lab_north)",
+    "move(hall)",
+    "move(lab_north)",
+    "move(hall)",
+    "move(lab_north)",
+    "move(hall)"
+   ],
+   "return": -0.4,
+   "outcome": "timeout",
+   "graph_final": [],
+   "usage": {
+    "decision": {
+     "calls": 8,
+     "attempts_failed": 0,
+     "fallbacks": 0,
+     "prompt_tokens": 5139,
+     "completion_tokens": 1020,
+     "reasoning_tokens": 843,
+     "reasoning_tokens_known": true,
+     "latency_s": 7.584797696999885
+    }
+   },
+   "calls": [
+    {
+     "kind": "decision",
+     "step": 0,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"ask(dave,yara_loc)\"}",
+       "reasoning": "We need to deliver to Yara. We don't know location. Ask dave. So action ask(dave,yara_loc).",
+       "finish_reason": "stop",
+       "prompt_tokens": 560,
+       "completion_tokens": 50,
+       "reasoning_tokens": 26,
+       "latency_s": 0.38675166300004094,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "ask(dave,yara_loc)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 1,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(hall)\"}",
+       "reasoning": "We need to deliver to Yara. We know from ask that yara_loc=lab_north. So we should move to hall then lab_north and deliver. But we have only 8 steps. We are at step1. We can choose ask again? Already know. So best: move(hall).",
+       "finish_reason": "stop",
+       "prompt_tokens": 616,
+       "completion_tokens": 84,
+       "reasoning_tokens": 63,
+       "latency_s": 0.6415050949999568,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(hall)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 2,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(lab_north)\"}",
+       "reasoning": "We need to deliver to Yara. We know from ask that yara_loc=lab_north. So go to lab_north. We are in hall. So move(lab_north).",
+       "finish_reason": "stop",
+       "prompt_tokens": 625,
+       "completion_tokens": 62,
+       "reasoning_tokens": 39,
+       "latency_s": 0.456929559999935,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(lab_north)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 3,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(hall)\"}",
+       "reasoning": "We need deliver to Yara. We don't know Yara's location. We can ask? But Yara not present. We can drop via chute? Only lobby chute. We are in lab_north. We could move back to hall then lobby. But we don't know Yara's location. We could ask Yara if present? Not possible. We could drop to lab_north? No chute. So best is to move back to hall then lobby, then ask Yara? But Yara not present. We could wait? But no progress. We need deliver. We could drop to lab_north? Not allowed. So we must move to lobby. So action: move(hall).",
+       "finish_reason": "stop",
+       "prompt_tokens": 636,
+       "completion_tokens": 162,
+       "reasoning_tokens": 141,
+       "latency_s": 1.237587332999965,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(hall)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 4,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(lab_north)\"}",
+       "reasoning": "We need deliver to Yara. We know from ask that yara_loc=lab_north. So go to lab_north and deliver. Currently in hall. So action move(lab_north).",
+       "finish_reason": "stop",
+       "prompt_tokens": 659,
+       "completion_tokens": 63,
+       "reasoning_tokens": 40,
+       "latency_s": 0.48691702600001463,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(lab_north)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 5,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(hall)\"}",
+       "reasoning": "We need deliver to Yara. We know from ask that yara_loc=lab_north. Yara is in lab_north. We are in lab_north. So deliver() is legal? But legal actions list only move(hall), wait(). So cannot deliver now. We must move to hall then back? But we can deliver only if in same room. We are in lab_north, Yara is there. But action not listed. Maybe deliver is legal only if in same room; but not listed as legal now. So we must move to hall then back? But that would waste steps. But we must choose legal action. So choose move(hall).",
+       "finish_reason": "stop",
+       "prompt_tokens": 664,
+       "completion_tokens": 157,
+       "reasoning_tokens": 136,
+       "latency_s": 1.163642985000024,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(hall)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 6,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(lab_north)\"}",
+       "reasoning": "We need deliver to Yara. We don't know location. We can ask? Only ask if same room. We are in hall. We can move to lab_north or lab_south or lobby. We have no info. We could drop via chute? Only in lobby. We could move to lobby, ask? But only ask if same room. We could ask dave? He's in lobby. We could ask him about yara_loc. He said lab_north. But uncertain? He said earlier. We can trust? Probably yes. So go to lab_north and deliver. But we don't know if Yara is there. Could be wrong. But we have no other info. So best is to go to lab_north and deliver. That is 1 step. So action: move(lab_north).",
+       "finish_reason": "stop",
+       "prompt_tokens": 687,
+       "completion_tokens": 189,
+       "reasoning_tokens": 166,
+       "latency_s": 1.3659268139999767,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(lab_north)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 7,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(hall)\"}",
+       "reasoning": "We need to deliver to Yara. We don't know Yara's location. We can ask in same room. We are in lab_north, no one. We could move to hall, then lobby to ask Dave again? But Dave is in lobby. We could move to lobby, ask. But we might waste steps. We have 8 steps total; we used 7. We can only do one more action. If we move to hall, we can't deliver. We need to deliver. We could drop to lab_north? But Yara might not be there. We don't know. We could deliver? Yara not present. So best is to move to hall? But then no delivery. We have no steps left to ask. So maybe we should drop to lab_north? That might be wrong. But we have no better. We could wait? That ends task with no delivery. But we want reward. Maybe we should drop to lab_north? If Yara is there, +1. If not, -0.5. Risk. But we have no chance to ask. So choose drop(lab_north).",
+       "finish_reason": "stop",
+       "prompt_tokens": 692,
+       "completion_tokens": 253,
+       "reasoning_tokens": 232,
+       "latency_s": 1.8455372209999723,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(hall)"
+     }
+    }
+   ],
+   "privileged_unit_fidelity": []
+  },
+  "dense": {
+   "agent_view": {
+    "brief": "Deliver the package to Yara.",
+    "steps": [
+     {
+      "action": null,
+      "obs": {
+       "t": 0,
+       "room": "lobby",
+       "people_present": [
+        "dave"
+       ],
+       "utterances": [
+        [
+         "dave",
+         "I saw Yara head to the office earlier."
+        ]
+       ],
+       "outcome": "",
+       "reward": 0.0,
+       "done": false
+      }
+     },
+     {
+      "action": "ask(dave,yara_loc)",
+      "obs": {
+       "t": 1,
+       "room": "lobby",
+       "people_present": [
+        "dave"
+       ],
+       "utterances": [
+        [
+         "dave",
+         "yara_loc = lab_north"
+        ]
+       ],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(hall)",
+      "obs": {
+       "t": 2,
+       "room": "hall",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(lab_north)",
+      "obs": {
+       "t": 3,
+       "room": "lab_north",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(hall)",
+      "obs": {
+       "t": 4,
+       "room": "hall",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(lab_north)",
+      "obs": {
+       "t": 5,
+       "room": "lab_north",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "wait()",
+      "obs": {
+       "t": 6,
+       "room": "lab_north",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(hall)",
+      "obs": {
+       "t": 7,
+       "room": "hall",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "",
+       "reward": -0.05,
+       "done": false
+      }
+     },
+     {
+      "action": "move(lab_north)",
+      "obs": {
+       "t": 8,
+       "room": "lab_north",
+       "people_present": [],
+       "utterances": [],
+       "outcome": "timeout",
+       "reward": -0.05,
+       "done": true
+      }
+     }
+    ]
+   },
+   "actions": [
+    "ask(dave,yara_loc)",
+    "move(hall)",
+    "move(lab_north)",
+    "move(hall)",
+    "move(lab_north)",
+    "wait()",
+    "move(hall)",
+    "move(lab_north)"
+   ],
+   "return": -0.4,
+   "outcome": "timeout",
+   "graph_final": [
+    {
+     "unit": "K(dave)",
+     "output": {
+      "path": [
+       "dave"
+      ],
+      "variable": "knowledge",
+      "about": "yara_loc",
+      "as_of_step": 3,
+      "hypotheses": [
+       {
+        "value": "lab_north",
+        "p": 1.0
+       },
+       {
+        "value": "lab_south",
+        "p": 0.0
+       },
+       {
+        "value": "unknown",
+        "p": 0.0
+       }
+      ],
+      "evidence_ids": [
+       "t0:said0",
+       "t1:said0"
+      ],
+      "unresolved": []
+     },
+     "status": "retained",
+     "as_of": 3
+    },
+    {
+     "unit": "K(dave->yara)",
+     "output": {
+      "path": [
+       "dave",
+       "yara"
+      ],
+      "variable": "knowledge",
+      "about": "yara_loc",
+      "as_of_step": 0,
+      "hypotheses": [
+       {
+        "value": "lab_north",
+        "p": 0.5
+       },
+       {
+        "value": "lab_south",
+        "p": 0.5
+       }
+      ],
+      "evidence_ids": [
+       "t0:said0"
+      ],
+      "unresolved": [
+       "Dave's statement 'I saw Yara head to the office earlier' does not specify which office (lab_north or lab_south), so the belief is equally likely to be either location."
+      ]
+     },
+     "status": "stale",
+     "as_of": 0
+    },
+    {
+     "unit": "K(yara)",
+     "output": {
+      "path": [
+       "yara"
+      ],
+      "variable": "knowledge",
+      "about": "yara_loc",
+      "as_of_step": 0,
+      "hypotheses": [
+       {
+        "value": "lab_north",
+        "p": 0.5
+       },
+       {
+        "value": "lab_south",
+        "p": 0.5
+       }
+      ],
+      "evidence_ids": [],
+      "unresolved": [
+       "No observations or statements directly reveal Yara's belief about her own location."
+      ]
+     },
+     "status": "retained",
+     "as_of": 0
+    },
+    {
+     "unit": "K(yara->dave)",
+     "output": {
+      "path": [
+       "yara",
+       "dave"
+      ],
+      "variable": "knowledge",
+      "about": "yara_loc",
+      "as_of_step": 3,
+      "hypotheses": [
+       {
+        "value": "unknown",
+        "p": 1.0
+       }
+      ],
+      "evidence_ids": [],
+      "unresolved": [
+       "No observations of Yara\u2019s belief about Dave\u2019s statement; cannot infer Yara\u2019s belief about Dave\u2019s belief."
+      ]
+     },
+     "status": "retained",
+     "as_of": 3
+    }
+   ],
+   "usage": {
+    "unit": {
+     "calls": 4,
+     "attempts_failed": 0,
+     "fallbacks": 0,
+     "prompt_tokens": 2550,
+     "completion_tokens": 951,
+     "reasoning_tokens": 561,
+     "reasoning_tokens_known": true,
+     "latency_s": 6.968518348999851
+    },
+    "decision": {
+     "calls": 8,
+     "attempts_failed": 0,
+     "fallbacks": 0,
+     "prompt_tokens": 6899,
+     "completion_tokens": 849,
+     "reasoning_tokens": 674,
+     "reasoning_tokens_known": true,
+     "latency_s": 6.307130158000177
+    },
+    "refresh": {
+     "calls": 2,
+     "attempts_failed": 0,
+     "fallbacks": 0,
+     "prompt_tokens": 1466,
+     "completion_tokens": 379,
+     "reasoning_tokens": 194,
+     "reasoning_tokens_known": true,
+     "latency_s": 2.7019073029999845
+    }
+   },
+   "calls": [
+    {
+     "kind": "unit",
+     "step": 0,
+     "target": "K(dave)",
+     "attempts": [
+      {
+       "text": "{\"path\":[\"dave\"],\"variable\":\"knowledge\",\"about\":\"yara_loc\",\"as_of_step\":0,\"hypotheses\":[{\"value\":\"lab_north\",\"p\":0.5},{\"value\":\"lab_south\",\"p\":0.5}],\"evidence_ids\":[\"t0:said0\"],\"unresolved\":[] }",
+       "reasoning": "We need distribution over possible values of dave's belief about yara_loc. Facts: yara_loc can be lab_north or lab_south. Dave says \"I saw Yara head to the office earlier.\" That indicates he believes Yara went to office (lab_north or lab_south). But we don't know which. So his belief could be either. We don't have evidence of which. So probability 0.5 each. Also possibility unknown? He has a belief. So distribution over two values. Provide evidence ID t0:said0. unresolved none.",
+       "finish_reason": "stop",
+       "prompt_tokens": 634,
+       "completion_tokens": 196,
+       "reasoning_tokens": 115,
+       "latency_s": 1.5084914459999936,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "path": [
+       "dave"
+      ],
+      "variable": "knowledge",
+      "about": "yara_loc",
+      "as_of_step": 0,
+      "hypotheses": [
+       {
+        "value": "lab_north",
+        "p": 0.5
+       },
+       {
+        "value": "lab_south",
+        "p": 0.5
+       }
+      ],
+      "evidence_ids": [
+       "t0:said0"
+      ],
+      "unresolved": []
+     }
+    },
+    {
+     "kind": "unit",
+     "step": 0,
+     "target": "K(dave->yara)",
+     "attempts": [
+      {
+       "text": "{\"path\":[\"dave\",\"yara\"],\"variable\":\"knowledge\",\"about\":\"yara_loc\",\"as_of_step\":0,\"hypotheses\":[{\"value\":\"lab_north\",\"p\":0.5},{\"value\":\"lab_south\",\"p\":0.5}],\"evidence_ids\":[\"t0:said0\"],\"unresolved\":[\"Dave's statement 'I saw Yara head to the office earlier' does not specify which office (lab_north or lab_south), so the belief is equally likely to be either location.\"]}",
+       "reasoning": "We need distribution over possible values of yara_loc: lab_north or lab_south. Dave says he saw Yara head to the office earlier. That implies Dave believes Yara is in lab_north? Actually office earlier could be lab_north or lab_south? Not specified. So uncertain. So probability maybe 0.5 each. Provide evidence IDs: t0:said0. unresolved: maybe that statement ambiguous.",
+       "finish_reason": "stop",
+       "prompt_tokens": 642,
+       "completion_tokens": 211,
+       "reasoning_tokens": 87,
+       "latency_s": 1.5444493129999728,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "path": [
+       "dave",
+       "yara"
+      ],
+      "variable": "knowledge",
+      "about": "yara_loc",
+      "as_of_step": 0,
+      "hypotheses": [
+       {
+        "value": "lab_north",
+        "p": 0.5
+       },
+       {
+        "value": "lab_south",
+        "p": 0.5
+       }
+      ],
+      "evidence_ids": [
+       "t0:said0"
+      ],
+      "unresolved": [
+       "Dave's statement 'I saw Yara head to the office earlier' does not specify which office (lab_north or lab_south), so the belief is equally likely to be either location."
+      ]
+     }
+    },
+    {
+     "kind": "unit",
+     "step": 0,
+     "target": "K(yara)",
+     "attempts": [
+      {
+       "text": "{\"path\":[\"yara\"],\"variable\":\"knowledge\",\"about\":\"yara_loc\",\"as_of_step\":0,\"hypotheses\":[{\"value\":\"lab_north\",\"p\":0.5},{\"value\":\"lab_south\",\"p\":0.5}],\"evidence_ids\":[],\"unresolved\":[\"No observations or statements directly reveal Yara's belief about her own location.\"]}",
+       "reasoning": "We need distribution over possible values of what Yara believes about her location. Yara_loc can be lab_north or lab_south. Yara's belief could be either. We have no evidence of Yara's belief. Dave says he saw Yara head to the office earlier. That might indicate Yara is in lab_north or lab_south? Not sure. But we have no direct evidence. So unknown? We can assign equal probability? But we can say unknown? The aspect is knowledge of yara: what yara believes about yara_loc. Since no evidence, we can say 0.5 each? But maybe we can say unknown? The schema expects hypotheses list with value and p. We can include both values with equal probability. evidence_ids empty. unresolved maybe \"no evidence about Yara's belief\".",
+       "finish_reason": "stop",
+       "prompt_tokens": 632,
+       "completion_tokens": 257,
+       "reasoning_tokens": 166,
+       "latency_s": 1.854479425999898,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "path": [
+       "yara"
+      ],
+      "variable": "knowledge",
+      "about": "yara_loc",
+      "as_of_step": 0,
+      "hypotheses": [
+       {
+        "value": "lab_north",
+        "p": 0.5
+       },
+       {
+        "value": "lab_south",
+        "p": 0.5
+       }
+      ],
+      "evidence_ids": [],
+      "unresolved": [
+       "No observations or statements directly reveal Yara's belief about her own location."
+      ]
+     }
+    },
+    {
+     "kind": "unit",
+     "step": 0,
+     "target": "K(yara->dave)",
+     "attempts": [
+      {
+       "text": "{\"path\":[\"yara\",\"dave\"],\"variable\":\"knowledge\",\"about\":\"yara_loc\",\"as_of_step\":0,\"hypotheses\":[{\"value\":\"lab_north\",\"p\":0.5},{\"value\":\"lab_south\",\"p\":0.5},{\"value\":\"unknown\",\"p\":0.0}],\"evidence_ids\":[\"t0:said0\"],\"unresolved\":[] }",
+       "reasoning": "We need distribution over possible values of what Yara believes Dave believes about yara_loc. Possible values: \"lab_north\", \"lab_south\", \"unknown\". We have evidence: dave says he saw Yara head to office earlier. That suggests Dave believes Yara is in office (lab_north or south). Yara's belief about Dave's belief? Yara might think Dave knows she is in office. Likely Yara believes Dave believes she is in office. So value \"lab_north\" or \"lab_south\" unknown. We can't know which. So probability maybe 0.5 each, unknown 0.0. But maybe Yara might think Dave doesn't know? But Dave said he saw. So Yara likely believes Dave knows. So distribution: lab_north 0.5, lab_south 0.5, unknown 0.0. Provide evidence id t0:said0. unresolved none.",
+       "finish_reason": "stop",
+       "prompt_tokens": 642,
+       "completion_tokens": 287,
+       "reasoning_tokens": 193,
+       "latency_s": 2.0610981639999864,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "path": [
+       "yara",
+       "dave"
+      ],
+      "variable": "knowledge",
+      "about": "yara_loc",
+      "as_of_step": 0,
+      "hypotheses": [
+       {
+        "value": "lab_north",
+        "p": 0.5
+       },
+       {
+        "value": "lab_south",
+        "p": 0.5
+       },
+       {
+        "value": "unknown",
+        "p": 0.0
+       }
+      ],
+      "evidence_ids": [
+       "t0:said0"
+      ],
+      "unresolved": []
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 0,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"ask(dave,yara_loc)\"}",
+       "reasoning": "We need best action. We don't know Yara location. We could ask Dave. That gives info. So choose ask(dave,yara_loc).",
+       "finish_reason": "stop",
+       "prompt_tokens": 772,
+       "completion_tokens": 54,
+       "reasoning_tokens": 30,
+       "latency_s": 0.4150307680000651,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "ask(dave,yara_loc)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 1,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(hall)\"}",
+       "reasoning": "We should deliver to Yara. We know from Dave that yara_loc=lab_north. Likely correct. So we should move to lab_north and deliver. But we have only 8 steps. We are at lobby. We can move to hall then lab_north. That's 2 moves. Then deliver. That's 3 steps. Good. So action: move(hall).",
+       "finish_reason": "stop",
+       "prompt_tokens": 828,
+       "completion_tokens": 100,
+       "reasoning_tokens": 79,
+       "latency_s": 0.7440294200000608,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(hall)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 2,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(lab_north)\"}",
+       "reasoning": "We need to deliver to Yara. We know from Dave that yara_loc=lab_north. Likely correct. So move to lab_north.",
+       "finish_reason": "stop",
+       "prompt_tokens": 837,
+       "completion_tokens": 54,
+       "reasoning_tokens": 31,
+       "latency_s": 0.4257754650000152,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(lab_north)"
+     }
+    },
+    {
+     "kind": "refresh",
+     "step": 3,
+     "target": "K(dave)",
+     "attempts": [
+      {
+       "text": "{\"path\":[\"dave\"],\"variable\":\"knowledge\",\"about\":\"yara_loc\",\"as_of_step\":3,\"hypotheses\":[{\"value\":\"lab_north\",\"p\":1.0},{\"value\":\"lab_south\",\"p\":0.0},{\"value\":\"unknown\",\"p\":0.0}],\"evidence_ids\":[\"t0:said0\",\"t1:said0\"],\"unresolved\":[]}",
+       "reasoning": "We need distribution over possible values of what dave believes about yara_loc. From observations: at t0, dave says \"I saw Yara head to the office earlier.\" That indicates belief that Yara went to office (lab_north or south). At t1 ask, dave says yara_loc = lab_north. So he believes lab_north. No contradictions. So probability 1 for lab_north. Provide evidence IDs: t0:said0, t1:said0. unresolved none.",
+       "finish_reason": "stop",
+       "prompt_tokens": 729,
+       "completion_tokens": 202,
+       "reasoning_tokens": 105,
+       "latency_s": 1.4302801329999966,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "path": [
+       "dave"
+      ],
+      "variable": "knowledge",
+      "about": "yara_loc",
+      "as_of_step": 3,
+      "hypotheses": [
+       {
+        "value": "lab_north",
+        "p": 1.0
+       },
+       {
+        "value": "lab_south",
+        "p": 0.0
+       },
+       {
+        "value": "unknown",
+        "p": 0.0
+       }
+      ],
+      "evidence_ids": [
+       "t0:said0",
+       "t1:said0"
+      ],
+      "unresolved": []
+     }
+    },
+    {
+     "kind": "refresh",
+     "step": 3,
+     "target": "K(yara->dave)",
+     "attempts": [
+      {
+       "text": "{\"path\":[\"yara\",\"dave\"],\"variable\":\"knowledge\",\"about\":\"yara_loc\",\"as_of_step\":3,\"hypotheses\":[{\"value\":\"unknown\",\"p\":1.0}],\"evidence_ids\":[],\"unresolved\":[\"No observations of Yara\u2019s belief about Dave\u2019s statement; cannot infer Yara\u2019s belief about Dave\u2019s belief.\"]}",
+       "reasoning": "We need distribution over possible values of what Yara believes Dave believes about yara_loc. Dave said yara_loc=lab_north. Yara may believe that. But Yara might not know Dave's statement. We have no evidence of Yara's belief. So unknown? Could be that Yara believes Dave says lab_north. Probability maybe 0.5? But we can say unknown. Provide distribution: unknown:1.0.",
+       "finish_reason": "stop",
+       "prompt_tokens": 737,
+       "completion_tokens": 177,
+       "reasoning_tokens": 89,
+       "latency_s": 1.271627169999988,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "path": [
+       "yara",
+       "dave"
+      ],
+      "variable": "knowledge",
+      "about": "yara_loc",
+      "as_of_step": 3,
+      "hypotheses": [
+       {
+        "value": "unknown",
+        "p": 1.0
+       }
+      ],
+      "evidence_ids": [],
+      "unresolved": [
+       "No observations of Yara\u2019s belief about Dave\u2019s statement; cannot infer Yara\u2019s belief about Dave\u2019s belief."
+      ]
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 3,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(hall)\"}",
+       "reasoning": "We are in lab_north, package held. Need deliver to Yara. We don't know Yara location. We could drop to lobby chute? But wrong chute costs -0.5. Better to move to hall then ask? But no one there. We could move to hall then move to lab_south? But we don't know Yara. Maybe best to move to hall then move to lab_south and deliver? But risk wrong. We could ask Dave? He's not here. We could wait? Not helpful. Maybe best to move to hall then ask? But no one. We could drop to lobby? That would be wrong unless Yara is in lobby. But we know Yara likely lab_north. So deliver in lab_north? We don't know Yara present. Could ask? No. So maybe best to move to hall then to lab_south and deliver? But risk. Maybe best to move to hall then wait? But no. We have 8 steps. We could move to hall then move to lab_south then deliver. If Yara is in lab_north, wrong. So maybe better to drop to lobby? That would be wrong if Yara not there. So maybe best to move to hall then wait? But no. We could ask Dave? Not present. So maybe best to move to hall then move to lab_south then deliver? But risk. Maybe we should move to hall then move to lab_south then deliver? Let's choose move(hall).",
+       "finish_reason": "stop",
+       "prompt_tokens": 862,
+       "completion_tokens": 326,
+       "reasoning_tokens": 305,
+       "latency_s": 2.404722498999945,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(hall)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 4,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(lab_north)\"}",
+       "reasoning": "We need deliver to Yara. We know from Dave that yara_loc=lab_north. So go to lab_north. We are in hall. So move(lab_north).",
+       "finish_reason": "stop",
+       "prompt_tokens": 885,
+       "completion_tokens": 61,
+       "reasoning_tokens": 38,
+       "latency_s": 0.4424934989999656,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(lab_north)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 5,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"wait()\"}",
+       "reasoning": "We are in lab_north, need deliver to Yara. Yara likely in lab_north per Dave. We can deliver. So action deliver().",
+       "finish_reason": "stop",
+       "prompt_tokens": 890,
+       "completion_tokens": 50,
+       "reasoning_tokens": 31,
+       "latency_s": 0.4032468750000362,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "wait()"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 6,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(hall)\"}",
+       "reasoning": "We are in lab_north, no one. We need deliver to Yara. We don't know if Yara is there. We could drop to lobby? But we don't know Yara location. We could move to hall then lobby then ask? But no one. We could wait. Probably best to move to hall to get closer to lobby where Dave is. But we already visited hall. Maybe move to hall then lobby then ask Dave again? But Dave is in lobby. We can ask again. So action: move(hall).",
+       "finish_reason": "stop",
+       "prompt_tokens": 901,
+       "completion_tokens": 129,
+       "reasoning_tokens": 108,
+       "latency_s": 0.9091162870000744,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(hall)"
+     }
+    },
+    {
+     "kind": "decision",
+     "step": 7,
+     "target": "policy",
+     "attempts": [
+      {
+       "text": "{\"action\":\"move(lab_north)\"}",
+       "reasoning": "We need deliver to Yara. We know from Dave that yara_loc=lab_north. Likely correct. We are in hall. We can move to lab_north and deliver. That's 1 step. So action: move(lab_north).",
+       "finish_reason": "stop",
+       "prompt_tokens": 924,
+       "completion_tokens": 75,
+       "reasoning_tokens": 52,
+       "latency_s": 0.5627153450000151,
+       "error": null,
+       "validation_errors": []
+      }
+     ],
+     "ok": true,
+     "fallback": null,
+     "parsed": {
+      "action": "move(lab_north)"
+     }
+    }
+   ],
+   "privileged_unit_fidelity": [
+    {
+     "unit": "K(dave)",
+     "step": 0,
+     "kind": "unit",
+     "ok": true,
+     "top": "lab_north",
+     "truth": [
+      "lab_north"
+     ],
+     "top_matches_truth": true
+    },
+    {
+     "unit": "K(dave->yara)",
+     "step": 0,
+     "kind": "unit",
+     "ok": true,
+     "top": "lab_north",
+     "truth": [
+      "unknown"
+     ],
+     "top_matches_truth": false
+    },
+    {
+     "unit": "K(yara)",
+     "step": 0,
+     "kind": "unit",
+     "ok": true,
+     "top": "lab_north",
+     "truth": [
+      "lab_south"
+     ],
+     "top_matches_truth": false
+    },
+    {
+     "unit": "K(yara->dave)",
+     "step": 0,
+     "kind": "unit",
+     "ok": true,
+     "top": "lab_north",
+     "truth": [
+      "unknown"
+     ],
+     "top_matches_truth": false
+    },
+    {
+     "unit": "K(dave)",
+     "step": 3,
+     "kind": "refresh",
+     "ok": true,
+     "top": "lab_north",
+     "truth": [
+      "lab_north"
+     ],
+     "top_matches_truth": true
+    },
+    {
+     "unit": "K(yara->dave)",
+     "step": 3,
+     "kind": "refresh",
+     "ok": true,
+     "top": "unknown",
+     "truth": [
+      "unknown"
+     ],
+     "top_matches_truth": true
+    }
+   ]
+  }
+ }
+}
