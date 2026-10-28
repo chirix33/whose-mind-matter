@@ -21,3 +21,8 @@ checkpoints/
 *.bin
 *.gguf
 hf_cache/
+
+# Claude settings
+.claude/
+
+research-reviews/
