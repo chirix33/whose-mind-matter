@@ -1,0 +1,9 @@
+You infer ONE aspect of ONE person's mind for an office delivery robot, using only the robot's own history of observations (cited by evidence IDs).
+
+The aspect is one of:
+- knowledge of person j: what j currently believes about the given fact (which may be false or outdated), or "unknown" if j has no belief;
+- knowledge path j -> k: what j believes k believes about the given fact;
+- reliability of person j: whether j is cooperative (sincerely reports what they believe) or obstructive (may deliberately mislead), or "unknown";
+- reliability path j -> k: how j assesses k (cooperative / obstructive / unknown).
+
+Give a probability distribution over the allowed values (probabilities sum to 1), cite only evidence IDs that appear in the history, and list unresolved uncertainties or contradictions. Do not recommend robot actions and do not describe other people's minds beyond what is needed for this one aspect. Respond with JSON only, matching the schema.

@@ -26,7 +26,11 @@ from dataclasses import dataclass, field
 from .scenarios import Params, Scenario, grid
 from .world import COOPERATIVE, OBSTRUCTIVE, Event, PersonMind, World, WorldConfig
 
-DEV_VERSION = "dev-v1"
+DEV_VERSION = "dev-v2"  # current; dev-v1 stays regenerable with generate(version="dev-v1")
+# dev-v1 emitted evidence only when its hidden condition was true, so in worlds where it was false the
+# evidence variant was visibly identical to the no-evidence variant (found by the pilot input check).
+# dev-v2 always emits a visible, informative statement in the evidence variant.
+EVIDENCE_MODE = {"dev-v1": "conditional", "dev-v2": "always"}
 BASE_SEED = 20261028
 GROUPS_PER_FAMILY = 4
 NAME_POOL = ("alice", "bob", "carol", "dave", "erin", "frank", "grace", "heidi", "ivan", "judy", "kim", "leo",
@@ -75,10 +79,21 @@ class GroupDraw:
     names: tuple[str, ...]  # role-ordered; names[0] is always the recipient
     offices: tuple[str, str]
     knobs: tuple[tuple[str, float | str], ...] = field(default_factory=tuple)
+    version: str = DEV_VERSION
 
     @property
     def group_id(self) -> str:
-        return f"{DEV_VERSION}-{self.family}-g{self.index}"
+        return f"{self.version}-{self.family}-g{self.index}"
+
+    @property
+    def evidence_always(self) -> bool:
+        return EVIDENCE_MODE[self.version] == "always"
+
+    @property
+    def sorted_roster(self) -> bool:
+        """dev-v2+: the public roster is sorted, so its order cannot encode roles (found by the input
+        check: dev-v1 listed the holder before the distractor)."""
+        return self.version != "dev-v1"
 
     def knob(self, k):
         return dict(self.knobs)[k]
@@ -102,7 +117,7 @@ def variants_for(family: str) -> list[Variant]:
     return out
 
 
-def draw_group(family: str, index: int, seed: int = BASE_SEED) -> GroupDraw:
+def draw_group(family: str, index: int, seed: int = BASE_SEED, version: str = DEV_VERSION) -> GroupDraw:
     """Public draw only (names, labels, probabilities). Uses its own RNG stream."""
     rng = random.Random(f"{seed}:public:{family}:{index}")
     names = tuple(rng.sample(NAME_POOL, 4))
@@ -126,7 +141,7 @@ def draw_group(family: str, index: int, seed: int = BASE_SEED) -> GroupDraw:
         "relevance_shift": {"p_moved": pick((0.2, 0.3)), "p_returns": pick((0.3, 0.5))},
         "corroborated": {"p_mistaken": pick((0.1, 0.2, 0.3))},
     }[family]
-    return GroupDraw(family, index, names, offices, tuple(sorted(knobs.items())))
+    return GroupDraw(family, index, names, offices, tuple(sorted(knobs.items())), version)
 
 
 # ----------------------------------------------------------------------------- helpers
@@ -135,9 +150,10 @@ def _layout(offices):
     return {"lobby": ("hall",), "hall": ("lobby", a, b), a: ("hall",), b: ("hall",)}
 
 
-def _cfg(roster, recipient, offices, facts, chute=True, handoff=None, stakes=1.0, horizon=8):
+def _cfg(g, roster, recipient, offices, facts, chute=True, handoff=None, stakes=1.0, horizon=8):
+    roster = tuple(sorted(roster)) if g.sorted_roster else tuple(roster)
     return WorldConfig(adjacency=_layout(offices), offices=tuple(offices), chute_room="lobby" if chute else None,
-                       recipient=recipient, roster=tuple(roster), query_facts=tuple(facts),
+                       recipient=recipient, roster=roster, query_facts=tuple(facts),
                        fact_domains={f: tuple(offices) for f in facts}, handoff_routes=handoff or {},
                        stakes=stakes, horizon=horizon)
 
@@ -170,7 +186,7 @@ def _stop(g, v):
     def build(p):
         people = (R, B) if v.bystander else (R,)
         offices = g.offices
-        cfg = _config_with_lobby(people, R, offices, loc_fact, v.stakes)
+        cfg = _config_with_lobby(g, people, R, offices, loc_fact, v.stakes)
         rooms = {x: "lobby" for x in people}
         minds = {x: PersonMind() for x in people}
         seen = (B,) if v.bystander and p["B_saw"] == "yes" else ()
@@ -180,8 +196,8 @@ def _stop(g, v):
     return grid({"B_saw": _yn(g.knob("p_saw"))}), build
 
 
-def _config_with_lobby(people, R, offices, loc_fact, stakes):
-    cfg = _cfg(people, R, offices, [loc_fact], stakes=stakes)
+def _config_with_lobby(g, people, R, offices, loc_fact, stakes):
+    cfg = _cfg(g, people, R, offices, [loc_fact], stakes=stakes)
     return WorldConfig(**{**cfg.__dict__, "fact_domains": {loc_fact: ("lobby",) + tuple(offices)}})
 
 
@@ -190,13 +206,15 @@ def _ambiguity(g, v):
     loc_fact = f"{R}_loc"
 
     def build(p):
-        cfg = _cfg((R, I), R, g.offices, [loc_fact], stakes=v.stakes)
+        cfg = _cfg(g, (R, I), R, g.offices, [loc_fact], stakes=v.stakes)
         rooms, minds = {R: p["loc"], I: "lobby"}, {R: PersonMind(), I: PersonMind()}
         seen = (I,) if p["I_saw"] == "yes" else ()
         bs = (Event("bs-walks", -2, "witness", "hall", R, loc_fact, p["loc"], present=(R,) + seen),)
         timed = ()
         if v.evidence and p["I_saw"] == "yes":
             timed = (Event("t0-access", 0, "say", "lobby", I, text="I was at the front desk all morning."),)
+        elif v.evidence and g.evidence_always:
+            timed = (Event("t0-access", 0, "say", "lobby", I, text="I was out of the building all morning."),)
         return World(cfg, "lobby", rooms, minds, bs, timed)
 
     return grid({"loc": _half(g.offices), "I_saw": _yn(g.knob("p_saw"))}), build
@@ -205,7 +223,7 @@ def _ambiguity(g, v):
 def _moved(g, v, R, holders, others, p, timed=(), returns=False):
     loc_fact = f"{R}_loc"
     people = (R,) + tuple(holders) + tuple(others)
-    cfg = _cfg(people, R, g.offices, [loc_fact], stakes=v.stakes)
+    cfg = _cfg(g, people, R, g.offices, [loc_fact], stakes=v.stakes)
     final = _other(p["initial"], g.offices) if p["moved"] == "yes" else p["initial"]
     rooms = {R: final, **{x: "lobby" for x in people[1:]}}
     minds = {x: PersonMind() for x in people}
@@ -223,6 +241,8 @@ def _false_belief(g, v):
         timed = [Event("t0-saw", 0, "say", "lobby", I, text=f"I saw {R.capitalize()} head to the office earlier.")]
         if v.evidence and p["moved"] == "yes":
             timed.append(Event("t0-switch", 0, "say", "lobby", C, text=f"{R.capitalize()} mentioned switching offices today."))
+        elif v.evidence and g.evidence_always:
+            timed.append(Event("t0-switch", 0, "say", "lobby", C, text=f"{R.capitalize()} said they are keeping the same office today."))
         return _moved(g, v, R, (I,), (C,), p, timed)
 
     return grid({"initial": _half(g.offices), "moved": _yn(g.knob("p_moved"))}), build
@@ -244,7 +264,7 @@ def _distractors(g, v):
     plausible = g.knob("distractor") == "plausible"
 
     def build(p):
-        cfg = _cfg((R, H, D), R, g.offices, [loc_fact], stakes=v.stakes)
+        cfg = _cfg(g, (R, H, D), R, g.offices, [loc_fact], stakes=v.stakes)
         rooms, minds = {R: p["loc"], H: "lobby", D: "lobby"}, {x: PersonMind() for x in (R, H, D)}
         seen = tuple(x for x, k in ((H, "H_saw"), (D, "D_saw")) if p[k] == "yes")
         bs = (Event("bs-walks", -2, "witness", "hall", R, loc_fact, p["loc"], present=(R,) + seen),)
@@ -262,7 +282,7 @@ def _conflict(g, v):
 
     def build(p):
         people = (R, X, Y) if two else (R, X)
-        cfg = _cfg(people, R, g.offices, [loc_fact], stakes=v.stakes)
+        cfg = _cfg(g, people, R, g.offices, [loc_fact], stakes=v.stakes)
         loc = p["loc"]
         rooms = {R: loc, **{x: "lobby" for x in people[1:]}}
         minds, bs, timed = {R: PersonMind()}, [Event("bs-self", -4, "witness", loc, R, loc_fact, loc, present=(R,))], []
@@ -291,7 +311,7 @@ def _nested(g, v):
     loc_fact = f"{R}_loc"
 
     def build(p):
-        cfg = _cfg((R, L, F), R, g.offices, [loc_fact], chute=False, handoff={F: ("", loc_fact)}, stakes=v.stakes)
+        cfg = _cfg(g, (R, L, F), R, g.offices, [loc_fact], chute=False, handoff={F: ("", loc_fact)}, stakes=v.stakes)
         loc, obstructive = p["loc"], p["L_intent"] == OBSTRUCTIVE
         rooms = {R: loc, L: "lobby", F: "lobby"}
         minds = {R: PersonMind(), L: PersonMind(intent=p["L_intent"]), F: PersonMind(), W: PersonMind()}
@@ -314,7 +334,7 @@ def _directed(g, v):
     R, F, A = _roles(g, v, swap=(0, 1))[:3]
 
     def build(p):
-        cfg = _cfg((R, F), R, g.offices, ["meeting_room"], chute=False, handoff={F: (R, "meeting_room")}, stakes=v.stakes)
+        cfg = _cfg(g, (R, F), R, g.offices, ["meeting_room"], chute=False, handoff={F: (R, "meeting_room")}, stakes=v.stakes)
         initial = p["initial"]
         moved = _other(initial, g.offices)
         heard, told = p["story"] != "not_heard", p["story"] == "heard_told"
@@ -341,7 +361,7 @@ def _corroborated(g, v):
 
     def build(p):
         people = (R, I1, I2) if v.evidence else (R, I1)
-        cfg = _cfg(people, R, g.offices, [loc_fact], stakes=v.stakes)
+        cfg = _cfg(g, people, R, g.offices, [loc_fact], stakes=v.stakes)
         loc = p["loc"]
         rooms = {R: loc, **{x: "lobby" for x in people[1:]}}
         minds = {x: PersonMind() for x in people}
@@ -384,11 +404,11 @@ def sample_hidden(prior, family: str, index: int, seed: int = BASE_SEED) -> Para
     return rng.choices(params, weights=weights, k=1)[0]
 
 
-def generate(seed: int = BASE_SEED, groups_per_family: int = GROUPS_PER_FAMILY) -> list[DevInstance]:
+def generate(seed: int = BASE_SEED, groups_per_family: int = GROUPS_PER_FAMILY, version: str = DEV_VERSION) -> list[DevInstance]:
     out = []
     for family in FAMILIES:
         for index in range(groups_per_family):
-            g = draw_group(family, index, seed)
+            g = draw_group(family, index, seed, version)
             scenarios = [(v, make_instance(g, v)) for v in variants_for(family)]
             priors = {tuple(sc.prior) for _, sc in scenarios}
             assert len(priors) == 1, f"variants of {g.group_id} must share one public prior"
@@ -397,6 +417,6 @@ def generate(seed: int = BASE_SEED, groups_per_family: int = GROUPS_PER_FAMILY) 
     return out
 
 
-def registry(seed: int = BASE_SEED) -> dict:
+def registry(seed: int = BASE_SEED, version: str = DEV_VERSION) -> dict:
     """scenario_id -> factory, for episode replay."""
-    return {inst.instance_id: (lambda s=inst.scenario: s) for inst in generate(seed)}
+    return {inst.instance_id: (lambda s=inst.scenario: s) for inst in generate(seed, version=version)}

@@ -1,4 +1,4 @@
-"""Freeze the Stage 2 pilot development groups (dev-v1) BEFORE any LLM output is inspected.
+"""Freeze the Stage 2 pilot development groups (current DEV_VERSION) BEFORE any LLM output is inspected.
 
 Run (CPU only, WSL):
     python scripts/freeze_dev_groups.py
@@ -11,11 +11,11 @@ Declared exclusion rules (applied identically to every instance, never by method
 An excluded instance removes its whole group, so that paired variants stay together.
 
 Outputs:
-  data/pilot/dev-v1/public.jsonl        robot-visible material + public metadata (agent view, brief, config)
-  data/pilot/dev-v1/privileged.jsonl    hidden params, symbolic reference annotations, generator audit
-  data/pilot/dev-v1/interventions.json  prespecified paired-intervention states (by symbolic category)
-  reports/pilot/dev-v1-manifest.json    committed manifest: ids, groups, factors, hashes, counts, exclusions
-  reports/pilot/dev-v1-freeze.md        human-readable freeze record (rendered from the manifest)
+  data/pilot/<version>/public.jsonl        robot-visible material + public metadata (agent view, brief, config)
+  data/pilot/<version>/privileged.jsonl    hidden params, symbolic reference annotations, generator audit
+  data/pilot/<version>/interventions.json  prespecified paired-intervention states (by symbolic category)
+  reports/pilot/<version>-manifest.json    committed manifest: ids, groups, factors, hashes, counts, exclusions
+  reports/pilot/<version>-freeze.md        human-readable freeze record (rendered from the manifest)
 """
 
 from __future__ import annotations
@@ -203,9 +203,9 @@ def main() -> None:
         "interventions": chosen,
         "data_dir": str(OUT_DATA.relative_to(ROOT)),
     }
-    (OUT_REPORT / "dev-v1-manifest.json").write_text(json.dumps(summary, indent=1, sort_keys=True))
+    (OUT_REPORT / f"{DEV_VERSION}-manifest.json").write_text(json.dumps(summary, indent=1, sort_keys=True))
     path = runlog.finish(manifest, OUT_DATA, summary={k: v for k, v in summary.items() if k not in ("instances",)})
-    (OUT_REPORT / "dev-v1-freeze.md").write_text(render(summary, manifest["run_id"], manifest.get("git_commit")), encoding="utf-8")
+    (OUT_REPORT / f"{DEV_VERSION}-freeze.md").write_text(render(summary, manifest["run_id"], manifest.get("git_commit")), encoding="utf-8")
     print(json.dumps({k: summary[k] for k in ("n_groups", "n_instances", "groups_by_family", "symbolic_categories",
                                               "excluded_groups", "set_sha256")}, indent=1))
     print(f"manifest: {path}")

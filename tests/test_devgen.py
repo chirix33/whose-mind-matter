@@ -96,3 +96,24 @@ def test_stakes_variants_differ_only_in_stakes(instances):
                     assert wa.reset() == wb.reset()
                     assert {k: v for k, v in wa.config.__dict__.items() if k != "stakes"} == \
                            {k: v for k, v in wb.config.__dict__.items() if k != "stakes"}
+
+
+def test_dev_v1_freeze_still_reproduces_from_code():
+    """dev-v1 is preserved: regenerating it must match the committed manifest's hashes exactly."""
+    import hashlib
+    from pathlib import Path
+    man = json.loads((Path(__file__).resolve().parents[1] / "reports/pilot/dev-v1-manifest.json").read_text())
+    want = {i["instance_id"]: (i["agent_view_sha256"], i["public_prior_sha256"]) for i in man["instances"]}
+    sha = lambda o: hashlib.sha256(json.dumps(o, sort_keys=True, default=str).encode()).hexdigest()
+    got = {}
+    for inst in generate(version="dev-v1"):
+        w = inst.scenario.build(inst.hidden)
+        view = VisibleHistory(inst.scenario.brief, [(None, w.reset())]).to_agent_dict()
+        got[inst.instance_id] = (sha(view), sha([list(map(list, p)) + [wt] for p, wt in inst.scenario.prior]))
+    assert got == want
+
+
+def test_dev_v2_roster_order_does_not_encode_roles():
+    for inst in generate():
+        roster = inst.scenario.config.roster
+        assert list(roster) == sorted(roster)

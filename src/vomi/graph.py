@@ -45,7 +45,11 @@ class UnitRecord:
 
 
 def _confidence(output) -> float:
-    return max(h["p"] for h in output) if isinstance(output, list) else max(output.values())
+    if isinstance(output, list):  # typed symbolic reference hypotheses
+        return max(h["p"] for h in output)
+    if "hypotheses" in output:  # typed LLM unit output (vomi.unit_schema)
+        return max(float(h["p"]) for h in output["hypotheses"])
+    return max(output.values())  # scalar diagnostic fields
 
 
 @dataclass

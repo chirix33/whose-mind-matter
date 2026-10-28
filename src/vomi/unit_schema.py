@@ -15,13 +15,16 @@ INTENT_VALUES = ("cooperative", "obstructive", "unknown")
 FORBIDDEN_KEYS = {"action", "recommended_action", "next_action", "answer", "true_state", "hidden"}
 
 
-def unit_output_schema(fact_domain: list[str]) -> dict:
-    """JSON schema for structured decoding (vLLM `response_format`)."""
+def unit_output_schema(fact_domain: list[str], variable: str | None = None) -> dict:
+    """JSON schema for structured decoding (vLLM `response_format`). With `variable`, hypothesis
+    values are restricted to that variable's type (rooms + unknown, or intents)."""
     knowledge_values = list(fact_domain) + list(KNOWLEDGE_VALUES_EXTRA)
+    values = {"knowledge": set(knowledge_values), "reliability": set(INTENT_VALUES)}.get(
+        variable, set(knowledge_values) | set(INTENT_VALUES))
     hypothesis = {
         "type": "object",
         "properties": {
-            "value": {"type": "string", "enum": sorted(set(knowledge_values) | set(INTENT_VALUES))},
+            "value": {"type": "string", "enum": sorted(values)},
             "p": {"type": "number", "minimum": 0, "maximum": 1},
         },
         "required": ["value", "p"],
