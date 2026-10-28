@@ -125,41 +125,84 @@ class BudgetExceeded(RuntimeError):
 
 class SpendLedger:
     """Persistent USD spend ledger with a hard cap (estimated from reported usage x configured prices).
-    Before each call it refuses if spent + in-flight reservations + worst-case cost of that call would exceed
-    the cap. Thread-safe within one process; one process per ledger file at a time (state is loaded once)."""
+
+    One authoritative file shared by every process: each operation takes an exclusive file lock (``<path>.lock``,
+    fcntl) and re-reads the file, so concurrent local processes and threads see each other's reservations.
+    Before each call it refuses if spent + unresolved + all in-flight reservations + the call's worst case would
+    exceed the cap. Outcomes: ``record`` (usage reported), ``release`` (the server answered with an error status,
+    so nothing was billed), ``unresolve`` (ambiguous transport failure: the worst case stays charged as
+    ``unresolved_usd``, never assumed free). A reservation left by a crashed process also stays counted."""
 
     def __init__(self, path: str, cap_usd: float, price_in: float, price_out: float):
         self.path, self.cap = path, cap_usd
         self.price_in, self.price_out = price_in / 1e6, price_out / 1e6
-        self.state = json.loads(open(path).read()) if os.path.exists(path) else {"spent_usd": 0.0, "calls": 0}
-        self.reserved = 0.0
-        self._lock = threading.Lock()
+        self._tlock = threading.Lock()
 
-    def check(self, est_in: int, max_out: int) -> float:
-        """Reserve the call's worst-case cost; returns the reservation to pass to record() or release()."""
+    @staticmethod
+    def _defaults(state: dict) -> dict:
+        state.setdefault("spent_usd", 0.0)
+        state.setdefault("calls", 0)
+        state.setdefault("reserved", {})
+        state.setdefault("unresolved_usd", 0.0)
+        state.setdefault("unresolved_calls", 0)
+        return state
+
+    def _locked(self, fn):
+        import fcntl
+        os.makedirs(os.path.dirname(self.path) or ".", exist_ok=True)
+        with self._tlock, open(self.path + ".lock", "a") as lk:
+            fcntl.flock(lk, fcntl.LOCK_EX)
+            try:
+                state = self._defaults(json.loads(open(self.path).read()) if os.path.exists(self.path) else {})
+                result = fn(state)
+                tmp = f"{self.path}.{os.getpid()}.tmp"
+                with open(tmp, "w") as f:
+                    json.dump(state, f)
+                os.replace(tmp, self.path)
+                return result
+            finally:
+                fcntl.flock(lk, fcntl.LOCK_UN)
+
+    @property
+    def state(self) -> dict:
+        return self._locked(lambda s: dict(s))
+
+    @property
+    def reserved(self) -> float:
+        return sum(self.state["reserved"].values())
+
+    def check(self, est_in: int, max_out: int) -> str:
+        """Reserve the call's worst-case cost; returns a reservation id for record()/release()/unresolve()."""
         worst = est_in * self.price_in + max_out * self.price_out
-        with self._lock:
-            if self.state["spent_usd"] + self.reserved + worst > self.cap:
-                raise BudgetExceeded(f"cap {self.cap} USD: spent {self.state['spent_usd']:.4f} + in-flight "
-                                     f"{self.reserved:.4f} + worst-case {worst:.4f}")
-            self.reserved += worst
-        return worst
+        rid = f"{os.getpid()}-{threading.get_ident()}-{time.monotonic_ns()}"
 
-    def release(self, reservation: float) -> None:
-        with self._lock:
-            self.reserved -= reservation
+        def op(s):
+            committed = s["spent_usd"] + s["unresolved_usd"] + sum(s["reserved"].values())
+            if committed + worst > self.cap:
+                raise BudgetExceeded(f"cap {self.cap} USD: spent {s['spent_usd']:.4f} + unresolved {s['unresolved_usd']:.4f}"
+                                     f" + in-flight {sum(s['reserved'].values()):.4f} + worst-case {worst:.4f}")
+            s["reserved"][rid] = worst
+        self._locked(op)
+        return rid
 
-    def record(self, tokens_in: int | None, tokens_out: int | None, reservation: float = 0.0) -> float:
+    def release(self, rid: str) -> None:
+        self._locked(lambda s: s["reserved"].pop(rid, None))
+
+    def unresolve(self, rid: str) -> None:
+        def op(s):
+            s["unresolved_usd"] += s["reserved"].pop(rid, 0.0)
+            s["unresolved_calls"] += 1
+        self._locked(op)
+
+    def record(self, tokens_in: int | None, tokens_out: int | None, rid: str | None = None) -> float:
         cost = (tokens_in or 0) * self.price_in + (tokens_out or 0) * self.price_out
-        with self._lock:
-            self.reserved -= reservation
-            self.state["spent_usd"] += cost
-            self.state["calls"] += 1
-            os.makedirs(os.path.dirname(self.path) or ".", exist_ok=True)
-            tmp = self.path + ".tmp"
-            with open(tmp, "w") as f:
-                json.dump(self.state, f)
-            os.replace(tmp, self.path)
+
+        def op(s):
+            if rid is not None:
+                s["reserved"].pop(rid, None)
+            s["spent_usd"] += cost
+            s["calls"] += 1
+        self._locked(op)
         return cost
 
 
@@ -207,7 +250,10 @@ class OpenAIResponsesClient:
             with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
                 out = json.loads(resp.read())
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
-            self.ledger.release(reservation)
+            if isinstance(e, urllib.error.HTTPError):  # the server answered with an error status: not billed
+                self.ledger.release(reservation)
+            else:  # no usable answer (timeout, dropped connection, unreadable body): billing unknown
+                self.ledger.unresolve(reservation)
             detail = e.read().decode(errors="replace")[:500] if isinstance(e, urllib.error.HTTPError) else ""
             return ChatResult("", None, self.model, None, None, None, None, time.monotonic() - start,
                               error=f"{type(e).__name__}: {e} {detail}".strip())

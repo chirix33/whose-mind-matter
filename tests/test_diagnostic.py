@@ -125,11 +125,34 @@ def test_ledger_reservations_cover_in_flight_calls_and_are_released(tmp_path):
     b = ledger.check(0, 4000)  # in flight: 0.08
     with pytest.raises(BudgetExceeded):  # a third concurrent call could overshoot the cap
         ledger.check(0, 4000)
-    ledger.release(a)  # transport error: nothing billed
+    ledger.release(a)  # the server returned an error status: nothing billed
     ledger.record(0, 1000, b)  # billed 0.01, reservation settled
     assert ledger.reserved == pytest.approx(0.0) and ledger.state["spent_usd"] == pytest.approx(0.01)
-    assert json.loads((tmp_path / "ledger.json").read_text()) == {"spent_usd": pytest.approx(0.01), "calls": 1}
+    on_disk = json.loads((tmp_path / "ledger.json").read_text())
+    assert on_disk["spent_usd"] == pytest.approx(0.01) and on_disk["calls"] == 1 and on_disk["reserved"] == {}
     ledger.check(0, 4000)
+
+
+def test_ledger_is_shared_across_instances_and_keeps_ambiguous_failures_charged(tmp_path):
+    path = str(tmp_path / "ledger.json")
+    one = SpendLedger(path, cap_usd=0.1, price_in=2.0, price_out=10.0)
+    two = SpendLedger(path, cap_usd=0.1, price_in=2.0, price_out=10.0)  # stands in for a second process
+    r = one.check(0, 4000)
+    two.check(0, 4000)
+    with pytest.raises(BudgetExceeded):  # each sees the other's in-flight reservation
+        one.check(0, 4000)
+    one.unresolve(r)  # timeout after sending: the worst case stays charged
+    s = two.state
+    assert s["unresolved_usd"] == pytest.approx(0.04) and s["unresolved_calls"] == 1
+    with pytest.raises(BudgetExceeded):
+        two.check(0, 4000)
+
+
+def test_legacy_ledger_file_is_read_with_defaults(tmp_path):
+    p = tmp_path / "ledger.json"
+    p.write_text(json.dumps({"spent_usd": 1.3123, "calls": 266}))
+    ledger = SpendLedger(str(p), cap_usd=5, price_in=2.0, price_out=10.0)
+    assert ledger.state["spent_usd"] == pytest.approx(1.3123) and ledger.reserved == 0.0
 
 
 def test_missing_api_key_is_reported_not_guessed(monkeypatch, tmp_path):

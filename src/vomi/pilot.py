@@ -32,7 +32,8 @@ from officeminds.world import World, WorldConfig, legal_actions
 
 from .clients import ChatClient, ChatResult
 from .graph import PerspectiveGraph
-from .unit_schema import unit_output_schema, unit_output_schema_v2, validate_unit_output, validate_unit_output_v2
+from .unit_schema import (unit_output_schema, unit_output_schema_v2, unit_output_schema_v21, validate_unit_output,
+                          validate_unit_output_v2, validate_unit_output_v21)
 from .units import KNOWLEDGE, Unit, content, generate_candidates
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -54,21 +55,29 @@ class Package:
         return ROOT / "prompts" / self.name
 
     def schema(self, domain, variable):
-        return unit_output_schema(domain, variable) if self.name == "pilot-v1" else unit_output_schema_v2(domain, variable)
+        f = {"pilot-v1": unit_output_schema, "pilot-v2": unit_output_schema_v2, "pilot-v2.1": unit_output_schema_v21}[self.name]
+        return f(domain, variable)
 
     def validate(self, text, path, variable, domain, ids):
-        f = validate_unit_output if self.name == "pilot-v1" else validate_unit_output_v2
+        f = {"pilot-v1": validate_unit_output, "pilot-v2": validate_unit_output_v2,
+             "pilot-v2.1": validate_unit_output_v21}[self.name]
         return f(text, path, variable, domain, ids)
 
     def fields_hint(self, u, about, step) -> str:
         head = f'Respond as JSON with fields: path={json.dumps(list(u.path))}, variable="{u.variable}", about="{about}", as_of_step={step}, '
         if self.name == "pilot-v1":
             return head + 'hypotheses=[{"value","p"}], evidence_ids=[...], unresolved=[...].'
-        return head + ('status="attributed"|"insufficient_evidence", hypotheses=[{"value","p","support":[{"evidence_id","kind","note"}]}], '
+        status = '"grounded"|"uncertain"|"abstain"' if self.name == "pilot-v2.1" else '"attributed"|"insufficient_evidence"'
+        return head + (f'status={status}, hypotheses=[{{"value","p","support":[{{"evidence_id","kind","note"}}]}}], '
                        'unresolved=[...].')
 
+    @property
+    def min_render_revision(self) -> int:
+        return 4 if self.name == "pilot-v2.1" else 1  # v2.1 cites the numbered r4 rules
 
-PACKAGES = {"pilot-v1": Package("pilot-v1"), "pilot-v2": Package("pilot-v2")}
+
+PACKAGES = {"pilot-v1": Package("pilot-v1"), "pilot-v2": Package("pilot-v2"), "pilot-v2.1": Package("pilot-v2.1")}
+ABSTAIN_STATUSES = ("insufficient_evidence", "abstain")  # pilot-v2 / pilot-v2.1 full abstention
 
 
 def load_prompts(package: str = "pilot-v1") -> dict[str, str]:
@@ -88,6 +97,27 @@ PEOPLE_RULES = (  # r3 shared public domain rules (pilot review item C); describ
     "automatically believe it. A person with no belief of their own may adopt what someone they trust tells them. "
     "Some people may deliberately mislead, especially when they have a reason to. A person who neither saw nor was "
     "told anything about a fact has no belief about it.")
+
+PEOPLE_RULES_R4 = (  # r4 (autonomous block Round 1): each clause is checked against the simulator in tests/test_r4_rules.py
+    "How people come to believe things (the same rules apply to everyone):\n"
+    "1. A person believes a fact if they saw it happen or were sincerely told it, and keeps that belief until they see "
+    "or are told otherwise, so a belief can be outdated or false. A person with no belief of their own may adopt what "
+    "someone tells them; if they think that person is obstructive, they assume the opposite of what was said instead. "
+    "When someone says whether a person is cooperative or obstructive, listeners adopt that assessment. A person who "
+    "neither saw nor was told anything about a fact has no belief about it.\n"
+    "2. At the start of the task the recipient knows where they themselves are. Moving does not update anyone's "
+    "beliefs, including the mover's own.\n"
+    "3. When someone states a value for a fact in front of others (shown in the history as \"fact = value\", or "
+    "\"I don't know.\" in answer to a question), everyone else present then thinks the speaker believes that value "
+    "(or has no belief), but does not adopt it.\n"
+    "4. Remarks in ordinary sentences (for example about where someone was, what someone saw, or an earlier "
+    "conversation) change no one's beliefs: listeners do not form beliefs about the speaker's or anyone else's beliefs "
+    "from them. They still tell the robot what the speaker said, which may or may not be accurate.\n"
+    "5. Seeing someone, or seeing the same thing as someone, does not tell a person what that other person believes. "
+    "People form beliefs about others' beliefs only from statements: a listener thinks a speaker believes what the "
+    "speaker stated (rules 1 and 3), and a person who told someone a fact before the task thinks that listener now "
+    "believes it. Statements made during the task give the speaker no belief about the listeners.\n"
+    "6. Some people may deliberately mislead, especially when they have a reason to.")
 
 
 def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
@@ -110,17 +140,22 @@ def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
         f"Facts that can be asked about: {', '.join(cfg.query_facts)} (possible values: "
         + "; ".join(f"{f}: {', '.join(cfg.fact_domains[f])}" for f in cfg.query_facts) + ").",
     ]
-    if rev >= 3:
+    if rev >= 4:
+        lines.append(PEOPLE_RULES_R4)
+    elif rev >= 3:
         lines.append(PEOPLE_RULES)
     return "\n".join(lines)
 
 
-RENDER_REVISION = 3
+RENDER_REVISION = 4
 # r2: utterance IDs t{t}:said{i} (r1 appended ":{speaker}"; the model cited the short form and valid citations
 #     were rejected); action/outcome IDs are citable too. Used by the pilot-v1 full run (kept reproducible: rev=2).
 # r3 (pilot review A/C/D, shared by ALL arms and packages): public people-rules paragraph in the task card; mind
 #     notes show status, per-hypothesis support or cited evidence IDs, and short excerpts of the cited lines;
 #     physical refutation marks K(speaker) `fact_refuted` instead of forcing a refresh.
+# r4 (autonomous block Round 1, shared by ALL arms and packages): numbered people-rules that state the simulator's
+#     belief contract (statements vs. ordinary remarks; beliefs about beliefs only from statements; recipient
+#     self-location at the start only). Notes rendering is unchanged from r3.
 
 
 def ledger(hist: VisibleHistory) -> tuple[str, list[str]]:
@@ -186,8 +221,10 @@ def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = Non
             continue
         head = f"  {r['unit']} about {out.get('about', '?')} (as of step {r['as_of']}, note status {r['status']}"
         head += f": {STATUS_TEXT[r['status']]})" if r["status"] in STATUS_TEXT else ")"
-        if out.get("status") == "insufficient_evidence":
+        if out.get("status") in ABSTAIN_STATUSES:
             head += " INFERENCE ABSTAINED: the robot's evidence does not settle this person's state"
+        elif out.get("status") == "uncertain":
+            head += " INFERENCE UNCERTAIN: several of this person's possible states remain plausible"
         hyp_parts = []
         for h in out.get("hypotheses", []):
             sup = h.get("support")

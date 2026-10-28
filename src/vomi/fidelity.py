@@ -86,3 +86,50 @@ def score_output(parsed: dict | None, truth: str, posterior: dict[str, float], k
         "posterior_top": max(posterior, key=posterior.get) if posterior else None,
         "cites": len(parsed.get("evidence_ids", [])),
     }
+
+
+# ----------------------------------------------------------------------------- scoring v3 (autonomous block Round 1)
+# Changes from v2 (each output gets exactly ONE category; the categories partition n):
+#   invalid           no valid output after the failure protocol
+#   abstained         status insufficient_evidence (v2) or abstain (v2.1): coverage loss. Its distribution still
+#                     enters the proper scores, which are reported both over all valid outputs and over attributed ones
+#   ambiguous_reference  the context's reference is flagged ambiguous by the reference audit (undisclosed generator
+#                     base rates or template structure) AND the top value has posterior < SUPPORT_MIN: reported apart,
+#                     never counted as a model error
+#   correct_supported / correct_unsupported / incorrect_supported / leakage   as in v2
+#   unsupported_committed  wrong, posterior(top) < SUPPORT_MIN, and top_p >= COMMIT_P: asserted unsupported content
+#   unsupported_hedged     wrong, posterior(top) < SUPPORT_MIN, but top_p < COMMIT_P: an uncertain miss, not an
+#                     assertion; it is not counted as hallucination-type content
+# "uncertain" (v2.1) is an attributed status: a broad distribution is scored, not treated as abstention.
+COMMIT_P = 0.5
+ABSTAIN = ("insufficient_evidence", "abstain")
+CATS_V3 = ("correct_supported", "correct_unsupported", "incorrect_supported", "leakage", "unsupported_committed",
+           "unsupported_hedged", "ambiguous_reference", "abstained", "invalid")
+
+
+def score_output_v3(parsed: dict | None, truth: str, posterior: dict[str, float], known: set[str], values: list[str],
+                    reference_ambiguous: bool = False) -> dict:
+    if parsed is None:
+        return {"valid": False, "category": "invalid"}
+    s = score_output(parsed, truth, posterior, known, values)
+    s["abstained"] = parsed.get("status") in ABSTAIN
+    post_top = posterior.get(s["top"], 0.0)
+    if s["abstained"]:
+        cat = "abstained"
+    elif s["top"] == truth:
+        cat = "correct_supported" if post_top >= SUPPORT_MIN else "correct_unsupported"
+    elif post_top >= SUPPORT_MIN:
+        cat = "incorrect_supported"
+    elif reference_ambiguous:
+        cat = "ambiguous_reference"
+    elif truth == "unknown" and s["top"] != "unknown" and s["top"] in known:
+        cat = "leakage"
+    else:
+        cat = "unsupported_committed" if s["top_p"] >= COMMIT_P else "unsupported_hedged"
+    s["category"] = cat
+    s["status"] = parsed.get("status")
+    dist = {}
+    for h in parsed.get("hypotheses", []):
+        dist[h["value"]] = dist.get(h["value"], 0.0) + float(h["p"])
+    s["tv_posterior"] = 0.5 * sum(abs(dist.get(c, 0.0) - posterior.get(c, 0.0)) for c in set(dist) | set(posterior))
+    return s

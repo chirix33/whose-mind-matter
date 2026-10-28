@@ -1,0 +1,41 @@
+{
+ "block": "AUTONOMOUS_RESEARCH_BRIEF.md (2026-10-28)",
+ "entries": [
+  {
+   "id": "pre-1",
+   "status": "pre-block reference",
+   "round": 0,
+   "what": "fixed contexts, local gpt-oss-20b low, pilot-v1/v2, r3",
+   "run": "unit-contexts-20261028-064729-654f39",
+   "commit": "90bca99",
+   "cost_usd": 0
+  },
+  {
+   "id": "pre-2",
+   "status": "pre-block reference",
+   "round": 0,
+   "what": "fixed contexts, local gpt-oss-20b medium, pilot-v1/v2, r3",
+   "run": "unit-contexts-20261028-064818-7d5f71",
+   "commit": "90bca99",
+   "cost_usd": 0
+  },
+  {
+   "id": "pre-3",
+   "status": "pre-block reference",
+   "round": 0,
+   "what": "fixed contexts, API gpt-6.1-sol low, pilot-v1/v2, r3, 16k cap",
+   "run": "unit-contexts-20261028-070945-72da94",
+   "commit": "70e3754",
+   "cost_usd": 0.389
+  },
+  {
+   "id": "pre-4",
+   "status": "pre-block reference",
+   "round": 0,
+   "what": "crossed policy x notes, 12 instances, pilot-v2, r3",
+   "run": "crossed-20261028-065424-77d5cb + crossed-20261028-071537-f647df",
+   "commit": "b2c3ea6 / dffe4c6",
+   "cost_usd": 0.923
+  }
+ ]
+}

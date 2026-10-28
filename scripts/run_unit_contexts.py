@@ -2,6 +2,8 @@
 
     python3 scripts/run_unit_contexts.py --config configs/models/local_gpt_oss_20b.json --effort low --max-tokens 4096
     python3 scripts/run_unit_contexts.py --config configs/models/api_gpt_6_1_sol.json --effort low
+    python3 scripts/run_unit_contexts.py --config ... --packages pilot-v1 pilot-v2 pilot-v2.1 \
+        --contexts reports/autonomous-block/unit-contexts-v1-r4.jsonl
 
 Requests are EXACTLY the frozen payloads in reports/pilot/unit-contexts-v1.jsonl (verified by hash), sent
 sequentially (concurrency 1). Failure protocol as in the pilot (3 attempts). Incomplete or refused responses are
@@ -33,7 +35,7 @@ PRIVATE = ROOT / "data" / "pilot" / "unit-contexts-v1-privileged.jsonl"
 
 def load_contexts():
     text = PUBLIC.read_text()
-    man = (ROOT / "reports" / "pilot" / "unit-contexts-v1.md").read_text()
+    man = PUBLIC.with_suffix(".md").read_text()
     if hashlib.sha256(text.encode()).hexdigest() not in man:
         raise SystemExit("fixed contexts do not match their frozen hash; refusing to run")
     pub = [json.loads(l) for l in text.splitlines()]
@@ -51,7 +53,11 @@ def main():
     ap.add_argument("--packages", nargs="+", default=list(PACKAGES))
     ap.add_argument("--effort", default=None)
     ap.add_argument("--max-tokens", type=int, default=None)
+    ap.add_argument("--contexts", default=None, help="re-rendered context file (e.g. reports/autonomous-block/unit-contexts-v1-r4.jsonl)")
     args = ap.parse_args()
+    if args.contexts:
+        global PUBLIC
+        PUBLIC = ROOT / args.contexts
     cfg = json.loads(Path(args.config).read_text())
     decoding = dict(cfg["decoding"])
     if args.effort:
@@ -59,9 +65,13 @@ def main():
     if args.max_tokens:
         decoding["max_tokens"] = args.max_tokens
     pub, priv = load_contexts()
+    missing = [p for p in args.packages if p not in pub[0]["requests"]]
+    if missing:
+        raise SystemExit(f"packages {missing} are not rendered in {PUBLIC.name}")
     meta = {"model": cfg["model"], "provider": cfg["provider"], "decoding": decoding, "packages": args.packages,
             "prompt_sha256": {p: prompt_hashes(p)["unit_system"] for p in args.packages},
-            "contexts_sha256": hashlib.sha256(PUBLIC.read_bytes()).hexdigest(), "concurrency": 1}
+            "contexts_file": str(PUBLIC.relative_to(ROOT)), "contexts_sha256": hashlib.sha256(PUBLIC.read_bytes()).hexdigest(),
+            "render_revision": pub[0].get("render_revision"), "concurrency": 1}
     manifest = runlog.new_manifest("unit-contexts", meta)
     status = os.popen(f'git -C "{ROOT}" status --porcelain').read().split("\n")
     manifest["dirty_paths"] = [l for l in status if l.strip()]

@@ -2,6 +2,8 @@
 
 Version: 2026-10-28. Place this file at the root of the fresh repository.
 
+> **Active development block (registered 2026-10-28):** `AUTONOMOUS_RESEARCH_BRIEF.md` (sha256 `044e594c…ec0c12`; copy of Ashraf's `research-reviews/AUTONOMOUS_RESEARCH_BRIEF.md`). It authorizes a bounded autonomous loop of at most three methodological rounds under the existing USD 5 total cap. Within that block it supersedes preparation-only check-ins. It does not replace this file or the outline. State and resume point: `reports/autonomous-block/checkpoint.md`. Clarifications supplied by Ashraf: two reviewer sub-agents gate each round (Opus 5.5 checks scientific validity; Sonnet 5.5 independently recomputes the numbers); Round 2's inferred notes come from the API model; execution stays local.
+
 ## 1. Mission and research ownership
 
 Implement **Whose Mind Matters? Decision-Value Allocation of Theory of Mind over Perspective Graphs** for a potential IJCAI 2027 or ACL 2027 submission. Working names: **OfficeMinds** for the environment and **VoMI-Router** for the controller.
