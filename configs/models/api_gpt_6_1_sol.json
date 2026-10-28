@@ -1,0 +1,11 @@
+{
+  "name": "api_gpt_6_1_sol",
+  "role": "capable API reference for the pilot model diagnostic (diagnostic only; not a main-experiment backbone yet)",
+  "provider": "openai_responses",
+  "model": "gpt-6.1-sol",
+  "api_key_env": "OPENAI_API_KEY",
+  "price_per_mtok": {"input": 2.0, "output": 10.0, "source": "official model page, checked 2026-10-28; output includes reasoning tokens"},
+  "budget": {"cap_usd": 5.0, "cap_env": "OFFICEMINDS_API_CAP_USD", "ledger_path": "~/officeminds-runs/api-spend-ledger.json"},
+  "timeout_s": 600,
+  "decoding": {"reasoning_effort": "low", "max_tokens": 16000}
+}

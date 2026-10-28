@@ -32,7 +32,7 @@ from officeminds.world import World, WorldConfig, legal_actions
 
 from .clients import ChatClient, ChatResult
 from .graph import PerspectiveGraph
-from .unit_schema import unit_output_schema, validate_unit_output
+from .unit_schema import unit_output_schema, unit_output_schema_v2, validate_unit_output, validate_unit_output_v2
 from .units import KNOWLEDGE, Unit, content, generate_candidates
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -44,17 +44,54 @@ MAX_ATTEMPTS = 3
 FALLBACK_ACTION = "wait()"
 
 
-def load_prompts() -> dict[str, str]:
-    return {name: (PROMPT_DIR / f"{name}.txt").read_text(encoding="utf-8")
-            for name in ("policy_system", "unit_system", "router_system")}
+@dataclass(frozen=True)
+class Package:
+    """A versioned unit prompt + schema + validator. Policy/router prompts are shared (pilot-v1)."""
+    name: str
+
+    @property
+    def unit_prompt_dir(self) -> Path:
+        return ROOT / "prompts" / self.name
+
+    def schema(self, domain, variable):
+        return unit_output_schema(domain, variable) if self.name == "pilot-v1" else unit_output_schema_v2(domain, variable)
+
+    def validate(self, text, path, variable, domain, ids):
+        f = validate_unit_output if self.name == "pilot-v1" else validate_unit_output_v2
+        return f(text, path, variable, domain, ids)
+
+    def fields_hint(self, u, about, step) -> str:
+        head = f'Respond as JSON with fields: path={json.dumps(list(u.path))}, variable="{u.variable}", about="{about}", as_of_step={step}, '
+        if self.name == "pilot-v1":
+            return head + 'hypotheses=[{"value","p"}], evidence_ids=[...], unresolved=[...].'
+        return head + ('status="attributed"|"insufficient_evidence", hypotheses=[{"value","p","support":[{"evidence_id","kind","note"}]}], '
+                       'unresolved=[...].')
 
 
-def prompt_hashes() -> dict[str, str]:
-    return {k: hashlib.sha256(v.encode()).hexdigest() for k, v in load_prompts().items()}
+PACKAGES = {"pilot-v1": Package("pilot-v1"), "pilot-v2": Package("pilot-v2")}
+
+
+def load_prompts(package: str = "pilot-v1") -> dict[str, str]:
+    shared = {name: (PROMPT_DIR / f"{name}.txt").read_text(encoding="utf-8") for name in ("policy_system", "router_system")}
+    return {**shared, "unit_system": (PACKAGES[package].unit_prompt_dir / "unit_system.txt").read_text(encoding="utf-8")}
+
+
+def prompt_hashes(package: str = "pilot-v1") -> dict[str, str]:
+    return {k: hashlib.sha256(v.encode()).hexdigest() for k, v in load_prompts(package).items()}
 
 
 # ----------------------------------------------------------------------------- rendering (robot-visible only)
-def task_card(cfg: WorldConfig, brief: str) -> str:
+PEOPLE_RULES = (  # r3 shared public domain rules (pilot review item C); describes the scripted contract
+    "How people come to believe things (applies to everyone): a person believes what they saw happen or were "
+    "sincerely told, and keeps that belief until they see or hear otherwise, so a belief can be outdated or false. "
+    "When someone answers a question or states a claim, others who hear it learn what was said but do not "
+    "automatically believe it. A person with no belief of their own may adopt what someone they trust tells them. "
+    "Some people may deliberately mislead, especially when they have a reason to. A person who neither saw nor was "
+    "told anything about a fact has no belief about it.")
+
+
+def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
+    rev = RENDER_REVISION if rev is None else rev
     err = 0.5 * cfg.stakes
     lines = [
         f"TASK: {brief}",
@@ -73,11 +110,17 @@ def task_card(cfg: WorldConfig, brief: str) -> str:
         f"Facts that can be asked about: {', '.join(cfg.query_facts)} (possible values: "
         + "; ".join(f"{f}: {', '.join(cfg.fact_domains[f])}" for f in cfg.query_facts) + ").",
     ]
+    if rev >= 3:
+        lines.append(PEOPLE_RULES)
     return "\n".join(lines)
 
 
-RENDER_REVISION = 2  # r2: utterance IDs t{t}:said{i} (r1 appended ":{speaker}"; the model cited the short
-#                      form and valid citations were rejected); action/outcome IDs are citable too.
+RENDER_REVISION = 3
+# r2: utterance IDs t{t}:said{i} (r1 appended ":{speaker}"; the model cited the short form and valid citations
+#     were rejected); action/outcome IDs are citable too. Used by the pilot-v1 full run (kept reproducible: rev=2).
+# r3 (pilot review A/C/D, shared by ALL arms and packages): public people-rules paragraph in the task card; mind
+#     notes show status, per-hypothesis support or cited evidence IDs, and short excerpts of the cited lines;
+#     physical refutation marks K(speaker) `fact_refuted` instead of forcing a refresh.
 
 
 def ledger(hist: VisibleHistory) -> tuple[str, list[str]]:
@@ -112,7 +155,21 @@ def physical_summary(hist: VisibleHistory, holding: bool = True) -> str:
             f"holding the package: {'yes' if holding else 'no'}; rooms visited and who was seen there: {visited}.")
 
 
-def notes_text(graph: PerspectiveGraph | None) -> str:
+STATUS_TEXT = {
+    "fact_refuted": "the robot later observed that what this person said is not true now; this does NOT show "
+                    "the person does not believe it (they may hold a false belief)",
+    "stale": "new evidence about this person has appeared since the note was written",
+}
+
+
+def _excerpts(hist: VisibleHistory, ids: list[str], width: int = 110) -> str:
+    text, _ = ledger(hist)
+    lines = {l.strip().split("]")[0][1:]: l.strip() for l in text.splitlines()[1:] if l.strip().startswith("[")}
+    return " ".join(lines[i][:width] for i in ids if i in lines)
+
+
+def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = None, rev: int | None = None) -> str:
+    rev = RENDER_REVISION if rev is None else rev
     if graph is None:
         return "MIND NOTES: (none; this agent does not use separate mind-inference steps)"
     view = graph.policy_view()
@@ -121,10 +178,31 @@ def notes_text(graph: PerspectiveGraph | None) -> str:
     lines = []
     for r in view:
         out = r["output"]
-        hyps = ", ".join(f"{h['value']}: {h['p']:.2f}" for h in out.get("hypotheses", [])) if isinstance(out, dict) else ""
         unres = "; ".join(out.get("unresolved", [])) if isinstance(out, dict) else ""
-        lines.append(f"  {r['unit']} about {out.get('about', '?')} (as of step {r['as_of']}, status {r['status']}): "
-                     f"{hyps}" + (f" | unresolved: {unres}" if unres else ""))
+        if rev < 3:  # r2 rendering, exactly as in the pilot-v1 full run
+            hyps = ", ".join(f"{h['value']}: {h['p']:.2f}" for h in out.get("hypotheses", [])) if isinstance(out, dict) else ""
+            lines.append(f"  {r['unit']} about {out.get('about', '?')} (as of step {r['as_of']}, status {r['status']}): "
+                         f"{hyps}" + (f" | unresolved: {unres}" if unres else ""))
+            continue
+        head = f"  {r['unit']} about {out.get('about', '?')} (as of step {r['as_of']}, note status {r['status']}"
+        head += f": {STATUS_TEXT[r['status']]})" if r["status"] in STATUS_TEXT else ")"
+        if out.get("status") == "insufficient_evidence":
+            head += " INFERENCE ABSTAINED: the robot's evidence does not settle this person's state"
+        hyp_parts = []
+        for h in out.get("hypotheses", []):
+            sup = h.get("support")
+            s = f"{h['value']}: {h['p']:.2f}"
+            if sup is not None:
+                s += " [" + ("; ".join(f"{x['evidence_id']} {x['kind']}" for x in sup) or "no support given") + "]"
+            hyp_parts.append(s)
+        ev = out.get("evidence_ids", [])
+        line = head + "\n    hypotheses: " + ", ".join(hyp_parts)
+        line += "\n    cited evidence: " + (", ".join(ev) or "none")
+        if ev and hist is not None:
+            line += "\n    excerpts: " + _excerpts(hist, ev)
+        if unres:
+            line += "\n    unresolved: " + unres
+        lines.append(line)
     return "MIND NOTES (from separate inference steps; may be wrong or outdated):\n" + "\n".join(lines)
 
 
@@ -139,10 +217,10 @@ def describe_unit(u: Unit, cfg: WorldConfig) -> tuple[str, str]:
     return f"reliability path {u.path[0]} -> {u.path[1]}: how {u.path[0]} assesses {u.path[1]}", u.path[1]
 
 
-def policy_messages(prompts, cfg, brief, hist, graph) -> tuple[list[dict], list[str]]:
+def policy_messages(prompts, cfg, brief, hist, graph, rev: int | None = None) -> tuple[list[dict], list[str]]:
     led, _ = ledger(hist)
     acts = [str(a) for a in legal_actions(cfg, hist.last)]
-    user = "\n\n".join([task_card(cfg, brief), led, physical_summary(hist), notes_text(graph),
+    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev),
                         "LEGAL ACTIONS NOW: " + ", ".join(acts), 'Respond as JSON: {"action": "<one legal action>"}'])
     return [{"role": "system", "content": prompts["policy_system"]}, {"role": "user", "content": user}], acts
 
@@ -152,21 +230,20 @@ def policy_schema(acts):
             "required": ["action"], "additionalProperties": False}
 
 
-def unit_messages(prompts, cfg, brief, hist, u) -> tuple[list[dict], list[str], set[str]]:
+def unit_messages(prompts, cfg, brief, hist, u, package: str = "pilot-v1",
+                  rev: int | None = None) -> tuple[list[dict], list[str], set[str]]:
     led, ids = ledger(hist)
     desc, about = describe_unit(u, cfg)
     domain = list(cfg.fact_domains[cfg.query_facts[0]])
-    user = "\n\n".join([task_card(cfg, brief), led, physical_summary(hist),
-                        f"ASPECT TO INFER: {desc}.",
-                        f'Respond as JSON with fields: path={json.dumps(list(u.path))}, variable="{u.variable}", '
-                        f'about="{about}", as_of_step={hist.last.t}, hypotheses=[{{"value","p"}}], evidence_ids=[...], unresolved=[...].'])
+    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist),
+                        f"ASPECT TO INFER: {desc}.", PACKAGES[package].fields_hint(u, about, hist.last.t)])
     return [{"role": "system", "content": prompts["unit_system"]}, {"role": "user", "content": user}], domain, set(ids)
 
 
-def router_messages(prompts, cfg, brief, hist, graph, cands, remaining):
+def router_messages(prompts, cfg, brief, hist, graph, cands, remaining, rev: int | None = None):
     led, _ = ledger(hist)
     lines = [f"  {u}: {describe_unit(u, cfg)[0]}" for u in cands]
-    user = "\n\n".join([task_card(cfg, brief), led, physical_summary(hist), notes_text(graph),
+    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev),
                         "CANDIDATE ASPECTS (not yet inferred):\n" + "\n".join(lines),
                         f"REMAINING BUDGET: {remaining} inference call(s).",
                         'Respond as JSON: {"select": [<candidate ids>], "stop": <true if you select none>}'])
@@ -246,28 +323,36 @@ class EpisodeResult:
 
 
 def run_episode_arm(client, inst, arm: str, decoding: dict, reference_set: list[str] | None = None,
-                    initial_units: list[Unit] | None = None, allocate: bool = True, seed: int = 0) -> EpisodeResult:
+                    initial_units: list[Unit] | None = None, allocate: bool = True, seed: int = 0,
+                    package: str = "pilot-v1", rev: int | None = None, unit_client=None) -> EpisodeResult:
     """One controlled episode. `initial_units` + allocate=False gives the fixed-graph continuation used by
-    paired interventions (instantiate exactly those units at t0, then no further allocation)."""
-    prompts = load_prompts()
+    paired interventions (instantiate exactly those units at t0, then no further allocation).
+    `unit_client` (default: `client`) produces mental notes; `client` makes routing and policy decisions.
+    Mixed clients are a DIAGNOSTIC only (pilot review): main experiments use one backbone for both."""
+    rev = RENDER_REVISION if rev is None else rev
+    unit_client = unit_client or client
+    prompts = load_prompts(package)
+    pkg = PACKAGES[package]
     sc, cfg = inst.scenario, inst.scenario.config
     world: World = sc.build(inst.hidden)
     hist = VisibleHistory(sc.brief, [(None, world.reset())])
-    graph = None if arm == "direct" else PerspectiveGraph(recipient=cfg.recipient)
+    graph = None if arm == "direct" else PerspectiveGraph(
+        recipient=cfg.recipient, refutation_mode="fact_only" if rev >= 3 else "contradict")
     rng = random.Random(f"{seed}:{inst.instance_id}:{arm}")
     used, calls, fidelity, actions = 0, [], [], []
     stopped_router = 0
     start = time.monotonic()
 
     def infer(u: Unit, kind: str):
-        msgs, domain, ids = unit_messages(prompts, cfg, sc.brief, hist, u)
-        rec = call_with_protocol(client, kind, hist.last.t, str(u), msgs, unit_output_schema(domain, u.variable),
-                                 lambda t: validate_unit_output(t, u.path, u.variable, domain, ids), decoding)
+        msgs, domain, ids = unit_messages(prompts, cfg, sc.brief, hist, u, package, rev)
+        rec = call_with_protocol(unit_client, kind, hist.last.t, str(u), msgs, pkg.schema(domain, u.variable),
+                                 lambda t: pkg.validate(t, u.path, u.variable, domain, ids), decoding)
         calls.append(rec)
         truth = content(world, u)  # PRIVILEGED: fidelity scoring only, never shown to the agent
         top = max(rec.parsed["hypotheses"], key=lambda h: h["p"])["value"] if rec.ok else None
         fidelity.append({"unit": str(u), "step": hist.last.t, "kind": kind, "ok": rec.ok, "top": top,
-                         "truth": list(truth), "top_matches_truth": rec.ok and top == truth[0]})
+                         "truth": list(truth), "top_matches_truth": rec.ok and top == truth[0],
+                         "output": rec.parsed, "history_steps": len(hist.steps)})
         return rec
 
     for u in initial_units or []:
@@ -297,7 +382,7 @@ def run_episode_arm(client, inst, arm: str, decoding: dict, reference_set: list[
             elif arm == "random" and used < BUDGET and cands:
                 chosen = rng.sample(cands, min(BUDGET - used, len(cands)))
             elif arm == "router" and used < BUDGET and cands:
-                msgs, schema = router_messages(prompts, cfg, sc.brief, hist, graph, cands, BUDGET - used)
+                msgs, schema = router_messages(prompts, cfg, sc.brief, hist, graph, cands, BUDGET - used, rev)
                 rec = call_with_protocol(client, "router", t, "route", msgs, schema, _json_validate(("select", "stop")), decoding)
                 calls.append(rec)
                 if rec.ok:
@@ -314,7 +399,7 @@ def run_episode_arm(client, inst, arm: str, decoding: dict, reference_set: list[
                 if rec.ok:
                     graph.instantiate(u, rec.parsed, rec.parsed.get("evidence_ids", []), t=t)
                 used += 1
-        msgs, acts = policy_messages(prompts, cfg, sc.brief, hist, graph)
+        msgs, acts = policy_messages(prompts, cfg, sc.brief, hist, graph, rev)
         rec = call_with_protocol(client, "decision", t, "policy", msgs, policy_schema(acts),
                                  lambda txt, acts=acts: (lambda o, e: (o, e) if o is None or o["action"] in acts
                                                          else (None, ["illegal_action"]))(*_json_validate(("action",))(txt)),

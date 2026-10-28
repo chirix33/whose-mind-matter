@@ -1,5 +1,20 @@
 # Stage 2 local pilot: report (2026-10-28)
 
+> **Errata (from the pilot review, 2026-10-28; the original text below is unchanged):**
+> 1. **Token overhead.** The 56% / 37% / 51% / 15% figures are the share of each arm's OWN tokens spent on routing, units and refreshes. They are not additional tokens relative to direct. Relative to direct (2,586 prompt+completion tokens per episode), total tokens per episode are:
+>    - dense 7,718 (+198%);
+>    - random 4,479 (+73%);
+>    - router 5,647 (+118%);
+>    - symbolic 3,020 (+17%).
+>
+>    The pilot is not a matched-compute comparison.
+> 2. **Carryover family.** The direct vs. dense/symbolic difference (+0.037 vs. +0.225) does not isolate retention as the cause: memory, note generation and the subsequent model responses all differ together. It is a family-level association, distinct from the controlled interventions.
+> 3. **Nondeterminism.** The r1 and r2 integration runs differed, but their rendered inputs changed. That does not demonstrate same-input nondeterminism. vLLM batching nondeterminism remains a documented possibility, unsupported by a controlled repeat here.
+> 4. **Dirty tree.** The statement that only the generated integration report was dirty at launch is plausible but not proven by the manifest. Runs from now on record the dirty-path list.
+> 5. **Two interface defects** found in review, both fixed in renderer r3 (`docs/decisions/2026-10-28-D013-pilot-review-repairs.md`):
+>    - the policy's mind notes omitted each unit's cited evidence;
+>    - the unit validator accepted a probability-1 attribution with no evidence.
+
 **Exploratory pilot on development data (`dev-v2`).** These groups can never become confirmatory test data. All numbers trace to run `pilot-full-20261028-060517-3237fb`:
 - `reports/pilot/pilot-full-pilot-full-20261028-060517-3237fb.md` (generated tables);
 - `reports/pilot/pilot-analysis-pilot-full-20261028-060517-3237fb.md` (generated analysis);

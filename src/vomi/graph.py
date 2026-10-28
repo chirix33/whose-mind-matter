@@ -48,7 +48,7 @@ def _confidence(output) -> float:
     if isinstance(output, list):  # typed symbolic reference hypotheses
         return max(h["p"] for h in output)
     if "hypotheses" in output:  # typed LLM unit output (vomi.unit_schema)
-        return max(float(h["p"]) for h in output["hypotheses"])
+        return max((float(h["p"]) for h in output["hypotheses"]), default=0.0)
     return max(output.values())  # scalar diagnostic fields
 
 
@@ -56,6 +56,11 @@ def _confidence(output) -> float:
 class PerspectiveGraph:
     units: dict[str, UnitRecord] = field(default_factory=dict)
     recipient: str = "alice"  # public task recipient (WorldConfig.recipient)
+    # "contradict" (renderer r1/r2, pilot-v1 run): a physically refuted claim marks the speaker's
+    # units contradicted (forcing a refresh). "fact_only" (r3, pilot review item D): it refutes the
+    # claim's present factual accuracy only. The speaker may still BELIEVE it (a false belief), so
+    # K(speaker) is marked `fact_refuted` (visible, not invalidated), and other paths become `stale`.
+    refutation_mode: str = "contradict"
 
     def instantiate(self, u: Unit, output, evidence: list[str], t: int, cost: float = 1.0) -> UnitRecord:
         if str(u) in self.units:
@@ -90,9 +95,11 @@ class PerspectiveGraph:
             new = [e for e in visible_evidence(hist, rec.path) if int(e.split(":")[0][1:]) > rec.timestamp]
             refuted = [c for c in contradicted_claims(hist, rec.path[-1], self.recipient)
                        if c.observed_after > rec.timestamp]
-            if refuted:
+            if refuted and self.refutation_mode == "contradict":
                 rec.status = "contradicted"
-            elif new:
+            elif refuted and rec.variable == "knowledge" and len(rec.path) == 1:
+                rec.status = "fact_refuted"
+            elif new or refuted:
                 rec.status = "stale"
             else:
                 rec.status = "retained"

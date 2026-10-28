@@ -95,7 +95,110 @@ class MockClient:
         return ChatResult(text, None, self.model, "stop", None, None, None, 0.0)
 
 
+class BudgetExceeded(RuntimeError):
+    pass
+
+
+class SpendLedger:
+    """Persistent USD spend ledger with a hard cap (estimated from reported usage x configured prices).
+    Before each call it refuses if spent + worst-case cost of that call would exceed the cap."""
+
+    def __init__(self, path: str, cap_usd: float, price_in: float, price_out: float):
+        self.path, self.cap = path, cap_usd
+        self.price_in, self.price_out = price_in / 1e6, price_out / 1e6
+        self.state = json.loads(open(path).read()) if os.path.exists(path) else {"spent_usd": 0.0, "calls": 0}
+
+    def check(self, est_in: int, max_out: int) -> None:
+        worst = est_in * self.price_in + max_out * self.price_out
+        if self.state["spent_usd"] + worst > self.cap:
+            raise BudgetExceeded(f"cap {self.cap} USD: spent {self.state['spent_usd']:.4f} + worst-case {worst:.4f}")
+
+    def record(self, tokens_in: int | None, tokens_out: int | None) -> float:
+        cost = (tokens_in or 0) * self.price_in + (tokens_out or 0) * self.price_out
+        self.state["spent_usd"] += cost
+        self.state["calls"] += 1
+        os.makedirs(os.path.dirname(self.path) or ".", exist_ok=True)
+        with open(self.path, "w") as f:
+            json.dump(self.state, f)
+        return cost
+
+
+class OpenAIResponsesClient:
+    """Official OpenAI Responses API adapter (stdlib HTTP). Request mapping, checked against the official
+    docs on 2026-10-28: response_format json_schema -> text.format {type json_schema, name, schema, strict};
+    reasoning_effort -> reasoning.effort; max_tokens -> max_output_tokens; `temperature` is not sent
+    (reasoning models). Incomplete (status incomplete, e.g. max_output_tokens) and refusal content items
+    are returned as errors, never parsed. Billed output tokens include reasoning tokens."""
+
+    URL = "https://api.openai.com/v1/responses"
+
+    def __init__(self, model: str, api_key_env: str, ledger: SpendLedger, timeout_s: float = 600.0):
+        self.model, self.ledger, self.timeout_s = model, ledger, timeout_s
+        self.api_key = os.environ.get(api_key_env, "")
+        if not self.api_key:
+            raise RuntimeError(f"environment variable {api_key_env} is not set (configure it locally; never commit it)")
+
+    def list_models(self) -> list[str]:
+        return [self.model]
+
+    @staticmethod
+    def request_body(model: str, messages: list[dict], params: dict) -> dict:
+        body = {"model": model, "input": [{"role": m["role"] if m["role"] != "system" else "developer",
+                                           "content": m["content"]} for m in messages]}
+        if "reasoning_effort" in params:
+            body["reasoning"] = {"effort": params["reasoning_effort"]}
+        if "max_tokens" in params:
+            body["max_output_tokens"] = params["max_tokens"]
+        rf = params.get("response_format")
+        if rf and rf.get("type") == "json_schema":
+            body["text"] = {"format": {"type": "json_schema", "name": rf["json_schema"]["name"],
+                                       "schema": rf["json_schema"]["schema"], "strict": True}}
+        return body
+
+    def chat(self, messages: list[dict], **params) -> ChatResult:
+        body = self.request_body(self.model, messages, params)
+        est_in = sum(len(m["content"]) for m in messages) // 3 + 200  # conservative chars->tokens
+        self.ledger.check(est_in, params.get("max_tokens", 4096))
+        req = urllib.request.Request(self.URL, data=json.dumps(body).encode(), method="POST")
+        req.add_header("Content-Type", "application/json")
+        req.add_header("Authorization", f"Bearer {self.api_key}")
+        start = time.monotonic()
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
+                out = json.loads(resp.read())
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+            detail = e.read().decode(errors="replace")[:500] if isinstance(e, urllib.error.HTTPError) else ""
+            return ChatResult("", None, self.model, None, None, None, None, time.monotonic() - start,
+                              error=f"{type(e).__name__}: {e} {detail}".strip())
+        latency = time.monotonic() - start
+        usage = out.get("usage") or {}
+        rin, rout = usage.get("input_tokens"), usage.get("output_tokens")
+        self.ledger.record(rin, rout)
+        text, refusal = "", None
+        for item in out.get("output", []):
+            if item.get("type") == "message":
+                for c in item.get("content", []):
+                    if c.get("type") == "output_text":
+                        text += c.get("text", "")
+                    elif c.get("type") == "refusal":
+                        refusal = c.get("refusal", "refused")
+        status = out.get("status")
+        error = None
+        if status == "incomplete":
+            error = f"incomplete: {(out.get('incomplete_details') or {}).get('reason')}"
+        elif refusal is not None:
+            error = f"refusal: {refusal[:200]}"
+        return ChatResult(text if error is None else "", None, out.get("model", self.model), status, rin, rout,
+                          (usage.get("output_tokens_details") or {}).get("reasoning_tokens"), latency,
+                          error=error, raw_usage=usage)
+
+
 def make_client(cfg: dict) -> ChatClient:
     if cfg["provider"] == "openai_compat":
         return OpenAICompatClient(cfg["base_url"], cfg["model"], cfg.get("api_key_env"), cfg.get("timeout_s", 300.0))
+    if cfg["provider"] == "openai_responses":
+        b = cfg["budget"]
+        ledger = SpendLedger(os.path.expanduser(b["ledger_path"]), float(os.environ.get(b.get("cap_env", ""), b["cap_usd"])),
+                             cfg["price_per_mtok"]["input"], cfg["price_per_mtok"]["output"])
+        return OpenAIResponsesClient(cfg["model"], cfg["api_key_env"], ledger, cfg.get("timeout_s", 600.0))
     raise ValueError(f"unknown provider {cfg['provider']}")
