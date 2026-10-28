@@ -5,7 +5,7 @@
 **Environment:** every command below ran on the workstation: Windows 11 host, WSL2 Ubuntu 24.04.5, RTX 5090 32 GB, driver 610.60. Details: `docs/research/environment.md`.
 
 ## What exists
-- **Repo:** `git init` done on branch `main`, **no commits yet**. Layout follows AGENTS §6; see `README.md`.
+- **Repo:** branch `main`. Commits `e5b4f15` (Stage 0) and `a71bb7c` (regenerated tiny-case table). No remote. `.gitattributes` forces LF and stores the checksummed source documents byte-for-byte. Layout follows AGENTS §6; see `README.md`.
 - **Source outline:** preserved verbatim at `docs/research/methods-experiments-v2.md`, SHA-256 `8cc540f0…22d7d`; see `docs/research/source-manifest.md`.
 - **Simulator** (`src/officeminds/`): deterministic seeded Tier 1 world with private minds, sincere tells vs. insincere claims, nested beliefs, robot-visible observations, a privileged trace kept separate, and JSON replay.
 - **Exact symbolic oracle** (`src/vomi/oracle.py`): exact Bayesian conditioning by replay, belief-space expectimax, J(S), VoMI, flip probability with the decomposition residual, content entropy, exhaustive gold sets (three definitions), effective depth, and indistinguishable world pairs.
@@ -16,12 +16,14 @@
 ## Commands run and outcomes
 | Command | Outcome |
 |---|---|
-| `~/venvs/officeminds/bin/python -m pytest -q` | **46 passed** in 9.1 s (CPU only) |
-| `python scripts/run_tiny_cases.py --seed 0` and `--seed 3` | 10 cases each; all replays identical; runs `tiny-20261028-032310-90b650`, `tiny-20261028-032315-8982a4` |
+| `~/venvs/officeminds/bin/python -m pytest -q` | **46 passed** in 9.3 s (CPU only), at commit `e5b4f15` |
+| `python scripts/run_tiny_cases.py --seed 0` | 10 cases; all replays identical; run **`tiny-20261028-032629-565fb8`** (commit `e5b4f15`, clean tree) |
 | `bash scripts/serve_local_model.sh` | gpt-oss-20b served after three fixes (see environment.md); engine init 26.6 s |
-| `python3 scripts/smoke_local_model.py --n 10 --concurrency 4` | run `smoke-20261028-031813-05c2f6` (results below) |
+| `python3 scripts/smoke_local_model.py --n 10 --concurrency 4` | run **`smoke-20261028-032706-260d3d`** (commit `a71bb7c`, clean tree); results below |
 
-Manifests: `~/officeminds-runs/{tiny,smoke}/<run_id>/manifest.json` (WSL). **Provenance caveat:** all runs were on an uncommitted tree (`git_commit: null`, `git_dirty: true`). Re-run after the first commit for clean provenance.
+Manifests: `~/officeminds-runs/{tiny,smoke}/<run_id>/manifest.json` (WSL). The runs cited here record a commit hash and `git_dirty: false`.
+
+Earlier runs on the uncommitted tree are kept on disk but superseded: `tiny-20261028-032629-565fb8`, `tiny-20261028-032310-90b650`, `tiny-20261028-032315-8982a4`, `smoke-20261028-031813-05c2f6`. The clean re-runs reproduced every label value. Episode returns differ only by seed. The smoke numbers stayed within ±0.02 s median latency.
 
 ## Results (exact symbolic oracle, record A — see D-001 before interpreting)
 | Case | J(∅) | J(all candidates) | ℓ* | Minimal sufficient sets |
@@ -40,11 +42,12 @@ All of these match the hand derivations in spec §6. Full per-unit table: `repor
 **Local model smoke** (gpt-oss-20b, vLLM 0.32.0, Triton attention, MXFP4/MARLIN MoE, temperature 0, reasoning effort low, one 276-token decision prompt from `depth1_knowledge`):
 | Mode | n | Valid JSON + legal action | Median latency | Median completion tokens |
 |---|---|---|---|---|
-| prompt-only | 10 | 100% | 0.225 s | 59 |
+| prompt-only | 10 | 100% | 0.226 s | 59 |
 | JSON-schema constrained | 10 | 100% | 0.237 s | 62 |
-| schema, 4 concurrent | 8 | 100% | 0.302 s | 61 |
+| schema, 4 concurrent | 8 | 100% | 0.296 s | 61 |
 
-- Concurrent batch: 0.61 s wall clock vs. 2.41 s sum of latencies (13.2 requests/s).
+- Concurrent batch: 0.60 s wall clock vs. 2.37 s sum of latencies (13.4 requests/s).
+- GPU memory with the server up: 29,284 MiB.
 - Reasoning text and reasoning-token counts are reported by the server.
 - Every call chose `ask(rec,alice_loc)`, the same as the exact oracle's a(∅) for this case. These are **10 repeats of one prompt at temperature 0**, not independent samples and not an evaluation.
 

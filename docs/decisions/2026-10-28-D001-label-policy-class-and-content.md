@@ -8,7 +8,7 @@
 ## Problem
 The outline's oracle-content label "fills each candidate with its true content from the simulator." With the current implementation (a Bayes-optimal agent over raw history h, plus true content), that label is the **value of perfect information about a hidden mind**. It is not the value of *modeling* that mind from the evidence the robot has.
 
-Evidence, from the exact tiny cases (`reports/tiny-cases.md`, run `tiny-20261028-031743-88659e`):
+Evidence, from the exact tiny cases (`reports/tiny-cases.md`, run `tiny-20261028-032629-565fb8`):
 - `depth1_knowledge`: the robot never saw Alice, so nothing in h supports inferring Alice's mind. Yet ΔJ(K(alice)) = 0.125 > ΔJ(K(rec)) = 0.05, and the unique minimal sufficient set is {K(alice)}. The label says "model the absent person who holds the answer". The reason is that the true content of Alice's belief *is* the hidden target.
 - The same happens in `distractor_plausible` (ΔJ 0.1125), `distractor_obvious` and `substitutes`.
 - The flip side: if content were restricted to what h supports, a Bayes-optimal agent over h *already* conditions on h. So every unit would have ΔJ = 0. Under this policy class, record-1 labels can only measure information the robot does not have.

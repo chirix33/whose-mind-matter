@@ -17,7 +17,7 @@ Under a "removal changes the action" reading:
 - `substitutes` and the stakes pairs have an **empty** gold set, even though every unit has positive value. That would score any allocation as wasteful.
 - In `depth2_handoff`, the gold set would be {K(alice)} alone, which misses that a depth-2 unit is required.
 
-(Source: run `tiny-20261028-031743-88659e`, `labels.json`. These are record-A labels; see D-001.)
+(Source: run `tiny-20261028-032629-565fb8`, `labels.json`. These are record-A labels; see D-001.)
 
 ## Proposal
 - **Primary allocation metrics: precision and recall against the *set of* minimal sufficient sets.** For an allocation A:
