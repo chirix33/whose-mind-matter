@@ -1,4 +1,4 @@
-# Milestone report — Stage 2, step 1: Stage 1 review corrections (2026-10-28)
+# Milestone report — Stage 2 pilot, steps 1–2 (2026-10-28)
 
 **Scope.** The five corrections and Q1–Q6 rulings from the Stage 1 research review (recorded as D-007…D-012), plus one reporting error of mine found while updating memory. This is step 1 of the authorized Stage 2 pilot. **The pilot itself has not started:** no dev-group generation, no LLM calls, and the model server is still stopped. Nothing here is a C1–C5 result.
 
@@ -64,8 +64,31 @@ Bundle (`reports/bundle/`):
 
 The model server was not used; it has been stopped since 04:01.
 
+## Step 2: frozen development set `dev-v1` (before any LLM output)
+Frozen by `scripts/freeze_dev_groups.py` at clean commit `4f1ae8a`, seed 20261028, run manifest in `data/pilot/dev-v1/manifest.json`. Record: [reports/pilot/dev-v1-freeze.md](pilot/dev-v1-freeze.md); committed manifest: `reports/pilot/dev-v1-manifest.json`. Set hash `a52414a40294701c93cb3cc3a8673e4c352890a2f52df04cb2d505f4efb1a474`. **Development data only; never confirmatory.**
+
+- **36 groups / 80 instances:** 9 families × 4 groups (stop, ambiguity, false belief, distractors, conflict, nested reliability, directed perspective, relevance shift, corroborated).
+- **Variants stay in their group and share one hidden world,** sampled after the public prior was fixed:
+  - stakes ×1/×4: false belief, conflict, relevance shift;
+  - evidence absent/present: ambiguity, false belief, corroborated;
+  - name/holder permutation: distractors, nested reliability, directed perspective;
+  - bystander: stop.
+- Names (25-name pool) and office labels (5 sets, both orders) vary per group.
+- **Exclusions:** rules E1–E4 were declared in the script and applied identically; 0 exclusions.
+- **Generator audit (D-008, logged only):** 12 instances have jointly unsatisfiable face-value defaults at h.
+- **Symbolic categories** (grounded_typed, face value; multi-label; privileged annotations that may not transfer to the LLM): {'carryover': 8, 'mixed_flip_and_carryover': 19, 'useful_current_action': 13, 'zero_value_stop': 40}.
+  - Half the instances need no mental unit under the symbolic actor: the STOP / no-model-needed cases the review asked to keep.
+- **Required depth** (typed, face value): depth 2 only in directed perspective (8 instances); depth 1 in false belief (evidence absent), nested reliability, relevance shift, and some conflict and corroborated instances.
+- **9 prespecified paired-intervention states:** 3 useful, 3 zero/STOP, 2 negative, 1 carryover.
+  - Chosen by a fixed sha256 order of instance ids, independent of any LLM outcome.
+  - Both negatives come from the declared fallback to the scalar records, because the typed record has no negative units in dev-v1.
+  - Only one carryover state exists because carryover occurs in a single family (relevance shift) and the rule allows one family per category.
+- One instance changes category with the record: `conflict-g2-stakes1` is zero-value under the typed record but negative (−0.18) under the scalar face-value record.
+
+Tests: `tests/test_devgen.py` (determinism, prior independent of the hidden stream, balance, pairing, no hidden parameters in agent views, true world in support, registry replay, stakes variants differ only in stakes). Full suite: **235 passed** at `4f1ae8a`.
+
 ## Not done (next steps of the authorized pilot)
-1. Freeze 30–50 development scenario groups before any LLM output is inspected (balanced; variants within groups; exclusions recorded).
+1. ~~Freeze dev groups~~ (done, step 2).
 2. Restart the existing gpt-oss-20b server, and test the typed-unit and policy prompts.
 3. Five arms (direct, dense, random, prompted router with STOP, symbolic-reference allocation passing LLM-inferred content), with full compute accounting.
 4. 8–12 paired intervention states; the report and bundle the review specified.
