@@ -344,7 +344,7 @@ REPORTER_TYPES = ("accurate", "mistaken", "obstructive")  # mistaken = cooperati
 
 
 def conflicting_reports(bob: dict[str, float], carol: dict[str, float], stakes: float = 1.0,
-                        p_office_a: float = 0.5) -> Scenario:
+                        p_office_a: float = 0.5, scenario_id: str | None = None) -> Scenario:
     """Stakes family for D-006: Bob and Carol each report Alice's office at t=0. Each reporter is
     accurate, mistaken (believes the wrong office, says it sincerely) or obstructive (knows, lies)."""
 
@@ -364,13 +364,19 @@ def conflicting_reports(bob: dict[str, float], carol: dict[str, float], stakes: 
         return World(cfg, "lobby", rooms, minds, tuple(bs), tuple(timed))
 
     return Scenario(
-        f"conflict_m{stakes:g}",
+        scenario_id or f"conflict_m{stakes:g}",
         "Deliver the package to Alice.",
         "Two reporters disagree; units resolve whom to believe. Used to search for stakes ranking reversals.",
         grid({"alice_loc": {A: p_office_a, B: 1 - p_office_a}, "bob_type": bob, "carol_type": carol}),
         build,
     )
 
+
+# D-006 ranking-reversal construction found by scripts/search_stakes_reversal.py and re-derived by
+# hand in tests/test_grounded.py::test_stakes_ranking_reversal_privileged_bounded.
+REVERSAL_BOB = {"accurate": 0.8, "mistaken": 0.1, "obstructive": 0.25}
+REVERSAL_CAROL = {"accurate": 0.1, "mistaken": 0.02, "obstructive": 0.8}
+REVERSAL_WITNESS = (("alice_loc", A), ("bob_type", "accurate"), ("carol_type", "mistaken"))
 
 GROUNDED_CASES: dict[str, Callable[[], Scenario]] = {
     "false_belief": false_belief,
@@ -379,6 +385,8 @@ GROUNDED_CASES: dict[str, Callable[[], Scenario]] = {
     "relevance_shift": relevance_shift,
     "nested_reliability": nested_reliability,
     "path_asymmetry": path_asymmetry,
+    "reversal_m1": lambda: conflicting_reports(REVERSAL_BOB, REVERSAL_CAROL, 1.0, scenario_id="reversal_m1"),
+    "reversal_m4": lambda: conflicting_reports(REVERSAL_BOB, REVERSAL_CAROL, 4.0, scenario_id="reversal_m4"),
 }
 
 TINY_CASES: dict[str, Callable[[], Scenario]] = {

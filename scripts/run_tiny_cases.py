@@ -24,7 +24,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from officeminds.episode import (  # noqa: E402
     VisibleHistory, episode_record, fixed_policy, replay, run_episode, sample_params,
 )
-from officeminds.scenarios import ALL_CASES, GROUNDED_CASES, TINY_CASES  # noqa: E402
+from officeminds.scenarios import ALL_CASES, REVERSAL_WITNESS, TINY_CASES  # noqa: E402
 from vomi import runlog  # noqa: E402
 from vomi.allocation import conditional_relevance, minimal_sufficient  # noqa: E402
 from vomi.graph import PerspectiveGraph, visible_evidence  # noqa: E402
@@ -55,7 +55,8 @@ def legacy_row(case: str, seed: int) -> dict:
 
 def grounded_row(case: str, seed: int) -> tuple[dict, dict | None]:
     sc = ALL_CASES[case]()
-    params = sample_params(sc, seed)
+    # The reversal pair is defined at one visible history (Bob says A, Carol says B).
+    params = REVERSAL_WITNESS if case.startswith("reversal_") else sample_params(sc, seed)
     hist = first_hist(sc, params)
     units = generate_candidates(sc.config, hist)
     row = {"case": case, "purpose": sc.purpose, "candidates": [str(u) for u in units], "records": {}}
@@ -156,6 +157,15 @@ def markdown(legacy: list[dict], grounded: list[dict], run_id: str) -> str:
                     L.append(f"| {r['case']} | {key} | {d['unit']} | {d['q_m_a0']:.4f} | {d['q_m_ay']:.4f} | {d['q_my_ay']:.4f} | "
                              f"{d['d_action']:+.4f} | {d['d_memory']:+.4f} | {d['total']:+.4f} | {d['residual']:.1e} | "
                              f"{d['p_flip']:.3f} | {'yes' if d['carryover'] else ''} |")
+    rev = {r["case"]: r["records"]["privileged_bounded/face_value"]["decomposition"] for r in grounded
+           if r["case"].startswith("reversal_")}
+    if rev:
+        L += ["", "### D-006 stakes ranking reversal (record `privileged_bounded`, face value; witness: Bob says A, Carol says B)", "",
+              "| unit | stakes | VoMI | P(flip) | D_memory |", "|---|---|---|---|---|"]
+        for case in sorted(rev):
+            for d in rev[case]:
+                if d["unit"] in ("R(bob)", "K(carol)"):
+                    L.append(f"| {d['unit']} | x{case[-1]} | {d['total']:+.5f} | {d['p_flip']:.5f} | {d['d_memory']:.1e} |")
     L += ["", "### Episodes (face-value grounded actor, first gold allocation, retained in G_t) and audits", "",
           "| case | allocation | actions | return | equals label rollout | replay | early-failure incentive |",
           "|---|---|---|---|---|---|---|"]

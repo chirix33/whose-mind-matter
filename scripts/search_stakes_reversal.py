@@ -118,6 +118,9 @@ def main():
     args = ap.parse_args()
     rng = random.Random(args.seed)
     levels = (0.02, 0.1, 0.25, 0.5, 0.8)
+    kind = "search-diagnose" if args.diagnose else "search"
+    manifest = runlog.new_manifest(kind, {"samples": args.samples, "seed": args.seed, "levels": levels})
+    out = Path(os.environ.get("OFFICEMINDS_RUNS", Path.home() / "officeminds-runs")) / "search" / manifest["run_id"]
     if args.diagnose:
         from collections import Counter
         by_key = {}
@@ -127,10 +130,12 @@ def main():
             for record in (GROUNDED, PRIVILEGED_BOUNDED):
                 for testimony in ("face_value", "hedged"):
                     diagnose(bob, carol, record, testimony, by_key.setdefault(f"{record}/{testimony}", Counter()))
+        out.mkdir(parents=True, exist_ok=True)
+        (out / "diagnosis.json").write_text(json.dumps(by_key, indent=1))
+        runlog.finish(manifest, out, diagnosis=by_key)
         print(json.dumps(by_key, indent=1))
+        print(f"out: {out}")
         return
-    manifest = runlog.new_manifest("search", {"samples": args.samples, "seed": args.seed, "levels": levels})
-    out = Path(os.environ.get("OFFICEMINDS_RUNS", Path.home() / "officeminds-runs")) / "search" / manifest["run_id"]
     found, tried = [], 0
     for _ in range(args.samples):
         bob = dict(zip(REPORTER_TYPES, (rng.choice(levels) for _ in REPORTER_TYPES)))

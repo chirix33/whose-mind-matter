@@ -35,6 +35,12 @@ def test_replay_reproduces_observations_and_rewards(seed):
     assert sample_params(sc, seed) == params  # seeded sampling is deterministic
 
 
+def test_every_registered_case_replays_by_its_own_id():
+    from officeminds.scenarios import ALL_CASES
+    for key, make in ALL_CASES.items():
+        assert make().id == key
+
+
 def test_rewards_follow_outline_defaults():
     sc = depth1_knowledge()
     params = (("alice_loc", "office_b"), ("rec_saw", "yes"))

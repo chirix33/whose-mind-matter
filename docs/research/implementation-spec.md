@@ -14,7 +14,7 @@
 ---
 
 ## 1. Scope implemented so far
-Tier 1 only, depth ≤ 2, Knowledge and Reliability. That includes nested Reliability **R(j→k)**, which the review kept in core scope. There are 10 legacy tiny cases and 6 grounded cases (§6), plus a parameterized conflicting-reports family for the stakes search (§7). There are no LLM labels, no bulk generation, and no training.
+Tier 1 only, depth ≤ 2, Knowledge and Reliability. That includes nested Reliability **R(j→k)**, which the review kept in core scope. There are 10 legacy tiny cases and 6 grounded cases (§6), plus a parameterized conflicting-reports family for the stakes search, with one found ranking-reversal pair `reversal_m1`/`reversal_m4` (§7). There are no LLM labels, no bulk generation, and no training.
 
 ## 2. Information boundaries (AGENTS §5.1)
 | Layer | Type | Who may read it |
@@ -171,7 +171,13 @@ Under the grounded record, all legacy cases except `stakes_m4_q0.95` have **zero
   - complements (grounded) `nested_reliability` {K(bob→rec), R(bob)}; complements (legacy) `depth2_handoff`;
   - substitutes: legacy `substitutes`, and grounded K(rec)/K(rec→bob)/R(rec→bob) in `nested_reliability`.
 - **P4:** not implemented. No greedy claim.
-- **P5 / D-006:** the entropy objective is invariant across stakes in every stakes pair (same posterior). Ranking-reversal search: see `reports/latest.md` (§ D-006).
+- **P5 / D-006:** the entropy objective is invariant across stakes in every stakes pair (same posterior).
+  - **Isolating ranking reversal found in `privileged_bounded`** (`reversal_m*`; Bob says A, Carol says B):
+    - U = R(bob): VoMI +0.00724 at both stakes, P(flip) 0.036;
+    - V = K(carol): +0.02909 at ×1, −0.04689 at ×4, P(flip) 1.0;
+    - identical base action and targets, zero carryover, actor margin ≥ 0.05;
+    - hand-derived in `test_stakes_ranking_reversal_privileged_bounded`.
+  - **No isolating reversal in `grounded`.** Grounded flips are a function of h (0/1 per state). The diagnostic shows every grounded reversal fails isolation (a unit never flips, the base action changes, or the flip pattern changes). Grounded stakes results are therefore general pairs (OPEN Q5).
 - **Bounded actors can be hurt by information.**
   - privileged_bounded K(alice) in legacy `depth2_handoff` = −0.60;
   - grounded K(alice) under hedged testimony in `path_asymmetry` = −0.225.

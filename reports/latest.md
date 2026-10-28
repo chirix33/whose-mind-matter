@@ -33,7 +33,35 @@ Values that differ from the legacy record, as the review predicted:
 - Every grounded value in this table has a hand derivation in spec §6.2 and is asserted in tests.
 
 ## D-006 stakes ranking reversal
-_(filled in below once the search finishes)_
+**Found** in the `privileged_bounded` record: the bounded actor, with the true content of the modeled unit. The conflicting-reports family, witness "Bob says office_a, Carol says office_b"; Bob {acc .8, mist .1, obs .25}, Carol {acc .1, mist .02, obs .8} (unnormalized):
+
+| Unit (equal cost) | VoMI ×1 | VoMI ×4 | P(flip) ×1 / ×4 | D_memory | Why |
+|---|---|---|---|---|---|
+| U = R(bob) | +0.00724 | +0.00724 | 0.036 / 0.036 | 0 | flips walk → drop B only when Bob is obstructive; +0.2, stake-free |
+| V = K(carol) | **+0.02909** | **−0.04689** | 1.0 / 1.0 | 0 | reveals Carol's belief without its accuracy; the actor blames Carol and drops A everywhere, so the error exposure scales with stakes |
+
+- Isolation holds: identical observations, priors, costs, eligibility, base action (walk) and targets across stakes; zero carryover; actor margin ≥ 0.05 (no ties).
+- The flip ranking (V > U) is fixed, while the VoMI ranking reverses.
+- Every number was re-derived by hand (worlds ∝ .016/.64/.01/.025) in `tests/test_grounded.py::test_stakes_ranking_reversal_privileged_bounded`.
+- This differs from the review's design table in direction: the high-flip unit loses value with stakes, rather than the low-flip unit gaining it.
+
+**Not found in the `grounded` record.**
+- Main search: MAIN_SEARCH_COUNTS.
+- Per-criterion diagnostic (300 configs × 4 record/testimony settings, run DIAG_RUN):
+
+| Setting | raw VoMI reversals | pass all isolating criteria | fail: a unit never flips | fail: base action changes | fail: flip pattern changes |
+|---|---|---|---|---|---|
+| grounded / face value | 244 | **0** | 182 | 14 | 48 |
+| grounded / hedged | 78 | **0** | 42 | 36 | 0 |
+| privileged_bounded / face value | 214 | 17 | 119 | 57 | 21 |
+| privileged_bounded / hedged | 530 | 1 | 59 | 127 | 343 |
+
+Structural reason:
+- Grounded outputs depend only on h, so a grounded flip at a given state has probability 0 or 1.
+- Isolation then requires two units that both flip deterministically, at both stakes, to targets with different error exposure.
+- Face-value trust makes the doubt-raising units share a target, or makes the riskier target stop flipping at ×4.
+
+The grounded record does give **general** pairs: in `reversal_m*`, K(bob), K(bob→carol) and R(carol) are worth +0.029 at ×1 and 0 at ×4. Alternatives are put to review as Q5.
 
 ## Commands run and outcomes
 _(filled in at the clean-commit rerun)_

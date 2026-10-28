@@ -165,6 +165,34 @@ def test_holder_permutation_is_name_symmetric():
     assert J(orec, K("carol")) == pytest.approx(J(ocar, K("rec"))) == pytest.approx(0.45)
 
 
+# ------------------------------------------------------------------ D-006 ranking reversal
+def test_stakes_ranking_reversal_privileged_bounded():
+    """Bob says A, Carol says B. Consistent worlds (alice, bob, carol) with weights ∝ 0.5*b*c:
+    w1 (A, acc, mist) .016; w2 (A, acc, obs) .64; w3 (B, mist, acc) .01; w4 (B, obs, acc) .025.
+    Default actor: w1 and w3 each violate one default -> P(A)=.016/.026 -> walk A-first:
+    J0 = (p1+p2)*0.85 + (p3+p4)*0.75. U=R(bob) flips only in w4 (walk -> drop B, +0.2, stake-free).
+    V=K(carol) reveals Carol's belief but not its accuracy: the actor blames Carol and drops A everywhere."""
+    from officeminds.scenarios import REVERSAL_WITNESS
+    s = 0.016 + 0.64 + 0.01 + 0.025
+    pA, p4 = (0.016 + 0.64) / s, 0.025 / s
+    j0 = pA * 0.85 + (1 - pA) * 0.75
+    out = {}
+    for m in (1, 4):
+        _, _, o = setup(f"reversal_m{m}", params=REVERSAL_WITNESS)
+        assert len(o.worlds) == 4 and J(o, record=PRIVILEGED_BOUNDED) == pytest.approx(j0)
+        u, v = o.decompose(R("bob"), record=PRIVILEGED_BOUNDED), o.decompose(K("carol"), record=PRIVILEGED_BOUNDED)
+        assert u.total == pytest.approx(p4 * 0.2)
+        assert v.total == pytest.approx(pA * 0.95 - (1 - pA) * (0.05 + 0.5 * m) - j0)
+        assert u.d_memory == v.d_memory == 0
+        assert (u.p_flip, v.p_flip) == pytest.approx((p4, 1.0))  # flip ranking V > U at both stakes
+        out[m] = (u.total, v.total)
+    assert out[1][0] < out[1][1] and out[4][0] > out[4][1]  # VoMI ranking reverses
+    # Isolation: identical base action and targets across stakes.
+    o1, o4 = (setup(f"reversal_m{m}", params=REVERSAL_WITNESS)[2] for m in (1, 4))
+    for S in (frozenset(), frozenset({R("bob")}), frozenset({K("carol")})):
+        assert o1.evaluate(S, record=PRIVILEGED_BOUNDED).actions == o4.evaluate(S, record=PRIVILEGED_BOUNDED).actions
+
+
 # ------------------------------------------------------------------ graph retention
 def test_graph_retains_units_and_tracks_new_evidence_without_new_cost():
     sc, hist, o = setup("false_belief")

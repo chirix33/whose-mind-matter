@@ -22,3 +22,7 @@ Multiplying the error penalty ×4 with identical observations does **not** gener
 - Add a **ranking-reversal** construction at equal unit cost. The target table (U: P(flip) 0.025, gain 1.5/3.0; V: P(flip) 0.05, gain 1.0) is a design target only. Implement a feasible world and derive its values independently; if the target is infeasible, propose an alternative.
 - Carryover must be zero or equal; avoid ties. Check the invariance of the entropy objective as implemented.
 - Do not require learned flip-controller outputs to be numerically identical across stakes.
+
+## Implementation status (Stage 1)
+- **Ranking reversal found** in the `privileged_bounded` record: `reversal_m1`/`reversal_m4`. U = R(bob) +0.00724 at both stakes (P(flip) 0.036); V = K(carol) +0.02909 → −0.04689 (P(flip) 1.0). Zero carryover, no ties, hand-derived in tests.
+- No isolating reversal exists in the `grounded` record within the searched family; a per-criterion diagnostic explains why. Alternatives are put to review as Q5 in `reports/review-request.md`.
