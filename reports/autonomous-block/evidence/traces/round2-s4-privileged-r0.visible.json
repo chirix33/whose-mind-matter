@@ -1,0 +1,85 @@
+{
+ "run": "notes-value-20261028-085354-5b41df",
+ "state_id": "s4",
+ "condition": "privileged",
+ "replicate": 0,
+ "agent_view": {
+  "brief": "Deliver the package to Carol.",
+  "steps": [
+   {
+    "action": null,
+    "obs": {
+     "t": 0,
+     "room": "lobby",
+     "people_present": [
+      "ivan"
+     ],
+     "utterances": [
+      [
+       "ivan",
+       "I was out of the building all morning."
+      ]
+     ],
+     "outcome": "",
+     "reward": 0.0,
+     "done": false
+    }
+   },
+   {
+    "action": "drop(office_a)",
+    "obs": {
+     "t": 1,
+     "room": "lobby",
+     "people_present": [
+      "ivan"
+     ],
+     "utterances": [],
+     "outcome": "success",
+     "reward": 0.95,
+     "done": true
+    }
+   }
+  ]
+ },
+ "graph_final_shown_to_policy": [
+  {
+   "unit": "K(carol)",
+   "output": {
+    "about": "carol_loc",
+    "as_of_step": 0,
+    "evidence_ids": [],
+    "hypotheses": [
+     {
+      "p": 1.0,
+      "value": "office_a"
+     }
+    ],
+    "path": [
+     "carol"
+    ],
+    "rule_ids": [],
+    "source": "privileged",
+    "status": "grounded",
+    "unresolved": [],
+    "variable": "knowledge"
+   },
+   "status": "fresh",
+   "as_of": 0
+  }
+ ],
+ "actions": [
+  "drop(office_a)"
+ ],
+ "outcome": "success",
+ "return": 0.95,
+ "policy_calls": [
+  {
+   "step": 0,
+   "kind": "decision",
+   "parsed": {
+    "action": "drop(office_a)"
+   },
+   "attempts": 1
+  }
+ ]
+}

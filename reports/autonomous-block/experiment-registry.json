@@ -91,6 +91,33 @@
    "cost_usd": 1.0379,
    "failures": "0 blocked, 0 failed attempts",
    "outcome": "no condition reliable; ceiling 24/27 for none; privileged +0.057 (fewer steps; K(recipient) reveals target); inferred_bare +0.130 entirely from s9 (3/3 vs 0/3), where true content also failed 0/3"
+  },
+  {
+   "id": "r3-doubt",
+   "round": 3,
+   "status": "complete",
+   "what": "reference_doubt payloads: frozen reference x0.8 + 0.2 unknown, status copied from reference",
+   "proof": "reports/autonomous-block/round3-notes-freeze.json",
+   "commit": "578fb6f",
+   "cost_usd": 0
+  },
+  {
+   "id": "r3-policy",
+   "round": 3,
+   "status": "complete",
+   "what": "9 states x {none, reference, reference_doubt} x 4 draws + s9 inferred_bare x 4; API policy gpt-6.1-sol low, r5",
+   "run": "notes-value-20261028-090725-c312fa",
+   "commit": "578fb6f",
+   "cost_usd": 0.913,
+   "failures": "0 blocked, 0 failed attempts",
+   "outcome": "H3a holds (s9 none 0/4, reference 0/4, pooled doubt 7/8); H3b holds; H3c holds narrowly (-0.031 vs reference, 3 neg/1 pos; +0.000 vs none)"
+  },
+  {
+   "id": "stopped",
+   "round": null,
+   "status": "not run (by design)",
+   "what": "no learned router, label generation, Tier 2, or full API five-arm run (outside this block's authorization)"
   }
- ]
+ ],
+ "total_block_api_usd": 2.5566
 }

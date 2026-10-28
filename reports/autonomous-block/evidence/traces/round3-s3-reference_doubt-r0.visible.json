@@ -1,0 +1,133 @@
+{
+ "run": "notes-value-20261028-090725-c312fa",
+ "state_id": "s3",
+ "condition": "reference_doubt",
+ "replicate": 0,
+ "agent_view": {
+  "brief": "Deliver the package to Zane.",
+  "steps": [
+   {
+    "action": null,
+    "obs": {
+     "t": 0,
+     "room": "lobby",
+     "people_present": [
+      "grace"
+     ],
+     "utterances": [
+      [
+       "grace",
+       "zane_loc = lab_south"
+      ]
+     ],
+     "outcome": "",
+     "reward": 0.0,
+     "done": false
+    }
+   },
+   {
+    "action": "move(hall)",
+    "obs": {
+     "t": 1,
+     "room": "hall",
+     "people_present": [],
+     "utterances": [],
+     "outcome": "",
+     "reward": -0.05,
+     "done": false
+    }
+   },
+   {
+    "action": "move(lab_south)",
+    "obs": {
+     "t": 2,
+     "room": "lab_south",
+     "people_present": [
+      "zane"
+     ],
+     "utterances": [],
+     "outcome": "",
+     "reward": -0.05,
+     "done": false
+    }
+   },
+   {
+    "action": "deliver()",
+    "obs": {
+     "t": 3,
+     "room": "lab_south",
+     "people_present": [
+      "zane"
+     ],
+     "utterances": [],
+     "outcome": "success",
+     "reward": 0.95,
+     "done": true
+    }
+   }
+  ]
+ },
+ "graph_final_shown_to_policy": [
+  {
+   "unit": "K(grace)",
+   "output": {
+    "about": "zane_loc",
+    "as_of_step": 0,
+    "evidence_ids": [],
+    "hypotheses": [
+     {
+      "p": 0.8,
+      "value": "lab_south"
+     },
+     {
+      "p": 0.2,
+      "value": "unknown"
+     }
+    ],
+    "path": [
+     "grace"
+    ],
+    "rule_ids": [],
+    "source": "reference_doubt",
+    "status": "grounded",
+    "unresolved": [],
+    "variable": "knowledge"
+   },
+   "status": "retained",
+   "as_of": 0
+  }
+ ],
+ "actions": [
+  "move(hall)",
+  "move(lab_south)",
+  "deliver()"
+ ],
+ "outcome": "success",
+ "return": 0.85,
+ "policy_calls": [
+  {
+   "step": 0,
+   "kind": "decision",
+   "parsed": {
+    "action": "move(hall)"
+   },
+   "attempts": 1
+  },
+  {
+   "step": 1,
+   "kind": "decision",
+   "parsed": {
+    "action": "move(lab_south)"
+   },
+   "attempts": 1
+  },
+  {
+   "step": 2,
+   "kind": "decision",
+   "parsed": {
+    "action": "deliver()"
+   },
+   "attempts": 1
+  }
+ ]
+}

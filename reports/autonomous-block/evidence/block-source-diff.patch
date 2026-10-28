@@ -1,0 +1,1687 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 3f749f1..b67e31b 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -2,6 +2,8 @@
+ 
+ Version: 2026-10-28. Place this file at the root of the fresh repository.
+ 
++> **Active development block (registered 2026-10-28):** `AUTONOMOUS_RESEARCH_BRIEF.md` (sha256 `044e594c…ec0c12`; copy of Ashraf's `research-reviews/AUTONOMOUS_RESEARCH_BRIEF.md`). It authorizes a bounded autonomous loop of at most three methodological rounds under the existing USD 5 total cap. Within that block it supersedes preparation-only check-ins. It does not replace this file or the outline. State and resume point: `reports/autonomous-block/checkpoint.md`. Clarifications supplied by Ashraf: two reviewer sub-agents gate each round (Opus 5.5 checks scientific validity; Sonnet 5.5 independently recomputes the numbers); Round 2's inferred notes come from the API model; execution stays local.
++
+ ## 1. Mission and research ownership
+ 
+ Implement **Whose Mind Matters? Decision-Value Allocation of Theory of Mind over Perspective Graphs** for a potential IJCAI 2027 or ACL 2027 submission. Working names: **OfficeMinds** for the environment and **VoMI-Router** for the controller.
+diff --git a/prompts/pilot-v2.1/unit_system.txt b/prompts/pilot-v2.1/unit_system.txt
+new file mode 100644
+index 0000000..0fa7b32
+--- /dev/null
++++ b/prompts/pilot-v2.1/unit_system.txt
+@@ -0,0 +1,33 @@
++You infer ONE aspect of ONE person's mind for an office delivery robot, using only the robot's own history of observations and the numbered public rules about how people come to believe things (in the task description). Tie every claim to evidence IDs from that history or to a numbered rule.
++
++The aspect is one of:
++- knowledge of person j: what j currently believes about the given fact. A belief can be false or outdated. The value "unknown" means j HAS NO BELIEF about the fact (for example, j saw nothing and was told nothing);
++- knowledge path j -> k: what j believes k believes about the given fact ("unknown" means j has no view about k's belief);
++- reliability of person j: whether j is cooperative (sincerely reports what they believe) or obstructive (may deliberately mislead);
++- reliability path j -> k: how j assesses k (cooperative / obstructive / unknown = no assessment).
++
++Three different things must not be confused:
++- the PERSON has no belief: put probability on "unknown", supported by evidence or a rule (for example, rule 5: no statement was made, so j has no view of k's belief);
++- the ROBOT is unsure which belief the person has: spread probability over the possible beliefs. This is a normal, useful output, not a failure;
++- the robot cannot assess the aspect at all: abstain (rare; see below).
++
++Output rules:
++1. Give a probability distribution over the allowed values (probabilities sum to 1). It may be broad.
++2. For each value with probability 0.05 or more, list its support: an evidence ID from the history or a rule ID ("RULE1" ... "RULE6"), the kind of support, and a short note.
++   - observation: the robot saw it directly;
++   - testimony: someone said it in the robot's presence (evidence about what the speaker said, not automatically the truth);
++   - access_inference: a reasoned conclusion about who could have seen or heard what;
++   - public_rule: a numbered public rule applied to this person (cite it as RULE<n>).
++3. Set status:
++   - "grounded": the evidence and rules make one value clearly most likely;
++   - "uncertain": the evidence and rules leave several values plausible; your distribution shows which;
++   - "abstain": only if neither the history nor the rules say anything that bears on this aspect, so you cannot form even a rough distribution. Still give your best distribution.
++   Do not abstain merely because the robot did not see the person's belief directly; apply the rules (for example, rule 2: the recipient knows where they were at the start).
++4. List unresolved uncertainties or contradictions.
++5. Do not recommend robot actions and do not describe other people's minds beyond what this one aspect requires.
++
++Two examples from a different setting (a warehouse with boxes on shelves; not your task):
++- Supported false belief. History: [t1:said0] Pat says "box = shelf_1"; [t2:said0] Lee says "I moved the box to shelf_2 while Pat was at lunch". For knowledge of Pat about box: status grounded; shelf_1 p 0.85 with support t1:said0 (testimony: Pat states shelf_1) and t2:said0 (access_inference: the move happened while Pat was away); shelf_2 p 0.15 with support t2:said0 (access_inference: Pat might have been told later).
++- Robot unsure which belief. History: [t0:seen:sam] Sam is in the room; Sam is the warehouse manager, and a rule says the manager knows where every box was this morning. For knowledge of Sam about box: status uncertain; shelf_1 p 0.5 and shelf_2 p 0.5, each supported by the rule (public_rule: Sam knows the location; the robot does not know which it is); no probability on "unknown", because the rule says Sam has a belief.
++
++Respond with JSON only, matching the schema.
+diff --git a/scripts/render_unit_contexts.py b/scripts/render_unit_contexts.py
+new file mode 100644
+index 0000000..9a360ba
+--- /dev/null
++++ b/scripts/render_unit_contexts.py
+@@ -0,0 +1,75 @@
++"""Re-render the 24 frozen fixed unit contexts (unit-contexts-v1) under a later renderer revision.
++
++    python3 scripts/render_unit_contexts.py --rev 4
++
++The CONTEXTS do not change: the same instances, history prefixes and units. Each history is rebuilt by replaying
++the instance with the recorded robot action(s) and must equal the frozen agent view byte for byte, or the script
++stops. Only the rendered requests change (public rules r4; packages pilot-v1, pilot-v2, pilot-v2.1).
++Writes reports/autonomous-block/unit-contexts-v1-r<rev>.{jsonl,md}; the .md records the sha256 that
++run_unit_contexts.py checks before sending anything.
++"""
++
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++
++from officeminds.devgen import generate  # noqa: E402
++from officeminds.episode import VisibleHistory  # noqa: E402
++from officeminds.world import legal_actions  # noqa: E402
++from vomi.pilot import PACKAGES, ledger, load_prompts, unit_messages  # noqa: E402
++from vomi.units import Unit  # noqa: E402
++
++FROZEN = ROOT / "reports" / "pilot" / "unit-contexts-v1.jsonl"
++
++
++def parse_unit(s: str) -> Unit:
++    return Unit(tuple(s[2:-1].split("->")), "knowledge" if s.startswith("K(") else "reliability")
++
++
++def main():
++    ap = argparse.ArgumentParser()
++    ap.add_argument("--rev", type=int, required=True)
++    args = ap.parse_args()
++    insts = {i.instance_id: i for i in generate(version="dev-v2")}
++    frozen_text = FROZEN.read_text()
++    rows = []
++    for ctx in map(json.loads, frozen_text.splitlines()):
++        inst = insts[ctx["instance_id"]]
++        w = inst.scenario.build(inst.hidden)
++        h = VisibleHistory(inst.scenario.brief, [(None, w.reset())])
++        for st in ctx["agent_view"]["steps"][1:]:
++            a = next(x for x in legal_actions(inst.scenario.config, h.last) if str(x) == st["action"])
++            h.steps.append((a, w.step(a)))
++        if json.dumps(h.to_agent_dict(), sort_keys=True) != json.dumps(ctx["agent_view"], sort_keys=True):
++            raise SystemExit(f"{ctx['context_id']}: rebuilt history differs from the frozen agent view")
++        u = parse_unit(ctx["unit"])
++        req = {}
++        for pkg, package in PACKAGES.items():
++            if args.rev < package.min_render_revision:
++                continue
++            msgs, domain, ids = unit_messages(load_prompts(pkg), inst.scenario.config, inst.scenario.brief, h, u, pkg, args.rev)
++            req[pkg] = {"messages": msgs, "schema": package.schema(domain, u.variable), "domain": domain}
++        assert sorted(ledger(h)[1]) == ctx["visible_ids"]
++        rows.append({**{k: ctx[k] for k in ("context_id", "instance_id", "family", "k", "unit", "unit_type", "source",
++                                            "agent_view", "visible_ids")},
++                     "render_revision": args.rev, "requests": req})
++    out = ROOT / "reports" / "autonomous-block" / f"unit-contexts-v1-r{args.rev}.jsonl"
++    text = "".join(json.dumps(r, sort_keys=True) + "\n" for r in rows)
++    out.write_text(text)
++    digest = hashlib.sha256(text.encode()).hexdigest()
++    (out.with_suffix(".md")).write_text(
++        f"# unit-contexts-v1 re-rendered at r{args.rev}\n\nSame 24 contexts as `reports/pilot/unit-contexts-v1.jsonl` "
++        f"(sha256 `{hashlib.sha256(frozen_text.encode()).hexdigest()}`); histories verified identical. "
++        f"Packages: {sorted(rows[0]['requests'])}.\n\n- sha256 `{digest}`\n", encoding="utf-8")
++    print(out, digest)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/report_round1.py b/scripts/report_round1.py
+new file mode 100644
+index 0000000..e730e7f
+--- /dev/null
++++ b/scripts/report_round1.py
+@@ -0,0 +1,179 @@
++"""Autonomous block Round 1: rescore fixed-context runs with scoring v3 and the pre-registered ambiguity policy.
++
++    python3 scripts/report_round1.py <run_dir> [<run_dir> ...]
++
++Every run is labelled with its render revision (from its manifest; runs without one are r3) and its output cap.
++Categories partition n per cell. Primary block = contexts flagged consistent in reports/autonomous-block/reference-audit.json;
++ambiguous contexts are reported apart. Writes reports/autonomous-block/round1-results.md and a per-output JSONL
++(data/autonomous-block/round1-scored.jsonl; privileged: contains truths).
++"""
++
++from __future__ import annotations
++
++import json
++import math
++import statistics
++import sys
++from collections import Counter, defaultdict
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++
++from vomi.fidelity import CATS_V3, score_output_v3  # noqa: E402
++
++AUDIT = json.loads((ROOT / "reports/autonomous-block/reference-audit.json").read_text())["contexts"]
++AMBIG = {c for c, v in AUDIT.items() if v["flag"] == "ambiguous"}
++HALLU = ("unsupported_committed", "leakage")
++
++
++def load(run_dir: Path):
++    man = json.loads((run_dir / "manifest.json").read_text())
++    cfg = man["config"]
++    rev = cfg.get("render_revision") or 3
++    cap = cfg["decoding"].get("max_tokens")
++    for l in (run_dir / "records.jsonl").open():
++        r = json.loads(l)
++        r["rev"], r["cap"], r["run_id"] = rev, cap, man["run_id"]
++        yield r
++
++
++def mean(xs):
++    xs = list(xs)
++    return statistics.mean(xs) if xs else float("nan")
++
++
++def main():
++    ctxs = {json.loads(l)["context_id"]: json.loads(l) for l in (ROOT / "reports/autonomous-block/unit-contexts-v1-r4.jsonl").open()}
++    priv = {json.loads(l)["context_id"]: json.loads(l) for l in (ROOT / "data/pilot/unit-contexts-v1-privileged.jsonl").open()}
++    rows, runs = [], []
++    for d in sys.argv[1:]:
++        runs.append(Path(d).name)
++        for r in load(Path(d)):
++            p, c = priv[r["context_id"]], ctxs[r["context_id"]]
++            vals = c["requests"]["pilot-v1"]["schema"]["properties"]["hypotheses"]["items"]["properties"]["value"]["enum"]
++            s = score_output_v3(r["call"]["parsed"], p["truth"], p["posterior"], set(p["robot_known"]), vals,
++                                r["context_id"] in AMBIG)
++            rows.append({"context_id": r["context_id"], "cell": (r["model"], r["effort"], f"r{r['rev']}", r["package"]),
++                         "cap": r["cap"], "run_id": r["run_id"], "score": s, "usage": r["usage"],
++                         "incomplete": r["incomplete_attempts"], "attempts": len(r["call"]["attempts"])})
++    cells = defaultdict(list)
++    for r in rows:
++        cells[r["cell"]].append(r)
++    keys = sorted(cells)
++    name = lambda k: "/".join(k)
++    L = ["# Round 1 results: fixed contexts under scoring v3", "",
++         f"Runs: {', '.join(f'`{x}`' for x in runs)}. Contexts: the 24 of `unit-contexts-v1` "
++         "(r4 rows use `reports/autonomous-block/unit-contexts-v1-r4.jsonl`). Development data; exploratory.",
++         f"Ambiguity policy: `reports/autonomous-block/reference-audit.json` (written before outputs). Primary block = "
++         f"{24 - len(AMBIG)} consistent contexts; ambiguous = {', '.join(sorted(AMBIG))}.",
++         "Hallucination-type = unsupported_committed + leakage. r3 rows are earlier runs rescored with v3 (contract r3, "
++         "not re-run).", ""]
++    for block, members in (("Primary (consistent contexts)", lambda c: c not in AMBIG), ("Ambiguous contexts", lambda c: c in AMBIG)):
++        L += [f"## {block}: category counts (each row sums to n)", "",
++              "| cell (model/effort/rules/package) | cap | n | " + " | ".join(CATS_V3) + " | hallucination-type |",
++              "|---|---|---|" + "---|" * len(CATS_V3) + "---|"]
++        for k in keys:
++            rs = [r for r in cells[k] if members(r["context_id"])]
++            cnt = Counter(r["score"]["category"] for r in rs)
++            assert sum(cnt.values()) == len(rs)
++            L.append(f"| {name(k)} | {rs[0]['cap'] if rs else ''} | {len(rs)} | " + " | ".join(str(cnt[c]) for c in CATS_V3)
++                     + f" | {sum(cnt[c] for c in HALLU)} |")
++        L.append("")
++    CONTENT = [c for c in CATS_V3 if c not in ("abstained", "invalid")]
++    L += ["## Primary contexts: status-agnostic content categories (Opus gate item 3)", "",
++          "Every valid output is categorized by its content, whatever its status, so a package cannot hide content "
++          "inside abstentions (pilot-v2's insufficient_evidence covers what pilot-v2.1 calls uncertain). Coverage by status "
++          "is its own column. Unsupported mass = mean probability on values the reference gives < 0.2 (item 4). "
++          "**Limitation:** the committed/hedged line (top p >= 0.5) is crude; unsupported mass complements it.", "",
++          "| cell | n | " + " | ".join(CONTENT) + " | invalid | hallucination-type (content) | mean unsupported mass | status-abstained |",
++          "|---|---|" + "---|" * len(CONTENT) + "---|---|---|---|"]
++    for k in keys:
++        rs = [r for r in cells[k] if r["context_id"] not in AMBIG]
++        v = [r["score"] for r in rs if r["score"]["valid"]]
++        cnt = Counter(x["content_category"] for x in v)
++        L.append(f"| {name(k)} | {len(rs)} | " + " | ".join(str(cnt[c]) for c in CONTENT) + f" | {len(rs) - len(v)} | "
++                 f"{sum(cnt[c] for c in HALLU)} | {mean(x['unsupported_mass'] for x in v):.2f} | {sum(x['abstained'] for x in v)} |")
++    L.append("")
++    L += ["## Proper scores and coverage (all 24 contexts)", "",
++          "Over all valid outputs (abstentions included through their distributions) and over attributed outputs only. "
++          "Log score vs truth (higher better, 1e-3 floor); Brier, CE vs reference posterior and TV vs posterior: lower better.", "",
++          "| cell | coverage (attributed/24) | invalid | log score | Brier | CE vs post. | TV vs post. | log score (attributed) | "
++          "mean tokens in/out/reasoning | incomplete attempts |", "|---|---|---|---|---|---|---|---|---|---|"]
++    for k in keys:
++        rs = cells[k]
++        v = [r["score"] for r in rs if r["score"]["valid"]]
++        att = [s for s in v if not s["abstained"]]
++        u = [r["usage"] for r in rs]
++        rt = "n/a" if any(x["reasoning_tokens"] is None for x in u) else f"{mean(x['reasoning_tokens'] for x in u):.0f}"
++        L.append(f"| {name(k)} | {len(att)}/{len(rs)} | {len(rs) - len(v)} | {mean(s['log_score_truth'] for s in v):.2f} | "
++                 f"{mean(s['brier_truth'] for s in v):.2f} | {mean(s['cross_entropy_posterior'] for s in v):.2f} | "
++                 f"{mean(s.get('tv_posterior', math.nan) for s in v):.2f} | {mean(s['log_score_truth'] for s in att):.2f} | "
++                 f"{mean(x['prompt_tokens'] for x in u):.0f}/{mean(x['completion_tokens'] for x in u):.0f}/{rt} | "
++                 f"{sum(r['incomplete'] for r in rs)} |")
++    L += ["", "## Proper scores on the 19 consistent contexts only (Opus gate item 5)", "",
++          "In the flagged contexts CE/TV mostly measure undisclosed generator base rates, so the primary comparison uses "
++          "these rows. Note: uc03, uc20, uc21, uc22 have posterior 1.0 only because people without an incentive never lie "
++          "in the generator; CE/TV there penalize hedges that rule 6 invites.", "",
++          "| cell | n | log score | Brier | CE vs post. | TV vs post. | mean unsupported mass |", "|---|---|---|---|---|---|---|"]
++    for k in keys:
++        v = [r["score"] for r in cells[k] if r["context_id"] not in AMBIG and r["score"]["valid"]]
++        L.append(f"| {name(k)} | {len(v)} | {mean(s['log_score_truth'] for s in v):.2f} | {mean(s['brier_truth'] for s in v):.2f} | "
++                 f"{mean(s['cross_entropy_posterior'] for s in v):.2f} | {mean(s['tv_posterior'] for s in v):.2f} | "
++                 f"{mean(s['unsupported_mass'] for s in v):.2f} |")
++    by = {k: {r["context_id"]: r["score"] for r in cells[k]} for k in keys}
++
++    def paired(a, b, label):
++        common = [c for c in sorted(set(by[a]) & set(by[b])) if by[a][c]["valid"] and by[b][c]["valid"]]
++        prim = [c for c in common if c not in AMBIG]
++        if not prim:
++            return
++        dl = mean(by[b][c]["log_score_truth"] - by[a][c]["log_score_truth"] for c in prim)
++        dce = mean(by[a][c]["cross_entropy_posterior"] - by[b][c]["cross_entropy_posterior"] for c in prim)
++        dtv = mean(by[a][c]["tv_posterior"] - by[b][c]["tv_posterior"] for c in prim)
++        dh = sum(by[b][c]["content_category"] in HALLU for c in prim) - sum(by[a][c]["content_category"] in HALLU for c in prim)
++        dum = mean(by[b][c]["unsupported_mass"] - by[a][c]["unsupported_mass"] for c in prim)
++        dab = sum(by[b][c]["abstained"] for c in common) - sum(by[a][c]["abstained"] for c in common)
++        L.append(f"| {label} | {name(b)} vs {name(a)} | {len(prim)} | {dl:+.2f} | {dce:+.2f} | {dtv:+.2f} | {dh:+d} | {dum:+.2f} | {dab:+d} |")
++
++    L += ["", "## Paired comparisons on the same 19 consistent contexts (B vs A)", "",
++          "Positive Δ log / Δ CE / Δ TV = B better. Hallucination-type and unsupported mass use the status-agnostic content "
++          "category. Δ abstentions counts all 24 contexts.", "",
++          "| effect | B vs A | contexts | Δ log score | Δ CE (negated) | Δ TV (negated) | Δ hallucination-type | Δ unsupported mass | Δ abstentions |",
++          "|---|---|---|---|---|---|---|---|---|"]
++    for a in keys:
++        for b in keys:
++            if a == b:
++                continue
++            if a[:3] == b[:3] and a[3] < b[3]:  # same model/effort/rules, different package
++                paired(a, b, "package (same rules)")
++            if a[0:2] == b[0:2] and a[3] == b[3] and a[2] < b[2]:
++                caps = {r["cap"] for r in cells[a]} | {r["cap"] for r in cells[b]}
++                label = (f"rules {a[2]} -> {b[2]} + output cap {sorted(caps)} + fresh sampled draw (descriptive only)"
++                         if len(caps) > 1 or a[0].startswith("gpt-6") else f"rules {a[2]} -> {b[2]} (same package; combined rules effect)")
++                paired(a, b, label)
++            if a[1:] == b[1:] and a[0] != b[0] and a[0] < b[0]:
++                paired(a, b, "model (same effort/rules/package)")
++    L += ["", "## Per-context top value / category", "",
++          "| ctx | ref | unit | truth | posterior top (p) | " + " | ".join(name(k) for k in keys) + " |",
++          "|---|---|---|---|---|" + "---|" * len(keys)]
++    for cid in sorted(ctxs):
++        p = priv[cid]
++        pt = max(p["posterior"], key=p["posterior"].get)
++        cellsx = []
++        for k in keys:
++            s = by[k].get(cid)
++            cellsx.append("—" if s is None else ("INVALID" if not s["valid"] else
++                          f"{s['top']} {s['top_p']:.2f} / {s['category']}" + (f" [{s['status']}]" if s.get("status") else "")))
++        L.append(f"| {cid} | {'AMB' if cid in AMBIG else 'ok'} | {ctxs[cid]['unit']} | {p['truth']} | {pt} ({p['posterior'][pt]:.2f}) | "
++                 + " | ".join(cellsx) + " |")
++    out = ROOT / "reports/autonomous-block/round1-results.md"
++    out.write_text("\n".join(L) + "\n", encoding="utf-8")
++    priv_out = ROOT / "data/autonomous-block/round1-scored.jsonl"
++    priv_out.parent.mkdir(parents=True, exist_ok=True)
++    priv_out.write_text("".join(json.dumps({**r, "cell": list(r["cell"])}, default=str) + "\n" for r in rows))
++    print(out)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/report_round2.py b/scripts/report_round2.py
+new file mode 100644
+index 0000000..ebaf576
+--- /dev/null
++++ b/scripts/report_round2.py
+@@ -0,0 +1,169 @@
++"""Autonomous block Round 2 analysis, exactly as pre-registered (experiment-plan.md, Round 2 entry + amendment).
++
++    python3 scripts/report_round2.py <notes-value run dir>
++
++Writes reports/autonomous-block/round2-results.md. Counts are kept distinct: 9 states (scenarios), 1 frozen note per
++state x condition, 3 policy draws. Everything is descriptive; the bootstrap resamples STATES (draws averaged within
++a state) and is reported as an interval, never as a significance test.
++"""
++
++from __future__ import annotations
++
++import json
++import random
++import statistics
++import sys
++from collections import Counter, defaultdict
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++CONDS = ("none", "inferred", "inferred_bare", "reference", "privileged")
++STRATA = {"A (reference informative, consistent)": ["s3"], "B (reference informative via undisclosed base rates)": ["s2", "s6", "s7"],
++          "C (reference uninformative 0.5/0.5)": ["s1", "s4", "s5", "s8", "s9"]}
++PRICE_IN, PRICE_OUT = 2e-6, 1e-5
++
++
++def mean(xs):
++    xs = list(xs)
++    return statistics.mean(xs) if xs else float("nan")
++
++
++def main():
++    run = Path(sys.argv[1])
++    man = json.loads((run / "manifest.json").read_text())
++    eps = [json.loads(l) for l in (run / "episodes.jsonl").open()]
++    notes = json.loads((ROOT / "data/autonomous-block/round2-notes.json").read_text())
++    freeze = json.loads((ROOT / "reports/autonomous-block/round2-notes-freeze.json").read_text())
++    states = sorted(notes["states"], key=lambda s: int(s[1:]))
++    label = {s: notes["states"][s]["symbolic_category"] for s in states}
++    blocked = [e for e in eps if "blocked" in e]
++    reps = sorted({e["replicate"] for e in eps})
++    complete = [r for r in reps if all(any(e["state_id"] == s and e["condition"] == c and e["replicate"] == r and "blocked" not in e
++                                           for e in eps) for s in states for c in CONDS)]
++    use = [e for e in eps if "blocked" not in e and e["replicate"] in complete]
++    for e in use:  # the payload actually injected must be the frozen one
++        if e["condition"] != "none":
++            assert e["note_sha256"] == freeze["states"][e["state_id"]]["note_sha256"][e["condition"]]
++    cell = defaultdict(list)
++    for e in use:
++        cell[(e["state_id"], e["condition"])].append(e)
++
++    def cost(e):
++        d = e["usage"].get("decision", {})
++        return d.get("prompt_tokens", 0) * PRICE_IN + d.get("completion_tokens", 0) * PRICE_OUT
++
++    m = {(s, c): mean(e["return_"] for e in cell[(s, c)]) for s in states for c in CONDS}
++    delta = {c: {s: m[(s, c)] - m[(s, "none")] for s in states} for c in CONDS if c != "none"}
++    L = ["# Round 2 results: replicated value-of-notes diagnostic (development data; exploratory)", "",
++         f"Run `{man['run_id']}` (commit `{man.get('git_commit', '?')[:7]}`, dirty paths {len(man.get('dirty_paths', []))}); "
++         f"policy {man['config']['model']} effort {man['config']['decoding'].get('reasoning_effort')}, cap "
++         f"{man['config']['decoding'].get('max_tokens')}, concurrency {man['config']['concurrency']}, rules r{man['config']['render_revision']}, "
++         f"package {man['config']['package']}. Wall clock {man.get('wall_clock_s', 0):.0f} s.",
++         f"Frozen notes: `round2-notes-freeze.json` (notes file sha256 `{freeze['notes_file_sha256'][:16]}…`); every injected payload "
++         "hash was checked against it.",
++         f"Episodes: {len(eps)} dispatched, {len(blocked)} blocked; complete replicate layers used: {complete} "
++         f"({len(use)} episodes). Counts: 9 states, 1 note per state x condition, {len(complete)} policy draws.", ""]
++    if blocked:
++        L += ["Blocked: " + "; ".join(f"{e['state_id']}/{e['condition']}/r{e['replicate']}: {e['blocked'][:80]}" for e in blocked), ""]
++
++    L += ["## Per state: mean return over draws (success/error/timeout counts; within-state SD)", "",
++          "| state | unit | label | stratum | " + " | ".join(CONDS) + " |", "|---|---|---|---|" + "---|" * len(CONDS)]
++    strat_of = {s: k.split()[0] for k, v in STRATA.items() for s in v}
++    for s in states:
++        row = []
++        for c in CONDS:
++            es = cell[(s, c)]
++            oc = Counter(e["outcome"] for e in es)
++            sd = statistics.pstdev([e["return_"] for e in es]) if len(es) > 1 else 0.0
++            row.append(f"{m[(s, c)]:+.3f} ({oc['success']}/{oc['error']}/{oc['timeout']}; sd {sd:.2f})")
++        L.append(f"| {s} | {notes['states'][s]['unit']} | {label[s]} | {strat_of[s]} | " + " | ".join(row) + " |")
++
++    L += ["", "## Condition − none, per state averaged over draws", "",
++          "| condition | mean Δ (9 states) | better/worse/tie states | useful+carryover states positive (of 4) | drop-one-state range | "
++          "reversed by dropping one draw? | bootstrap 90% interval over states | reliable (pre-registered) |",
++          "|---|---|---|---|---|---|---|---|"]
++    rng = random.Random(20261028)
++    useful = [s for s in states if label[s] in ("useful_current_action", "carryover")]
++    for c, d in delta.items():
++        vals = [d[s] for s in states]
++        mu = mean(vals)
++        b = sum(v > 1e-9 for v in vals); w = sum(v < -1e-9 for v in vals)
++        up = sum(d[s] > 1e-9 for s in useful)
++        drop_state = [mean(v for s2, v in d.items() if s2 != s) for s in states]
++        flips = []  # drop each single draw of this condition or of `none`, recompute the 9-state mean
++        for cc in (c, "none"):
++            for s in states:
++                for i in range(len(cell[(s, cc)])):
++                    rest = [e["return_"] for j, e in enumerate(cell[(s, cc)]) if j != i]
++                    mm = dict(m)
++                    mm[(s, cc)] = mean(rest)
++                    flips.append(mean(mm[(s2, c)] - mm[(s2, "none")] for s2 in states))
++        reversed_by_draw = any((f > 1e-9) != (mu > 1e-9) for f in flips) if abs(mu) > 1e-9 else True
++        boots = sorted(mean(rng.choice(vals) for _ in vals) for _ in range(5000))
++        reliable = (mu >= 0.10 and b > w and up >= 3 and min(drop_state) > 0 and not reversed_by_draw)
++        L.append(f"| {c} | {mu:+.3f} | {b}/{w}/{9 - b - w} | {up} | {min(drop_state):+.3f} … {max(drop_state):+.3f} | "
++                 f"{'yes' if reversed_by_draw else 'no'} | [{boots[250]:+.3f}, {boots[4750]:+.3f}] | {'yes' if reliable else 'no'} |")
++
++    L += ["", "## By stratum and by original label (mean Δ vs none)", "", "| group | states | " + " | ".join(delta) + " |",
++          "|---|---|" + "---|" * len(delta)]
++    groups = list(STRATA.items()) + [(f"label {g}", [s for s in states if label[s] == g])
++                                     for g in ("useful_current_action", "carryover", "zero_value_stop", "negative")]
++    for g, ss in groups:
++        L.append(f"| {g} | {', '.join(ss)} | " + " | ".join(f"{mean(delta[c][s] for s in ss):+.3f}" for c in delta) + " |")
++
++    L += ["", "## Contrasts between note conditions (mean over states of per-state difference)", "",
++          "| contrast | mean | better/worse/tie | stratum A | stratum B | stratum C |", "|---|---|---|---|---|---|"]
++    for a, b_ in (("inferred", "inferred_bare"), ("inferred_bare", "reference"), ("inferred", "reference"),
++                  ("privileged", "reference"), ("privileged", "inferred_bare")):
++        diff = {s: m[(s, a)] - m[(s, b_)] for s in states}
++        v = list(diff.values())
++        L.append(f"| {a} − {b_} | {mean(v):+.3f} | {sum(x > 1e-9 for x in v)}/{sum(x < -1e-9 for x in v)}/"
++                 f"{sum(abs(x) <= 1e-9 for x in v)} | " + " | ".join(f"{mean(diff[s] for s in ss):+.3f}" for ss in STRATA.values()) + " |")
++
++    L += ["", "## Do notes change what the policy does? First action vs the modal `none` first action", "",
++          "| state | modal none first action | " + " | ".join(c for c in CONDS if c != "none") + " |",
++          "|---|---|" + "---|" * (len(CONDS) - 1)]
++    for s in states:
++        modal = Counter(e["actions"][0] for e in cell[(s, "none")] if e["actions"]).most_common(1)[0][0]
++        L.append(f"| {s} | {modal} | " + " | ".join(
++            f"{sum(e['actions'][0] != modal for e in cell[(s, c)] if e['actions'])}/{len(cell[(s, c)])} differ"
++            for c in CONDS if c != "none") + " |")
++
++    L += ["", "## Compute and cost", "",
++          f"Note generation (inferred notes, 9 API calls, one-time in this experiment; NOT free in deployment): "
++          f"USD {freeze['inferred_notes_usd_ledger_delta']:.4f} (ledger delta).", "",
++          "| condition | episodes | mean decision calls | mean prompt tokens / episode | mean completion tokens / episode | "
++          "mean reasoning tokens / episode | mean USD / episode (list price) | mean steps | mean wall clock / episode (s) |",
++          "|---|---|---|---|---|---|---|---|---|"]
++    for c in CONDS:
++        es = [e for s in states for e in cell[(s, c)]]
++        dec = [e["usage"].get("decision", {}) for e in es]
++        rt = "n/a" if any(not d.get("reasoning_tokens_known", False) for d in dec) else f"{mean(d['reasoning_tokens'] for d in dec):.0f}"
++        L.append(f"| {c} | {len(es)} | {mean(d['calls'] for d in dec):.2f} | {mean(d['prompt_tokens'] for d in dec):.0f} | "
++                 f"{mean(d['completion_tokens'] for d in dec):.0f} | {rt} | {mean(cost(e) for e in es):.4f} | "
++                 f"{mean(e['steps'] for e in es):.2f} | {mean(e['wall_clock_s'] for e in es):.1f} |")
++    fails = sum(d.get("attempts_failed", 0) for e in use for d in e["usage"].values())
++    fb = sum(d.get("fallbacks", 0) for e in use for d in e["usage"].values())
++    L += ["", f"Failed attempts: {fails}; fallbacks to wait(): {fb}. Episodes ran with concurrency "
++          f"{man['config']['concurrency']}; per-episode wall clock includes provider queueing and is not a compute measure.", "",
++          "## Note payloads (top value, p; status)", "", "| state | unit | truth | " + " | ".join(CONDS[1:]) + " |",
++          "|---|---|---|" + "---|" * (len(CONDS) - 1)]
++    for s in states:
++        st = notes["states"][s]
++        truth = st["notes"]["privileged"]["hypotheses"][0]["value"]
++        cells = []
++        for c in CONDS[1:]:
++            n = st["notes"][c]
++            if n is None:
++                cells.append("FAILED (no note)")
++                continue
++            hyps = sorted(n["hypotheses"], key=lambda h: -h["p"])
++            cells.append(", ".join(f"{h['value']} {h['p']:.2f}" for h in hyps[:3]) + f" [{n['status']}]")
++        L.append(f"| {s} | {st['unit']} | {truth} | " + " | ".join(cells) + " |")
++    out = ROOT / "reports/autonomous-block/round2-results.md"
++    out.write_text("\n".join(L) + "\n", encoding="utf-8")
++    print(out)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/run_notes_value.py b/scripts/run_notes_value.py
+new file mode 100644
+index 0000000..18c7cdc
+--- /dev/null
++++ b/scripts/run_notes_value.py
+@@ -0,0 +1,309 @@
++"""Autonomous block Round 2: replicated value-of-notes diagnostic on the nine prespecified intervention states.
++
++    python3 scripts/run_notes_value.py notes  --config configs/models/api_gpt_6_1_sol.json   # freeze note payloads
++    python3 scripts/run_notes_value.py render                                               # policy prompts, no calls
++    python3 scripts/run_notes_value.py policy --config configs/models/api_gpt_6_1_sol.json --replicates 3
++    python3 scripts/run_notes_value.py doubt                                                # Round 3 control payloads
++    python3 scripts/run_notes_value.py policy --round 3 --replicates 4
++
++States: data/pilot/dev-v2/interventions.json (instance, t0, unit; original labels kept). Conditions, same API policy,
++fixed allocation (the state's one unit at t0, no further allocation, no refresh):
++  none        no explicit notes (direct rendering)
++  inferred    pilot-v2.1 note from the API model, r5 rules, legal visible history only
++  inferred_bare  the SAME frozen inferred payload with support / evidence IDs / rule IDs / unresolved removed, so it
++              renders exactly like the computed notes (matched-presentation control; Round 2 Opus gate item 3)
++  reference   the exact evidence posterior of the unit's content under the declared public model (the dev-v2
++              generator) given the same visible history. No hidden-world identity, correctness flag or action. It uses
++              generator base rates/templates the LLM prompt does not state (reports/autonomous-block/reference-audit.json)
++  privileged  the unit's actual content in the realized world (p = 1). PRIVILEGED diagnostic; not deployable and
++              not a guaranteed upper bound
++Payloads are frozen (stage `notes`, sha256 per payload) before any policy outcome and reused for every replicate.
++Representation: all notes use the pilot-v2.1 note format and status vocabulary. Inferred notes carry the model's
++per-hypothesis support, cited evidence IDs with quoted excerpts, unresolved items and a model-chosen status; computed
++notes print "cited evidence: none" and take their status from a 0.8 threshold. inferred vs inferred_bare measures that
++presentation difference; inferred_bare / reference / privileged contrast content at matched presentation (status
++still differs: model-chosen vs threshold).
++"""
++
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import os
++import sys
++import time
++from concurrent.futures import ThreadPoolExecutor
++from dataclasses import asdict
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++
++from officeminds.devgen import generate  # noqa: E402
++from officeminds.episode import VisibleHistory  # noqa: E402
++from vomi import runlog  # noqa: E402
++from vomi.clients import BudgetExceeded, make_client  # noqa: E402
++from vomi.fidelity import evidence_posterior  # noqa: E402
++from vomi.graph import PerspectiveGraph  # noqa: E402
++from vomi.pilot import (PACKAGES, call_with_protocol, describe_unit, load_prompts, policy_messages,  # noqa: E402
++                        prompt_hashes, run_episode_arm, unit_messages)
++from vomi.units import Unit, content  # noqa: E402
++
++PACKAGE, REV = "pilot-v2.1", 5
++R5_MARKER = "Before the task (none of this appears"  # checked in every rendered request (Round 2 Opus gate item 1)
++CONDITIONS = ("none", "inferred", "inferred_bare", "reference", "privileged")
++NOTES = ROOT / "data" / "autonomous-block" / "round2-notes.json"  # PRIVILEGED (reference/privileged payloads)
++RUNS = Path(os.environ.get("OFFICEMINDS_RUNS", Path.home() / "officeminds-runs")) / "notes-value"
++
++
++def parse_unit(s: str) -> Unit:
++    return Unit(tuple(s[2:-1].split("->")), "knowledge" if s.startswith("K(") else "reliability")
++
++
++def states():
++    insts = {i.instance_id: i for i in generate(version="dev-v2")}
++    ivs = json.loads((ROOT / "data" / "pilot" / "dev-v2" / "interventions.json").read_text())
++    out = []
++    for n, iv in enumerate(ivs, 1):
++        assert iv["decision_state"] == "t0"
++        out.append({"state_id": f"s{n}", **iv, "inst": insts[iv["instance_id"]], "u": parse_unit(iv["unit"])})
++    return out
++
++
++def t0(inst):
++    w = inst.scenario.build(inst.hidden)
++    return w, VisibleHistory(inst.scenario.brief, [(None, w.reset())])
++
++
++def computed_note(u: Unit, cfg, dist: dict[str, float], kind: str) -> dict:
++    hyps = [{"value": v, "p": round(p, 4)} for v, p in sorted(dist.items()) if p > 0]
++    s = sum(h["p"] for h in hyps)
++    big = max(hyps, key=lambda h: h["p"])
++    big["p"] = round(big["p"] + 1.0 - s, 4)  # rounding residue on the largest mass keeps the sum at 1
++    assert all(h["p"] >= 0 for h in hyps) and abs(sum(h["p"] for h in hyps) - 1.0) < 1e-6
++    return {"path": list(u.path), "variable": u.variable, "about": describe_unit(u, cfg)[1], "as_of_step": 0,
++            "status": "grounded" if max(dist.values()) >= 0.8 else "uncertain", "hypotheses": hyps,
++            "unresolved": [], "evidence_ids": [], "rule_ids": [], "source": kind}
++
++
++def sha(obj) -> str:
++    return hashlib.sha256(json.dumps(obj, sort_keys=True).encode()).hexdigest()
++
++
++def bare(note: dict) -> dict:
++    """The same content with the argument fields removed: renders like a computed note."""
++    return {**{k: v for k, v in note.items() if k not in ("support", "evidence_ids", "rule_ids", "unresolved")},
++            "hypotheses": [{"value": h["value"], "p": h["p"]} for h in note["hypotheses"]],
++            "unresolved": [], "evidence_ids": [], "rule_ids": [], "source": "inferred_bare"}
++
++
++def git_state() -> dict:
++    head = os.popen(f'git -C "{ROOT}" rev-parse HEAD').read().strip()
++    dirty = [x for x in os.popen(f'git -C "{ROOT}" status --porcelain').read().split("\n") if x.strip()]
++    return {"git_commit": head, "dirty_paths": dirty}
++
++
++def rendered_notes(st, cond, frozen) -> tuple[str, str]:
++    """(full t0 policy user message, its MIND NOTES section) for one state/condition, built without any client."""
++    inst = st["inst"]
++    kw = condition_kwargs(st, cond, frozen)
++    _, h = t0(inst)
++    g = None
++    if kw["arm"] != "direct":
++        g = PerspectiveGraph(recipient=inst.scenario.config.recipient, refutation_mode="fact_only")
++        for u in kw.get("initial_units", []):
++            note = kw["frozen_notes"][str(u)]
++            g.instantiate(u, note, note.get("evidence_ids", []), t=0, cost=0.0)
++    msgs, _ = policy_messages(load_prompts(PACKAGE), inst.scenario.config, inst.scenario.brief, h, g, REV)
++    user = msgs[1]["content"]
++    return user, "MIND NOTES" + user.split("MIND NOTES", 1)[1].split("LEGAL ACTIONS NOW", 1)[0].rstrip()
++
++
++def stage_notes(args):
++    if NOTES.exists():
++        raise SystemExit(f"{NOTES} exists: payloads are frozen; refusing to regenerate")
++    cfg_m = json.loads(Path(args.config).read_text())
++    decoding = {**cfg_m["decoding"], "reasoning_effort": "low", "max_tokens": args.max_tokens}
++    client = make_client(cfg_m)
++    pkg = PACKAGES[PACKAGE]
++    spent0 = client.ledger.state["spent_usd"]
++    out = {"package": PACKAGE, "render_revision": REV, "model": cfg_m["model"], "decoding": decoding,
++           "prompt_sha256": prompt_hashes(PACKAGE)["unit_system"], "started_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
++           **git_state(), "states": {}}
++    for st in states():
++        inst, u = st["inst"], st["u"]
++        cfg = inst.scenario.config
++        w, h = t0(inst)
++        msgs, domain, ids = unit_messages(load_prompts(PACKAGE), cfg, inst.scenario.brief, h, u, PACKAGE, REV)
++        assert R5_MARKER in msgs[1]["content"]
++        rec = call_with_protocol(client, "unit", 0, str(u), msgs, pkg.schema(domain, u.variable),
++                                 lambda t: pkg.validate(t, u.path, u.variable, domain, ids), decoding)
++        inferred = dict(rec.parsed, source="inferred") if rec.ok else None
++        notes = {"inferred": inferred, "inferred_bare": bare(inferred) if inferred else None,
++                 "reference": computed_note(u, cfg, evidence_posterior(inst.scenario, h, u), "reference"),
++                 "privileged": computed_note(u, cfg, {content(w, u)[0]: 1.0}, "privileged")}
++        out["states"][st["state_id"]] = {
++            "instance_id": st["instance_id"], "unit": st["unit"], "symbolic_category": st["symbolic_category"],
++            "category_record": st["category_record"], "notes": notes,
++            "note_sha256": {k: (sha(v) if v else None) for k, v in notes.items()},
++            "inferred_call": asdict(rec), "inferred_usage": rec.usage()}
++        print(st["state_id"], st["unit"], "inferred ok" if rec.ok else "inferred FAILED", {k: (v or {}).get("status") for k, v in notes.items()})
++    out["ended_at"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
++    out["inferred_notes_usd_ledger_delta"] = client.ledger.state["spent_usd"] - spent0
++    sts = {st["state_id"]: st for st in states()}
++    for sid, v in out["states"].items():  # also hash what the policy will actually see
++        v["rendered_notes_sha256"] = {c: hashlib.sha256(rendered_notes(sts[sid], c, out)[1].encode()).hexdigest()
++                                      for c in CONDITIONS}
++    NOTES.parent.mkdir(parents=True, exist_ok=True)
++    NOTES.write_text(json.dumps(out, indent=1, sort_keys=True))
++    # tracked, pre-outcome proof of the freeze (the payload file itself is gitignored and privileged)
++    keep = ("package", "render_revision", "model", "decoding", "prompt_sha256", "started_at", "ended_at", "git_commit",
++            "dirty_paths", "inferred_notes_usd_ledger_delta")
++    proof = {k: out[k] for k in keep}
++    proof["notes_file_sha256"] = sha(out["states"])
++    proof["states"] = {s: {"unit": v["unit"], "note_sha256": v["note_sha256"], "rendered_notes_sha256": v["rendered_notes_sha256"],
++                           "inferred_status": (v["notes"]["inferred"] or {}).get("status")} for s, v in out["states"].items()}
++    proof_path = ROOT / "reports" / "autonomous-block" / "round2-notes-freeze.json"
++    proof_path.write_text(json.dumps(proof, indent=1, sort_keys=True) + "\n")
++    print(NOTES, proof["notes_file_sha256"], proof_path)
++
++
++NOTES3 = ROOT / "data" / "autonomous-block" / "round3-notes.json"  # PRIVILEGED-derived diagnostic payloads
++DOUBT = 0.2
++
++
++def doubt_note(ref: dict) -> dict:
++    """Round 3 matched control: the frozen reference distribution scaled by 1 - DOUBT plus DOUBT on "unknown".
++    Status is copied from the reference note so that only the distribution changes (no new banner)."""
++    hyps = [{"value": h["value"], "p": round(h["p"] * (1 - DOUBT), 4)} for h in ref["hypotheses"] if h["value"] != "unknown"]
++    prior_unknown = sum(h["p"] for h in ref["hypotheses"] if h["value"] == "unknown")
++    hyps.append({"value": "unknown", "p": round(DOUBT + prior_unknown * (1 - DOUBT), 4)})
++    big = max(hyps, key=lambda h: h["p"])
++    big["p"] = round(big["p"] + 1.0 - sum(h["p"] for h in hyps), 4)
++    assert all(h["p"] >= 0 for h in hyps) and abs(sum(h["p"] for h in hyps) - 1.0) < 1e-6
++    return {**ref, "hypotheses": sorted(hyps, key=lambda h: h["value"]), "source": "reference_doubt"}
++
++
++def merged_frozen() -> dict:
++    """Round 2 payloads plus the Round 3 reference_doubt payloads (when frozen)."""
++    frozen = json.loads(NOTES.read_text())
++    if NOTES3.exists():
++        r3 = json.loads(NOTES3.read_text())
++        for sid, v in r3["states"].items():
++            frozen["states"][sid]["notes"]["reference_doubt"] = v["note"]
++            frozen["states"][sid]["note_sha256"]["reference_doubt"] = v["note_sha256"]
++    return frozen
++
++
++def stage_doubt(args):
++    if NOTES3.exists():
++        raise SystemExit(f"{NOTES3} exists: payloads are frozen; refusing to regenerate")
++    frozen = json.loads(NOTES.read_text())
++    out = {"derived_from_notes_file_sha256": sha(frozen["states"]), "doubt_mass": DOUBT, "created_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
++           **git_state(), "states": {}}
++    for sid, v in frozen["states"].items():
++        note = doubt_note(v["notes"]["reference"])
++        out["states"][sid] = {"unit": v["unit"], "note": note, "note_sha256": sha(note)}
++    NOTES3.write_text(json.dumps(out, indent=1, sort_keys=True))
++    merged = merged_frozen()
++    proof = {k: out[k] for k in ("derived_from_notes_file_sha256", "doubt_mass", "created_at", "git_commit", "dirty_paths")}
++    proof["states"] = {}
++    for st in states():
++        sid = st["state_id"]
++        proof["states"][sid] = {"unit": st["unit"], "note_sha256": out["states"][sid]["note_sha256"],
++                                "rendered_notes_sha256": hashlib.sha256(rendered_notes(st, "reference_doubt", merged)[1].encode()).hexdigest(),
++                                "distribution": {h["value"]: h["p"] for h in out["states"][sid]["note"]["hypotheses"]},
++                                "status": out["states"][sid]["note"]["status"]}
++    path = ROOT / "reports" / "autonomous-block" / "round3-notes-freeze.json"
++    path.write_text(json.dumps(proof, indent=1, sort_keys=True) + "\n")
++    print(NOTES3, path)
++
++
++def condition_kwargs(st, cond, frozen):
++    if cond == "none":
++        return {"arm": "direct"}
++    note = frozen["states"][st["state_id"]]["notes"][cond]
++    if note is None:  # inferred note failed after the protocol: the policy sees no note (recorded)
++        return {"arm": "fixed", "initial_units": [], "allocate": False}
++    return {"arm": "fixed", "initial_units": [st["u"]], "allocate": False, "frozen_notes": {st["unit"]: note}}
++
++
++def stage_render(args):
++    frozen = json.loads(NOTES.read_text())
++    out = ROOT / "data" / "autonomous-block" / "round2-policy-prompts.md"  # PRIVILEGED note content: kept out of reports/
++    L = ["# Round 2: the t0 policy MIND NOTES per state and condition (rendered locally, no model calls)", ""]
++    for st in states():
++        for cond in CONDITIONS:
++            user, notes_part = rendered_notes(st, cond, frozen)
++            assert R5_MARKER in user
++            L += [f"## {st['state_id']} {st['instance_id']} {st['unit']} — {cond}", "", "```", notes_part, "```", ""]
++    out.write_text("\n".join(L) + "\n", encoding="utf-8")
++    print(out)
++
++
++def stage_policy(args):
++    frozen = merged_frozen()
++    cfg_m = json.loads(Path(args.config).read_text())
++    decoding = {**cfg_m["decoding"], "reasoning_effort": "low", "max_tokens": args.max_tokens}
++    sts = states()
++    conds = CONDITIONS if args.round == 2 else ("none", "reference", "reference_doubt")
++    extra = [] if args.round == 2 else [("s9", "inferred_bare")]  # Round 3: replicate the s9 inferred_bare cell only
++    for st in sts:  # the policy must render the same rules revision the notes cite
++        assert all(R5_MARKER in rendered_notes(st, c, frozen)[0] for c in conds)
++    jobs = []  # counterbalanced dispatch order: conditions rotated by (state index + replicate)
++    for r in range(args.replicates):
++        for i, st in enumerate(sts):
++            for j in range(len(conds)):
++                jobs.append((st, conds[(i + r + j) % len(conds)], r))
++            jobs += [(st, c, r) for sid, c in extra if sid == st["state_id"]]
++    meta = {"stage": "policy", "round": args.round, "conditions": list(conds), "extra_cells": extra, "model": cfg_m["model"], "decoding": decoding, "package": PACKAGE, "render_revision": REV,
++            "replicates": args.replicates, "concurrency": args.concurrency, "notes_file_sha256": sha(frozen["states"]),
++            "stage_cap_usd_env": os.environ.get("OFFICEMINDS_API_CAP_USD"),
++            "note_sha256": {s: v["note_sha256"] for s, v in frozen["states"].items()},
++            "prompt_sha256": prompt_hashes(PACKAGE), "dispatch_order": [(s["state_id"], c, r) for s, c, r in jobs]}
++    manifest = runlog.new_manifest("notes-value", meta)
++    manifest["dirty_paths"] = [l for l in os.popen(f'git -C "{ROOT}" status --porcelain').read().split("\n") if l.strip()]
++    out = RUNS / manifest["run_id"]
++    out.mkdir(parents=True, exist_ok=True)
++    client = make_client(cfg_m)
++
++    def job(item):
++        n, (st, cond, r) = item
++        try:
++            res = run_episode_arm(client, st["inst"], decoding=decoding, package=PACKAGE, rev=REV,
++                                  **condition_kwargs(st, cond, frozen))
++        except BudgetExceeded as e:
++            return {"state_id": st["state_id"], "condition": cond, "replicate": r, "dispatch_index": n, "blocked": str(e)}
++        except Exception as e:  # one failure must not kill the pool before the manifest is written; the ledger is authoritative
++            return {"state_id": st["state_id"], "condition": cond, "replicate": r, "dispatch_index": n,
++                    "blocked": f"error: {type(e).__name__}: {e}"}
++        return {"state_id": st["state_id"], "condition": cond, "replicate": r, "dispatch_index": n, "unit": st["unit"],
++                "note_sha256": frozen["states"][st["state_id"]]["note_sha256"].get(cond), **asdict(res)}
++
++    t_start = time.monotonic()
++    results = []
++    with (out / "episodes.jsonl").open("w") as f, ThreadPoolExecutor(args.concurrency) as pool:
++        for res in pool.map(job, enumerate(jobs)):
++            results.append(res)
++            f.write(json.dumps(res, default=str) + "\n")
++            f.flush()
++    runlog.finish(manifest, out, wall_clock_s=time.monotonic() - t_start,
++                  episodes=sum("blocked" not in r for r in results), blocked=sum("blocked" in r for r in results))
++    print(f"episodes {sum('blocked' not in r for r in results)}; blocked {sum('blocked' in r for r in results)}; out: {out}")
++
++
++def main():
++    ap = argparse.ArgumentParser()
++    ap.add_argument("stage", choices=("notes", "render", "policy", "doubt"))
++    ap.add_argument("--round", type=int, choices=(2, 3), default=2)
++    ap.add_argument("--config", default=str(ROOT / "configs" / "models" / "api_gpt_6_1_sol.json"))
++    ap.add_argument("--max-tokens", type=int, default=6000)
++    ap.add_argument("--replicates", type=int, default=3)
++    ap.add_argument("--concurrency", type=int, default=4)
++    args = ap.parse_args()
++    {"notes": stage_notes, "render": stage_render, "policy": stage_policy, "doubt": stage_doubt}[args.stage](args)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/run_unit_contexts.py b/scripts/run_unit_contexts.py
+index dce1ff5..fc28100 100644
+--- a/scripts/run_unit_contexts.py
++++ b/scripts/run_unit_contexts.py
+@@ -2,6 +2,8 @@
+ 
+     python3 scripts/run_unit_contexts.py --config configs/models/local_gpt_oss_20b.json --effort low --max-tokens 4096
+     python3 scripts/run_unit_contexts.py --config configs/models/api_gpt_6_1_sol.json --effort low
++    python3 scripts/run_unit_contexts.py --config ... --packages pilot-v1 pilot-v2 pilot-v2.1 \
++        --contexts reports/autonomous-block/unit-contexts-v1-r4.jsonl
+ 
+ Requests are EXACTLY the frozen payloads in reports/pilot/unit-contexts-v1.jsonl (verified by hash), sent
+ sequentially (concurrency 1). Failure protocol as in the pilot (3 attempts). Incomplete or refused responses are
+@@ -33,7 +35,7 @@ PRIVATE = ROOT / "data" / "pilot" / "unit-contexts-v1-privileged.jsonl"
+ 
+ def load_contexts():
+     text = PUBLIC.read_text()
+-    man = (ROOT / "reports" / "pilot" / "unit-contexts-v1.md").read_text()
++    man = PUBLIC.with_suffix(".md").read_text()
+     if hashlib.sha256(text.encode()).hexdigest() not in man:
+         raise SystemExit("fixed contexts do not match their frozen hash; refusing to run")
+     pub = [json.loads(l) for l in text.splitlines()]
+@@ -51,7 +53,11 @@ def main():
+     ap.add_argument("--packages", nargs="+", default=list(PACKAGES))
+     ap.add_argument("--effort", default=None)
+     ap.add_argument("--max-tokens", type=int, default=None)
++    ap.add_argument("--contexts", default=None, help="re-rendered context file (e.g. reports/autonomous-block/unit-contexts-v1-r4.jsonl)")
+     args = ap.parse_args()
++    if args.contexts:
++        global PUBLIC
++        PUBLIC = ROOT / args.contexts
+     cfg = json.loads(Path(args.config).read_text())
+     decoding = dict(cfg["decoding"])
+     if args.effort:
+@@ -59,9 +65,13 @@ def main():
+     if args.max_tokens:
+         decoding["max_tokens"] = args.max_tokens
+     pub, priv = load_contexts()
++    missing = [p for p in args.packages if p not in pub[0]["requests"]]
++    if missing:
++        raise SystemExit(f"packages {missing} are not rendered in {PUBLIC.name}")
+     meta = {"model": cfg["model"], "provider": cfg["provider"], "decoding": decoding, "packages": args.packages,
+             "prompt_sha256": {p: prompt_hashes(p)["unit_system"] for p in args.packages},
+-            "contexts_sha256": hashlib.sha256(PUBLIC.read_bytes()).hexdigest(), "concurrency": 1}
++            "contexts_file": str(PUBLIC.relative_to(ROOT)), "contexts_sha256": hashlib.sha256(PUBLIC.read_bytes()).hexdigest(),
++            "render_revision": pub[0].get("render_revision"), "concurrency": 1}
+     manifest = runlog.new_manifest("unit-contexts", meta)
+     status = os.popen(f'git -C "{ROOT}" status --porcelain').read().split("\n")
+     manifest["dirty_paths"] = [l for l in status if l.strip()]
+diff --git a/src/vomi/clients.py b/src/vomi/clients.py
+index 2693819..613a7e1 100644
+--- a/src/vomi/clients.py
++++ b/src/vomi/clients.py
+@@ -125,41 +125,84 @@ class BudgetExceeded(RuntimeError):
+ 
+ class SpendLedger:
+     """Persistent USD spend ledger with a hard cap (estimated from reported usage x configured prices).
+-    Before each call it refuses if spent + in-flight reservations + worst-case cost of that call would exceed
+-    the cap. Thread-safe within one process; one process per ledger file at a time (state is loaded once)."""
++
++    One authoritative file shared by every process: each operation takes an exclusive file lock (``<path>.lock``,
++    fcntl) and re-reads the file, so concurrent local processes and threads see each other's reservations.
++    Before each call it refuses if spent + unresolved + all in-flight reservations + the call's worst case would
++    exceed the cap. Outcomes: ``record`` (usage reported), ``release`` (the server answered with an error status,
++    so nothing was billed), ``unresolve`` (ambiguous transport failure: the worst case stays charged as
++    ``unresolved_usd``, never assumed free). A reservation left by a crashed process also stays counted."""
+ 
+     def __init__(self, path: str, cap_usd: float, price_in: float, price_out: float):
+         self.path, self.cap = path, cap_usd
+         self.price_in, self.price_out = price_in / 1e6, price_out / 1e6
+-        self.state = json.loads(open(path).read()) if os.path.exists(path) else {"spent_usd": 0.0, "calls": 0}
+-        self.reserved = 0.0
+-        self._lock = threading.Lock()
++        self._tlock = threading.Lock()
+ 
+-    def check(self, est_in: int, max_out: int) -> float:
+-        """Reserve the call's worst-case cost; returns the reservation to pass to record() or release()."""
++    @staticmethod
++    def _defaults(state: dict) -> dict:
++        state.setdefault("spent_usd", 0.0)
++        state.setdefault("calls", 0)
++        state.setdefault("reserved", {})
++        state.setdefault("unresolved_usd", 0.0)
++        state.setdefault("unresolved_calls", 0)
++        return state
++
++    def _locked(self, fn):
++        import fcntl
++        os.makedirs(os.path.dirname(self.path) or ".", exist_ok=True)
++        with self._tlock, open(self.path + ".lock", "a") as lk:
++            fcntl.flock(lk, fcntl.LOCK_EX)
++            try:
++                state = self._defaults(json.loads(open(self.path).read()) if os.path.exists(self.path) else {})
++                result = fn(state)
++                tmp = f"{self.path}.{os.getpid()}.tmp"
++                with open(tmp, "w") as f:
++                    json.dump(state, f)
++                os.replace(tmp, self.path)
++                return result
++            finally:
++                fcntl.flock(lk, fcntl.LOCK_UN)
++
++    @property
++    def state(self) -> dict:
++        return self._locked(lambda s: dict(s))
++
++    @property
++    def reserved(self) -> float:
++        return sum(self.state["reserved"].values())
++
++    def check(self, est_in: int, max_out: int) -> str:
++        """Reserve the call's worst-case cost; returns a reservation id for record()/release()/unresolve()."""
+         worst = est_in * self.price_in + max_out * self.price_out
+-        with self._lock:
+-            if self.state["spent_usd"] + self.reserved + worst > self.cap:
+-                raise BudgetExceeded(f"cap {self.cap} USD: spent {self.state['spent_usd']:.4f} + in-flight "
+-                                     f"{self.reserved:.4f} + worst-case {worst:.4f}")
+-            self.reserved += worst
+-        return worst
+-
+-    def release(self, reservation: float) -> None:
+-        with self._lock:
+-            self.reserved -= reservation
+-
+-    def record(self, tokens_in: int | None, tokens_out: int | None, reservation: float = 0.0) -> float:
++        rid = f"{os.getpid()}-{threading.get_ident()}-{time.monotonic_ns()}"
++
++        def op(s):
++            committed = s["spent_usd"] + s["unresolved_usd"] + sum(s["reserved"].values())
++            if committed + worst > self.cap:
++                raise BudgetExceeded(f"cap {self.cap} USD: spent {s['spent_usd']:.4f} + unresolved {s['unresolved_usd']:.4f}"
++                                     f" + in-flight {sum(s['reserved'].values()):.4f} + worst-case {worst:.4f}")
++            s["reserved"][rid] = worst
++        self._locked(op)
++        return rid
++
++    def release(self, rid: str) -> None:
++        self._locked(lambda s: s["reserved"].pop(rid, None))
++
++    def unresolve(self, rid: str) -> None:
++        def op(s):
++            s["unresolved_usd"] += s["reserved"].pop(rid, 0.0)
++            s["unresolved_calls"] += 1
++        self._locked(op)
++
++    def record(self, tokens_in: int | None, tokens_out: int | None, rid: str | None = None) -> float:
+         cost = (tokens_in or 0) * self.price_in + (tokens_out or 0) * self.price_out
+-        with self._lock:
+-            self.reserved -= reservation
+-            self.state["spent_usd"] += cost
+-            self.state["calls"] += 1
+-            os.makedirs(os.path.dirname(self.path) or ".", exist_ok=True)
+-            tmp = self.path + ".tmp"
+-            with open(tmp, "w") as f:
+-                json.dump(self.state, f)
+-            os.replace(tmp, self.path)
++
++        def op(s):
++            if rid is not None:
++                s["reserved"].pop(rid, None)
++            s["spent_usd"] += cost
++            s["calls"] += 1
++        self._locked(op)
+         return cost
+ 
+ 
+@@ -207,7 +250,10 @@ class OpenAIResponsesClient:
+             with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
+                 out = json.loads(resp.read())
+         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+-            self.ledger.release(reservation)
++            if isinstance(e, urllib.error.HTTPError):  # the server answered with an error status: not billed
++                self.ledger.release(reservation)
++            else:  # no usable answer (timeout, dropped connection, unreadable body): billing unknown
++                self.ledger.unresolve(reservation)
+             detail = e.read().decode(errors="replace")[:500] if isinstance(e, urllib.error.HTTPError) else ""
+             return ChatResult("", None, self.model, None, None, None, None, time.monotonic() - start,
+                               error=f"{type(e).__name__}: {e} {detail}".strip())
+diff --git a/src/vomi/fidelity.py b/src/vomi/fidelity.py
+index c1aa118..6d5d15a 100644
+--- a/src/vomi/fidelity.py
++++ b/src/vomi/fidelity.py
+@@ -86,3 +86,68 @@ def score_output(parsed: dict | None, truth: str, posterior: dict[str, float], k
+         "posterior_top": max(posterior, key=posterior.get) if posterior else None,
+         "cites": len(parsed.get("evidence_ids", [])),
+     }
++
++
++# ----------------------------------------------------------------------------- scoring v3 (autonomous block Round 1)
++# Changes from v2 (each output gets exactly ONE category; the categories partition n):
++#   invalid           no valid output after the failure protocol
++#   abstained         status insufficient_evidence (v2) or abstain (v2.1): coverage loss. Its distribution still
++#                     enters the proper scores, which are reported both over all valid outputs and over attributed ones
++#   ambiguous_reference  the context's reference is flagged ambiguous by the reference audit (undisclosed generator
++#                     base rates or template structure) AND the top value has posterior < SUPPORT_MIN: reported apart,
++#                     never counted as a model error
++#   correct_supported / correct_unsupported / incorrect_supported / leakage   as in v2
++#   unsupported_committed  wrong, posterior(top) < SUPPORT_MIN, and top_p >= COMMIT_P: asserted unsupported content
++#   unsupported_hedged     wrong, posterior(top) < SUPPORT_MIN, but top_p < COMMIT_P: an uncertain miss, not an
++#                     assertion; it is not counted as hallucination-type content
++# "uncertain" (v2.1) is an attributed status: a broad distribution is scored, not treated as abstention.
++COMMIT_P = 0.5
++ABSTAIN = ("insufficient_evidence", "abstain")
++CATS_V3 = ("correct_supported", "supported_spread", "correct_unsupported", "incorrect_supported", "leakage",
++           "unsupported_committed", "unsupported_hedged", "ambiguous_reference", "abstained", "invalid")
++
++
++def score_output_v3(parsed: dict | None, truth: str, posterior: dict[str, float], known: set[str], values: list[str],
++                    reference_ambiguous: bool = False) -> dict:
++    if parsed is None:
++        return {"valid": False, "category": "invalid"}
++    s = score_output(parsed, truth, posterior, known, values)
++    s["abstained"] = parsed.get("status") in ABSTAIN
++    dist = {}
++    for h in parsed.get("hypotheses", []):
++        dist[h["value"]] = dist.get(h["value"], 0.0) + float(h["p"])
++    # v3.1 tie rule (found after inspecting Round 1 local outputs; applies to every row): when several values share
++    # the top mass, the category must not depend on list order. A supported tied value is preferred over an
++    # unsupported one; among supported tied values the truth (if present) gives `supported_spread` (an honest split
++    # that includes the realized state), never a top-1 hit.
++    tied = sorted(v for v, p in dist.items() if abs(p - s["top_p"]) <= 1e-9)
++    tied_sup = [v for v in tied if posterior.get(v, 0.0) >= SUPPORT_MIN]
++    if len(tied) > 1:
++        # all tied values unsupported: prefer a robot-known value when the truth is "unknown" (leakage over committed,
++        # independent of alphabetical order; Round 1 Opus gate, optional item)
++        leak = [v for v in tied if truth == "unknown" and v != "unknown" and v in known]
++        s["top"] = truth if truth in tied_sup else (tied_sup[0] if tied_sup else
++                                                    (truth if truth in tied else (leak[0] if leak else tied[0])))
++    s["tied_top"] = tied if len(tied) > 1 else None
++    post_top = posterior.get(s["top"], 0.0)
++
++    def content_category() -> str:
++        if s["top"] == truth:
++            return ("supported_spread" if len(tied) > 1 else "correct_supported") if post_top >= SUPPORT_MIN else "correct_unsupported"
++        if post_top >= SUPPORT_MIN:
++            return "incorrect_supported"
++        if reference_ambiguous:
++            return "ambiguous_reference"
++        if truth == "unknown" and s["top"] != "unknown" and s["top"] in known:
++            return "leakage"
++        return "unsupported_committed" if s["top_p"] >= COMMIT_P else "unsupported_hedged"
++
++    # status-agnostic content category for EVERY valid output (Round 1 Opus gate item 3): pilot-v2's
++    # insufficient_evidence covers what v2.1 calls uncertain, so package comparisons must not hide content in abstentions
++    s["content_category"] = content_category()
++    s["category"] = "abstained" if s["abstained"] else s["content_category"]
++    s["status"] = parsed.get("status")
++    # mass on values the reference gives < SUPPORT_MIN (Opus gate item 4): complements the top-p commit line
++    s["unsupported_mass"] = sum(p for v, p in dist.items() if posterior.get(v, 0.0) < SUPPORT_MIN)
++    s["tv_posterior"] = 0.5 * sum(abs(dist.get(c, 0.0) - posterior.get(c, 0.0)) for c in set(dist) | set(posterior))
++    return s
+diff --git a/src/vomi/pilot.py b/src/vomi/pilot.py
+index 9c4012c..b4cde79 100644
+--- a/src/vomi/pilot.py
++++ b/src/vomi/pilot.py
+@@ -32,7 +32,8 @@ from officeminds.world import World, WorldConfig, legal_actions
+ 
+ from .clients import ChatClient, ChatResult
+ from .graph import PerspectiveGraph
+-from .unit_schema import unit_output_schema, unit_output_schema_v2, validate_unit_output, validate_unit_output_v2
++from .unit_schema import (unit_output_schema, unit_output_schema_v2, unit_output_schema_v21, validate_unit_output,
++                          validate_unit_output_v2, validate_unit_output_v21)
+ from .units import KNOWLEDGE, Unit, content, generate_candidates
+ 
+ ROOT = Path(__file__).resolve().parents[2]
+@@ -54,21 +55,29 @@ class Package:
+         return ROOT / "prompts" / self.name
+ 
+     def schema(self, domain, variable):
+-        return unit_output_schema(domain, variable) if self.name == "pilot-v1" else unit_output_schema_v2(domain, variable)
++        f = {"pilot-v1": unit_output_schema, "pilot-v2": unit_output_schema_v2, "pilot-v2.1": unit_output_schema_v21}[self.name]
++        return f(domain, variable)
+ 
+     def validate(self, text, path, variable, domain, ids):
+-        f = validate_unit_output if self.name == "pilot-v1" else validate_unit_output_v2
++        f = {"pilot-v1": validate_unit_output, "pilot-v2": validate_unit_output_v2,
++             "pilot-v2.1": validate_unit_output_v21}[self.name]
+         return f(text, path, variable, domain, ids)
+ 
+     def fields_hint(self, u, about, step) -> str:
+         head = f'Respond as JSON with fields: path={json.dumps(list(u.path))}, variable="{u.variable}", about="{about}", as_of_step={step}, '
+         if self.name == "pilot-v1":
+             return head + 'hypotheses=[{"value","p"}], evidence_ids=[...], unresolved=[...].'
+-        return head + ('status="attributed"|"insufficient_evidence", hypotheses=[{"value","p","support":[{"evidence_id","kind","note"}]}], '
++        status = '"grounded"|"uncertain"|"abstain"' if self.name == "pilot-v2.1" else '"attributed"|"insufficient_evidence"'
++        return head + (f'status={status}, hypotheses=[{{"value","p","support":[{{"evidence_id","kind","note"}}]}}], '
+                        'unresolved=[...].')
+ 
++    @property
++    def min_render_revision(self) -> int:
++        return 4 if self.name == "pilot-v2.1" else 1  # v2.1 cites the numbered r4 rules
++
+ 
+-PACKAGES = {"pilot-v1": Package("pilot-v1"), "pilot-v2": Package("pilot-v2")}
++PACKAGES = {"pilot-v1": Package("pilot-v1"), "pilot-v2": Package("pilot-v2"), "pilot-v2.1": Package("pilot-v2.1")}
++ABSTAIN_STATUSES = ("insufficient_evidence", "abstain")  # pilot-v2 / pilot-v2.1 full abstention
+ 
+ 
+ def load_prompts(package: str = "pilot-v1") -> dict[str, str]:
+@@ -89,6 +98,51 @@ PEOPLE_RULES = (  # r3 shared public domain rules (pilot review item C); describ
+     "Some people may deliberately mislead, especially when they have a reason to. A person who neither saw nor was "
+     "told anything about a fact has no belief about it.")
+ 
++PEOPLE_RULES_R4 = (  # r4 (autonomous block Round 1): each clause is checked against the simulator in tests/test_r4_rules.py
++    "How people come to believe things (the same rules apply to everyone):\n"
++    "1. A person believes a fact if they saw it happen or were sincerely told it, and keeps that belief until they see "
++    "or are told otherwise, so a belief can be outdated or false. A person with no belief of their own may adopt what "
++    "someone tells them; if they think that person is obstructive, they assume the opposite of what was said instead. "
++    "When someone says whether a person is cooperative or obstructive, listeners adopt that assessment. A person who "
++    "neither saw nor was told anything about a fact has no belief about it.\n"
++    "2. At the start of the task the recipient knows where they themselves are. Moving does not update anyone's "
++    "beliefs, including the mover's own.\n"
++    "3. When someone states a value for a fact in front of others (shown in the history as \"fact = value\", or "
++    "\"I don't know.\" in answer to a question), everyone else present then thinks the speaker believes that value "
++    "(or has no belief), but does not adopt it.\n"
++    "4. Remarks in ordinary sentences (for example about where someone was, what someone saw, or an earlier "
++    "conversation) change no one's beliefs: listeners do not form beliefs about the speaker's or anyone else's beliefs "
++    "from them. They still tell the robot what the speaker said, which may or may not be accurate.\n"
++    "5. Seeing someone, or seeing the same thing as someone, does not tell a person what that other person believes. "
++    "People form beliefs about others' beliefs only from statements: a listener thinks a speaker believes what the "
++    "speaker stated (rules 1 and 3), and a person who told someone a fact before the task thinks that listener now "
++    "believes it. Statements made during the task give the speaker no belief about the listeners.\n"
++    "6. Some people may deliberately mislead, especially when they have a reason to.")
++
++PEOPLE_RULES_R5 = (  # r5 (Round 1 plan-gate fixes): every clause holds over ALL positive-prior dev-v2 worlds (tests/test_r4_rules.py)
++    "How people come to believe things (the same rules apply to everyone):\n"
++    "1. Before the task (none of this appears in the robot's history): a person came to believe a fact if they saw it "
++    "happen or were sincerely told it, and keeps that belief until they see or are told otherwise, so a belief can be "
++    "outdated or false. A person with no belief of their own may have adopted what someone told them; if they thought "
++    "that person was obstructive, they instead assumed the opposite and took the speaker to believe the opposite. When "
++    "someone said whether a person is cooperative or obstructive, listeners adopted that assessment. A person who "
++    "neither saw nor was told anything about a fact has no belief about it.\n"
++    "2. At the start of the task the recipient knows where they themselves are. During the task, moving does not update "
++    "anyone's beliefs, including the mover's own.\n"
++    "3. During the task, when someone states a value for a fact in front of others (shown in the history as "
++    "\"fact = value\", or \"I don't know.\" in answer to a question), everyone else present then thinks the speaker "
++    "believes that value (or has no belief), but does not adopt it.\n"
++    "4. Remarks in ordinary sentences (for example about where someone was, what someone saw, or an earlier "
++    "conversation) change no one's beliefs: listeners do not form beliefs about the speaker's or anyone else's beliefs "
++    "from them. They still tell the robot what the speaker said, which may or may not be accurate.\n"
++    "5. Seeing someone, or seeing the same thing as someone, does not tell a person what that other person believes. "
++    "People form beliefs about others' beliefs only from statements: a listener thinks a speaker believes what the "
++    "speaker stated (except in the distrust case of rule 1), and a person who told someone a fact before the task "
++    "thinks that listener now believes it; but if they later only mentioned an update in passing, they may still think "
++    "the listener holds the earlier value. Statements made during the task give the speaker no belief about the "
++    "listeners.\n"
++    "6. Some people may deliberately mislead, especially when they have a reason to.")
++
+ 
+ def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
+     rev = RENDER_REVISION if rev is None else rev
+@@ -110,17 +164,27 @@ def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
+         f"Facts that can be asked about: {', '.join(cfg.query_facts)} (possible values: "
+         + "; ".join(f"{f}: {', '.join(cfg.fact_domains[f])}" for f in cfg.query_facts) + ").",
+     ]
+-    if rev >= 3:
++    if rev >= 5:
++        lines.append(PEOPLE_RULES_R5)
++    elif rev == 4:
++        lines.append(PEOPLE_RULES_R4)
++    elif rev >= 3:
+         lines.append(PEOPLE_RULES)
+     return "\n".join(lines)
+ 
+ 
+-RENDER_REVISION = 3
++RENDER_REVISION = 5  # default for NEW runs only; every script records the revision it rendered in its manifest
+ # r2: utterance IDs t{t}:said{i} (r1 appended ":{speaker}"; the model cited the short form and valid citations
+ #     were rejected); action/outcome IDs are citable too. Used by the pilot-v1 full run (kept reproducible: rev=2).
+ # r3 (pilot review A/C/D, shared by ALL arms and packages): public people-rules paragraph in the task card; mind
+ #     notes show status, per-hypothesis support or cited evidence IDs, and short excerpts of the cited lines;
+ #     physical refutation marks K(speaker) `fact_refuted` instead of forcing a refresh.
++# r4 (autonomous block Round 1, shared by ALL arms and packages): numbered people-rules that state the simulator's
++#     belief contract (statements vs. ordinary remarks; beliefs about beliefs only from statements; recipient
++#     self-location at the start only). Notes rendering is unchanged from r3.
++# r5 (Round 1 plan gate): r4 clauses were tested only on realized draws; over the full prior, rule 5 failed for
++#     backstory updates passed on as claims and for distrusting listeners. r5 scopes rule 1 to before the task,
++#     rule 2/3 to during it, and qualifies rule 5. Rule numbering is unchanged (pilot-v2.1 cites RULE1..RULE6).
+ 
+ 
+ def ledger(hist: VisibleHistory) -> tuple[str, list[str]]:
+@@ -186,8 +250,10 @@ def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = Non
+             continue
+         head = f"  {r['unit']} about {out.get('about', '?')} (as of step {r['as_of']}, note status {r['status']}"
+         head += f": {STATUS_TEXT[r['status']]})" if r["status"] in STATUS_TEXT else ")"
+-        if out.get("status") == "insufficient_evidence":
++        if out.get("status") in ABSTAIN_STATUSES:
+             head += " INFERENCE ABSTAINED: the robot's evidence does not settle this person's state"
++        elif out.get("status") == "uncertain":
++            head += " INFERENCE UNCERTAIN: several of this person's possible states remain plausible"
+         hyp_parts = []
+         for h in out.get("hypotheses", []):
+             sup = h.get("support")
+@@ -324,11 +390,16 @@ class EpisodeResult:
+ 
+ def run_episode_arm(client, inst, arm: str, decoding: dict, reference_set: list[str] | None = None,
+                     initial_units: list[Unit] | None = None, allocate: bool = True, seed: int = 0,
+-                    package: str = "pilot-v1", rev: int | None = None, unit_client=None) -> EpisodeResult:
++                    package: str = "pilot-v1", rev: int | None = None, unit_client=None,
++                    frozen_notes: dict[str, dict] | None = None) -> EpisodeResult:
+     """One controlled episode. `initial_units` + allocate=False gives the fixed-graph continuation used by
+     paired interventions (instantiate exactly those units at t0, then no further allocation).
+     `unit_client` (default: `client`) produces mental notes; `client` makes routing and policy decisions.
+-    Mixed clients are a DIAGNOSTIC only (pilot review): main experiments use one backbone for both."""
++    Mixed clients are a DIAGNOSTIC only (pilot review): main experiments use one backbone for both.
++    `frozen_notes` (autonomous block Round 2): unit -> a note payload frozen BEFORE any policy outcome. Those
++    initial units are instantiated from the payload with no inference call in this episode (the note's generation
++    cost is accounted where it was produced). Requires refutation_mode fact_only (r>=3), under which no note is
++    ever forced into a refresh, so frozen notes stay exactly as frozen; any refresh would raise."""
+     rev = RENDER_REVISION if rev is None else rev
+     unit_client = unit_client or client
+     prompts = load_prompts(package)
+@@ -355,7 +426,18 @@ def run_episode_arm(client, inst, arm: str, decoding: dict, reference_set: list[
+                          "output": rec.parsed, "history_steps": len(hist.steps)})
+         return rec
+ 
++    if frozen_notes and rev < 3:
++        raise ValueError("frozen notes need refutation_mode fact_only (render revision >= 3)")
+     for u in initial_units or []:
++        if frozen_notes is not None and str(u) in frozen_notes:
++            note = frozen_notes[str(u)]
++            graph.instantiate(u, note, note.get("evidence_ids", []), t=hist.last.t, cost=0.0)
++            truth = content(world, u)  # PRIVILEGED: fidelity scoring only
++            top = max(note["hypotheses"], key=lambda h: h["p"])["value"]
++            fidelity.append({"unit": str(u), "step": hist.last.t, "kind": "frozen", "ok": True, "top": top,
++                             "truth": list(truth), "top_matches_truth": top == truth[0], "output": note,
++                             "history_steps": len(hist.steps)})
++            continue
+         rec = infer(u, "unit")
+         if rec.ok:
+             graph.instantiate(u, rec.parsed, rec.parsed.get("evidence_ids", []), t=hist.last.t)
+@@ -368,6 +450,8 @@ def run_episode_arm(client, inst, arm: str, decoding: dict, reference_set: list[
+                 graph.advance(hist)
+             for name, r in list(graph.units.items()):
+                 if r.status == "contradicted":
++                    if frozen_notes is not None:
++                        raise RuntimeError("a frozen note was contradicted; frozen-note runs must not refresh")
+                     u = Unit(tuple(r.path), r.variable)
+                     rec = infer(u, "refresh")
+                     if rec.ok:
+diff --git a/src/vomi/unit_schema.py b/src/vomi/unit_schema.py
+index 05b0346..6101b62 100644
+--- a/src/vomi/unit_schema.py
++++ b/src/vomi/unit_schema.py
+@@ -134,3 +134,54 @@ def validate_unit_output_v2(text: str, path: tuple[str, ...], variable: str, fac
+     if not errors:
+         obj["evidence_ids"] = sorted({e for e in cited})  # graph/notes convenience; derived, not model-supplied
+     return (obj if not errors else None), errors
++
++
++# ----------------------------------------------------------------------------- package pilot-v2.1 (autonomous block Round 1)
++# Separates three things pilot-v2 conflated: the PERSON has no belief ("unknown" with its own support), the
++# ROBOT is unsure which belief they hold (status "uncertain", a broad distribution: a normal output), and full
++# abstention (status "abstain", rare). Support may cite a numbered r4 public rule ("RULE<n>", kind public_rule).
++# Still a STRUCTURAL validator: cited support is not checked for entailment (scoring + audit do that).
++SUPPORT_KINDS_V21 = SUPPORT_KINDS + ("public_rule",)
++STATUSES_V21 = ("grounded", "uncertain", "abstain")
++RULE_IDS = tuple(f"RULE{i}" for i in range(1, 7))
++
++
++def unit_output_schema_v21(fact_domain: list[str], variable: str) -> dict:
++    s = unit_output_schema_v2(fact_domain, variable)
++    s["properties"]["status"]["enum"] = list(STATUSES_V21)
++    s["properties"]["hypotheses"]["items"]["properties"]["support"]["items"]["properties"]["kind"]["enum"] = list(SUPPORT_KINDS_V21)
++    return s
++
++
++def validate_unit_output_v21(text: str, path: tuple[str, ...], variable: str, fact_domain: list[str],
++                             visible_ids: set[str], tol: float = 1e-3) -> tuple[dict | None, list[str]]:
++    errors = []
++    try:
++        obj = json.loads(text)
++    except json.JSONDecodeError:
++        return None, ["not_json"]
++    if not isinstance(obj, dict):
++        return None, ["not_object"]
++    if FORBIDDEN_KEYS & set(obj):
++        errors.append("out_of_scope_field")
++    if tuple(obj.get("path", ())) != tuple(path) or obj.get("variable") != variable:
++        errors.append("wrong_unit")
++    if obj.get("status") not in STATUSES_V21:
++        errors.append("bad_status")
++    allowed = set(fact_domain) | {"unknown"} if variable == "knowledge" else set(INTENT_VALUES)
++    hyps = obj.get("hypotheses") or []
++    if not hyps or any(h.get("value") not in allowed for h in hyps):
++        errors.append("bad_hypothesis_value")
++    elif abs(sum(float(h.get("p", 0)) for h in hyps) - 1.0) > tol:
++        errors.append("probabilities_not_normalized")
++    supports = [s for h in hyps for s in (h.get("support") or [])]
++    if any(s.get("evidence_id") not in visible_ids | set(RULE_IDS) for s in supports):
++        errors.append("cites_non_visible_evidence")
++    if any((s.get("kind") == "public_rule") != (s.get("evidence_id") in RULE_IDS) for s in supports):
++        errors.append("rule_citation_mismatch")
++    if obj.get("status") != "abstain" and any(float(h.get("p", 0)) >= SUPPORT_MIN_P and not h.get("support") for h in hyps):
++        errors.append("unsupported_hypothesis")
++    if not errors:
++        obj["evidence_ids"] = sorted({s["evidence_id"] for s in supports if s["evidence_id"] not in RULE_IDS})
++        obj["rule_ids"] = sorted({s["evidence_id"] for s in supports if s["evidence_id"] in RULE_IDS})
++    return (obj if not errors else None), errors
+diff --git a/tests/test_diagnostic.py b/tests/test_diagnostic.py
+index 2161b37..31837ec 100644
+--- a/tests/test_diagnostic.py
++++ b/tests/test_diagnostic.py
+@@ -125,13 +125,36 @@ def test_ledger_reservations_cover_in_flight_calls_and_are_released(tmp_path):
+     b = ledger.check(0, 4000)  # in flight: 0.08
+     with pytest.raises(BudgetExceeded):  # a third concurrent call could overshoot the cap
+         ledger.check(0, 4000)
+-    ledger.release(a)  # transport error: nothing billed
++    ledger.release(a)  # the server returned an error status: nothing billed
+     ledger.record(0, 1000, b)  # billed 0.01, reservation settled
+     assert ledger.reserved == pytest.approx(0.0) and ledger.state["spent_usd"] == pytest.approx(0.01)
+-    assert json.loads((tmp_path / "ledger.json").read_text()) == {"spent_usd": pytest.approx(0.01), "calls": 1}
++    on_disk = json.loads((tmp_path / "ledger.json").read_text())
++    assert on_disk["spent_usd"] == pytest.approx(0.01) and on_disk["calls"] == 1 and on_disk["reserved"] == {}
+     ledger.check(0, 4000)
+ 
+ 
++def test_ledger_is_shared_across_instances_and_keeps_ambiguous_failures_charged(tmp_path):
++    path = str(tmp_path / "ledger.json")
++    one = SpendLedger(path, cap_usd=0.1, price_in=2.0, price_out=10.0)
++    two = SpendLedger(path, cap_usd=0.1, price_in=2.0, price_out=10.0)  # stands in for a second process
++    r = one.check(0, 4000)
++    two.check(0, 4000)
++    with pytest.raises(BudgetExceeded):  # each sees the other's in-flight reservation
++        one.check(0, 4000)
++    one.unresolve(r)  # timeout after sending: the worst case stays charged
++    s = two.state
++    assert s["unresolved_usd"] == pytest.approx(0.04) and s["unresolved_calls"] == 1
++    with pytest.raises(BudgetExceeded):
++        two.check(0, 4000)
++
++
++def test_legacy_ledger_file_is_read_with_defaults(tmp_path):
++    p = tmp_path / "ledger.json"
++    p.write_text(json.dumps({"spent_usd": 1.3123, "calls": 266}))
++    ledger = SpendLedger(str(p), cap_usd=5, price_in=2.0, price_out=10.0)
++    assert ledger.state["spent_usd"] == pytest.approx(1.3123) and ledger.reserved == 0.0
++
++
+ def test_missing_api_key_is_reported_not_guessed(monkeypatch, tmp_path):
+     monkeypatch.delenv("NO_SUCH_KEY", raising=False)
+     with pytest.raises(RuntimeError, match="not set"):
+diff --git a/tests/test_r4_rules.py b/tests/test_r4_rules.py
+new file mode 100644
+index 0000000..44912a9
+--- /dev/null
++++ b/tests/test_r4_rules.py
+@@ -0,0 +1,177 @@
++"""Public people-rules (renderer r5; r4 kept for the record): every clause is checked against the simulator over
++EVERY positive-prior world of every dev-v2 instance, not just the realized hidden draw. The scoring reference averages
++over that prior support, so a clause that fails anywhere in it misdescribes the reference (Round 1 Opus plan gate).
++"""
++
++from __future__ import annotations
++
++import re
++
++import pytest
++
++from officeminds.devgen import generate
++from officeminds.world import OBSTRUCTIVE, UNKNOWN, Action, World
++from vomi.pilot import PEOPLE_RULES_R4, PEOPLE_RULES_R5, task_card
++
++STATEMENT_FORM = re.compile(r"^\w+ = \w+$")
++BEFORE_TASK = {"witness", "tell", "assert", "assess"}
++DURING_TASK = {"say", "claim", "enter"}
++
++
++@pytest.fixture(scope="module")
++def traced():
++    """[(instance, params, world after reset + one wait step, [(event, minds_before, minds_after)])] over all
++    positive-weight prior worlds; scenarios shared by several instances are traced once."""
++    out, seen = [], set()
++    orig = World._apply
++    for inst in generate(version="dev-v2"):
++        for params, weight in inst.scenario.prior:
++            key = (inst.group_id, inst.family, inst.scenario.brief, repr(params), inst.scenario.config.stakes)
++            if weight <= 0 or key in seen:
++                continue
++            seen.add(key)
++            trace = []
++
++            def spy(self, ev, trace=trace):
++                before = {p: m.copy() for p, m in self.minds.items()}
++                orig(self, ev)
++                trace.append((ev, before, {p: m.copy() for p, m in self.minds.items()}))
++
++            World._apply = spy
++            try:
++                w = inst.scenario.build(params)
++                w.reset()
++                w.step(Action("wait"))  # t=1 timed events (e.g. the recipient walking in) are applied in step 1
++            finally:
++                World._apply = orig
++            out.append((inst, params, w, trace))
++    return out
++
++
++def test_rules_text_by_revision():
++    inst = generate(version="dev-v2")[0]
++    cfg, brief = inst.scenario.config, inst.scenario.brief
++    assert PEOPLE_RULES_R5 in task_card(cfg, brief, 5) and PEOPLE_RULES_R4 not in task_card(cfg, brief, 5)
++    assert PEOPLE_RULES_R4 in task_card(cfg, brief, 4) and PEOPLE_RULES_R5 not in task_card(cfg, brief, 4)
++    assert PEOPLE_RULES_R4 not in task_card(cfg, brief, 3)
++
++
++def test_prior_support_is_covered(traced):
++    assert len(traced) > 80  # many worlds per scenario, not only the realized draws
++
++
++def test_before_and_during_task_event_kinds(traced):
++    # rule 1 is about events before the task; rules 2-4 about events during it
++    for _, _, _, trace in traced:
++        for ev, _, _ in trace:
++            assert (ev.kind in BEFORE_TASK and ev.t < 0) or (ev.kind in DURING_TASK and ev.t >= 0) \
++                or (ev.kind == "claim" and ev.t < 0), (ev.kind, ev.t)
++
++
++def test_clause1_belief_formation_adoption_distrust_and_assessments(traced):
++    seen = {"witness": 0, "tell": 0, "assert": 0, "assess": 0, "distrust": 0}
++    for _, _, w, trace in traced:
++        for ev, before, after in trace:
++            present = ev.present or ()
++            if ev.kind == "witness":
++                for p in present:
++                    assert after[p].beliefs[ev.fact] == ev.value
++                seen["witness"] += 1
++            elif ev.kind == "tell":
++                for p in present:
++                    assert after[p].beliefs[ev.fact] == ev.value
++                seen["tell"] += 1
++            elif ev.kind == "assert":
++                other = next(v for v in w.config.fact_domains[ev.fact] if v != ev.value)
++                for p in present:
++                    if p == ev.actor:
++                        continue
++                    distrusts = before[p].assessments.get(ev.actor) == OBSTRUCTIVE
++                    seen["distrust"] += distrusts
++                    adopted = other if distrusts else ev.value
++                    assert after[p].nested[(ev.actor, ev.fact)] == adopted  # takes the speaker to believe it
++                    if ev.fact in before[p].beliefs:
++                        assert after[p].beliefs[ev.fact] == before[p].beliefs[ev.fact]
++                    else:
++                        assert after[p].beliefs[ev.fact] == adopted
++                seen["assert"] += 1
++            elif ev.kind == "assess":
++                for p in present:
++                    if p != ev.actor or ev.actor != ev.fact:
++                        assert after[p].assessments[ev.fact] == ev.value
++                seen["assess"] += 1
++    assert all(seen.values()), seen
++
++
++def test_clause2_recipient_self_location_at_start_and_movement_during_task(traced):
++    checked = moved = 0
++    for inst, params, _, trace in traced:
++        cfg = inst.scenario.config
++        fact = f"{cfg.recipient}_loc"
++        if fact not in cfg.query_facts:
++            continue
++        w0 = inst.scenario.build(params)
++        w0.reset()
++        assert w0.minds[cfg.recipient].beliefs.get(fact) == w0.people_rooms[cfg.recipient]
++        checked += 1
++        for ev, before, after in trace:
++            if ev.kind == "enter":
++                assert ev.t >= 0 and after[ev.actor].signature() == before[ev.actor].signature()
++                moved += 1
++    assert checked > 72 and moved > 0
++
++
++def test_clause3_statements_during_task_make_listeners_attribute_not_adopt(traced):
++    n = 0
++    for _, _, _, trace in traced:
++        for ev, before, after in trace:
++            if ev.kind != "claim" or ev.t < 0:
++                continue
++            n += 1
++            assert STATEMENT_FORM.match(ev.text) or ev.text == "I don't know."
++            assert after[ev.actor].signature() == before[ev.actor].signature()
++            for p in after:
++                if p != ev.actor and ev.id in after[p].perceived and ev.id not in before[p].perceived:
++                    assert after[p].nested[(ev.actor, ev.fact)] == ev.value
++                    assert after[p].beliefs == before[p].beliefs
++    assert n > 0
++
++
++def test_clause4_ordinary_remarks_change_no_beliefs_and_never_look_like_statements(traced):
++    n = 0
++    for _, _, _, trace in traced:
++        for ev, before, after in trace:
++            if ev.kind == "say":
++                n += 1
++                assert not STATEMENT_FORM.match(ev.text) and ev.text != "I don't know."
++                assert all(after[p].signature() == before[p].signature() for p in after)
++    assert n > 0
++
++
++def test_clause5_every_change_to_beliefs_about_beliefs_is_explained(traced):
++    told_then_updated = 0
++    for _, _, _, trace in traced:
++        for ev, before, after in trace:
++            present = ev.present or ()
++            for p in after:
++                changed = {k: v for k, v in after[p].nested.items() if before[p].nested.get(k) != v}
++                if not changed:
++                    continue
++                assert ev.kind in ("tell", "claim", "assert"), (ev.kind, p)
++                for (other, fact), v in changed.items():
++                    assert fact == ev.fact
++                    if p == ev.actor:  # speaker models listeners: only tell/assert (never claims)
++                        assert ev.kind in ("tell", "assert") and ev.t < 0 and other in present and v == ev.value
++                    else:  # listener models the speaker (rule 1 distrust case checked in clause 1)
++                        assert other == ev.actor
++            if ev.kind == "claim" and ev.t < 0:  # an update passed on in passing: the speaker's view is unchanged
++                assert after[ev.actor].nested == before[ev.actor].nested
++                told_then_updated += 1
++    assert told_then_updated > 0  # the r4 wording of rule 5 was false in these worlds
++
++
++def test_unknown_answer_is_a_statement_of_no_belief(traced):
++    for _, _, _, trace in traced:
++        for ev, _, _ in trace:
++            if ev.kind == "claim" and ev.text == "I don't know.":
++                assert ev.value == UNKNOWN
+diff --git a/tests/test_round1.py b/tests/test_round1.py
+new file mode 100644
+index 0000000..19b4786
+--- /dev/null
++++ b/tests/test_round1.py
+@@ -0,0 +1,148 @@
++"""Autonomous block Round 1: grounding package pilot-v2.1 and scoring v3."""
++
++from __future__ import annotations
++
++import json
++
++import pytest
++
++from officeminds.devgen import generate
++from officeminds.episode import VisibleHistory
++from vomi.fidelity import CATS_V3, score_output_v3
++from vomi.graph import PerspectiveGraph
++from vomi.pilot import PACKAGES, PEOPLE_RULES_R4, load_prompts, notes_text, unit_messages
++from vomi.unit_schema import validate_unit_output_v21
++from vomi.units import Unit
++
++DOMAIN = ["office_a", "office_b"]
++IDS = {"t0:said0", "t0:seen:bob"}
++
++
++def out(status, hyps, path=("bob",)):
++    return json.dumps({"path": list(path), "variable": "knowledge", "about": "alice_loc", "as_of_step": 0,
++                       "status": status, "hypotheses": hyps, "unresolved": []})
++
++
++def sup(eid, kind):
++    return [{"evidence_id": eid, "kind": kind, "note": "n"}]
++
++
++def test_v21_accepts_rule_support_and_broad_uncertain_distributions():
++    text = out("uncertain", [{"value": "office_a", "p": 0.5, "support": sup("RULE2", "public_rule")},
++                             {"value": "office_b", "p": 0.5, "support": sup("RULE2", "public_rule")}])
++    parsed, errors = validate_unit_output_v21(text, ("bob",), "knowledge", DOMAIN, IDS)
++    assert errors == [] and parsed["rule_ids"] == ["RULE2"] and parsed["evidence_ids"] == []
++
++
++@pytest.mark.parametrize("hyps,status,err", [
++    ([{"value": "office_a", "p": 1.0, "support": []}], "grounded", "unsupported_hypothesis"),
++    ([{"value": "office_a", "p": 1.0, "support": sup("t9:said0", "testimony")}], "grounded", "cites_non_visible_evidence"),
++    ([{"value": "office_a", "p": 1.0, "support": sup("RULE2", "testimony")}], "grounded", "rule_citation_mismatch"),
++    ([{"value": "office_a", "p": 1.0, "support": sup("t0:said0", "public_rule")}], "grounded", "rule_citation_mismatch"),
++    ([{"value": "office_a", "p": 1.0, "support": sup("t0:said0", "testimony")}], "insufficient_evidence", "bad_status"),
++])
++def test_v21_structural_failures_are_named(hyps, status, err):
++    _, errors = validate_unit_output_v21(out(status, hyps), ("bob",), "knowledge", DOMAIN, IDS)
++    assert err in errors
++
++
++def test_v21_abstention_does_not_need_support():
++    parsed, errors = validate_unit_output_v21(out("abstain", [{"value": "office_a", "p": 0.5, "support": []},
++                                                              {"value": "office_b", "p": 0.5, "support": []}]),
++                                              ("bob",), "knowledge", DOMAIN, IDS)
++    assert errors == []
++
++
++def test_v21_requests_render_r4_rules_and_require_r4():
++    inst = generate(version="dev-v2")[0]
++    w = inst.scenario.build(inst.hidden)
++    h = VisibleHistory(inst.scenario.brief, [(None, w.reset())])
++    u = Unit((inst.scenario.config.recipient,), "knowledge")
++    msgs, _, _ = unit_messages(load_prompts("pilot-v2.1"), inst.scenario.config, inst.scenario.brief, h, u, "pilot-v2.1", 4)
++    assert PEOPLE_RULES_R4 in msgs[1]["content"] and "RULE" in msgs[0]["content"]
++    assert PACKAGES["pilot-v2.1"].min_render_revision == 4
++
++
++def score(parsed_hyps, status, truth, posterior, ambiguous=False, known=()):
++    return score_output_v3({"status": status, "hypotheses": parsed_hyps}, truth, posterior, set(known),
++                           ["office_a", "office_b", "unknown"], ambiguous)
++
++
++def test_v3_categories_partition_and_separate_hedged_from_committed():
++    post = {"office_a": 1.0}
++    assert score([{"value": "office_a", "p": 0.9}], "grounded", "office_a", post)["category"] == "correct_supported"
++    assert score([{"value": "office_b", "p": 0.9}], "grounded", "office_a", post)["category"] == "unsupported_committed"
++    assert score([{"value": "office_b", "p": 0.4}, {"value": "office_a", "p": 0.35}, {"value": "unknown", "p": 0.25}],
++                 "uncertain", "office_a", post)["category"] == "unsupported_hedged"
++    assert score([{"value": "office_b", "p": 0.9}], "grounded", "office_a", post, ambiguous=True)["category"] == "ambiguous_reference"
++    assert score([{"value": "office_b", "p": 0.9}], "abstain", "office_a", post)["category"] == "abstained"
++    assert score([{"value": "office_b", "p": 0.9}], "insufficient_evidence", "office_a", post)["category"] == "abstained"
++    assert score_output_v3(None, "office_a", post, set(), [])["category"] == "invalid"
++    lk = score([{"value": "office_b", "p": 0.9}], "grounded", "unknown", {"unknown": 1.0}, known=("office_b",))
++    assert lk["category"] == "leakage"
++    assert set(CATS_V3) >= {"correct_supported", "unsupported_committed", "ambiguous_reference", "abstained", "invalid"}
++
++
++def test_v31_tied_top_category_does_not_depend_on_list_order():
++    post = {"office_a": 0.5, "office_b": 0.5}
++    a = score([{"value": "office_a", "p": 0.5}, {"value": "office_b", "p": 0.5}], "uncertain", "office_b", post)
++    b = score([{"value": "office_b", "p": 0.5}, {"value": "office_a", "p": 0.5}], "uncertain", "office_b", post)
++    assert a["category"] == b["category"] == "supported_spread"
++    # an unsupported value tied with a supported one does not decide the category
++    c = score([{"value": "unknown", "p": 0.5}, {"value": "office_a", "p": 0.5}], "uncertain", "office_b", post)
++    d = score([{"value": "office_a", "p": 0.5}, {"value": "unknown", "p": 0.5}], "uncertain", "office_b", post)
++    assert c["category"] == d["category"] == "incorrect_supported"
++    # all tied values unsupported: committed unsupported content regardless of order
++    e = score([{"value": "office_a", "p": 0.5}, {"value": "office_b", "p": 0.5}], "grounded", "unknown", {"unknown": 1.0})
++    f = score([{"value": "office_b", "p": 0.5}, {"value": "office_a", "p": 0.5}], "grounded", "unknown", {"unknown": 1.0})
++    assert e["category"] == f["category"] == "unsupported_committed"
++
++
++def test_content_category_and_unsupported_mass_ignore_status():
++    post = {"unknown": 1.0}
++    a = score([{"value": "office_a", "p": 0.4}, {"value": "office_b", "p": 0.4}, {"value": "unknown", "p": 0.2}],
++              "insufficient_evidence", "unknown", post)
++    assert a["category"] == "abstained" and a["content_category"] == "unsupported_hedged"
++    assert a["unsupported_mass"] == pytest.approx(0.8)
++    # all-unsupported tie: a robot-known value makes it leakage whatever the alphabetical order
++    b = score([{"value": "office_a", "p": 0.5}, {"value": "office_b", "p": 0.5}], "grounded", "unknown", post,
++              known=("office_b",))
++    assert b["category"] == "leakage"
++
++
++def test_v3_supported_wrong_answer_is_not_hallucination_even_in_ambiguous_contexts():
++    s = score([{"value": "office_b", "p": 0.9}], "grounded", "office_a", {"office_a": 0.5, "office_b": 0.5}, ambiguous=True)
++    assert s["category"] == "incorrect_supported"
++
++
++def test_frozen_notes_are_injected_without_inference_calls():
++    from vomi.clients import MockClient
++    from vomi.pilot import run_episode_arm
++    inst = generate(version="dev-v2")[0]
++    u = Unit((inst.scenario.config.recipient,), "knowledge")
++    note = {"path": list(u.path), "variable": "knowledge", "about": "x", "as_of_step": 0, "status": "grounded",
++            "hypotheses": [{"value": "zz_marker_room", "p": 1.0}], "unresolved": [], "evidence_ids": [], "rule_ids": []}
++    client = MockClient(['{"action": "wait()"}'] * 20)
++    res = run_episode_arm(client, inst, "fixed", {}, initial_units=[u], allocate=False, package="pilot-v2.1", rev=4,
++                          frozen_notes={str(u): note})
++    assert all(c["kind"] == "decision" for c in res.calls)  # no unit / refresh calls
++    assert "zz_marker_room: 1.00" in client.calls[0][1]["content"]
++    assert res.privileged["unit_fidelity"][0]["kind"] == "frozen"
++    with pytest.raises(ValueError):
++        run_episode_arm(MockClient([]), inst, "fixed", {}, initial_units=[u], allocate=False, rev=2,
++                        frozen_notes={str(u): note})
++
++
++def test_uncertain_status_is_rendered_and_not_shown_as_abstention():
++    inst = generate(version="dev-v2")[0]
++    w = inst.scenario.build(inst.hidden)
++    h = VisibleHistory(inst.scenario.brief, [(None, w.reset())])
++    g = PerspectiveGraph(recipient=inst.scenario.config.recipient, refutation_mode="fact_only")
++    u = Unit((inst.scenario.config.recipient,), "knowledge")
++    o = {"path": list(u.path), "variable": "knowledge", "about": "x", "as_of_step": 0, "status": "uncertain",
++         "hypotheses": [{"value": "a", "p": 0.5, "support": sup("RULE2", "public_rule")},
++                        {"value": "b", "p": 0.5, "support": sup("RULE2", "public_rule")}],
++         "unresolved": [], "evidence_ids": [], "rule_ids": ["RULE2"]}
++    g.instantiate(u, o, [], t=0)
++    text = notes_text(g, h, 4)
++    assert "INFERENCE UNCERTAIN" in text and "ABSTAINED" not in text and "RULE2 public_rule" in text

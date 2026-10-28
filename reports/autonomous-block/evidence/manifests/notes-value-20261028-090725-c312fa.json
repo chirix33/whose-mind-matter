@@ -1,0 +1,681 @@
+{
+  "run_id": "notes-value-20261028-090725-c312fa",
+  "kind": "notes-value",
+  "git_commit": "578fb6f8220966d857d7ede2741fcdee61de3d69",
+  "git_dirty": false,
+  "config": {
+    "stage": "policy",
+    "round": 3,
+    "conditions": [
+      "none",
+      "reference",
+      "reference_doubt"
+    ],
+    "extra_cells": [
+      [
+        "s9",
+        "inferred_bare"
+      ]
+    ],
+    "model": "gpt-6.1-sol",
+    "decoding": {
+      "reasoning_effort": "low",
+      "max_tokens": 6000
+    },
+    "package": "pilot-v2.1",
+    "render_revision": 5,
+    "replicates": 4,
+    "concurrency": 4,
+    "notes_file_sha256": "591c9580cdb081001b4ac246b9dded228cc69fb8d1fb005f73e58180b41c96fe",
+    "stage_cap_usd_env": "4.156",
+    "note_sha256": {
+      "s1": {
+        "inferred": "085a38918a9a4bff1c5ff502f3353bfef9a34b16c280e3be04f90292891b42a8",
+        "inferred_bare": "1659c631010b97a02d0b2da2e77c567c602b64e6af27738550cd91d042acbb23",
+        "privileged": "b9aac278fd25014b1fca4fb262c69db7454072e8919b8ccd2ea45e2df504f2c0",
+        "reference": "183948bbc5215ddc0e17a9a8fc8127a657aa522b13a27a9405418b038b88c2e2",
+        "reference_doubt": "c34a658fbb243e4271e8ef4d4c377cdeff2234c457641f2eeef9a5c8641862f3"
+      },
+      "s2": {
+        "inferred": "cee0356e851460d2f03d1f6cf541f1f04828f3b56000cbbcd894029a6ac306ea",
+        "inferred_bare": "3baf8a29ea698784d649ef83b427454db2871d303ab3bfc074141b9bb3b8b65f",
+        "privileged": "409a6ddcf069b29587e0f9d815ef8bf088dddd5a25a86dc99b7abe88e68f86da",
+        "reference": "08b65def8a97926a87976740ea9a7b91583240c384b7048f3b395f6d29ac21ed",
+        "reference_doubt": "0f24e1c34e37ebc7ef91cacf2892a4a9e933bbe1a86e6d76d2120584306e3c5f"
+      },
+      "s3": {
+        "inferred": "0a8d1ce86b462b7f4ea7af7a0e3e8720bb08e87788de8d571be35863b458ddb7",
+        "inferred_bare": "bba163dc40a083e29fc50b7f64220d0b59c39c421b5df231296af5ee5f84a6dd",
+        "privileged": "8d1440208e18699a5fd33d87f10c8a5b451375f2ff20a3fb563fab4e060dc426",
+        "reference": "717e79c6df1975813eb1320a0b6a5eed207b65277a318116b9d28cde869ff02b",
+        "reference_doubt": "ef97d47bc23de4e8e878b16d755e289329e51d4d2851167a56621af374d195e5"
+      },
+      "s4": {
+        "inferred": "b24c47397f114ed9ff7ed0b4078d7cd6b7ced9fe2a5717da220c1caadff733b9",
+        "inferred_bare": "1f5510c8b6c3a3182e707ab625d0d06b261432c6991888650fe8a7a602adbf76",
+        "privileged": "e3680449528939273b3dae52a846ff21d424fdda186f4e2b874dff414e8bcac6",
+        "reference": "acd20c47c0fa183f3e6aee84233876922eb8bc5325d08fa4fb21ebd37e8b47ee",
+        "reference_doubt": "effed726ddc81abbdfc7220bfddb5097f979ef593127d5937a45b70d8b1d558d"
+      },
+      "s5": {
+        "inferred": "4884c959e3d5875fff50044b29ae8e8b4fd5a24e19c919c04ba4fa21c8ec8241",
+        "inferred_bare": "39707a3fe3a1440b2da0b7ac5fcdbf394679c971fcbd1e5be6f2c543190bbfd1",
+        "privileged": "154185be363031009fc11a2af626f72ca9f7e7fd40df0072d7d55bf5538e2cac",
+        "reference": "43ba04c10afd6de461bea2c8816c94bac4f562876f5506619edf86deb216b1d9",
+        "reference_doubt": "f142f689b44913a77e6d1983a2d353f6500d763679483431bebb085bd87bff80"
+      },
+      "s6": {
+        "inferred": "e801d5472a33c7728acef8c5e27e40b32fc3525542ff9f71d4d014eb4247b87d",
+        "inferred_bare": "34a4a789878a547cfdc94303b1aa6194266286fa8ba9e2770944dbad6e32f033",
+        "privileged": "ae0827ba47431fc126cdd19737d86e4f7cf8d2302dd1074887d26b066d932fdf",
+        "reference": "78db42ae3db3660cf9c28f0f880c18f3f4ee5bbafe370ec3b0fc8dbe27885afb",
+        "reference_doubt": "ccfbdb1ee57f00015bc6d048831d683e828b929568c6880539625b26d5be4db8"
+      },
+      "s7": {
+        "inferred": "7aa07468707501f48b509e91351573925039424a26c6c8021d908ea6ad526786",
+        "inferred_bare": "b6538397e38f93ca87e8210c5c057f2ceb3e1bccdb32bddba889caf4583faac9",
+        "privileged": "2552f35997120773f418d2af0560f05758089dc0707e9cf2809f0d92dac3abfd",
+        "reference": "5053873394147548f3b82b1229e22ac52ffe737fa67baea0502e02876f5f76a6",
+        "reference_doubt": "77abcb3bbc24488ac899ca5ac8d5c9cd38742ad374f9d6abc59c5ca24c62552a"
+      },
+      "s8": {
+        "inferred": "90d3cf4b71cc113f265482367f2146b5cde3f4c1e357a8fbf2316edff0a1ed11",
+        "inferred_bare": "81febfd4c4d5b2409fb9af52f4b5da61a057e4c6f87a9207cec32cbe6493d14f",
+        "privileged": "6503c5e8162b6ea7da379b973bdbe4bf4a1cfaa82a31da946cbd461199c91d50",
+        "reference": "3952ea0b532176fb3e52b951fefbaa625d52ad1a13eb5b289f125d14081924a0",
+        "reference_doubt": "1fb77f40d3b80f3c82dca7898d1c658d28ff839e04fb13cb2d68b8a687b55ba4"
+      },
+      "s9": {
+        "inferred": "38e32185c5d559c22db528a25b48a1b7519c13e2b58b9db5aa2fa4829d04f4f1",
+        "inferred_bare": "ef43fee17ae6da3598ef9c13319d07c623ee27eccb72cd9f19fcfa1866cda701",
+        "privileged": "d1250f1586d7e98ec00fcdc724fde7be71cfc425423480b4b783acb65f1b6526",
+        "reference": "1128eb6bf7d8105f3b6fbb5443534e56047b73a45a03381ee6d9e53fcbcac03b",
+        "reference_doubt": "efc421e638cf8835c27cf603f4c7cd40bd49161197d9eae58c4a7a88fc012542"
+      }
+    },
+    "prompt_sha256": {
+      "policy_system": "d6c4000c3bc6c0c716d340a8658851d1a8860c09eb1976cee1481d3270208c05",
+      "router_system": "4ab2aa62d2ac2741d6e6fd707c95d690c2373b5629bd721f4f66312525107c8d",
+      "unit_system": "5d46df917a9fa0685c6d75f2d0c94092f1c8d319793226f22659262ee6edf065"
+    },
+    "dispatch_order": [
+      [
+        "s1",
+        "none",
+        0
+      ],
+      [
+        "s1",
+        "reference",
+        0
+      ],
+      [
+        "s1",
+        "reference_doubt",
+        0
+      ],
+      [
+        "s2",
+        "reference",
+        0
+      ],
+      [
+        "s2",
+        "reference_doubt",
+        0
+      ],
+      [
+        "s2",
+        "none",
+        0
+      ],
+      [
+        "s3",
+        "reference_doubt",
+        0
+      ],
+      [
+        "s3",
+        "none",
+        0
+      ],
+      [
+        "s3",
+        "reference",
+        0
+      ],
+      [
+        "s4",
+        "none",
+        0
+      ],
+      [
+        "s4",
+        "reference",
+        0
+      ],
+      [
+        "s4",
+        "reference_doubt",
+        0
+      ],
+      [
+        "s5",
+        "reference",
+        0
+      ],
+      [
+        "s5",
+        "reference_doubt",
+        0
+      ],
+      [
+        "s5",
+        "none",
+        0
+      ],
+      [
+        "s6",
+        "reference_doubt",
+        0
+      ],
+      [
+        "s6",
+        "none",
+        0
+      ],
+      [
+        "s6",
+        "reference",
+        0
+      ],
+      [
+        "s7",
+        "none",
+        0
+      ],
+      [
+        "s7",
+        "reference",
+        0
+      ],
+      [
+        "s7",
+        "reference_doubt",
+        0
+      ],
+      [
+        "s8",
+        "reference",
+        0
+      ],
+      [
+        "s8",
+        "reference_doubt",
+        0
+      ],
+      [
+        "s8",
+        "none",
+        0
+      ],
+      [
+        "s9",
+        "reference_doubt",
+        0
+      ],
+      [
+        "s9",
+        "none",
+        0
+      ],
+      [
+        "s9",
+        "reference",
+        0
+      ],
+      [
+        "s9",
+        "inferred_bare",
+        0
+      ],
+      [
+        "s1",
+        "reference",
+        1
+      ],
+      [
+        "s1",
+        "reference_doubt",
+        1
+      ],
+      [
+        "s1",
+        "none",
+        1
+      ],
+      [
+        "s2",
+        "reference_doubt",
+        1
+      ],
+      [
+        "s2",
+        "none",
+        1
+      ],
+      [
+        "s2",
+        "reference",
+        1
+      ],
+      [
+        "s3",
+        "none",
+        1
+      ],
+      [
+        "s3",
+        "reference",
+        1
+      ],
+      [
+        "s3",
+        "reference_doubt",
+        1
+      ],
+      [
+        "s4",
+        "reference",
+        1
+      ],
+      [
+        "s4",
+        "reference_doubt",
+        1
+      ],
+      [
+        "s4",
+        "none",
+        1
+      ],
+      [
+        "s5",
+        "reference_doubt",
+        1
+      ],
+      [
+        "s5",
+        "none",
+        1
+      ],
+      [
+        "s5",
+        "reference",
+        1
+      ],
+      [
+        "s6",
+        "none",
+        1
+      ],
+      [
+        "s6",
+        "reference",
+        1
+      ],
+      [
+        "s6",
+        "reference_doubt",
+        1
+      ],
+      [
+        "s7",
+        "reference",
+        1
+      ],
+      [
+        "s7",
+        "reference_doubt",
+        1
+      ],
+      [
+        "s7",
+        "none",
+        1
+      ],
+      [
+        "s8",
+        "reference_doubt",
+        1
+      ],
+      [
+        "s8",
+        "none",
+        1
+      ],
+      [
+        "s8",
+        "reference",
+        1
+      ],
+      [
+        "s9",
+        "none",
+        1
+      ],
+      [
+        "s9",
+        "reference",
+        1
+      ],
+      [
+        "s9",
+        "reference_doubt",
+        1
+      ],
+      [
+        "s9",
+        "inferred_bare",
+        1
+      ],
+      [
+        "s1",
+        "reference_doubt",
+        2
+      ],
+      [
+        "s1",
+        "none",
+        2
+      ],
+      [
+        "s1",
+        "reference",
+        2
+      ],
+      [
+        "s2",
+        "none",
+        2
+      ],
+      [
+        "s2",
+        "reference",
+        2
+      ],
+      [
+        "s2",
+        "reference_doubt",
+        2
+      ],
+      [
+        "s3",
+        "reference",
+        2
+      ],
+      [
+        "s3",
+        "reference_doubt",
+        2
+      ],
+      [
+        "s3",
+        "none",
+        2
+      ],
+      [
+        "s4",
+        "reference_doubt",
+        2
+      ],
+      [
+        "s4",
+        "none",
+        2
+      ],
+      [
+        "s4",
+        "reference",
+        2
+      ],
+      [
+        "s5",
+        "none",
+        2
+      ],
+      [
+        "s5",
+        "reference",
+        2
+      ],
+      [
+        "s5",
+        "reference_doubt",
+        2
+      ],
+      [
+        "s6",
+        "reference",
+        2
+      ],
+      [
+        "s6",
+        "reference_doubt",
+        2
+      ],
+      [
+        "s6",
+        "none",
+        2
+      ],
+      [
+        "s7",
+        "reference_doubt",
+        2
+      ],
+      [
+        "s7",
+        "none",
+        2
+      ],
+      [
+        "s7",
+        "reference",
+        2
+      ],
+      [
+        "s8",
+        "none",
+        2
+      ],
+      [
+        "s8",
+        "reference",
+        2
+      ],
+      [
+        "s8",
+        "reference_doubt",
+        2
+      ],
+      [
+        "s9",
+        "reference",
+        2
+      ],
+      [
+        "s9",
+        "reference_doubt",
+        2
+      ],
+      [
+        "s9",
+        "none",
+        2
+      ],
+      [
+        "s9",
+        "inferred_bare",
+        2
+      ],
+      [
+        "s1",
+        "none",
+        3
+      ],
+      [
+        "s1",
+        "reference",
+        3
+      ],
+      [
+        "s1",
+        "reference_doubt",
+        3
+      ],
+      [
+        "s2",
+        "reference",
+        3
+      ],
+      [
+        "s2",
+        "reference_doubt",
+        3
+      ],
+      [
+        "s2",
+        "none",
+        3
+      ],
+      [
+        "s3",
+        "reference_doubt",
+        3
+      ],
+      [
+        "s3",
+        "none",
+        3
+      ],
+      [
+        "s3",
+        "reference",
+        3
+      ],
+      [
+        "s4",
+        "none",
+        3
+      ],
+      [
+        "s4",
+        "reference",
+        3
+      ],
+      [
+        "s4",
+        "reference_doubt",
+        3
+      ],
+      [
+        "s5",
+        "reference",
+        3
+      ],
+      [
+        "s5",
+        "reference_doubt",
+        3
+      ],
+      [
+        "s5",
+        "none",
+        3
+      ],
+      [
+        "s6",
+        "reference_doubt",
+        3
+      ],
+      [
+        "s6",
+        "none",
+        3
+      ],
+      [
+        "s6",
+        "reference",
+        3
+      ],
+      [
+        "s7",
+        "none",
+        3
+      ],
+      [
+        "s7",
+        "reference",
+        3
+      ],
+      [
+        "s7",
+        "reference_doubt",
+        3
+      ],
+      [
+        "s8",
+        "reference",
+        3
+      ],
+      [
+        "s8",
+        "reference_doubt",
+        3
+      ],
+      [
+        "s8",
+        "none",
+        3
+      ],
+      [
+        "s9",
+        "reference_doubt",
+        3
+      ],
+      [
+        "s9",
+        "none",
+        3
+      ],
+      [
+        "s9",
+        "reference",
+        3
+      ],
+      [
+        "s9",
+        "inferred_bare",
+        3
+      ]
+    ]
+  },
+  "config_hash": "f17eb2d236d8c9a7",
+  "python": "3.12.3",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "started_at": "2026-10-28T14:07:25.133193+00:00",
+  "gpu_at_start": [
+    {
+      "name": "NVIDIA GeForce RTX 5090",
+      "driver": "610.60",
+      "memory_total_mib": 32607,
+      "memory_used_mib": 2273
+    }
+  ],
+  "dirty_paths": [],
+  "wall_clock_s": 237.969356669,
+  "episodes": 112,
+  "blocked": 0,
+  "ended_at": "2026-10-28T14:11:23.343113+00:00"
+}

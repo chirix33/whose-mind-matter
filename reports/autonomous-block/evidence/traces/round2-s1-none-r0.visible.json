@@ -1,0 +1,91 @@
+{
+ "run": "notes-value-20261028-085354-5b41df",
+ "state_id": "s1",
+ "condition": "none",
+ "replicate": 0,
+ "agent_view": {
+  "brief": "Deliver the package to Quinn.",
+  "steps": [
+   {
+    "action": null,
+    "obs": {
+     "t": 0,
+     "room": "lobby",
+     "people_present": [
+      "leo",
+      "wen"
+     ],
+     "utterances": [
+      [
+       "wen",
+       "I saw Quinn head to the office earlier."
+      ]
+     ],
+     "outcome": "",
+     "reward": 0.0,
+     "done": false
+    }
+   },
+   {
+    "action": "ask(wen,quinn_loc)",
+    "obs": {
+     "t": 1,
+     "room": "lobby",
+     "people_present": [
+      "leo",
+      "wen"
+     ],
+     "utterances": [
+      [
+       "wen",
+       "quinn_loc = desk_9"
+      ]
+     ],
+     "outcome": "",
+     "reward": -0.05,
+     "done": false
+    }
+   },
+   {
+    "action": "drop(desk_9)",
+    "obs": {
+     "t": 2,
+     "room": "lobby",
+     "people_present": [
+      "leo",
+      "wen"
+     ],
+     "utterances": [],
+     "outcome": "success",
+     "reward": 0.95,
+     "done": true
+    }
+   }
+  ]
+ },
+ "graph_final_shown_to_policy": [],
+ "actions": [
+  "ask(wen,quinn_loc)",
+  "drop(desk_9)"
+ ],
+ "outcome": "success",
+ "return": 0.8999999999999999,
+ "policy_calls": [
+  {
+   "step": 0,
+   "kind": "decision",
+   "parsed": {
+    "action": "ask(wen,quinn_loc)"
+   },
+   "attempts": 1
+  },
+  {
+   "step": 1,
+   "kind": "decision",
+   "parsed": {
+    "action": "drop(desk_9)"
+   },
+   "attempts": 1
+  }
+ ]
+}

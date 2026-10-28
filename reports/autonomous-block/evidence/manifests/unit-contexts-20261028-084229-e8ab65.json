@@ -1,0 +1,45 @@
+{
+  "run_id": "unit-contexts-20261028-084229-e8ab65",
+  "kind": "unit-contexts",
+  "git_commit": "2287ad34b171319e329444f03ed8551719bac3a5",
+  "git_dirty": false,
+  "config": {
+    "model": "gpt-6.1-sol",
+    "provider": "openai_responses",
+    "decoding": {
+      "reasoning_effort": "low",
+      "max_tokens": 6000
+    },
+    "packages": [
+      "pilot-v1",
+      "pilot-v2",
+      "pilot-v2.1"
+    ],
+    "prompt_sha256": {
+      "pilot-v1": "f355453dfefa9d4ff592231d2a3fb7b3b980148f96bf5a7c457afa728454a9b3",
+      "pilot-v2": "f8afff030362fe6520f5a1ef8a676ab0c79de5247df3b93046d00e08e0b0556e",
+      "pilot-v2.1": "5d46df917a9fa0685c6d75f2d0c94092f1c8d319793226f22659262ee6edf065"
+    },
+    "contexts_file": "reports/autonomous-block/unit-contexts-v1-r5.jsonl",
+    "contexts_sha256": "bb7835eb56a5555f4786ae89267d035fd4dca0672beee3c1839311e21196eee8",
+    "render_revision": 5,
+    "concurrency": 1
+  },
+  "config_hash": "99ee6acfe009ef1f",
+  "python": "3.12.3",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "started_at": "2026-10-28T13:42:29.868249+00:00",
+  "gpu_at_start": [
+    {
+      "name": "NVIDIA GeForce RTX 5090",
+      "driver": "610.60",
+      "memory_total_mib": 32607,
+      "memory_used_mib": 30525
+    }
+  ],
+  "dirty_paths": [],
+  "records": 72,
+  "wall_clock_s": 508.7769336009999,
+  "blocked_by_budget": null,
+  "ended_at": "2026-10-28T13:50:58.846858+00:00"
+}

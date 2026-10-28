@@ -1,0 +1,88 @@
+{
+ "run": "notes-value-20261028-085354-5b41df",
+ "state_id": "s9",
+ "condition": "none",
+ "replicate": 0,
+ "agent_view": {
+  "brief": "Deliver the package to Yara.",
+  "steps": [
+   {
+    "action": null,
+    "obs": {
+     "t": 0,
+     "room": "lobby",
+     "people_present": [
+      "dave"
+     ],
+     "utterances": [
+      [
+       "dave",
+       "I saw Yara head to the office earlier."
+      ]
+     ],
+     "outcome": "",
+     "reward": 0.0,
+     "done": false
+    }
+   },
+   {
+    "action": "ask(dave,yara_loc)",
+    "obs": {
+     "t": 1,
+     "room": "lobby",
+     "people_present": [
+      "dave"
+     ],
+     "utterances": [
+      [
+       "dave",
+       "yara_loc = lab_north"
+      ]
+     ],
+     "outcome": "",
+     "reward": -0.05,
+     "done": false
+    }
+   },
+   {
+    "action": "drop(lab_north)",
+    "obs": {
+     "t": 2,
+     "room": "lobby",
+     "people_present": [
+      "dave"
+     ],
+     "utterances": [],
+     "outcome": "error",
+     "reward": -0.55,
+     "done": true
+    }
+   }
+  ]
+ },
+ "graph_final_shown_to_policy": [],
+ "actions": [
+  "ask(dave,yara_loc)",
+  "drop(lab_north)"
+ ],
+ "outcome": "error",
+ "return": -0.6000000000000001,
+ "policy_calls": [
+  {
+   "step": 0,
+   "kind": "decision",
+   "parsed": {
+    "action": "ask(dave,yara_loc)"
+   },
+   "attempts": 1
+  },
+  {
+   "step": 1,
+   "kind": "decision",
+   "parsed": {
+    "action": "drop(lab_north)"
+   },
+   "attempts": 1
+  }
+ ]
+}

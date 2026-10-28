@@ -28,3 +28,6 @@ hf_cache/
 research-reviews/
 # Source archives for the research conversation (regenerable)
 reports/bundle/*.zip
+
+# Autonomous block source archive (regenerable from git)
+reports/autonomous-block/*.zip

@@ -1,0 +1,136 @@
+state_id,unit,condition,replicate,dispatch_index,note_sha256,outcome,return,steps,actions,decision_calls,prompt_tokens,completion_tokens,reasoning_tokens,wall_clock_s
+s1,K(wen),inferred,0,1,085a38918a9a4bff1c5ff502f3353bfef9a34b16c280e3be04f90292891b42a8,success,0.8,4,"ask(wen,quinn_loc) move(hall) move(desk_9) deliver()",4,5055,127,61,9.69
+s1,K(wen),inferred,1,45,085a38918a9a4bff1c5ff502f3353bfef9a34b16c280e3be04f90292891b42a8,success,0.8,4,"ask(wen,quinn_loc) move(hall) move(desk_9) deliver()",4,5055,108,42,7.97
+s1,K(wen),inferred,2,94,085a38918a9a4bff1c5ff502f3353bfef9a34b16c280e3be04f90292891b42a8,success,0.8,4,"ask(wen,quinn_loc) move(hall) move(desk_9) deliver()",4,5055,114,48,8.09
+s1,K(wen),inferred_bare,0,2,1659c631010b97a02d0b2da2e77c567c602b64e6af27738550cd91d042acbb23,success,0.75,5,"ask(wen,quinn_loc) ask(leo,quinn_loc) move(hall) move(desk_9) deliver()",5,5971,154,67,11.53
+s1,K(wen),inferred_bare,1,46,1659c631010b97a02d0b2da2e77c567c602b64e6af27738550cd91d042acbb23,success,0.75,5,"ask(wen,quinn_loc) ask(leo,quinn_loc) move(hall) move(desk_9) deliver()",5,5971,178,91,10.96
+s1,K(wen),inferred_bare,2,90,1659c631010b97a02d0b2da2e77c567c602b64e6af27738550cd91d042acbb23,success,0.75,5,"ask(wen,quinn_loc) ask(leo,quinn_loc) move(hall) move(desk_9) deliver()",5,5971,167,80,10.58
+s1,K(wen),none,0,0,,success,0.9,2,"ask(wen,quinn_loc) drop(desk_9)",2,2107,83,45,5.08
+s1,K(wen),none,1,49,,success,0.8,4,"ask(wen,quinn_loc) move(hall) move(desk_9) deliver()",4,4292,129,63,9.26
+s1,K(wen),none,2,93,,success,0.85,3,"ask(wen,quinn_loc) ask(leo,quinn_loc) drop(desk_9)",3,3266,141,82,7.05
+s1,K(wen),privileged,0,4,b9aac278fd25014b1fca4fb262c69db7454072e8919b8ccd2ea45e2df504f2c0,success,0.9,2,"ask(wen,quinn_loc) drop(desk_9)",2,2190,101,63,4.56
+s1,K(wen),privileged,1,48,b9aac278fd25014b1fca4fb262c69db7454072e8919b8ccd2ea45e2df504f2c0,success,0.9,2,"ask(wen,quinn_loc) drop(desk_9)",2,2190,93,53,4.45
+s1,K(wen),privileged,2,92,b9aac278fd25014b1fca4fb262c69db7454072e8919b8ccd2ea45e2df504f2c0,success,0.9,2,"ask(wen,quinn_loc) drop(desk_9)",2,2190,87,47,4.21
+s1,K(wen),reference,0,3,183948bbc5215ddc0e17a9a8fc8127a657aa522b13a27a9405418b038b88c2e2,success,0.75,5,"ask(wen,quinn_loc) ask(leo,quinn_loc) move(hall) move(desk_9) deliver()",5,5936,164,77,11.26
+s1,K(wen),reference,1,47,183948bbc5215ddc0e17a9a8fc8127a657aa522b13a27a9405418b038b88c2e2,success,0.75,5,"ask(wen,quinn_loc) ask(leo,quinn_loc) move(hall) move(desk_9) deliver()",5,5936,151,64,10.2
+s1,K(wen),reference,2,91,183948bbc5215ddc0e17a9a8fc8127a657aa522b13a27a9405418b038b88c2e2,success,0.75,5,"ask(wen,quinn_loc) ask(leo,quinn_loc) move(hall) move(desk_9) deliver()",5,5936,143,56,10.52
+s2,K(judy),inferred,0,5,cee0356e851460d2f03d1f6cf541f1f04828f3b56000cbbcd894029a6ac306ea,success,0.75,5,move(hall) move(office_a) move(hall) move(office_b) deliver(),5,5943,91,14,11.93
+s2,K(judy),inferred,1,54,cee0356e851460d2f03d1f6cf541f1f04828f3b56000cbbcd894029a6ac306ea,success,0.75,5,move(hall) move(office_a) move(hall) move(office_b) deliver(),5,5943,104,27,10.26
+s2,K(judy),inferred,2,98,cee0356e851460d2f03d1f6cf541f1f04828f3b56000cbbcd894029a6ac306ea,success,0.75,5,move(hall) move(office_a) move(hall) move(office_b) deliver(),5,5943,98,21,10.66
+s2,K(judy),inferred_bare,0,6,3baf8a29ea698784d649ef83b427454db2871d303ab3bfc074141b9bb3b8b65f,success,0.75,5,move(hall) move(office_a) move(hall) move(office_b) deliver(),5,5353,126,47,11.48
+s2,K(judy),inferred_bare,1,50,3baf8a29ea698784d649ef83b427454db2871d303ab3bfc074141b9bb3b8b65f,success,0.75,5,move(hall) move(office_a) move(hall) move(office_b) deliver(),5,5353,133,54,11.05
+s2,K(judy),inferred_bare,2,99,3baf8a29ea698784d649ef83b427454db2871d303ab3bfc074141b9bb3b8b65f,success,0.75,5,move(hall) move(office_a) move(hall) move(office_b) deliver(),5,5353,123,44,10.95
+s2,K(judy),none,0,9,,success,0.75,5,move(hall) move(office_a) move(hall) move(office_b) deliver(),5,5020,124,45,10.45
+s2,K(judy),none,1,53,,success,0.75,5,move(hall) move(office_a) move(hall) move(office_b) deliver(),5,5020,122,43,10.77
+s2,K(judy),none,2,97,,success,0.75,5,move(hall) move(office_a) move(hall) move(office_b) deliver(),5,5020,144,65,11.41
+s2,K(judy),privileged,0,8,409a6ddcf069b29587e0f9d815ef8bf088dddd5a25a86dc99b7abe88e68f86da,success,0.95,1,drop(office_b),1,1017,138,120,5.65
+s2,K(judy),privileged,1,52,409a6ddcf069b29587e0f9d815ef8bf088dddd5a25a86dc99b7abe88e68f86da,success,0.95,1,drop(office_b),1,1017,146,128,5.38
+s2,K(judy),privileged,2,96,409a6ddcf069b29587e0f9d815ef8bf088dddd5a25a86dc99b7abe88e68f86da,success,0.95,1,drop(office_b),1,1017,123,105,5.04
+s2,K(judy),reference,0,7,08b65def8a97926a87976740ea9a7b91583240c384b7048f3b395f6d29ac21ed,success,0.85,3,move(hall) move(office_b) deliver(),3,3131,127,81,10.16
+s2,K(judy),reference,1,51,08b65def8a97926a87976740ea9a7b91583240c384b7048f3b395f6d29ac21ed,success,0.85,3,move(hall) move(office_b) deliver(),3,3131,180,132,10.06
+s2,K(judy),reference,2,95,08b65def8a97926a87976740ea9a7b91583240c384b7048f3b395f6d29ac21ed,success,0.85,3,move(hall) move(office_b) deliver(),3,3131,173,125,9.35
+s3,K(grace),inferred,0,14,0a8d1ce86b462b7f4ea7af7a0e3e8720bb08e87788de8d571be35863b458ddb7,success,0.95,1,drop(lab_south),1,1104,17,0,1.59
+s3,K(grace),inferred,1,58,0a8d1ce86b462b7f4ea7af7a0e3e8720bb08e87788de8d571be35863b458ddb7,success,0.85,3,move(hall) move(lab_south) deliver(),3,3356,127,80,6.9
+s3,K(grace),inferred,2,102,0a8d1ce86b462b7f4ea7af7a0e3e8720bb08e87788de8d571be35863b458ddb7,success,0.85,3,move(hall) move(lab_south) deliver(),3,3356,125,78,7.61
+s3,K(grace),inferred_bare,0,10,bba163dc40a083e29fc50b7f64220d0b59c39c421b5df231296af5ee5f84a6dd,success,0.85,3,move(hall) move(lab_south) deliver(),3,3128,106,59,6.4
+s3,K(grace),inferred_bare,1,59,bba163dc40a083e29fc50b7f64220d0b59c39c421b5df231296af5ee5f84a6dd,success,0.85,3,move(hall) move(lab_south) deliver(),3,3128,113,66,6.94
+s3,K(grace),inferred_bare,2,103,bba163dc40a083e29fc50b7f64220d0b59c39c421b5df231296af5ee5f84a6dd,success,0.85,3,move(hall) move(lab_south) deliver(),3,3128,120,73,7.82
+s3,K(grace),none,0,13,,success,0.95,1,drop(lab_south),1,977,17,0,2.67
+s3,K(grace),none,1,57,,success,0.95,1,drop(lab_south),1,977,17,0,1.59
+s3,K(grace),none,2,101,,success,0.95,1,drop(lab_south),1,977,17,0,1.47
+s3,K(grace),privileged,0,12,8d1440208e18699a5fd33d87f10c8a5b451375f2ff20a3fb563fab4e060dc426,success,0.95,1,drop(lab_south),1,1012,17,0,1.54
+s3,K(grace),privileged,1,56,8d1440208e18699a5fd33d87f10c8a5b451375f2ff20a3fb563fab4e060dc426,success,0.95,1,drop(lab_south),1,1012,17,0,1.53
+s3,K(grace),privileged,2,100,8d1440208e18699a5fd33d87f10c8a5b451375f2ff20a3fb563fab4e060dc426,success,0.95,1,drop(lab_south),1,1012,17,0,1.41
+s3,K(grace),reference,0,11,717e79c6df1975813eb1320a0b6a5eed207b65277a318116b9d28cde869ff02b,success,0.95,1,drop(lab_south),1,1012,17,0,1.62
+s3,K(grace),reference,1,55,717e79c6df1975813eb1320a0b6a5eed207b65277a318116b9d28cde869ff02b,success,0.95,1,drop(lab_south),1,1012,17,0,1.96
+s3,K(grace),reference,2,104,717e79c6df1975813eb1320a0b6a5eed207b65277a318116b9d28cde869ff02b,success,0.95,1,drop(lab_south),1,1012,17,0,1.92
+s4,K(carol),inferred,0,18,b24c47397f114ed9ff7ed0b4078d7cd6b7ced9fe2a5717da220c1caadff733b9,success,0.8,4,"ask(ivan,carol_loc) move(hall) move(office_a) deliver()",4,4537,117,52,8.03
+s4,K(carol),inferred,1,62,b24c47397f114ed9ff7ed0b4078d7cd6b7ced9fe2a5717da220c1caadff733b9,success,0.85,3,move(hall) move(office_a) deliver(),3,3297,104,58,6.68
+s4,K(carol),inferred,2,106,b24c47397f114ed9ff7ed0b4078d7cd6b7ced9fe2a5717da220c1caadff733b9,success,0.8,4,"ask(ivan,carol_loc) move(hall) move(office_a) deliver()",4,4537,129,64,9.3
+s4,K(carol),inferred_bare,0,19,1f5510c8b6c3a3182e707ab625d0d06b261432c6991888650fe8a7a602adbf76,success,0.85,3,move(hall) move(office_a) deliver(),3,3165,159,113,9.09
+s4,K(carol),inferred_bare,1,63,1f5510c8b6c3a3182e707ab625d0d06b261432c6991888650fe8a7a602adbf76,success,0.8,4,"ask(ivan,carol_loc) move(hall) move(office_a) deliver()",4,4361,219,154,13.77
+s4,K(carol),inferred_bare,2,107,1f5510c8b6c3a3182e707ab625d0d06b261432c6991888650fe8a7a602adbf76,success,0.85,3,move(hall) move(office_a) deliver(),3,3165,102,56,7.05
+s4,K(carol),none,0,17,,success,0.7,6,"ask(ivan,carol_loc) move(hall) move(office_b) move(hall) move(office_a) deliver()",6,6204,94,0,10.94
+s4,K(carol),none,1,61,,success,0.75,5,move(hall) move(office_b) move(hall) move(office_a) deliver(),5,4966,182,105,13.29
+s4,K(carol),none,2,105,,success,0.7,6,"ask(ivan,carol_loc) move(hall) move(office_b) move(hall) move(office_a) deliver()",6,6204,115,19,11.93
+s4,K(carol),privileged,0,16,e3680449528939273b3dae52a846ff21d424fdda186f4e2b874dff414e8bcac6,success,0.95,1,drop(office_a),1,1007,37,19,1.91
+s4,K(carol),privileged,1,60,e3680449528939273b3dae52a846ff21d424fdda186f4e2b874dff414e8bcac6,success,0.95,1,drop(office_a),1,1007,16,0,1.91
+s4,K(carol),privileged,2,109,e3680449528939273b3dae52a846ff21d424fdda186f4e2b874dff414e8bcac6,success,0.95,1,drop(office_a),1,1007,16,0,1.85
+s4,K(carol),reference,0,15,acd20c47c0fa183f3e6aee84233876922eb8bc5325d08fa4fb21ebd37e8b47ee,success,0.8,4,"ask(ivan,carol_loc) move(hall) move(office_a) deliver()",4,4333,103,38,7.98
+s4,K(carol),reference,1,64,acd20c47c0fa183f3e6aee84233876922eb8bc5325d08fa4fb21ebd37e8b47ee,success,0.8,4,"ask(ivan,carol_loc) move(hall) move(office_a) deliver()",4,4333,120,55,7.95
+s4,K(carol),reference,2,108,acd20c47c0fa183f3e6aee84233876922eb8bc5325d08fa4fb21ebd37e8b47ee,success,0.85,3,move(hall) move(office_a) deliver(),3,3144,198,152,10.9
+s5,K(leo),inferred,0,22,4884c959e3d5875fff50044b29ae8e8b4fd5a24e19c919c04ba4fa21c8ec8241,success,0.8,4,"ask(ravi,leo_loc) move(hall) move(room_12) deliver()",4,4660,164,100,9.75
+s5,K(leo),inferred,1,66,4884c959e3d5875fff50044b29ae8e8b4fd5a24e19c919c04ba4fa21c8ec8241,success,0.75,5,"ask(ravi,leo_loc) ask(wen,leo_loc) move(hall) move(room_12) deliver()",5,6041,300,214,15.12
+s5,K(leo),inferred,2,110,4884c959e3d5875fff50044b29ae8e8b4fd5a24e19c919c04ba4fa21c8ec8241,success,0.9,2,"ask(ravi,leo_loc) drop(room_12)",2,2283,88,52,4.91
+s5,K(leo),inferred_bare,0,23,39707a3fe3a1440b2da0b7ac5fcdbf394679c971fcbd1e5be6f2c543190bbfd1,success,0.9,2,"ask(ravi,leo_loc) drop(room_12)",2,2207,121,83,6.86
+s5,K(leo),inferred_bare,1,67,39707a3fe3a1440b2da0b7ac5fcdbf394679c971fcbd1e5be6f2c543190bbfd1,success,0.9,2,"ask(ravi,leo_loc) drop(room_12)",2,2207,151,113,6.6
+s5,K(leo),inferred_bare,2,111,39707a3fe3a1440b2da0b7ac5fcdbf394679c971fcbd1e5be6f2c543190bbfd1,success,0.75,5,"ask(ravi,leo_loc) ask(wen,leo_loc) move(hall) move(room_12) deliver()",5,5851,218,134,12.37
+s5,K(leo),none,0,21,,success,0.9,2,"ask(ravi,leo_loc) drop(room_12)",2,2077,34,0,4.6
+s5,K(leo),none,1,65,,success,0.9,2,"ask(ravi,leo_loc) drop(room_12)",2,2077,58,22,4.76
+s5,K(leo),none,2,114,,success,0.9,2,"ask(ravi,leo_loc) drop(room_12)",2,2077,64,28,3.48
+s5,K(leo),privileged,0,20,154185be363031009fc11a2af626f72ca9f7e7fd40df0072d7d55bf5538e2cac,success,0.95,1,drop(room_12),1,1037,16,0,1.76
+s5,K(leo),privileged,1,69,154185be363031009fc11a2af626f72ca9f7e7fd40df0072d7d55bf5538e2cac,success,0.95,1,drop(room_12),1,1037,45,27,2.43
+s5,K(leo),privileged,2,113,154185be363031009fc11a2af626f72ca9f7e7fd40df0072d7d55bf5538e2cac,success,0.95,1,drop(room_12),1,1037,16,0,1.71
+s5,K(leo),reference,0,24,43ba04c10afd6de461bea2c8816c94bac4f562876f5506619edf86deb216b1d9,success,0.8,4,"ask(ravi,leo_loc) move(hall) move(room_12) deliver()",4,4480,212,148,11.39
+s5,K(leo),reference,1,68,43ba04c10afd6de461bea2c8816c94bac4f562876f5506619edf86deb216b1d9,success,0.75,5,"ask(ravi,leo_loc) ask(wen,leo_loc) move(hall) move(room_12) deliver()",5,5816,208,124,12.65
+s5,K(leo),reference,2,112,43ba04c10afd6de461bea2c8816c94bac4f562876f5506619edf86deb216b1d9,success,0.9,2,"ask(ravi,leo_loc) drop(room_12)",2,2193,58,22,3.78
+s6,K(mia),inferred,0,26,e801d5472a33c7728acef8c5e27e40b32fc3525542ff9f71d4d014eb4247b87d,success,0.85,3,move(hall) move(room_7) deliver(),3,3560,44,0,4.95
+s6,K(mia),inferred,1,70,e801d5472a33c7728acef8c5e27e40b32fc3525542ff9f71d4d014eb4247b87d,success,0.85,3,move(hall) move(room_7) deliver(),3,3560,69,23,5.96
+s6,K(mia),inferred,2,119,e801d5472a33c7728acef8c5e27e40b32fc3525542ff9f71d4d014eb4247b87d,success,0.85,3,move(hall) move(room_7) deliver(),3,3560,70,24,5.99
+s6,K(mia),inferred_bare,0,27,34a4a789878a547cfdc94303b1aa6194266286fa8ba9e2770944dbad6e32f033,success,0.75,5,move(hall) move(room_12) move(hall) move(room_7) deliver(),5,5392,159,80,11.84
+s6,K(mia),inferred_bare,1,71,34a4a789878a547cfdc94303b1aa6194266286fa8ba9e2770944dbad6e32f033,success,0.75,5,move(hall) move(room_12) move(hall) move(room_7) deliver(),5,5392,149,70,10.86
+s6,K(mia),inferred_bare,2,115,34a4a789878a547cfdc94303b1aa6194266286fa8ba9e2770944dbad6e32f033,success,0.75,5,move(hall) move(room_12) move(hall) move(room_7) deliver(),5,5392,167,88,10.56
+s6,K(mia),none,0,25,,success,0.75,5,move(hall) move(room_12) move(hall) move(room_7) deliver(),5,5062,90,13,9.39
+s6,K(mia),none,1,74,,success,0.75,5,move(hall) move(room_12) move(hall) move(room_7) deliver(),5,5062,162,83,10.87
+s6,K(mia),none,2,118,,success,0.75,5,move(hall) move(room_12) move(hall) move(room_7) deliver(),5,5062,136,57,9.59
+s6,K(mia),privileged,0,29,ae0827ba47431fc126cdd19737d86e4f7cf8d2302dd1074887d26b066d932fdf,success,0.85,3,move(hall) move(room_7) deliver(),3,3119,132,84,8.0
+s6,K(mia),privileged,1,73,ae0827ba47431fc126cdd19737d86e4f7cf8d2302dd1074887d26b066d932fdf,success,0.75,5,move(hall) move(room_12) move(hall) move(room_7) deliver(),5,5237,184,105,13.68
+s6,K(mia),privileged,2,117,ae0827ba47431fc126cdd19737d86e4f7cf8d2302dd1074887d26b066d932fdf,success,0.85,3,move(hall) move(room_7) deliver(),3,3119,140,92,8.53
+s6,K(mia),reference,0,28,78db42ae3db3660cf9c28f0f880c18f3f4ee5bbafe370ec3b0fc8dbe27885afb,success,0.85,3,move(hall) move(room_7) deliver(),3,3146,336,288,15.84
+s6,K(mia),reference,1,72,78db42ae3db3660cf9c28f0f880c18f3f4ee5bbafe370ec3b0fc8dbe27885afb,success,0.95,1,drop(room_7),1,1033,170,152,6.98
+s6,K(mia),reference,2,116,78db42ae3db3660cf9c28f0f880c18f3f4ee5bbafe370ec3b0fc8dbe27885afb,success,0.85,3,move(hall) move(room_7) deliver(),3,3146,265,217,11.63
+s7,K(heidi),inferred,0,30,7aa07468707501f48b509e91351573925039424a26c6c8021d908ea6ad526786,success,0.85,3,move(hall) move(desk_3) deliver(),3,3575,88,41,7.24
+s7,K(heidi),inferred,1,79,7aa07468707501f48b509e91351573925039424a26c6c8021d908ea6ad526786,success,0.85,3,move(hall) move(desk_3) deliver(),3,3575,84,37,6.0
+s7,K(heidi),inferred,2,123,7aa07468707501f48b509e91351573925039424a26c6c8021d908ea6ad526786,success,0.85,3,move(hall) move(desk_3) deliver(),3,3575,93,46,6.45
+s7,K(heidi),inferred_bare,0,31,b6538397e38f93ca87e8210c5c057f2ceb3e1bccdb32bddba889caf4583faac9,success,0.85,3,move(hall) move(desk_3) deliver(),3,3293,132,85,8.62
+s7,K(heidi),inferred_bare,1,75,b6538397e38f93ca87e8210c5c057f2ceb3e1bccdb32bddba889caf4583faac9,success,0.85,3,move(hall) move(desk_3) deliver(),3,3293,131,84,7.65
+s7,K(heidi),inferred_bare,2,124,b6538397e38f93ca87e8210c5c057f2ceb3e1bccdb32bddba889caf4583faac9,success,0.85,3,move(hall) move(desk_3) deliver(),3,3293,149,102,8.35
+s7,K(heidi),none,0,34,,success,0.85,3,move(hall) move(desk_3) deliver(),3,3137,110,61,8.19
+s7,K(heidi),none,1,78,,success,0.85,3,move(hall) move(desk_3) deliver(),3,3137,98,49,6.86
+s7,K(heidi),none,2,122,,success,0.85,3,move(hall) move(desk_3) deliver(),3,3137,100,51,7.03
+s7,K(heidi),privileged,0,33,2552f35997120773f418d2af0560f05758089dc0707e9cf2809f0d92dac3abfd,success,0.85,3,move(hall) move(desk_3) deliver(),3,3245,99,52,7.28
+s7,K(heidi),privileged,1,77,2552f35997120773f418d2af0560f05758089dc0707e9cf2809f0d92dac3abfd,success,0.85,3,move(hall) move(desk_3) deliver(),3,3245,95,48,6.63
+s7,K(heidi),privileged,2,121,2552f35997120773f418d2af0560f05758089dc0707e9cf2809f0d92dac3abfd,success,0.85,3,move(hall) move(desk_3) deliver(),3,3245,84,37,6.35
+s7,K(heidi),reference,0,32,5053873394147548f3b82b1229e22ac52ffe737fa67baea0502e02876f5f76a6,success,0.85,3,move(hall) move(desk_3) deliver(),3,3272,141,94,8.35
+s7,K(heidi),reference,1,76,5053873394147548f3b82b1229e22ac52ffe737fa67baea0502e02876f5f76a6,success,0.85,3,move(hall) move(desk_3) deliver(),3,3272,127,80,7.77
+s7,K(heidi),reference,2,120,5053873394147548f3b82b1229e22ac52ffe737fa67baea0502e02876f5f76a6,success,0.85,3,move(hall) move(desk_3) deliver(),3,3272,133,86,8.42
+s8,K(yara),inferred,0,39,90d3cf4b71cc113f265482367f2146b5cde3f4c1e357a8fbf2316edff0a1ed11,success,0.7,6,"ask(tomas,meeting_room) move(hall) move(desk_3) move(hall) move(desk_9) deliver()",6,7194,176,79,14.54
+s8,K(yara),inferred,1,83,90d3cf4b71cc113f265482367f2146b5cde3f4c1e357a8fbf2316edff0a1ed11,success,0.95,1,give(tomas),1,1122,76,59,3.75
+s8,K(yara),inferred,2,127,90d3cf4b71cc113f265482367f2146b5cde3f4c1e357a8fbf2316edff0a1ed11,success,0.95,1,give(tomas),1,1122,65,48,3.35
+s8,K(yara),inferred_bare,0,35,81febfd4c4d5b2409fb9af52f4b5da61a057e4c6f87a9207cec32cbe6493d14f,success,0.95,1,give(tomas),1,1033,61,44,3.24
+s8,K(yara),inferred_bare,1,84,81febfd4c4d5b2409fb9af52f4b5da61a057e4c6f87a9207cec32cbe6493d14f,success,0.95,1,give(tomas),1,1033,83,66,3.89
+s8,K(yara),inferred_bare,2,128,81febfd4c4d5b2409fb9af52f4b5da61a057e4c6f87a9207cec32cbe6493d14f,success,0.95,1,give(tomas),1,1033,63,46,3.09
+s8,K(yara),none,0,38,,success,0.95,1,give(tomas),1,968,116,99,6.41
+s8,K(yara),none,1,82,,success,0.95,1,give(tomas),1,968,63,46,2.9
+s8,K(yara),none,2,126,,success,0.95,1,give(tomas),1,968,72,55,3.21
+s8,K(yara),privileged,0,37,6503c5e8162b6ea7da379b973bdbe4bf4a1cfaa82a31da946cbd461199c91d50,success,0.95,1,give(tomas),1,1002,115,98,5.04
+s8,K(yara),privileged,1,81,6503c5e8162b6ea7da379b973bdbe4bf4a1cfaa82a31da946cbd461199c91d50,success,0.85,3,move(hall) move(desk_9) deliver(),3,3092,160,113,14.28
+s8,K(yara),privileged,2,125,6503c5e8162b6ea7da379b973bdbe4bf4a1cfaa82a31da946cbd461199c91d50,success,0.8,4,"ask(tomas,meeting_room) move(hall) move(desk_9) deliver()",4,4259,258,191,21.23
+s8,K(yara),reference,0,36,3952ea0b532176fb3e52b951fefbaa625d52ad1a13eb5b289f125d14081924a0,success,0.95,1,give(tomas),1,1026,56,39,3.17
+s8,K(yara),reference,1,80,3952ea0b532176fb3e52b951fefbaa625d52ad1a13eb5b289f125d14081924a0,success,0.95,1,give(tomas),1,1026,58,41,3.14
+s8,K(yara),reference,2,129,3952ea0b532176fb3e52b951fefbaa625d52ad1a13eb5b289f125d14081924a0,success,0.95,1,give(tomas),1,1026,61,44,4.23
+s9,K(dave),inferred,0,43,38e32185c5d559c22db528a25b48a1b7519c13e2b58b9db5aa2fa4829d04f4f1,error,-0.6,2,"ask(dave,yara_loc) drop(lab_north)",2,2387,107,70,6.08
+s9,K(dave),inferred,1,87,38e32185c5d559c22db528a25b48a1b7519c13e2b58b9db5aa2fa4829d04f4f1,success,0.7,6,"ask(dave,yara_loc) move(hall) move(lab_north) move(hall) move(lab_south) deliver()",6,7468,241,144,14.36
+s9,K(dave),inferred,2,131,38e32185c5d559c22db528a25b48a1b7519c13e2b58b9db5aa2fa4829d04f4f1,error,-0.6,2,"ask(dave,yara_loc) drop(lab_north)",2,2387,101,64,5.79
+s9,K(dave),inferred_bare,0,44,ef43fee17ae6da3598ef9c13319d07c623ee27eccb72cd9f19fcfa1866cda701,success,0.7,6,"ask(dave,yara_loc) move(hall) move(lab_north) move(hall) move(lab_south) deliver()",6,6778,184,87,14.33
+s9,K(dave),inferred_bare,1,88,ef43fee17ae6da3598ef9c13319d07c623ee27eccb72cd9f19fcfa1866cda701,success,0.7,6,"ask(dave,yara_loc) move(hall) move(lab_north) move(hall) move(lab_south) deliver()",6,6778,185,88,13.0
+s9,K(dave),inferred_bare,2,132,ef43fee17ae6da3598ef9c13319d07c623ee27eccb72cd9f19fcfa1866cda701,success,0.7,6,"ask(dave,yara_loc) move(hall) move(lab_north) move(hall) move(lab_south) deliver()",6,6778,235,138,15.59
+s9,K(dave),none,0,42,,error,-0.6,2,"ask(dave,yara_loc) drop(lab_north)",2,2014,50,13,4.26
+s9,K(dave),none,1,86,,error,-0.6,2,"ask(dave,yara_loc) drop(lab_north)",2,2014,35,0,3.33
+s9,K(dave),none,2,130,,error,-0.6,2,"ask(dave,yara_loc) drop(lab_north)",2,2014,35,0,3.23
+s9,K(dave),privileged,0,41,d1250f1586d7e98ec00fcdc724fde7be71cfc425423480b4b783acb65f1b6526,error,-0.6,2,"ask(dave,yara_loc) drop(lab_north)",2,2095,62,25,4.2
+s9,K(dave),privileged,1,85,d1250f1586d7e98ec00fcdc724fde7be71cfc425423480b4b783acb65f1b6526,error,-0.6,2,"ask(dave,yara_loc) drop(lab_north)",2,2095,55,18,4.19
+s9,K(dave),privileged,2,134,d1250f1586d7e98ec00fcdc724fde7be71cfc425423480b4b783acb65f1b6526,error,-0.6,2,"ask(dave,yara_loc) drop(lab_north)",2,2095,83,46,5.03
+s9,K(dave),reference,0,40,1128eb6bf7d8105f3b6fbb5443534e56047b73a45a03381ee6d9e53fcbcac03b,error,-0.6,2,"ask(dave,yara_loc) drop(lab_north)",2,2143,79,42,5.31
+s9,K(dave),reference,1,89,1128eb6bf7d8105f3b6fbb5443534e56047b73a45a03381ee6d9e53fcbcac03b,error,-0.6,2,"ask(dave,yara_loc) drop(lab_north)",2,2143,35,0,3.22
+s9,K(dave),reference,2,133,1128eb6bf7d8105f3b6fbb5443534e56047b73a45a03381ee6d9e53fcbcac03b,error,-0.6,2,"ask(dave,yara_loc) drop(lab_north)",2,2143,35,0,3.12
