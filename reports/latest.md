@@ -1,4 +1,4 @@
-# Milestone report — Stage 2 pilot, steps 1–3 (2026-10-28)
+# Milestone report — Stage 2 pilot, steps 1–4 (2026-10-28)
 
 **Scope.** The five corrections and Q1–Q6 rulings from the Stage 1 research review (recorded as D-007…D-012), plus one reporting error of mine found while updating memory. This is step 1 of the authorized Stage 2 pilot. **The pilot itself has not started:** no dev-group generation, no LLM calls, and the model server is still stopped. Nothing here is a C1–C5 result.
 
@@ -125,9 +125,15 @@ Write-up: **[reports/pilot/model-diagnostic.md](pilot/model-diagnostic.md)**. Qu
   - leakage 0 everywhere.
 - **Audit (10 contexts):** the scoring reference conflicts with the public rules for overheard statements; recipients' self-knowledge is missed; v2 support can be a rationalization.
 - **Crossed (12 instances, fixed all-t0 allocation):** local/local +0.587 vs. local direct +0.696.
-- **All API cells are blocked:** no `OPENAI_API_KEY`. Estimated spend for all of them is about USD 1.4–2.9.
+- **API cells (gpt-6.1-sol, low effort; runs `unit-contexts-20261028-070945-72da94`, `crossed-20261028-071537-f647df`; spend USD 1.31 of the USD 5 cap):**
+  - API notes are better calibrated: +0.40 log score over local on pilot-v1.
+  - pilot-v2 abstains on 20/24 contexts on the API model, so the over-abstention is a package problem.
+  - Crossed: API/API +0.833, API/local +0.750, API/direct +0.742, local/API +0.554. The policy model drives the gain (policy swap +0.163, 9/1/2); the notes model does not (−0.033).
+  - Notes show no reliable gain under either policy. The API/API edge over API/direct is one instance won by policy exploration, not by note content.
+- **Ledger fix** (`dffe4c6`): the spend ledger is now thread-safe, with in-flight reservations and atomic writes. 254 tests pass.
 
 ## Not done (next steps of the authorized pilot)
 1. ~~Freeze dev groups~~ (done, step 2).
 2. ~~Server, prompts, five arms, accounting, paired interventions, report and bundle~~ (done, step 3).
-3. Next: API cells once `OPENAI_API_KEY` is configured; then the review of `reports/review-request.md` (Q1 scoring vs. public rules, Q2 over-abstention).
+3. ~~API cells~~ (done, step 4).
+4. Next: the review of `reports/review-request.md` (Q1 scoring vs. public rules; Q2 pilot-v2.1; Q3 replicated oracle-content crossed run before more package work).

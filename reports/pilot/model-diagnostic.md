@@ -2,11 +2,13 @@
 
 This follows the pilot review (`docs/decisions/2026-10-28-D013-pilot-review-repairs.md`). It is exploratory work on development data (dev-v2). The original pilot-v1 results, traces and reports are unchanged; an erratum sits at the top of `reports/pilot/pilot-report.md`.
 
-**Status:** all local cells are done. **Every API cell is still blocked.**
-- At first, `OPENAI_API_KEY` was not configured.
-- Ashraf then added it to the gitignored repo `.env`, and the scripts now load it from there (commit `11bc5ee`).
-- A single smoke call on 2026-10-28 authenticated but returned **HTTP 429 `insufficient_quota` / `credit_balance_exhausted`** ("no credits remaining").
-- Spend so far: **USD 0.00**; the ledger shows 0 billed calls. The API cells need credit added to the OpenAI account. The adapter, configuration, spend cap and frozen requests are ready (§5).
+**Status:** every planned cell has now run, local and API.
+- The API key loads from the gitignored repo `.env`. The first key's account had no credits (HTTP 429, zero spend); Ashraf replaced the key.
+- **API spend: USD 1.31** under the USD 5 cap, from 266 billed calls in the persistent ledger:
+  - one smoke call, $0.0001;
+  - fixed contexts, about $0.39;
+  - crossed cells, about $0.92.
+- This is below the pre-run estimate of USD 1.4–2.9. Costs are estimated from reported usage × the configured list prices of $2 / $10 per million tokens.
 
 ## 1. Repairs (shared renderer r3; package pilot-v2; scoring v2)
 - **A. Evidence in the policy interface:**
@@ -28,24 +30,49 @@ This follows the pilot review (`docs/decisions/2026-10-28-D013-pilot-review-repa
 
 The per-family cap was raised from 3 to 4 before any output, because a cap of 3 left R1 at 1.
 
-**Local gpt-oss-20b** (runs `unit-contexts-20261028-064729-654f39` (low) and `…064818-7d5f71` (medium); 4,096-token cap; concurrency 1). Full table: `reports/pilot/unit-contexts-results.md`.
+**Runs:**
+- Local gpt-oss-20b: `unit-contexts-20261028-064729-654f39` (low) and `…064818-7d5f71` (medium). 4,096 output-token cap, temperature 0, concurrency 1.
+- API gpt-6.1-sol: `unit-contexts-20261028-070945-72da94` (low; clean commit `70e3754`).
+  - 16,000 output-token cap, because the API counts reasoning toward it.
+  - Temperature is not sent, so each output is a single draw at the provider's default sampling.
+  - Concurrency 1; 341 s wall clock.
 
-| Effort | Package | Abstained | Correct (supported) | Incorrect (supported) | Unsupported | Leakage | Top-1 | Log score ↑ | CE vs. posterior ↓ | Tokens in / out / reasoning |
-|---|---|---|---|---|---|---|---|---|---|---|
-| low | pilot-v1 (original r2 run, stored, 16 ctx) | 0 | 11 | 1 | 4 | 0 | 0.69 | −1.87 | 1.99 | — |
-| low | pilot-v1 (r3 replay) | 0 | 13 | 2 | 9 | 0 | 0.54 | −1.36 | 1.38 | 785 / 199 / 111 |
-| low | pilot-v2 | 12 | 8 | 1 | 3 | 0 | 0.67 | −1.34 | 1.33 | 1,285 / 327 / 187 |
-| medium | pilot-v1 | 0 | 13 | 2 | 9 | 0 | 0.54 | −2.49 | 2.44 | 820 / 1,049 / 946 |
-| medium | pilot-v2 | 14 | 8 | 0 | 1 | 0 | 0.54 | −1.21 | 1.21 | 1,393 / 1,618 / 1,407 |
+Full table: `reports/pilot/unit-contexts-results.md`.
 
-- **Package effect at low effort is small** on proper scores (Δ log score +0.02). pilot-v2 removes most person-level "unknown" assertions by abstaining instead, but it **over-abstains**: 12/24, including contexts the evidence settles.
-  - The drop in the unsupported rate is partly mechanical, because abstentions leave the denominator.
-- **At medium effort, pilot-v1 gets worse** (more confident wrong answers; Δ log score −1.13), while pilot-v2 improves (+1.28 over v1 at medium). So low effort is not the only limit, and package × effort interact.
-- **Leakage (robot-known value attributed to a person without access): 0** in every cell. The audit found one robot-inference projection the rule misses (§3).
-- **The original r2 outputs score worse than the r3 pilot-v1 replay** on the same 16 contexts (log score −0.19). That is a combined interface effect (people rules), not a pure model effect.
+| Model | Effort | Package | Abstained | Correct (supported) | Incorrect (supported) | Unsupported | Leakage | Top-1 | Log score ↑ | CE vs. posterior ↓ | Tokens in / out / reasoning |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| gpt-oss-20b | low | pilot-v1 (original r2 run, stored, 16 ctx) | 0 | 11 | 1 | 4 | 0 | 0.69 | −1.87 | 1.99 | — |
+| gpt-oss-20b | low | pilot-v1 (r3 replay) | 0 | 13 | 2 | 9 | 0 | 0.54 | −1.36 | 1.38 | 785 / 199 / 111 |
+| gpt-oss-20b | low | pilot-v2 | 12 | 8 | 1 | 3 | 0 | 0.67 | −1.34 | 1.33 | 1,285 / 327 / 187 |
+| gpt-oss-20b | medium | pilot-v1 | 0 | 13 | 2 | 9 | 0 | 0.54 | −2.49 | 2.44 | 820 / 1,049 / 946 |
+| gpt-oss-20b | medium | pilot-v2 | 14 | 8 | 0 | 1 | 0 | 0.54 | −1.21 | 1.21 | 1,393 / 1,618 / 1,407 |
+| **gpt-6.1-sol** | low | pilot-v1 | 0 | 14 | 3 | 7 | 0 | 0.58 | **−0.95** | **0.93** | 891 / 828* / 12 |
+| **gpt-6.1-sol** | low | pilot-v2 | **20** | 4 | 0 | 0 | 0 | 0.50 | −1.09 | 1.08 | 1,411 / 334 / 3 |
+
+\* The mean includes one incomplete attempt (uc02, pilot-v1). That attempt produced 16,000 output tokens with no reported reasoning before it was cut off. It cost about $0.16, was recorded as an incomplete attempt (not parsed), and the retry succeeded.
+
+**Model effect** (paired, same 24 contexts and package):
+- gpt-6.1-sol at low effort beats local gpt-oss-20b at low effort by **+0.40 log score** on pilot-v1 (CE +0.45).
+- It also beats local at medium effort: +1.53 on pilot-v1 and +0.12 on pilot-v2.
+- The categorical improvement is small: 7 vs. 9 unsupported-incorrect, top-1 0.58 vs. 0.54.
+- The gain is mostly calibration (less confident mass on wrong values), not more correct top answers.
+- At low effort the API model reports almost no reasoning tokens (mean 12 for pilot-v1, 3 for pilot-v2).
+
+**Package effect depends on the model:**
+- On the API model, pilot-v2 is **worse** than v1 (Δ log score −0.13).
+- It abstains on **20/24** contexts (local low: 12; local medium: 14), including contexts whose evidence posterior is 1.00 (uc17–uc19, uc21, uc23).
+- Its 4 attributed outputs are all correct-supported. The low unsupported rate is therefore almost entirely abstention.
+- **The stronger model makes pilot-v2's over-abstention worse, not better.** This points to the package (instructions and status design), not model capacity: this is review question 2.
+
+**Shared misses:**
+- **uc21** (K(frank), posterior 1.00): every model and package cell outputs `unknown` or abstains.
+- **uc02** (posterior 0.95): every model and package cell outputs a wrong value or abstains.
+- **uc14** (overheard `say`; review question 1): the API model also attributes a location (room_12). This is consistent with the public rules, so it is still the scoring-reference conflict.
+
+**Leakage: 0** in every cell.
 
 ## 3. Evidence audit (10 contexts; `reports/pilot/unit-contexts-audit.md`)
-The audit was done by the agent, on a sample chosen after viewing the results (not blind).
+The audit was done by the agent, on a sample chosen after viewing the local results (not blind). It covers the local runs only. The API outputs were not separately audited.
 - **Scoring-reference artifact (uc14, uc16).** The simulator never creates nested beliefs from statements people overhear (`say` events update no one). The r3 public rules invite exactly those inferences, so the evidence posterior penalizes publicly defensible answers. This needs a ruling (review question 1).
 - **Recipients know where they themselves are; the model often misses it** (3/10, both packages).
 - **pilot-v2 support can be a rationalization:** contradictory hypotheses cite the same utterance (uc07), or a cited support contradicts the hypothesis (uc15). Structural validation is not entailment.
@@ -53,27 +80,55 @@ The audit was done by the agent, on a sample chosen after viewing the results (n
 - **One case of the robot's own suspicion projected onto another person** (uc10, v1).
 
 ## 4. Crossed comparison (prespecified 12 instances; fixed allocation = every t0 candidate; pilot-v2; r3)
-Run `crossed-20261028-065424-77d5cb` (concurrency 4; dirty paths recorded in the manifest).
+**Runs:**
+- `crossed-20261028-065424-77d5cb`: local cells, concurrency 4.
+- `crossed-20261028-071537-f647df`: API cells, clean commit `dffe4c6`, concurrency 4, 243 s.
 
-| Cell (policy / notes) | n | Success | Mean return |
+**Settings:**
+- Output-token caps: local 4,096; API 16,000.
+- Each API episode is one stochastic draw. Local decoding is temperature 0.
+- There are no replicates, so the API cells carry sampling noise that this table does not show.
+
+| Cell (policy / notes) | n | Success | Errors / timeouts | Mean return | Mean steps | Decision calls | Unit calls |
+|---|---|---|---|---|---|---|---|
+| local / local | 12 | 10 | 1 / 1 | +0.587 | 4.08 | 49 | 57 |
+| local / direct (no units) | 12 | 11 | 1 / 0 | +0.696 | 3.58 | 43 | — |
+| local / API | 12 | 10 | 2 / 0 | +0.554 | 3.92 | 47 | 57 |
+| API / local | 12 | 11 | 1 / 0 | +0.750 | 2.50 | 30 | 57 (3 failed local attempts, retried) |
+| API / API | 12 | **12** | 0 / 0 | **+0.833** | 3.33 | 40 | 57 |
+| API / direct (no units) | 12 | 11 | 1 / 0 | +0.742 | 2.67 | 32 | — |
+
+**Paired per-instance differences in return** (n = 12; better / worse / tie):
+
+| Comparison | Mean Δ | B / W / T | What it isolates |
 |---|---|---|---|
-| local / local | 12 | 0.83 | +0.587 |
-| local / direct (no units) | 12 | 0.92 | +0.696 |
-| API / local, local / API, API / API, API / direct | — | **blocked** (no API key) | — |
+| API/local − local/local | **+0.163** | 9 / 1 / 2 | policy swap, notes fixed |
+| local/API − local/local | −0.033 | 4 / 3 / 5 | notes swap, local policy fixed |
+| API/API − API/local | +0.083 | 1 / 3 / 8 | notes swap, API policy fixed |
+| local/local − local/direct | −0.108 | 2 / 5 / 5 | notes vs. none, local policy |
+| local/API − local/direct | −0.142 | 2 / 7 / 3 | better notes vs. none, local policy |
+| API/local − API/direct | +0.008 | 1 / 0 / 11 | notes vs. none, API policy |
+| API/API − API/direct | +0.092 | 2 / 3 / 7 | better notes vs. none, API policy |
+| API/direct − local/direct | +0.046 | 8 / 2 / 2 | policy swap, no notes |
 
-With the repaired interface and grounding package, explicit notes for every t0 candidate still trail the local direct agent on this subset (n = 12; exploratory).
+**Reading (exploratory; n = 12; one draw per API episode; no inferential claim):**
+- **The policy model drives the gain; the notes model does not.** Swapping in the API policy helps on 9 of 12 instances. Swapping in API notes under the local policy does not help (−0.033), and under the API policy it changes 4 of 12 outcomes in both directions.
+- **The local policy is hurt by notes, whichever model wrote them** (−0.108 local notes, −0.142 API notes, vs. direct). So the earlier local/local deficit is not just poor local notes: this policy uses notes badly.
+- **With the API policy, notes are roughly neutral.** API/local ties direct on 11 of 12. The API/API mean advantage (+0.092) comes from a single instance, `conflict-g0-stakes1` (+1.30); without it the mean is −0.018.
+  - In that instance the API/API notes are nearly identical to the local/API notes. Both put about 0.9 on suite_east for the two obstructive speakers; the truth is suite_west.
+  - The API/API policy succeeded by checking both suites rather than dropping at suite_east. That is a policy draw, not better note content.
+- **The API policy also takes fewer steps** (2.5–3.3 vs. 3.6–4.1), uses few reasoning tokens at low effort (269–433 per cell, vs. 3,729–5,205 for the local policy), and produced no failed decision calls.
+- **Answer to the review's crossed question, on this subset:**
+  - better notes alone do not help;
+  - the local policy struggles to use notes of either quality;
+  - a stronger policy is better with or without notes and does not yet show a reliable gain from them.
 
-## 5. To run the API cells
-1. Configure the key locally, in WSL (never in the repo or the chat), for example by adding `export OPENAI_API_KEY=...` to `~/.bashrc`. Optionally set the cap with `export OFFICEMINDS_API_CAP_USD=5` (the default is 5).
-2. Then run:
-   ```bash
-   python3 scripts/run_unit_contexts.py --config configs/models/api_gpt_6_1_sol.json --effort low
-   python3 scripts/run_crossed.py --cells api/local local/api api/api api/direct   # needs the local server for local sides
-   python3 scripts/report_unit_contexts.py ~/officeminds-runs/unit-contexts/<local-low> ~/officeminds-runs/unit-contexts/<api-low>
-   ```
-3. The persistent ledger at `~/officeminds-runs/api-spend-ledger.json` refuses any call whose worst case would exceed the cap. Incomplete cells are recorded as blocked, not dropped.
+## 5. Spend and cost accounting
+- **Ledger:** `~/officeminds-runs/api-spend-ledger.json`; USD 1.3123 over 266 calls, including retries and the incomplete 16,000-token attempt.
+- **Ledger fix before the crossed run** (commit `dffe4c6`): `SpendLedger` had no lock, and run_crossed shares it across 4 threads. Concurrent calls could lose increments, corrupt the file, or each pass the cap check. It now:
+  - holds a lock;
+  - reserves each in-flight call's worst case and releases it on transport errors;
+  - writes the file atomically.
 
-**Spend estimate** (illustrative only, from the local runs' measured token volumes at Sol's listed $2 / $10 per million; tokenizers and reasoning use differ):
-- fixed contexts: about $0.23 (or $0.48 with 3× output);
-- the four crossed API cells: about $1.20 (or $2.38 with 3× output);
-- total about $1.4–2.9.
+  The fixed-context run ran sequentially before this fix, so it was not affected.
+- **Comparability:** tokens from the two tokenizers are not comparable compute. API latency includes network time and provider queueing. Local latency was measured at concurrency 4 on one RTX 5090 with the server warm.
