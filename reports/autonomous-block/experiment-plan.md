@@ -147,3 +147,37 @@ Each entry is written before the round's new outputs are inspected. Brief: `AUTO
 - **privileged ≈ none and actions unchanged:** little headroom here; the direct policy already exploits the evidence.
 - **an apparent gain driven by one state or replicate:** spend Round 3 on replication or a matched control.
 - **"Reliable" (descriptive):** mean Δ ≥ +0.10 with positive Δ in at least 5 of 9 states, and the result not reversed by dropping any single state.
+
+**Round 2 plan-gate outcome and amendment** (Opus gate: PASS WITH REQUIRED CHANGES; `reviews/round2-plan-opus.md`). Made before any Round 2 note or policy output.
+1. **Rules revision bug fixed:** the runner had `REV = 4`. It is now r5, and an assert checks the r5 marker in every rendered unit and policy request.
+2. **Reference strata, pre-declared.** The reference note carries real information in only 4 of the 9 states:
+   - **A, informative and consistent:** {s3} (reference = truth, p = 1.0).
+   - **B, informative only through undisclosed generator base rates:** {s2, s6, s7} (0.95 / 0.975 / 0.867 on the truth; the audit flags uc02/uc06/uc07 as ambiguous).
+   - **C, uninformative 0.5/0.5:** {s1, s4, s5, s8, s9}. Since a note is present but uncertain, this works as a built-in control.
+   - reference − none is reported per stratum.
+   - **Amended mapping:**
+     - if reference > none only in B, the conclusion is "dependence on undisclosed generator knowledge" (close to privileged-information dependence), not "inference-limited";
+     - an inference-limited call resting on A alone (n = 1) is reported as inconclusive.
+3. **Matched-presentation control:** a fifth condition, `inferred_bare`. It is the same frozen inferred payload with support, evidence IDs, rule IDs and unresolved items removed, so it renders like the computed notes.
+   - inferred vs. inferred_bare = the presentation effect;
+   - inferred_bare vs. reference vs. privileged = content at matched presentation.
+   - Status still differs: model-chosen for inferred, a threshold for computed notes.
+   - Cost: +27 episodes (about $0.20).
+4. **"Reliable" (descriptive) is now all of:**
+   - more positive than negative states;
+   - at least 3 of the 4 useful/carryover states (s1, s2, s3, s9) positive;
+   - not reversed by removing any single state;
+   - not reversed by removing any single policy draw (a single success/error flip at ×4 stakes moves the 9-state mean by about 0.107).
+
+   Also reported: Δ by original label group and by stratum, success/error counts per state, within-state replicate SD, the inferred − reference and privileged − reference contrasts, and first-action change relative to the modal `none` action.
+5. **Budget enforcement and missing data:**
+   - The policy stage runs with `OFFICEMINDS_API_CAP_USD` = committed spend at dispatch + $1.40, so the round's allocation is a hard stop.
+   - Any exception inside an episode is recorded as `blocked` (the pool keeps going, and the manifest is always written); the ledger is authoritative for partial-episode spend.
+   - If billing stops a run, the analysis uses complete replicate layers only (all 9 states × 5 conditions for a replicate).
+   - New estimate: 135 policy episodes × about $0.0065 + 9 inferred notes ≈ $0.95.
+6. **Freeze provenance:**
+   - The `notes` stage records the git commit, dirty paths, timestamps and its ledger USD delta.
+   - It also hashes both the payload and the **rendered MIND NOTES text** per condition.
+   - It writes the tracked proof file `reports/autonomous-block/round2-notes-freeze.json`, which is committed before the `policy` stage runs.
+   - The rendered note text itself stays in gitignored `data/` (it contains privileged content).
+- *Also recorded:* if an inferred note fails, the fallback renders "MIND NOTES: (none instantiated)". That is not identical to the `none` condition's text, and it would be reported per state.
