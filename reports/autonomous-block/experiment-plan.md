@@ -97,3 +97,53 @@ Each entry is written before the round's new outputs are inspected. Brief: `AUTO
   - The API r3 → r5 comparison is labelled "rules + output cap + fresh sampled draw (descriptive only)".
   - The Round 2 fallback threshold now reads "≥ 3/24 invalid on API".
 - *Pinned revisions:* every runner records the render revision it used (`render_revision` in its manifest). The global default is now r5 for new runs only.
+
+---
+
+## Round 2 — replicated value-of-notes diagnostic (declared 2026-10-28, before any Round 2 note or policy output; written while the Round 1 r5 cells were running)
+
+**Question / hypothesis.** With the API policy and a fixed allocation, do legally inferred notes give reproducible decision value over no explicit notes on the nine prespecified states? If they do not, is that because the content is wrong (compare grounded-reference notes) or because the information is not legally available (privileged notes)? Or does the policy not use notes well, or do these states simply have little headroom?
+
+**Change from the preceding version.** No method change to the package or the rules: pilot-v2.1 notes at r5, as tested in Round 1. New are the frozen-note injection (`run_episode_arm(frozen_notes=...)`, no inference call inside the episode, refresh impossible under fact_only) and the runner `scripts/run_notes_value.py`.
+
+**Configurations and data**
+- **States:** the 9 prespecified intervention states in `data/pilot/dev-v2/interventions.json`. They are all at t0, each with one unit, and keep their original labels: 3 `useful_current_action`, 3 `zero_value_stop`, 2 `negative` (scalar-selected probes, one face-value and one hedged record), 1 `carryover`. This is a mixed diagnostic set, not nine certified cases of required mental reasoning.
+- **Units, recorded before outcomes:** s1 K(wen), s2 K(judy), s3 K(grace), s4 K(carol), s5 K(leo), s6 K(mia), s7 K(heidi), s8 K(yara), s9 K(dave).
+- **Conditions:**
+  1. `none`: no explicit notes; direct rendering.
+  2. `inferred`: a pilot-v2.1 note from gpt-6.1-sol (low effort, 6,000-token cap, single draw), r5 rules, the legal t0 history only.
+  3. `reference`: the exact evidence posterior of the unit's content given the same t0 history under the dev-v2 generator.
+     - It contains no world identity, correctness flag or action.
+     - **Knowledge beyond the LLM prompt:** the generator's base rates and backstory templates (see `reference-audit.json`). For example, it knows which claimants with incentives lie and how often.
+     - Status `grounded` if max p ≥ 0.8, else `uncertain`.
+  4. `privileged`: the unit's actual content in the realized world, p = 1, status `grounded`. PRIVILEGED; not deployable; not a guaranteed upper bound.
+- **Representation:** every note uses the v2.1 note format. Inferred notes show per-hypothesis support; reference and privileged notes show none (they are computed). This presentation difference is a known confound, recorded here, not hidden.
+- **Policy:** gpt-6.1-sol, effort low, 6,000-token cap, provider-default sampling, r5 task card, `prompts/pilot-v1/policy_system.txt`.
+  - Fixed allocation: the state's one unit at t0; no further allocation; no refresh (status marks such as `stale`/`fact_refuted` still apply, identically across conditions).
+  - Concurrency 4.
+- **Replicates and order:** 3 fresh policy continuations per state × condition, all reusing the **frozen payloads** (sha256 per payload recorded before any policy call). Dispatch order is counterbalanced by rotating conditions by (state index + replicate).
+- **Inferred-note failure:** if the inferred call fails after 3 attempts, the `inferred` condition runs with no note. This is recorded and not dropped.
+
+**What stays fixed.** States, histories, policy model and settings, task rules, the legal observation channel, the reward, the status logic, and the frozen payloads. New allocations are disabled.
+
+**Metrics, denominators and inclusion rules**
+- **Primary:** per state, mean return over the 3 replicates; per condition, the mean over the 9 states of (condition − none) per state.
+- **Reported alongside:** state-level sign counts (better / worse / tie, |Δ| ≤ 1e-9 = tie); success, error and timeout counts; mean steps; first-action changes vs. `none`; decision tokens, calls and USD per episode.
+- **Note-generation cost** (the inferred calls) is shown separately from replicated policy cost. Note reuse is an experimental economy, not free deployment.
+- **Counts are kept distinct:** 9 scenarios (states), 1 note sample per state and condition, 3 policy draws. Draws are not independent scenarios, and nothing is pooled across replicates as if it were.
+- **Uncertainty:** exploratory only. Report the per-state table, plus a bootstrap over the 9 states (resampling states, replicates averaged within a state) for descriptive intervals. No significance claims.
+- **Failure-selected slice:** none is planned for this round. If one is added later, it is reported separately and never pooled.
+
+**Expected cost and maximum allocation**
+- From the measured crossed run: API direct cost $0.0045 per episode (2.67 decisions × about 709 prompt tokens); API with 5 notes cost $0.011. The r5 rules add about 400 prompt tokens, and one note adds about 250.
+- Estimate: `none` 27 × $0.006 + notes 81 × $0.007 + 9 inferred notes × $0.008 ≈ **$0.80**.
+- **Maximum allocation $1.40.** If the remaining allowance after Round 1 cannot cover $1.40 plus a $0.50 reserve, the states are reduced by sha256 order of state_id before any outcome, and the reduction is recorded.
+
+**What each outcome would imply (brief §8)**
+- **inferred ≈ reference > none:** a usable grounded value signal. Recommend the allocation-learning milestone; do not start it.
+- **reference (and privileged) > none, inferred ≈ none:** inference-limited. Round 3 would test one targeted inference/support repair.
+- **only privileged > none:** privileged-information dependence. Revisit evidence availability and the label target.
+- **privileged ≈ none and notes change the actions:** integration-limited, or notes hurt. A possible Round 3 note-integration variant.
+- **privileged ≈ none and actions unchanged:** little headroom here; the direct policy already exploits the evidence.
+- **an apparent gain driven by one state or replicate:** spend Round 3 on replication or a matched control.
+- **"Reliable" (descriptive):** mean Δ ≥ +0.10 with positive Δ in at least 5 of 9 states, and the result not reversed by dropping any single state.
