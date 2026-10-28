@@ -29,7 +29,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from officeminds.episode import VisibleHistory  # noqa: E402
 from officeminds.scenarios import REPORTER_TYPES, conflicting_reports  # noqa: E402
 from vomi import runlog  # noqa: E402
-from vomi.oracle import GROUNDED, PRIVILEGED_BOUNDED, ExactOracle  # noqa: E402
+from vomi.oracle import GROUNDED_SCALAR, PRIVILEGED_BOUNDED, ExactOracle  # noqa: E402
 from vomi.units import generate_candidates  # noqa: E402
 
 WITNESS = (("alice_loc", "office_a"), ("bob_type", "accurate"), ("carol_type", "mistaken"))
@@ -47,7 +47,7 @@ def unit_profile(o, u, record):
     base = [o.best_action(o.actor_items(frozenset(), record, i), o.obs) for i in range(len(o.worlds))]
     tgt = [o.best_action(o.actor_items(frozenset({u}), record, i), o.obs) for i in range(len(o.worlds))]
     margins = [o.decision_margin(o.actor_items(frozenset({u}), record, i), o.obs) for i in range(len(o.worlds))]
-    return {"vomi": d.total, "d_action": d.d_action, "d_memory": d.d_memory, "p_flip": d.p_flip,
+    return {"delta_j": d.delta_j, "d_action": d.d_action, "d_memory": d.d_memory, "p_flip": d.p_flip,
             "flips": tuple(a != b for a, b in zip(base, tgt)), "targets": tuple(map(str, tgt)),
             "base": tuple(map(str, base)), "min_margin": min(margins)}
 
@@ -62,7 +62,7 @@ def diagnose(bob, carol, record, testimony, counts):
     p1, p4 = prof[1.0], prof[4.0]
     for U, V in itertools.permutations(sorted(p1), 2):
         a1, a4, b1, b4 = p1[U], p4[U], p1[V], p4[V]
-        if not (a1["vomi"] - b1["vomi"] < -1e-6 and a4["vomi"] - b4["vomi"] > 1e-6):
+        if not (a1["delta_j"] - b1["delta_j"] < -1e-6 and a4["delta_j"] - b4["delta_j"] > 1e-6):
             continue
         counts["reversals"] += 1
         if a1["base"] != a4["base"]:
@@ -104,7 +104,7 @@ def check(bob, carol, record, testimony):
             continue
         if min(x["min_margin"] for x in (a1, a4, b1, b4)) <= 1e-6:
             continue
-        d1, d4 = a1["vomi"] - b1["vomi"], a4["vomi"] - b4["vomi"]
+        d1, d4 = a1["delta_j"] - b1["delta_j"], a4["delta_j"] - b4["delta_j"]
         if d1 < -1e-6 and d4 > 1e-6:  # U below V at x1, above V at x4 (the review's direction)
             hits.append({"U": U, "V": V, "x1": {"U": a1, "V": b1}, "x4": {"U": a4, "V": b4}})
     return hits
@@ -127,7 +127,7 @@ def main():
         for _ in range(args.samples):
             bob = dict(zip(REPORTER_TYPES, (rng.choice(levels) for _ in REPORTER_TYPES)))
             carol = dict(zip(REPORTER_TYPES, (rng.choice(levels) for _ in REPORTER_TYPES)))
-            for record in (GROUNDED, PRIVILEGED_BOUNDED):
+            for record in (GROUNDED_SCALAR, PRIVILEGED_BOUNDED):
                 for testimony in ("face_value", "hedged"):
                     diagnose(bob, carol, record, testimony, by_key.setdefault(f"{record}/{testimony}", Counter()))
         out.mkdir(parents=True, exist_ok=True)
@@ -140,7 +140,7 @@ def main():
     for _ in range(args.samples):
         bob = dict(zip(REPORTER_TYPES, (rng.choice(levels) for _ in REPORTER_TYPES)))
         carol = dict(zip(REPORTER_TYPES, (rng.choice(levels) for _ in REPORTER_TYPES)))
-        for record in (GROUNDED, PRIVILEGED_BOUNDED):
+        for record in (GROUNDED_SCALAR, PRIVILEGED_BOUNDED):
             for testimony in ("face_value", "hedged"):
                 tried += 1
                 for h in check(bob, carol, record, testimony):

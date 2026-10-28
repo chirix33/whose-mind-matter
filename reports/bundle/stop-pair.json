@@ -1,0 +1,240 @@
+{
+ "x1": {
+  "decomposition": {
+   "unit": "K(bob)",
+   "record": "grounded_scalar",
+   "q_m_a0": 0.8449348769898696,
+   "q_m_ay": 0.8740231548480462,
+   "q_my_ay": 0.8740231548480462,
+   "d_action": 0.02908827785817658,
+   "d_memory": 0.0,
+   "delta_j": 0.02908827785817658,
+   "residual": 0.0,
+   "p_flip": 1.0,
+   "carryover": false,
+   "a0": "move(hall)",
+   "ay": "drop(office_a)"
+  },
+  "net_vomi": 0.01908827785817658,
+  "lambda": 0.01,
+  "stop_preferred": false,
+  "candidates": [
+   "K(alice)",
+   "K(bob)",
+   "R(bob)",
+   "K(bob->carol)",
+   "R(bob->carol)",
+   "K(carol)",
+   "R(carol)",
+   "K(carol->bob)",
+   "R(carol->bob)"
+  ],
+  "unit_output": {
+   "p_default_holds": 0.9855282199710564,
+   "p_default_violated": 0.01447178002894356
+  },
+  "outcomes_without": [
+   {
+    "params": {
+     "alice_loc": "office_a",
+     "bob_type": "accurate",
+     "carol_type": "mistaken"
+    },
+    "posterior": 0.02315484804630969,
+    "action": "move(hall)",
+    "return": 0.85
+   },
+   {
+    "params": {
+     "alice_loc": "office_a",
+     "bob_type": "accurate",
+     "carol_type": "obstructive"
+    },
+    "posterior": 0.9261939218523878,
+    "action": "move(hall)",
+    "return": 0.85
+   },
+   {
+    "params": {
+     "alice_loc": "office_b",
+     "bob_type": "mistaken",
+     "carol_type": "accurate"
+    },
+    "posterior": 0.01447178002894356,
+    "action": "move(hall)",
+    "return": 0.75
+   },
+   {
+    "params": {
+     "alice_loc": "office_b",
+     "bob_type": "obstructive",
+     "carol_type": "accurate"
+    },
+    "posterior": 0.03617945007235889,
+    "action": "move(hall)",
+    "return": 0.75
+   }
+  ],
+  "outcomes_with": [
+   {
+    "params": {
+     "alice_loc": "office_a",
+     "bob_type": "accurate",
+     "carol_type": "mistaken"
+    },
+    "posterior": 0.02315484804630969,
+    "action": "drop(office_a)",
+    "return": 0.95
+   },
+   {
+    "params": {
+     "alice_loc": "office_a",
+     "bob_type": "accurate",
+     "carol_type": "obstructive"
+    },
+    "posterior": 0.9261939218523878,
+    "action": "drop(office_a)",
+    "return": 0.95
+   },
+   {
+    "params": {
+     "alice_loc": "office_b",
+     "bob_type": "mistaken",
+     "carol_type": "accurate"
+    },
+    "posterior": 0.01447178002894356,
+    "action": "drop(office_a)",
+    "return": -0.55
+   },
+   {
+    "params": {
+     "alice_loc": "office_b",
+     "bob_type": "obstructive",
+     "carol_type": "accurate"
+    },
+    "posterior": 0.03617945007235889,
+    "action": "drop(office_a)",
+    "return": -0.55
+   }
+  ]
+ },
+ "x4": {
+  "decomposition": {
+   "unit": "K(bob)",
+   "record": "grounded_scalar",
+   "q_m_a0": 0.8449348769898696,
+   "q_m_ay": 0.7980463096960925,
+   "q_my_ay": 0.7980463096960925,
+   "d_action": -0.046888567293777106,
+   "d_memory": 0.0,
+   "delta_j": -0.046888567293777106,
+   "residual": 0.0,
+   "p_flip": 1.0,
+   "carryover": false,
+   "a0": "move(hall)",
+   "ay": "drop(office_a)"
+  },
+  "net_vomi": -0.05688856729377711,
+  "lambda": 0.01,
+  "stop_preferred": true,
+  "candidates": [
+   "K(alice)",
+   "K(bob)",
+   "R(bob)",
+   "K(bob->carol)",
+   "R(bob->carol)",
+   "K(carol)",
+   "R(carol)",
+   "K(carol->bob)",
+   "R(carol->bob)"
+  ],
+  "unit_output": {
+   "p_default_holds": 0.9855282199710564,
+   "p_default_violated": 0.01447178002894356
+  },
+  "outcomes_without": [
+   {
+    "params": {
+     "alice_loc": "office_a",
+     "bob_type": "accurate",
+     "carol_type": "mistaken"
+    },
+    "posterior": 0.02315484804630969,
+    "action": "move(hall)",
+    "return": 0.85
+   },
+   {
+    "params": {
+     "alice_loc": "office_a",
+     "bob_type": "accurate",
+     "carol_type": "obstructive"
+    },
+    "posterior": 0.9261939218523878,
+    "action": "move(hall)",
+    "return": 0.85
+   },
+   {
+    "params": {
+     "alice_loc": "office_b",
+     "bob_type": "mistaken",
+     "carol_type": "accurate"
+    },
+    "posterior": 0.01447178002894356,
+    "action": "move(hall)",
+    "return": 0.75
+   },
+   {
+    "params": {
+     "alice_loc": "office_b",
+     "bob_type": "obstructive",
+     "carol_type": "accurate"
+    },
+    "posterior": 0.03617945007235889,
+    "action": "move(hall)",
+    "return": 0.75
+   }
+  ],
+  "outcomes_with": [
+   {
+    "params": {
+     "alice_loc": "office_a",
+     "bob_type": "accurate",
+     "carol_type": "mistaken"
+    },
+    "posterior": 0.02315484804630969,
+    "action": "drop(office_a)",
+    "return": 0.95
+   },
+   {
+    "params": {
+     "alice_loc": "office_a",
+     "bob_type": "accurate",
+     "carol_type": "obstructive"
+    },
+    "posterior": 0.9261939218523878,
+    "action": "drop(office_a)",
+    "return": 0.95
+   },
+   {
+    "params": {
+     "alice_loc": "office_b",
+     "bob_type": "mistaken",
+     "carol_type": "accurate"
+    },
+    "posterior": 0.01447178002894356,
+    "action": "drop(office_a)",
+    "return": -2.05
+   },
+   {
+    "params": {
+     "alice_loc": "office_b",
+     "bob_type": "obstructive",
+     "carol_type": "accurate"
+    },
+    "posterior": 0.03617945007235889,
+    "action": "drop(office_a)",
+    "return": -2.05
+   }
+  ]
+ }
+}

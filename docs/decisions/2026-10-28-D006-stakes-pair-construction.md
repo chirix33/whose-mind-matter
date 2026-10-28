@@ -26,3 +26,6 @@ Multiplying the error penalty ×4 with identical observations does **not** gener
 ## Implementation status (Stage 1)
 - **Ranking reversal found** in the `privileged_bounded` record: `reversal_m1`/`reversal_m4`. U = R(bob) +0.00724 at both stakes (P(flip) 0.036); V = K(carol) +0.02909 → −0.04689 (P(flip) 1.0). Zero carryover, no ties, hand-derived in tests.
 - No isolating reversal exists in the `grounded` record within the searched family; a per-criterion diagnostic explains why. Alternatives are put to review as Q5 in `reports/review-request.md`.
+
+## Amendment
+Amended by **D-011** (Stage 1 review, 2026-10-28): the two-unit grounded reversal is no longer required. The grounded unit-vs-STOP pair is the isolating test, and the privileged two-unit reversal is a diagnostic only.

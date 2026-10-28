@@ -1,0 +1,155 @@
+{
+ "agent_view": {
+  "brief": "Deliver the package to Alice.",
+  "steps": [
+   {
+    "action": null,
+    "obs": {
+     "t": 0,
+     "room": "lobby",
+     "people_present": [
+      "rec"
+     ],
+     "utterances": [
+      [
+       "rec",
+       "I saw Alice head to her office earlier."
+      ]
+     ],
+     "outcome": "",
+     "reward": 0.0,
+     "done": false
+    }
+   },
+   {
+    "action": "ask(rec,alice_loc)",
+    "obs": {
+     "t": 1,
+     "room": "lobby",
+     "people_present": [
+      "rec"
+     ],
+     "utterances": [
+      [
+       "rec",
+       "alice_loc = office_a"
+      ]
+     ],
+     "outcome": "",
+     "reward": -0.05,
+     "done": false
+    }
+   },
+   {
+    "action": "move(hall)",
+    "obs": {
+     "t": 2,
+     "room": "hall",
+     "people_present": [],
+     "utterances": [],
+     "outcome": "",
+     "reward": -0.05,
+     "done": false
+    }
+   },
+   {
+    "action": "move(office_a)",
+    "obs": {
+     "t": 3,
+     "room": "office_a",
+     "people_present": [],
+     "utterances": [],
+     "outcome": "",
+     "reward": -0.05,
+     "done": false
+    }
+   }
+  ]
+ },
+ "privileged": {
+  "scenario_id": "false_belief",
+  "params": [
+   [
+    "initial",
+    "office_a"
+   ],
+   [
+    "moved",
+    "yes"
+   ]
+  ]
+ },
+ "robot_graph": [
+  {
+   "t": 1,
+   "event": "instantiate K(rec) after rec says office_a",
+   "policy_view": [
+    {
+     "unit": "K(rec)",
+     "output": {
+      "p_default_holds": 0.7,
+      "p_default_violated": 0.30000000000000004
+     },
+     "status": "fresh",
+     "as_of": 1
+    }
+   ]
+  },
+  {
+   "t": 2,
+   "event": "move(hall)",
+   "policy_view": [
+    {
+     "unit": "K(rec)",
+     "output": {
+      "p_default_holds": 0.7,
+      "p_default_violated": 0.30000000000000004
+     },
+     "status": "retained",
+     "as_of": 1
+    }
+   ]
+  },
+  {
+   "t": 3,
+   "event": "move(office_a)",
+   "policy_view": [
+    {
+     "unit": "K(rec)",
+     "output": {
+      "p_default_holds": 0.7,
+      "p_default_violated": 0.30000000000000004
+     },
+     "status": "contradicted",
+     "as_of": 1
+    }
+   ]
+  },
+  {
+   "t": 3,
+   "event": "refresh K(rec) (counted call)",
+   "policy_view": [
+    {
+     "unit": "K(rec)",
+     "output": {
+      "p_default_holds": 0.0,
+      "p_default_violated": 1.0
+     },
+     "status": "refreshed",
+     "as_of": 3
+    }
+   ],
+   "cost_calls": 2.0,
+   "history": [
+    {
+     "timestamp": 1,
+     "output": {
+      "p_default_holds": 0.7,
+      "p_default_violated": 0.30000000000000004
+     },
+     "status": "contradicted"
+    }
+   ]
+  }
+ ]
+}

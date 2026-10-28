@@ -2,14 +2,14 @@
 
 Research code for *Decision-Value Allocation of Theory of Mind over Perspective Graphs*. The full plan is in [docs/research/methods-experiments-v2.md](docs/research/methods-experiments-v2.md), a verbatim copy of the outline. Implementation rules are in [AGENTS.md](AGENTS.md).
 
-Current milestone: **Stage 1: semantics and counterexamples** (Stage 0 review rulings implemented). See [reports/latest.md](reports/latest.md) and [reports/review-request.md](reports/review-request.md).
+Current milestone: **Stage 2 (local LLM pilot), step 1 done: Stage 1 review corrections** (D-007…D-012). See [reports/latest.md](reports/latest.md).
 
 ## Layout
 ```
 src/officeminds/   world (physical state, private minds, observations), tiny scenarios, episodes/replay
-src/vomi/          units + defaults + visible-only candidates; exact evaluator with three label records
-                   (legacy privileged, privileged-bounded, grounded) and the D_action/D_memory decomposition;
-                   allocation metrics + D4 target; perspective graph + features; P2/audit helpers; model client
+src/vomi/          units + defaults + visible-only candidates; exact evaluator with four label records
+                   (legacy privileged, privileged-bounded, grounded typed, grounded scalar diagnostic), D_action/D_memory;
+                   best-subset reference + D4/STOP; perspective graph + refresh; typed LLM unit schema; audits; client
 configs/models/    model/endpoint configs
 scripts/           thin entry points (tiny-case labels, model serve, model smoke test)
 tests/             invariants and hand-checked scientific constructions (CPU only)

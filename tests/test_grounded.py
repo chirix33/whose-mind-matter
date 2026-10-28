@@ -8,7 +8,7 @@ from officeminds.episode import VisibleHistory
 from officeminds.scenarios import ALL_CASES
 from officeminds.world import Action
 from vomi.graph import PerspectiveGraph, visible_evidence, visible_features
-from vomi.oracle import GROUNDED, PRIVILEGED_BAYES, PRIVILEGED_BOUNDED, ExactOracle
+from vomi.oracle import GROUNDED_SCALAR, PRIVILEGED_BAYES, PRIVILEGED_BOUNDED, ExactOracle
 from vomi.units import K, R, generate_candidates
 
 
@@ -19,7 +19,7 @@ def setup(case, testimony="face_value", params=None):
     return sc, hist, ExactOracle(sc, hist, testimony=testimony)
 
 
-def J(o, *units, record=GROUNDED):
+def J(o, *units, record=GROUNDED_SCALAR):
     return o.evaluate(frozenset(units), record=record).value
 
 
@@ -35,11 +35,11 @@ def test_invisible_world_pair_gives_identical_actor_inputs_and_outputs():
     assert ca == cb
     for u in ca:
         assert oa.grounded_output(u) == ob.grounded_output(u)
-        ma = oa.decision_margin(oa.actor_items(frozenset(), GROUNDED, 0), oa.obs)
-        mb = ob.decision_margin(ob.actor_items(frozenset(), GROUNDED, 0), ob.obs)
+        ma = oa.decision_margin(oa.actor_items(frozenset(), GROUNDED_SCALAR, 0), oa.obs)
+        mb = ob.decision_margin(ob.actor_items(frozenset(), GROUNDED_SCALAR, 0), ob.obs)
         assert visible_features(sa.config, ha, u, ma) == visible_features(sb.config, hb, u, mb)
         # The grounded actor's action is the same in every world consistent with h ...
-        acts = {str(a) for a in oa.evaluate(frozenset({u}), record=GROUNDED).actions}
+        acts = {str(a) for a in oa.evaluate(frozenset({u}), record=GROUNDED_SCALAR).actions}
         assert len(acts) == 1
     # ... whereas Alice's PRIVATE content differs across the pair (rec's belief does not), so only
     # the privileged record lets that difference reach the actor.
@@ -59,7 +59,7 @@ def test_false_belief_hand_values_and_testimony_robustness():
     _, _, o = setup("false_belief")
     # Face value: ask rec, trust the answer, drop: 0.7*0.90 + 0.3*(-0.05-0.05-0.5) = 0.45
     assert J(o) == pytest.approx(0.45)
-    assert o.evaluate(record=GROUNDED).actions[0] == Action("ask", "rec", "alice_loc")
+    assert o.evaluate(record=GROUNDED_SCALAR).actions[0] == Action("ask", "rec", "alice_loc")
     # K(rec): P(outdated)=0.3 so walking now (0.5*0.85 + 0.5*0.75 = 0.80) beats ask-and-walk (0.77)
     assert J(o, K("rec")) == pytest.approx(0.80)
     d = o.decompose(K("rec"))
@@ -73,14 +73,14 @@ def test_false_belief_hand_values_and_testimony_robustness():
 def test_direct_testimony_default_acts_on_face_value():
     """Bob claims office_a: the face-value actor drops there immediately (stakes x4, q=0.95)."""
     _, _, o = setup("stakes_m4_q0.95")
-    assert o.evaluate(record=GROUNDED).actions[0] == Action("drop", "office_a")
+    assert o.evaluate(record=GROUNDED_SCALAR).actions[0] == Action("drop", "office_a")
     assert J(o) == pytest.approx(0.95 * 0.95 - 0.05 * 2.05)
     # Grounded R(bob): P(A)=0.95 < 0.9655 threshold at x4 -> walk: 0.95*0.85 + 0.05*0.75
     assert J(o, R("bob")) == pytest.approx(0.845)
     # Regression: K(alice)'s belief equals the target, so exposing its content marginal would leak
     # the whole-scene posterior. Grounded outputs carry only P(default holds | h): no value here.
     assert J(o, K("alice")) == pytest.approx(J(o))
-    assert o.grounded_output(K("alice")) == {True: pytest.approx(1.0)}
+    assert o.grounded_output(K("alice"))["p_default_holds"] == pytest.approx(1.0)
 
 
 # ------------------------------------------------------------------ nested reliability R(j->k)
@@ -120,13 +120,13 @@ def test_depth2_handoff_retention_counterexample_decomposes_exactly():
 
 
 @pytest.mark.parametrize("case", sorted(ALL_CASES))
-@pytest.mark.parametrize("record", [GROUNDED, PRIVILEGED_BOUNDED, PRIVILEGED_BAYES])
+@pytest.mark.parametrize("record", [GROUNDED_SCALAR, PRIVILEGED_BOUNDED, PRIVILEGED_BAYES])
 def test_decomposition_identity_everywhere(case, record):
     sc, hist, o = setup(case)
     for u in generate_candidates(sc.config, hist):
         d = o.decompose(u, record=record)
         assert abs(d.residual) < 1e-12
-        assert d.total == pytest.approx(J(o, u, record=record) - J(o, record=record))
+        assert d.delta_j == pytest.approx(J(o, u, record=record) - J(o, record=record))
 
 
 def test_path_asymmetry_directed_unit_with_negative_current_action_component():
@@ -181,11 +181,11 @@ def test_stakes_ranking_reversal_privileged_bounded():
         _, _, o = setup(f"reversal_m{m}", params=REVERSAL_WITNESS)
         assert len(o.worlds) == 4 and J(o, record=PRIVILEGED_BOUNDED) == pytest.approx(j0)
         u, v = o.decompose(R("bob"), record=PRIVILEGED_BOUNDED), o.decompose(K("carol"), record=PRIVILEGED_BOUNDED)
-        assert u.total == pytest.approx(p4 * 0.2)
-        assert v.total == pytest.approx(pA * 0.95 - (1 - pA) * (0.05 + 0.5 * m) - j0)
+        assert u.delta_j == pytest.approx(p4 * 0.2)
+        assert v.delta_j == pytest.approx(pA * 0.95 - (1 - pA) * (0.05 + 0.5 * m) - j0)
         assert u.d_memory == v.d_memory == 0
         assert (u.p_flip, v.p_flip) == pytest.approx((p4, 1.0))  # flip ranking V > U at both stakes
-        out[m] = (u.total, v.total)
+        out[m] = (u.delta_j, v.delta_j)
     assert out[1][0] < out[1][1] and out[4][0] > out[4][1]  # VoMI ranking reverses
     # Isolation: identical base action and targets across stakes.
     o1, o4 = (setup(f"reversal_m{m}", params=REVERSAL_WITNESS)[2] for m in (1, 4))

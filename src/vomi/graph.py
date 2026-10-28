@@ -10,6 +10,11 @@ Retention and update rule (D-002 fixed continuation):
   incremental instantiation cost, so a refresh is not a new instantiation;
 - a person's earlier location claim refuted by the robot's own later observation (it stood in
   the claimed room and the recipient was absent) marks that person's unit ``contradicted``.
+
+Refresh / abstain rule (D-007): an output is valid as of its timestamp only. Status is always
+visible to the policy (`policy_view`). A ``contradicted`` unit must be refreshed (a counted
+re-inference call, recorded in `history`) or marked ``abstain`` before the policy may use it;
+a ``stale`` unit may be used but is shown as stale.
 """
 
 from __future__ import annotations
@@ -28,34 +33,64 @@ class UnitRecord:
     unit: str
     path: tuple[str, ...]
     variable: str
-    output: dict[str, float]  # typed content: P(default holds | h), e.g. {"True": 0.7, "False": 0.3}
-    confidence: float  # max cell probability
+    # Either the scalar diagnostic {"p_default_holds", "p_default_violated"} or a typed hypothesis
+    # list [{"content": [...], "default_holds": bool, "p": float}, ...].
+    output: dict | list
+    confidence: float  # probability of the modal hypothesis
     evidence: list[str]  # visible evidence IDs ("t<step>:<kind>:<who>")
-    timestamp: int
-    cost_calls: float
-    status: str = "fresh"  # fresh | retained | stale | contradicted
+    timestamp: int  # the output is valid as of this step only
+    cost_calls: float  # instantiation + refreshes
+    status: str = "fresh"  # fresh | retained | stale | contradicted | refreshed | abstain
+    history: list = field(default_factory=list)  # earlier (timestamp, output, status) before refreshes
+
+
+def _confidence(output) -> float:
+    return max(h["p"] for h in output) if isinstance(output, list) else max(output.values())
 
 
 @dataclass
 class PerspectiveGraph:
     units: dict[str, UnitRecord] = field(default_factory=dict)
 
-    def instantiate(self, u: Unit, output: dict, evidence: list[str], t: int, cost: float = 1.0) -> UnitRecord:
+    def instantiate(self, u: Unit, output, evidence: list[str], t: int, cost: float = 1.0) -> UnitRecord:
         if str(u) in self.units:
             raise ValueError(f"{u} already instantiated; retained units are not re-inferred")
-        out = {repr(k): v for k, v in output.items()}
-        rec = UnitRecord(str(u), u.path, u.variable, out, max(out.values()), evidence, t, cost)
+        rec = UnitRecord(str(u), u.path, u.variable, output, _confidence(output), evidence, t, cost)
         self.units[str(u)] = rec
         return rec
+
+    def refresh(self, u: Unit, output, evidence: list[str], t: int, cost: float = 1.0) -> UnitRecord:
+        """Counted re-inference of a retained unit from the current visible history."""
+        rec = self.units[str(u)]
+        rec.history.append({"timestamp": rec.timestamp, "output": rec.output, "status": rec.status})
+        rec.output, rec.confidence, rec.timestamp = output, _confidence(output), t
+        rec.evidence = sorted(set(rec.evidence) | set(evidence))
+        rec.cost_calls += cost
+        rec.status = "refreshed"
+        return rec
+
+    def abstain(self, u: Unit) -> None:
+        self.units[str(u)].status = "abstain"
+
+    def policy_view(self) -> list[dict]:
+        """What the decision policy sees: outputs WITH their status and timestamp."""
+        return [{"unit": r.unit, "output": r.output, "status": r.status, "as_of": r.timestamp}
+                for r in self.units.values() if r.status != "abstain"]
 
     def advance(self, hist: VisibleHistory) -> None:
         """Retain every unit; mark stale/contradicted from new visible evidence only."""
         for rec in self.units.values():
+            if rec.status == "abstain":
+                continue
             new = [e for e in visible_evidence(hist, rec.path) if int(e.split(":")[0][1:]) > rec.timestamp]
-            if not new:
+            refuted = [c for c in contradicted_claims(hist, rec.path[-1]) if c.observed_after > rec.timestamp]
+            if refuted:
+                rec.status = "contradicted"
+            elif new:
+                rec.status = "stale"
+            else:
                 rec.status = "retained"
                 continue
-            rec.status = "contradicted" if contradicted_claims(hist, rec.path[-1]) else "stale"
             rec.evidence = sorted(set(rec.evidence) | set(new))
 
     def total_cost(self) -> float:
@@ -66,7 +101,14 @@ def _mentions(text: str, name: str) -> bool:
     return re.search(rf"\b{re.escape(name)}\b", text, re.I) is not None
 
 
-def contradicted_claims(hist: VisibleHistory, person: str, recipient: str = "alice") -> list[str]:
+@dataclass(frozen=True)
+class Refutation:
+    claim_t: int
+    claim: str
+    observed_after: int  # step at which the robot's own observation refuted it
+
+
+def contradicted_claims(hist: VisibleHistory, person: str, recipient: str = "alice") -> list[Refutation]:
     """Visible contradictions of `person`'s location claims: the robot later stood in the claimed
     room and did not see the recipient there. Uses robot observations only."""
     out = []
@@ -74,8 +116,9 @@ def contradicted_claims(hist: VisibleHistory, person: str, recipient: str = "ali
         for speaker, text in o.utterances:
             if speaker == person and text.startswith(f"{recipient}_loc = "):
                 room = text.split(" = ", 1)[1]
-                if any(o2.t > o.t and o2.room == room and recipient not in o2.people_present for _, o2 in hist.steps):
-                    out.append(f"t{o.t}:{text}")
+                seen = [o2.t for _, o2 in hist.steps if o2.t > o.t and o2.room == room and recipient not in o2.people_present]
+                if seen:
+                    out.append(Refutation(o.t, text, min(seen)))
     return out
 
 

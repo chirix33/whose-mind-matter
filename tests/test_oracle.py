@@ -37,7 +37,7 @@ def test_depth1_knowledge_hand_values():
     assert J(o, K("rec")) == pytest.approx(0.875)
     assert o.evaluate().actions[0] == Action("ask", "rec", "alice_loc")
     r = o.unit_report(K("rec"), lam=0.1)
-    assert r.p_flip == pytest.approx(1.0) and r.vomi == pytest.approx(0.05 - 0.1)
+    assert r.p_flip == pytest.approx(1.0) and r.net_vomi == pytest.approx(0.05 - 0.1)
 
 
 def test_plausible_vs_obvious_distractor():
@@ -48,7 +48,7 @@ def test_plausible_vs_obvious_distractor():
     assert J(o, K("rec"), K("carol")) == pytest.approx(0.9125)
     _, _, o = oracle("distractor_obvious")
     r = o.unit_report(K("carol"))
-    assert r.content_entropy_bits == 0 and r.p_flip == 0 and r.vomi == 0  # pruned by P1
+    assert r.content_entropy_bits == 0 and r.p_flip == 0 and r.net_vomi == 0  # pruned by P1
 
 
 def test_substitutes_make_gold_sets_non_unique():

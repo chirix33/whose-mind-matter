@@ -6,7 +6,7 @@ from officeminds.episode import VisibleHistory
 from officeminds.scenarios import ALL_CASES, _config
 from officeminds.world import Action, Event, PersonMind, World
 from vomi.allocation import conditional_relevance, minimal_sufficient, score_allocation, stop
-from vomi.oracle import GROUNDED, PRIVILEGED_BAYES, ExactOracle
+from vomi.oracle import GROUNDED_SCALAR, PRIVILEGED_BAYES, ExactOracle
 from vomi.theory import best_return_by_outcome, gap_decrease_bounds, p2_certifies_no_flip
 from vomi.units import K, R, content, generate_candidates
 
@@ -27,25 +27,25 @@ def test_substitutes_conditional_relevance_and_stop():
     assert stop(frozenset({K("bob")}), v)  # after one substitute: STOP ...
     assert conditional_relevance(frozenset({K("bob")}), v) == set()  # ... and nothing else is relevant
     s = score_allocation(frozenset({K("bob")}), v)
-    assert (s.matched_gold, s.precision, s.recall, s.f1, s.regret_full) == (["K(bob)"], 1.0, 1.0, 1.0, 0.0)
+    assert (s.matched_gold, s.precision, s.recall, s.f1, s.regret) == (["K(bob)"], 1.0, 1.0, 1.0, 0.0)
     s2 = score_allocation(frozenset({K("bob"), K("alice")}), v)
     assert s2.matched_gold == ["K(alice)"] and (s2.precision, s2.recall) == (0.5, 1.0)  # one matched set
     assert sorted(s2.wasted) == ["K(alice)", "K(bob)"]  # each is redundant given the other
 
 
 def test_complementary_bundle_is_missed_as_a_bundle_not_as_units():
-    o, _, _ = values_for("nested_reliability", GROUNDED)
+    o, _, _ = values_for("nested_reliability", GROUNDED_SCALAR)
     pair = [K("bob", "rec"), R("bob")]
-    v = o.subset_values(pair, record=GROUNDED)
+    v = o.subset_values(pair, record=GROUNDED_SCALAR)
     assert minimal_sufficient(v) == [frozenset(pair)]
     s = score_allocation(frozenset(), v)
     assert s.missed == [] and s.missed_bundles == [sorted(map(str, pair))]
     assert conditional_relevance(frozenset({R("bob")}), v) == {K("bob", "rec")}
-    assert s.regret_full == pytest.approx(0.225) and s.regret_budget == 0.0  # nothing fits a 0-unit budget
+    assert s.regret == pytest.approx(0.225) and s.regret_budget == 0.0  # nothing fits a 0-unit budget
 
 
 def test_minimum_cost_completion_variant():
-    _, units, v = values_for("nested_reliability", GROUNDED)
+    _, units, v = values_for("nested_reliability", GROUNDED_SCALAR)
     full = conditional_relevance(frozenset(), v)
     cheap = conditional_relevance(frozenset(), v, minimum_cost=True)
     assert cheap == {K("rec"), K("rec", "bob"), R("rec", "bob")} < full

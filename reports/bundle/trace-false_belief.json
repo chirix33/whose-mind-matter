@@ -304,8 +304,8 @@
      ],
      "variable": "knowledge",
      "output": {
-      "False": 0.3,
-      "True": 0.7
+      "p_default_holds": 0.7,
+      "p_default_violated": 0.30000000000000004
      },
      "confidence": 0.7,
      "evidence": [
@@ -314,72 +314,80 @@
      ],
      "timestamp": 0,
      "cost_calls": 1.0,
-     "status": "fresh"
+     "status": "fresh",
+     "history": []
     }
    }
   },
   {
    "t": 1,
-   "units": {
-    "K(rec)": {
+   "policy_view": [
+    {
+     "unit": "K(rec)",
+     "output": {
+      "p_default_holds": 0.7,
+      "p_default_violated": 0.30000000000000004
+     },
      "status": "retained",
-     "evidence": [
-      "t0:said0:rec",
-      "t0:seen:rec"
-     ]
+     "as_of": 0
     }
-   }
+   ]
   },
   {
    "t": 2,
-   "units": {
-    "K(rec)": {
+   "policy_view": [
+    {
+     "unit": "K(rec)",
+     "output": {
+      "p_default_holds": 0.7,
+      "p_default_violated": 0.30000000000000004
+     },
      "status": "retained",
-     "evidence": [
-      "t0:said0:rec",
-      "t0:seen:rec"
-     ]
+     "as_of": 0
     }
-   }
+   ]
   },
   {
    "t": 3,
-   "units": {
-    "K(rec)": {
+   "policy_view": [
+    {
+     "unit": "K(rec)",
+     "output": {
+      "p_default_holds": 0.7,
+      "p_default_violated": 0.30000000000000004
+     },
      "status": "retained",
-     "evidence": [
-      "t0:said0:rec",
-      "t0:seen:rec"
-     ]
+     "as_of": 0
     }
-   }
+   ]
   },
   {
    "t": 4,
-   "units": {
-    "K(rec)": {
+   "policy_view": [
+    {
+     "unit": "K(rec)",
+     "output": {
+      "p_default_holds": 0.7,
+      "p_default_violated": 0.30000000000000004
+     },
      "status": "stale",
-     "evidence": [
-      "t0:said0:rec",
-      "t0:seen:rec",
-      "t4:seen:rec"
-     ]
+     "as_of": 0
     }
-   }
+   ]
   },
   {
    "t": 5,
-   "units": {
-    "K(rec)": {
+   "policy_view": [
+    {
+     "unit": "K(rec)",
+     "output": {
+      "p_default_holds": 0.7,
+      "p_default_violated": 0.30000000000000004
+     },
      "status": "stale",
-     "evidence": [
-      "t0:said0:rec",
-      "t0:seen:rec",
-      "t4:seen:rec",
-      "t5:seen:rec"
-     ]
+     "as_of": 0
     }
-   }
+   ]
   }
  ],
  "allocation": [

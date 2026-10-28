@@ -14,16 +14,21 @@ Label records (AGENTS §5.2; D-001 review outcome):
   h with the TRUE contents of S revealed. These are the Stage 0 values.
 - PRIVILEGED_BOUNDED ("privileged perfect-content, bounded actor"): the face-value bounded
   actor (below) with the TRUE contents of S revealed.
-- GROUNDED ("grounded bounded-policy value", the main symbolic target): the face-value
-  bounded actor whose modeled units carry evidence-grounded outputs (the posterior of each
-  unit's default-holds cell given h: the probability its factor departs from the face-value
-  default, never its content value). It is identical in every world consistent
-  with h.
+- GROUNDED_TYPED ("grounded typed bounded-policy reference"): the face-value bounded actor
+  whose modeled units carry TYPED evidence-grounded outputs, i.e. a hypothesis distribution
+  over (content value, default holds) for the unit's factor, given h (D-007).
+- GROUNDED_SCALAR ("grounded scalar diagnostic"): the same actor, but each unit carries only
+  p_default_holds = P(factor satisfies its face-value default | h). A confidence-only
+  diagnostic, NOT the main method (Stage 1 review correction 2).
+Both grounded records are identical in every world consistent with h. Their unit outputs are
+exact generator marginals: an offline symbolic reference, not a deployable or cheap
+computation (D-007).
 
 Bounded actor (spec §4.2): its prior is the generator prior times eps**(number of
-violated face-value defaults among UNMODELED factors). eps = 1e-6 ("face_value") or 0.25
-("hedged", the alternative testimony default). Grounded unit outputs enter by I-projection
-(iterative proportional fitting) of that prior onto each modeled unit's cell marginal.
+violated face-value defaults among UNMODELED factors). eps = 1e-6 ("face_value", primary) or
+0.25 ("hedged", the mandatory sensitivity condition, D-010). Unit outputs enter by
+I-projection (iterative proportional fitting) of that prior onto each modeled unit's output
+marginal. `unknown` content counts as satisfying a Knowledge default (no false belief).
 
 Definitions:
   a_m           the actor's argmax action under cognitive state m; ties broken by canonical
@@ -34,7 +39,8 @@ Definitions:
   J(S)          sum_w b_h(w) Q_ref(w, m_S, a_{m_S})     ("retain")
   D_action      E[Q_ref(m, a_y) - Q_ref(m, a_0)]         (current-action component)
   D_memory      E[Q_ref(m_y, a_y) - Q_ref(m, a_y)]       (carryover component)
-  VoMI_retained = D_action + D_memory - lambda*c = J(S+u) - J(S) - lambda*c
+  delta_J       = J(S+u) - J(S) = D_action + D_memory     (gross marginal task value)
+  net VoMI      = delta_J - lambda*c(u)                    (lambda always stated explicitly)
 """
 
 from __future__ import annotations
@@ -54,8 +60,9 @@ Items = tuple[tuple[float, World], ...]
 
 PRIVILEGED_BAYES = "privileged_bayes"
 PRIVILEGED_BOUNDED = "privileged_bounded"
-GROUNDED = "grounded"
-RECORDS = (PRIVILEGED_BAYES, PRIVILEGED_BOUNDED, GROUNDED)
+GROUNDED_SCALAR = "grounded_scalar"
+GROUNDED_TYPED = "grounded_typed"
+RECORDS = (PRIVILEGED_BAYES, PRIVILEGED_BOUNDED, GROUNDED_SCALAR, GROUNDED_TYPED)
 TESTIMONY_DEFAULTS = {"face_value": 1e-6, "hedged": 0.25}
 
 
@@ -78,8 +85,9 @@ class AllocationEval:
 @dataclass
 class UnitReport:
     unit: str
-    delta_j: float  # J(S+u) - J(S)
-    vomi: float  # delta_j - lambda * cost
+    delta_j: float  # gross marginal task value J(S+u) - J(S)
+    lam: float  # price per instantiation call used for net_vomi (stated, never implicit)
+    net_vomi: float  # delta_j - lam * cost
     p_flip: float  # current-action flip probability
     dq_given_flip: float
     no_flip_residual: float  # delta_j - p_flip * dq_given_flip
@@ -95,10 +103,15 @@ class Decomposition:
     q_my_ay: float  # E[Q_ref(m_y, a_y)] = J(S+u)
     d_action: float
     d_memory: float
-    total: float
-    residual: float  # total - (d_action + d_memory); must be ~0
+    delta_j: float  # gross: q_my_ay - q_m_a0
+    residual: float  # delta_j - (d_action + d_memory); must be ~0
     p_flip: float
     carryover: bool  # positive value with zero current-action flips
+    a0: str = ""  # actor's current action without u (first world; equal across worlds for grounded)
+    ay: str = ""  # actor's current action with u
+
+    def net_vomi(self, lam: float, cost: float = 1.0) -> float:
+        return self.delta_j - lam * cost
 
 
 @dataclass
@@ -202,15 +215,15 @@ class ExactOracle:
     def contents(self, world: World, S) -> tuple:
         return tuple(content(world, u) for u in sorted(S))
 
-    def cell(self, world: World, u: Unit) -> bool:
-        """Grounded output support: does u's factor satisfy its face-value default?
+    def cell(self, world: World, u: Unit, typed: bool = False):
+        """Support of a unit's output hypotheses in one hypothesis world.
 
-        Deliberately NOT the content value. Knowledge outputs assess information access and the
-        possibility of a false belief; Reliability outputs assess intent; nested outputs assess
-        whether j's model of k is accurate. If the content marginal were exposed, a unit such as
-        K(alice), whose belief equals the target, would hand the actor the whole-scene posterior
-        over the answer (seen in stakes_m4_q0.95 before this restriction)."""
-        return default_holds(world, u)
+        scalar: does u's factor satisfy its face-value default? (`unknown` content satisfies a
+                Knowledge default: no false belief.)
+        typed:  (content value, default holds): what j believes or assesses, and whether that
+                deviates from the default. Content derived from visible evidence under the declared
+                model is legitimate even when it helps answer the task (D-007)."""
+        return (content(world, u), default_holds(world, u)) if typed else default_holds(world, u)
 
     def condition(self, world: World, S) -> Items:
         c = self.contents(world, S)
@@ -220,20 +233,30 @@ class ExactOracle:
         S = frozenset(S)
         return [p * self.eps ** len(v - S) for (p, _), v in zip(self.belief, self.violations)]
 
-    def grounded_output(self, u: Unit) -> dict[tuple, float]:
-        """Evidence-grounded unit output: posterior P(default holds | h) for u's factor."""
-        out: dict[tuple, float] = {}
+    def _cell_marginal(self, u: Unit, typed: bool) -> dict:
+        out: dict = {}
         for p, x in self.belief:
-            c = self.cell(x, u)
+            c = self.cell(x, u, typed)
             out[c] = out.get(c, 0.0) + p
-        return dict(sorted(out.items(), key=lambda kv: repr(kv[0])))
+        return out
 
-    def _grounded_items(self, S) -> Items:
+    def grounded_output(self, u: Unit) -> dict[str, float]:
+        """Scalar diagnostic output (explicit polarity): p_default_holds + p_default_violated = 1."""
+        holds = self._cell_marginal(u, typed=False).get(True, 0.0)
+        return {"p_default_holds": holds, "p_default_violated": 1.0 - holds}
+
+    def typed_output(self, u: Unit) -> list[dict]:
+        """Typed exact symbolic reference: hypothesis distribution over (content, default holds)."""
+        m = self._cell_marginal(u, typed=True)
+        return [{"content": list(c), "default_holds": h, "p": p}
+                for (c, h), p in sorted(m.items(), key=lambda kv: (-kv[1], repr(kv[0])))]
+
+    def _grounded_items(self, S, typed: bool = False) -> Items:
         S = frozenset(S)
-        if S not in self._grounded:
+        if (S, typed) not in self._grounded:
             weights = self._bounded_prior(S)
-            targets = {u: self.grounded_output(u) for u in sorted(S)}
-            cells = {u: [self.cell(x, u) for x in self.worlds] for u in targets}
+            targets = {u: self._cell_marginal(u, typed) for u in sorted(S)}
+            cells = {u: [self.cell(x, u, typed) for x in self.worlds] for u in targets}
             for _ in range(1000):  # I-projection by iterative proportional fitting
                 worst = 0.0
                 for u, tgt in targets.items():
@@ -245,15 +268,19 @@ class ExactOracle:
                     weights = [wt * tgt[c] / cur[c] for wt, c in zip(weights, cells[u])]
                 if worst < 1e-14:
                     break
-            self._grounded[S] = _normalize(list(zip(weights, self.worlds)))
-        return self._grounded[S]
+            self._grounded[(S, typed)] = _normalize(list(zip(weights, self.worlds)))
+        return self._grounded[(S, typed)]
+
+    def actor_marginal_holds(self, u: Unit, S, record: str) -> float:
+        """Actor's own P(u's default holds) after projection (polarity/projection check)."""
+        return sum(w for w, x in self.actor_items(S, record, 0) if default_holds(x, u))
 
     def actor_items(self, S, record: str, i: int) -> Items:
         S = frozenset(S)
         if record == PRIVILEGED_BAYES:
             return self.condition(self.worlds[i], S)
-        if record == GROUNDED:
-            return self._grounded_items(S)
+        if record in (GROUNDED_SCALAR, GROUNDED_TYPED):
+            return self._grounded_items(S, typed=record == GROUNDED_TYPED)
         if record == PRIVILEGED_BOUNDED:
             c = self.contents(self.worlds[i], S)
             prior = self._bounded_prior(S)
@@ -276,23 +303,31 @@ class ExactOracle:
             self._alloc[key] = AllocationEval(total, actions, returns)
         return self._alloc[key]
 
-    def decompose(self, u: Unit, S=frozenset(), record: str = GROUNDED) -> Decomposition:
+    def decompose(self, u: Unit, S=frozenset(), record: str = GROUNDED_SCALAR) -> Decomposition:
         """D-002: current-action and carryover components under the fixed continuation."""
         S = frozenset(S)
         q_m_a0 = q_m_ay = q_my_ay = p_flip = 0.0
+        first = None
         for i, (p, w) in enumerate(self.belief):
             m, my = self.actor_items(S, record, i), self.actor_items(S | {u}, record, i)
             a0, ay = self.best_action(m, self.obs), self.best_action(my, self.obs)
+            first = first or (str(a0), str(ay))
             q_m_a0 += p * self.realized_return(w, m, self.obs, a0)
             q_m_ay += p * self.realized_return(w, m, self.obs, ay)
             q_my_ay += p * self.realized_return(w, my, self.obs, ay)
             p_flip += p * (a0 != ay)
-        d_action, d_memory, total = q_m_ay - q_m_a0, q_my_ay - q_m_ay, q_my_ay - q_m_a0
-        return Decomposition(str(u), record, q_m_a0, q_m_ay, q_my_ay, d_action, d_memory, total,
-                             total - d_action - d_memory, p_flip,
-                             carryover=p_flip == 0 and d_memory > self.tol)
+        d_action, d_memory, dj = q_m_ay - q_m_a0, q_my_ay - q_m_ay, q_my_ay - q_m_a0
+        return Decomposition(str(u), record, q_m_a0, q_m_ay, q_my_ay, d_action, d_memory, dj,
+                             dj - d_action - d_memory, p_flip,
+                             carryover=p_flip == 0 and d_memory > self.tol, a0=first[0], ay=first[1])
 
-    def actor_rollout(self, i: int, S=frozenset(), record: str = GROUNDED) -> tuple[list[Action], float]:
+    def outcome_table(self, S=frozenset(), record: str = GROUNDED_SCALAR) -> list[dict]:
+        """Posterior-to-outcome table: per hypothesis world, its posterior, actor action, return."""
+        e = self.evaluate(frozenset(S), record=record)
+        return [{"params": dict(prm), "posterior": p, "action": str(a), "return": r}
+                for prm, (p, _), a, r in zip(self.params, self.belief, e.actions, e.returns)]
+
+    def actor_rollout(self, i: int, S=frozenset(), record: str = GROUNDED_SCALAR) -> tuple[list[Action], float]:
         """Actions the actor with state m_S takes in hypothesis world i under the fixed continuation
         (the same policy whose realized return defines J); returns (actions, return)."""
         items, w = self.actor_items(S, record, i), self.worlds[i].clone()
@@ -305,7 +340,7 @@ class ExactOracle:
             items = _normalize(self._transition(items, a)[_obs_key(o)][1])
         return actions, total
 
-    def optimal_action_set(self, S, record: str = GROUNDED) -> list[Action]:
+    def optimal_action_set(self, S, record: str = GROUNDED_SCALAR) -> list[Action]:
         """Actions whose evaluator-expected Q_ref under state m_S is maximal (within tol)."""
         qs = {}
         for a in legal_actions(self.config, self.obs):
@@ -337,7 +372,7 @@ class ExactOracle:
                 p_flip += p
                 gain += p * (r1 - r0)
         dq = gain / p_flip if p_flip > 0 else 0.0
-        return UnitReport(str(u), dj, dj - lam * cost, p_flip, dq, dj - gain, self.entropy(u, S))
+        return UnitReport(str(u), dj, lam, dj - lam * cost, p_flip, dq, dj - gain, self.entropy(u, S))
 
     def subset_values(self, units: list[Unit], continuation: str = "retain",
                       record: str = PRIVILEGED_BAYES) -> dict[frozenset, float]:
@@ -346,6 +381,9 @@ class ExactOracle:
 
     def allocation_labels(self, units: list[Unit], costs: dict[Unit, float] | None = None,
                           continuation: str = "retain", record: str = PRIVILEGED_BAYES) -> AllocationLabels:
+        """HISTORICAL DIAGNOSTIC: sufficiency relative to J(all candidates). J(all) can be below the
+        best subset for non-monotone actors; primary references live in vomi.allocation (best
+        admissible subset, Stage 1 review correction 4)."""
         costs = costs or {u: 1.0 for u in units}
         U = frozenset(units)
         values = self.subset_values(units, continuation, record)
@@ -370,8 +408,21 @@ class ExactOracle:
         )
 
     # ------------------------------------------------------------ depth certification
-    def effective_depth(self, units: list[Unit], continuation: str = "retain", record: str = PRIVILEGED_BAYES) -> int:
-        """Smallest d such that the depth<=d units reach J(U), relative to this record's actor class."""
+    def effective_depth(self, units: list[Unit], continuation: str = "retain", record: str = PRIVILEGED_BAYES,
+                        lam: float = 0.0) -> int:
+        """Minimum required depth: the smallest max-path-length among subsets that attain the
+        reference value (best admissible subset under the net objective J - lam*|S|, incl. ∅).
+        By construction it never exceeds the depth of any reference-attaining set (correction 1).
+        Relative to this record's actor class and candidate set; says nothing about LLM depth."""
+        values = self.subset_values(units, continuation, record)
+        obj = {S: v - lam * len(S) for S, v in values.items()}
+        best = max(obj.values())
+        return min(max((u.depth for u in S), default=0) for S, v in obj.items() if v >= best - self.tol)
+
+    def effective_depth_prefix(self, units: list[Unit], continuation: str = "retain",
+                               record: str = PRIVILEGED_BAYES) -> int:
+        """HISTORICAL (Stage 0/1): smallest d with J(U_{<=d}) >= J(U). Can disagree with
+        `effective_depth` when the actor is non-monotone in S."""
         j_full = self.evaluate(frozenset(units), continuation, record).value
         for d in (0, 1, 2):
             if self.evaluate(frozenset(u for u in units if u.depth <= d), continuation, record).value >= j_full - self.tol:
