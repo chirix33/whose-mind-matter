@@ -110,7 +110,24 @@ Full write-up: **[reports/pilot/pilot-report.md](pilot/pilot-report.md)**. Quest
   - Retained state helps in the carryover family (+0.225 vs. +0.037, n = 8).
 - Exploratory development data only; no C1–C5 claim.
 
+## Step 4: pilot model diagnostic (after the pilot review; D-013)
+Write-up: **[reports/pilot/model-diagnostic.md](pilot/model-diagnostic.md)**. Questions: `reports/review-request.md`.
+
+- **Repairs (commit `90bca99`):**
+  - renderer r3, shared by all arms: people-rules paragraph, evidence-bearing notes, fact-only refutation;
+  - pilot-v2 grounding package: per-hypothesis support, plus an `insufficient_evidence` status distinct from person-level `unknown`;
+  - scoring v2;
+  - OpenAI Responses adapter with a hard spend cap;
+  - pilot report erratum.
+- **24 frozen fixed unit contexts:**
+  - local gpt-oss-20b at low effort: pilot-v2 vs. v1 gives Δ log score +0.02, with v2 over-abstaining (12/24);
+  - at medium effort: v1 gets worse (−1.13) and v2 improves (+1.28 over v1);
+  - leakage 0 everywhere.
+- **Audit (10 contexts):** the scoring reference conflicts with the public rules for overheard statements; recipients' self-knowledge is missed; v2 support can be a rationalization.
+- **Crossed (12 instances, fixed all-t0 allocation):** local/local +0.587 vs. local direct +0.696.
+- **All API cells are blocked:** no `OPENAI_API_KEY`. Estimated spend for all of them is about USD 1.4–2.9.
+
 ## Not done (next steps of the authorized pilot)
 1. ~~Freeze dev groups~~ (done, step 2).
 2. ~~Server, prompts, five arms, accounting, paired interventions, report and bundle~~ (done, step 3).
-3. Next: research review of the pilot results (`reports/review-request.md`).
+3. Next: API cells once `OPENAI_API_KEY` is configured; then the review of `reports/review-request.md` (Q1 scoring vs. public rules, Q2 over-abstention).

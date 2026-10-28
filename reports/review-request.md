@@ -1,36 +1,27 @@
-# Review request — 2026-10-28 (Stage 2 pilot results)
+# Review request — 2026-10-28 (pilot model diagnostic)
 
-Full write-up: `reports/pilot/pilot-report.md`. Bundle contents:
-- `reports/bundle/`: pilot manifest and summary, three diagnostic traces, the earlier symbolic bundle;
-- `reports/pilot/dev-v2-manifest.json` and `dev-v2-freeze.md`;
-- `prompts/pilot-v1/` and `src/vomi/unit_schema.py`;
-- input-check reports;
-- a source archive.
+Write-up: `reports/pilot/model-diagnostic.md`. Supporting files:
+- `reports/pilot/unit-contexts-results.md` (generated table and per-context outputs);
+- `reports/pilot/unit-contexts-audit.md` (10-context evidence audit, readable extracts);
+- `reports/pilot/unit-contexts-v1.jsonl` (the exact frozen request payloads);
+- D-013.
 
-The pilot's purpose was to see whether the task elicits meaningful mental inference, and whether selective computation has usable signal at affordable overhead.
+All local cells ran. **All API cells are blocked** because `OPENAI_API_KEY` is not configured. No paid call was made.
 
-## Findings that need a decision
-1. **On average, explicit typed units hurt or tie the direct LLM.** Mean return per instance vs. direct:
-   - dense −0.051, random −0.058, router −0.068;
-   - symbolic-reference allocation +0.019, using 0.5 units per episode and 15% token overhead.
-2. **Unit content is often unsupported.** The LLM asserts specific beliefs when the truth is `unknown` (K(j) top = truth 0.43, even at top-p ≥ 0.8), and the policy acts on them. That produced the largest losses (one irreversible error at ×4 stakes).
-3. **Retained state helps in the carryover family:** +0.225 vs. +0.037, with n = 8.
-4. **The prompted router does not track the symbolic reference:** Jaccard 0.38; it STOPs in only 11/40 symbolic zero-value instances. Its own call costs more tokens than the units it buys.
+## Needed from Ashraf (not a research question)
+- Configure `OPENAI_API_KEY` in WSL, and confirm the cap: USD 5, or set `OFFICEMINDS_API_CAP_USD`. The estimated spend for all API cells is about USD 1.4–2.9 (illustrative).
 
-## Questions
-**Q1. Is the unit failure mode a prompt/schema issue worth one documented revision before any label generation?**
-- Proposal: a unit-prompt revision `pilot-v2`, rerun on the same frozen `dev-v2` set, reported as pre/post revision, with no scenario changes. Two concrete changes:
-  - require each non-`unknown` hypothesis to cite a supporting evidence ID;
-  - add a validator rule that rejects confident (> 0.5) non-unknown hypotheses without such a citation.
-- Alternative: treat current fidelity as the realistic baseline and proceed.
-- **Recommendation:** one revision. Without it, any learned router would be trained to buy units whose content is unreliable, which makes C1/C2 untestable.
+## Q1. The scoring reference conflicts with the r3 public rules (audit uc14, uc16)
+The simulator creates nested beliefs only through tell/claim/assert events. Statements people overhear (`say` events) update no one, yet the r3 rules say listeners "learn what was said". The evidence posterior therefore scores some publicly reasonable nested attributions as unsupported.
 
-**Q2. Proceed toward training labels and a small learned controller?**
-- **Recommendation: not yet.** First establish, on dev data, that some allocation beats direct after the Q1 revision. The symbolic-reference tie at low overhead is the only positive allocation signal.
-- If Q1 does not raise typed-unit fidelity, the next step should be the RQ3-style over-modeling intervention (dense vs. selective vs. direct), since unsupported attributions are what the pilot most clearly shows.
+**Options:**
+- **(a)** Clarify the public rules: "hearing a statement tells you what the speaker claimed, but people do not form beliefs about others' beliefs from casual remarks." This is a shared interface revision r4, rerun for all cells.
+- **(b)** Keep the rules, and score nested units against a public-rules-consistent reference (a scoring change).
+- **(c)** In a new dev version, give the simulator nested updates from `say` events (a world change; frozen sets untouched).
 
-**Q3. Should the fidelity taxonomy be split now (false vs. unsupported vs. leaked attribution), to report RQ3-relevant counts in the next pilot round?**
-- **Recommendation:** yes. It is cheap (privileged scoring of existing outputs), and it separates "value instead of unknown" from "wrong value".
+**Recommendation: (a).** It is the smallest change, it keeps the frozen worlds, and it makes the contract explicit. It would also add "everyone knows where they themselves are", the most common substantive miss (3/10).
 
-**Q4. Router baseline:** keep the single zero-shot router as the D5 seed, or give it a few-shot variant at equal budget?
-- **Recommendation:** add a few-shot variant only after Q1, so router and unit changes are not confounded.
+## Q2. Over-abstention in pilot-v2
+pilot-v2 abstains on 12–14 of 24 contexts, including ones the evidence settles, and still puts mass on "unknown" inside abstentions.
+
+**Recommendation:** do not tune the package further before the API comparison shows whether this is a model or a package limit. If needed later, a single documented v2.1 revision.
