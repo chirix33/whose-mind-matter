@@ -76,21 +76,27 @@ def task_card(cfg: WorldConfig, brief: str) -> str:
     return "\n".join(lines)
 
 
+RENDER_REVISION = 2  # r2: utterance IDs t{t}:said{i} (r1 appended ":{speaker}"; the model cited the short
+#                      form and valid citations were rejected); action/outcome IDs are citable too.
+
+
 def ledger(hist: VisibleHistory) -> tuple[str, list[str]]:
-    """Visible event ledger with stable evidence IDs (same scheme as vomi.graph.visible_evidence)."""
+    """Visible event ledger; every bracketed ID shown is a citable evidence ID."""
     lines, ids = [], []
     for a, o in hist.steps:
         if a is not None:
+            ids.append(f"t{o.t}:action")
             lines.append(f"  [t{o.t}:action] robot did {a}")
         for p in o.people_present:
             eid = f"t{o.t}:seen:{p}"
             ids.append(eid)
             lines.append(f"  [{eid}] {p} is in the {o.room} with the robot")
         for i, (speaker, text) in enumerate(o.utterances):
-            eid = f"t{o.t}:said{i}:{speaker}"
+            eid = f"t{o.t}:said{i}"
             ids.append(eid)
             lines.append(f"  [{eid}] {speaker} says: \"{text}\"")
         if o.outcome:
+            ids.append(f"t{o.t}:outcome")
             lines.append(f"  [t{o.t}:outcome] {o.outcome}")
     return "HISTORY (robot's own observations):\n" + "\n".join(lines or ["  (nothing yet)"]), ids
 

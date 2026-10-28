@@ -89,3 +89,16 @@ def test_symbolic_arm_passes_llm_content_not_truth(insts):
     r = run_episode_arm(SchemaMock(), inst, "symbolic", DECODING, reference_set=["K(" + inst.scenario.config.roster[0] + ")"])
     for note in r.graph_final:  # notes come from the (mock) LLM unit output, never from content()
         assert note["output"]["hypotheses"][0]["p"] == 1.0
+
+
+def test_every_ledger_id_is_citable():
+    """Integration-run regression: IDs shown in the ledger must all pass the unit validator."""
+    from officeminds.world import Action
+    inst = generate()[0]
+    w = inst.scenario.build(inst.hidden)
+    hist = VisibleHistory(inst.scenario.brief, [(None, w.reset())])
+    hist.steps.append((Action("wait"), w.step(Action("wait"))))
+    text, ids = ledger(hist)
+    import re
+    shown = set(re.findall(r"\[(t\d+:[^\]]+)\]", text))
+    assert shown == set(ids) and "t1:action" in ids

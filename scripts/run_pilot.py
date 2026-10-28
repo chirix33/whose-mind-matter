@@ -30,7 +30,7 @@ from officeminds.devgen import generate  # noqa: E402
 from officeminds.episode import VisibleHistory  # noqa: E402
 from vomi import runlog  # noqa: E402
 from vomi.clients import make_client  # noqa: E402
-from vomi.pilot import ARMS, BUDGET, MAX_ATTEMPTS, PROMPT_VERSION, prompt_hashes, run_episode_arm  # noqa: E402
+from vomi.pilot import ARMS, BUDGET, MAX_ATTEMPTS, PROMPT_VERSION, RENDER_REVISION, prompt_hashes, run_episode_arm  # noqa: E402
 from vomi.units import Unit  # noqa: E402
 
 INTEGRATION_INSTANCE = "false_belief-g0-stakes1-evidence1"  # declared before any LLM output
@@ -104,7 +104,7 @@ def render(mode, run_id, meta, summ, fam, interventions) -> str:
     arms = [a for a in ARMS if a in summ]
     L = [f"# Pilot {mode} results: run `{run_id}`", "",
          f"Frozen set `{meta['version']}` (set hash `{meta['set_sha256'][:16]}…`), commit `{(meta['git_commit'] or '')[:7]}`, "
-         f"model `{meta['model']}`, prompts `{PROMPT_VERSION}`, decoding {meta['decoding']}, concurrency {meta['concurrency']}. "
+         f"model `{meta['model']}`, prompts `{PROMPT_VERSION}` renderer r{meta['render_revision']}, decoding {meta['decoding']}, concurrency {meta['concurrency']}. "
          "Development data: exploratory pilot, not a confirmatory result. Temperature 0 does not guarantee "
          "reproducibility under vLLM batching; serving settings are recorded in the manifest.", "",
          "## Outcomes by arm", "",
@@ -158,7 +158,7 @@ def main():
     decoding = cfg["decoding"]
     meta = {"version": args.version, "set_sha256": man["set_sha256"], "model": cfg["model"], "decoding": decoding,
             "concurrency": args.concurrency if args.mode == "full" else 1, "budget": BUDGET, "max_attempts": MAX_ATTEMPTS,
-            "prompt_version": PROMPT_VERSION, "prompt_sha256": prompt_hashes(), "served_models": client.list_models(),
+            "prompt_version": PROMPT_VERSION, "render_revision": RENDER_REVISION, "prompt_sha256": prompt_hashes(), "served_models": client.list_models(),
             "serve": cfg.get("serve"), "response_cache": "none (every call fresh)"}
     manifest = runlog.new_manifest(f"pilot-{args.mode}", meta)
     meta["git_commit"] = manifest["git_commit"]
