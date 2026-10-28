@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whose-mind-matters"
+version = "0.0.1"
+description = "OfficeMinds environment and VoMI-Router: decision-value allocation of theory of mind over perspective graphs"
+requires-python = ">=3.11"
+# Core simulator, oracle and model client are stdlib-only on purpose (see docs/research/environment.md).
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = ["model: needs a live local model endpoint (excluded from the CPU-only suite)"]
+addopts = "-m 'not model'"

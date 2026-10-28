@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+build/
+dist/
+
+# Secrets and local overrides (never commit keys)
+.env
+*.env
+configs/local/
+secrets/
+
+# Large artifacts live outside Git (see docs/research/environment.md for paths)
+runs/
+data/
+checkpoints/
+*.safetensors
+*.bin
+*.gguf
+hf_cache/

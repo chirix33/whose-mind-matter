@@ -1,0 +1,24 @@
+{
+  "name": "local_gpt_oss_20b",
+  "role": "agent-backbone pilot candidate (not the routing controller)",
+  "provider": "openai_compat",
+  "base_url": "http://127.0.0.1:8000",
+  "model": "gpt-oss-20b",
+  "hf_snapshot": "openai/gpt-oss-20b@6cee5e81ee83917806bbde320786a8fb61efebee",
+  "quantization": "mxfp4 (native checkpoint)",
+  "api_key_env": null,
+  "timeout_s": 300,
+  "serve": {
+    "venv": "~/venvs/vllm",
+    "vllm_version": "0.32.0",
+    "env": {
+      "HF_HUB_OFFLINE": "1",
+      "CUDA_HOME": "~/venvs/vllm/lib/python3.12/site-packages/nvidia/cu13",
+      "PATH_prepend": ["~/venvs/vllm/bin", "$CUDA_HOME/bin"]
+    },
+    "args": ["--served-model-name", "gpt-oss-20b", "--host", "127.0.0.1", "--port", "8000",
+             "--max-model-len", "16384", "--gpu-memory-utilization", "0.85",
+             "--attention-backend", "TRITON_ATTN"]
+  },
+  "decoding": {"temperature": 0.0, "max_tokens": 1024, "reasoning_effort": "low"}
+}

@@ -1,0 +1,7 @@
+# Normalize text to LF regardless of core.autocrlf (shell scripts run in WSL).
+* text=auto eol=lf
+
+# Source documents are checksummed (docs/research/source-manifest.md): store and check out byte-for-byte.
+docs/research/methods-experiments-v2.md -text
+Methods*Whose?Mind?Matters.md -text
+AGENTS.md -text
