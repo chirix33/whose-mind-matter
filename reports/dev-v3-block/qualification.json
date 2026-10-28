@@ -26,7 +26,7 @@
   "focal_units_in_visible_candidates_all": true,
   "groups": 12,
   "instances": 48,
-  "max_oracle_seconds": 1.224,
+  "max_oracle_seconds": 1.233,
   "permuted_variant_same_optimal_value": true,
   "self_location_candidates_present": [
    "dev-v3-1a-stakes1-perm0",
@@ -82,27 +82,16 @@
   "superset_card_only_fixes_best_action": [],
   "superset_q_and_posterior_match_all": true
  },
- "dirty_paths": [
-  " M AGENTS.md",
-  " M src/officeminds/world.py",
-  " M src/vomi/pilot.py",
-  " M src/vomi/units.py",
-  "?? POST_BLOCK_RESEARCH_DECISIONS.md",
-  "?? docs/decisions/2026-10-28-D014-post-block-qualification.md",
-  "?? reports/dev-v3-block/",
-  "?? scripts/qualify_dev_v3.py",
-  "?? src/officeminds/devgen3.py",
-  "?? tests/test_dev_v3.py"
- ],
- "generated_at": "2026-10-28T16:33:49-0500",
- "git_commit": "0b8346cb9fa81876ac332bdb6b6b6e372c97400f",
+ "dirty_paths": [],
+ "generated_at": "2026-10-28T16:50:18-0500",
+ "git_commit": "7871e4ce77add79dce65191ef5b7cb9a5c087bd7",
  "instances": [
   {
    "bayes_value_t0": 0.95,
    "best_by_family": {
     "ask": 0.9,
     "chute": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -166,7 +155,7 @@
    "best_by_family": {
     "ask": 0.9,
     "chute": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -208,7 +197,7 @@
    "optimal_first_actions": [
     "drop(desk_3)"
    ],
-   "oracle_seconds": 0.01,
+   "oracle_seconds": 0.011,
    "permuted": false,
    "prior_worlds": 3,
    "q_first_actions": {
@@ -230,7 +219,7 @@
    "best_by_family": {
     "ask": 0.9,
     "chute": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -272,7 +261,7 @@
    "optimal_first_actions": [
     "drop(desk_3)"
    ],
-   "oracle_seconds": 0.01,
+   "oracle_seconds": 0.011,
    "permuted": true,
    "prior_worlds": 3,
    "q_first_actions": {
@@ -294,7 +283,7 @@
    "best_by_family": {
     "ask": 0.9,
     "chute": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -336,7 +325,7 @@
    "optimal_first_actions": [
     "drop(desk_3)"
    ],
-   "oracle_seconds": 0.011,
+   "oracle_seconds": 0.01,
    "permuted": true,
    "prior_worlds": 3,
    "q_first_actions": {
@@ -358,7 +347,7 @@
    "best_by_family": {
     "ask": 0.7,
     "chute": -0.05,
-    "search/walk": 0.75,
+    "move": 0.75,
     "wait": 0.7
    },
    "candidates": [
@@ -398,7 +387,7 @@
    "optimal_first_actions": [
     "move(hall)"
    ],
-   "oracle_seconds": 0.02,
+   "oracle_seconds": 0.019,
    "permuted": false,
    "prior_worlds": 3,
    "q_first_actions": {
@@ -420,7 +409,7 @@
    "best_by_family": {
     "ask": 0.7,
     "chute": -1.05,
-    "search/walk": 0.75,
+    "move": 0.75,
     "wait": 0.7
    },
    "candidates": [
@@ -460,7 +449,7 @@
    "optimal_first_actions": [
     "move(hall)"
    ],
-   "oracle_seconds": 0.02,
+   "oracle_seconds": 0.019,
    "permuted": false,
    "prior_worlds": 3,
    "q_first_actions": {
@@ -482,7 +471,7 @@
    "best_by_family": {
     "ask": 0.7,
     "chute": -0.05,
-    "search/walk": 0.75,
+    "move": 0.75,
     "wait": 0.7
    },
    "candidates": [
@@ -544,7 +533,7 @@
    "best_by_family": {
     "ask": 0.7,
     "chute": -1.05,
-    "search/walk": 0.75,
+    "move": 0.75,
     "wait": 0.7
    },
    "candidates": [
@@ -584,7 +573,7 @@
    "optimal_first_actions": [
     "move(hall)"
    ],
-   "oracle_seconds": 0.018,
+   "oracle_seconds": 0.019,
    "permuted": true,
    "prior_worlds": 3,
    "q_first_actions": {
@@ -606,7 +595,7 @@
    "best_by_family": {
     "ask": 0.9,
     "chute": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -670,7 +659,7 @@
    "best_by_family": {
     "ask": 0.9,
     "chute": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -712,7 +701,7 @@
    "optimal_first_actions": [
     "drop(suite_1)"
    ],
-   "oracle_seconds": 0.011,
+   "oracle_seconds": 0.01,
    "permuted": false,
    "prior_worlds": 3,
    "q_first_actions": {
@@ -734,7 +723,7 @@
    "best_by_family": {
     "ask": 0.9,
     "chute": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -776,7 +765,7 @@
    "optimal_first_actions": [
     "drop(suite_1)"
    ],
-   "oracle_seconds": 0.01,
+   "oracle_seconds": 0.011,
    "permuted": true,
    "prior_worlds": 3,
    "q_first_actions": {
@@ -798,7 +787,7 @@
    "best_by_family": {
     "ask": 0.9,
     "chute": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -863,7 +852,7 @@
     "ask": 0.9,
     "chute": 0.2,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -934,7 +923,7 @@
    "optimal_first_actions": [
     "give(yara)"
    ],
-   "oracle_seconds": 0.983,
+   "oracle_seconds": 0.991,
    "permuted": false,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -977,7 +966,7 @@
     "ask": 0.9,
     "chute": -0.55,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -1048,7 +1037,7 @@
    "optimal_first_actions": [
     "give(yara)"
    ],
-   "oracle_seconds": 0.955,
+   "oracle_seconds": 0.951,
    "permuted": false,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -1091,7 +1080,7 @@
     "ask": 0.9,
     "chute": 0.2,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -1162,7 +1151,7 @@
    "optimal_first_actions": [
     "give(ravi)"
    ],
-   "oracle_seconds": 0.932,
+   "oracle_seconds": 0.952,
    "permuted": true,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -1205,7 +1194,7 @@
     "ask": 0.9,
     "chute": -0.55,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -1276,7 +1265,7 @@
    "optimal_first_actions": [
     "give(ravi)"
    ],
-   "oracle_seconds": 0.948,
+   "oracle_seconds": 0.959,
    "permuted": true,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -1319,7 +1308,7 @@
     "ask": 0.75,
     "chute": 0.2,
     "handoff": -0.55,
-    "search/walk": 0.8,
+    "move": 0.8,
     "wait": 0.75
    },
    "candidates": [
@@ -1406,7 +1395,7 @@
     "ask": 0.75,
     "chute": -0.55,
     "handoff": -2.05,
-    "search/walk": 0.8,
+    "move": 0.8,
     "wait": 0.75
    },
    "candidates": [
@@ -1454,7 +1443,7 @@
    "optimal_first_actions": [
     "move(hall)"
    ],
-   "oracle_seconds": 0.074,
+   "oracle_seconds": 0.073,
    "permuted": false,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -1493,7 +1482,7 @@
     "ask": 0.75,
     "chute": 0.2,
     "handoff": -0.55,
-    "search/walk": 0.8,
+    "move": 0.8,
     "wait": 0.75
    },
    "candidates": [
@@ -1541,7 +1530,7 @@
    "optimal_first_actions": [
     "move(hall)"
    ],
-   "oracle_seconds": 0.071,
+   "oracle_seconds": 0.07,
    "permuted": true,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -1580,7 +1569,7 @@
     "ask": 0.75,
     "chute": -0.55,
     "handoff": -2.05,
-    "search/walk": 0.8,
+    "move": 0.8,
     "wait": 0.75
    },
    "candidates": [
@@ -1628,7 +1617,7 @@
    "optimal_first_actions": [
     "move(hall)"
    ],
-   "oracle_seconds": 0.072,
+   "oracle_seconds": 0.074,
    "permuted": true,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -1667,7 +1656,7 @@
     "ask": 0.9,
     "chute": 0.2,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -1742,7 +1731,7 @@
    "optimal_first_actions": [
     "give(dave)"
    ],
-   "oracle_seconds": 1.224,
+   "oracle_seconds": 1.233,
    "permuted": false,
    "prior_worlds": 12,
    "q_first_actions": {
@@ -1785,7 +1774,7 @@
     "ask": 0.9,
     "chute": -0.55,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -1860,7 +1849,7 @@
    "optimal_first_actions": [
     "give(dave)"
    ],
-   "oracle_seconds": 1.218,
+   "oracle_seconds": 1.215,
    "permuted": false,
    "prior_worlds": 12,
    "q_first_actions": {
@@ -1903,7 +1892,7 @@
     "ask": 0.9,
     "chute": 0.2,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -1978,7 +1967,7 @@
    "optimal_first_actions": [
     "give(frank)"
    ],
-   "oracle_seconds": 1.201,
+   "oracle_seconds": 1.22,
    "permuted": true,
    "prior_worlds": 12,
    "q_first_actions": {
@@ -2021,7 +2010,7 @@
     "ask": 0.9,
     "chute": -0.55,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -2096,7 +2085,7 @@
    "optimal_first_actions": [
     "give(frank)"
    ],
-   "oracle_seconds": 1.217,
+   "oracle_seconds": 1.216,
    "permuted": true,
    "prior_worlds": 12,
    "q_first_actions": {
@@ -2138,7 +2127,7 @@
    "best_by_family": {
     "ask": 0.9,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -2219,7 +2208,7 @@
      "ask": 0.9,
      "chute": 0.2,
      "handoff": 0.95,
-     "search/walk": 0.85,
+     "move": 0.85,
      "wait": 0.9
     },
     "optimal": [
@@ -2233,7 +2222,7 @@
    "best_by_family": {
     "ask": 0.9,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -2281,7 +2270,7 @@
    "optimal_first_actions": [
     "give(heidi)"
    ],
-   "oracle_seconds": 0.114,
+   "oracle_seconds": 0.115,
    "permuted": false,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -2314,7 +2303,7 @@
      "ask": 0.9,
      "chute": -0.55,
      "handoff": 0.95,
-     "search/walk": 0.85,
+     "move": 0.85,
      "wait": 0.9
     },
     "optimal": [
@@ -2328,7 +2317,7 @@
    "best_by_family": {
     "ask": 0.9,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -2409,7 +2398,7 @@
      "ask": 0.9,
      "chute": 0.2,
      "handoff": 0.95,
-     "search/walk": 0.85,
+     "move": 0.85,
      "wait": 0.9
     },
     "optimal": [
@@ -2423,7 +2412,7 @@
    "best_by_family": {
     "ask": 0.9,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -2504,7 +2493,7 @@
      "ask": 0.9,
      "chute": -0.55,
      "handoff": 0.95,
-     "search/walk": 0.85,
+     "move": 0.85,
      "wait": 0.9
     },
     "optimal": [
@@ -2518,7 +2507,7 @@
    "best_by_family": {
     "ask": 0.8,
     "handoff": -0.55,
-    "search/walk": 0.8,
+    "move": 0.8,
     "wait": 0.75
    },
    "candidates": [
@@ -2573,7 +2562,7 @@
     "ask(tomas,meeting_room)",
     "move(hall)"
    ],
-   "oracle_seconds": 0.27,
+   "oracle_seconds": 0.269,
    "permuted": false,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -2607,7 +2596,7 @@
      "ask": 0.9,
      "chute": 0.2,
      "handoff": -0.55,
-     "search/walk": 0.8,
+     "move": 0.8,
      "wait": 0.85
     },
     "optimal": [
@@ -2621,7 +2610,7 @@
    "best_by_family": {
     "ask": 0.8,
     "handoff": -2.05,
-    "search/walk": 0.8,
+    "move": 0.8,
     "wait": 0.75
    },
    "candidates": [
@@ -2710,7 +2699,7 @@
      "ask": 0.9,
      "chute": -0.55,
      "handoff": -2.05,
-     "search/walk": 0.8,
+     "move": 0.8,
      "wait": 0.85
     },
     "optimal": [
@@ -2724,7 +2713,7 @@
    "best_by_family": {
     "ask": 0.8,
     "handoff": -0.55,
-    "search/walk": 0.8,
+    "move": 0.8,
     "wait": 0.75
    },
    "candidates": [
@@ -2813,7 +2802,7 @@
      "ask": 0.9,
      "chute": 0.2,
      "handoff": -0.55,
-     "search/walk": 0.8,
+     "move": 0.8,
      "wait": 0.85
     },
     "optimal": [
@@ -2827,7 +2816,7 @@
    "best_by_family": {
     "ask": 0.8,
     "handoff": -2.05,
-    "search/walk": 0.8,
+    "move": 0.8,
     "wait": 0.75
    },
    "candidates": [
@@ -2882,7 +2871,7 @@
     "ask(ivan,meeting_room)",
     "move(hall)"
    ],
-   "oracle_seconds": 0.271,
+   "oracle_seconds": 0.273,
    "permuted": true,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -2916,7 +2905,7 @@
      "ask": 0.9,
      "chute": -0.55,
      "handoff": -2.05,
-     "search/walk": 0.8,
+     "move": 0.8,
      "wait": 0.85
     },
     "optimal": [
@@ -2930,7 +2919,7 @@
    "best_by_family": {
     "ask": 0.9,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -2980,7 +2969,7 @@
    "optimal_first_actions": [
     "give(nadia)"
    ],
-   "oracle_seconds": 0.283,
+   "oracle_seconds": 0.284,
    "permuted": false,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -3014,7 +3003,7 @@
      "ask": 0.9,
      "chute": 0.95,
      "handoff": 0.95,
-     "search/walk": 0.85,
+     "move": 0.85,
      "wait": 0.9
     },
     "optimal": [
@@ -3029,7 +3018,7 @@
    "best_by_family": {
     "ask": 0.9,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -3079,7 +3068,7 @@
    "optimal_first_actions": [
     "give(nadia)"
    ],
-   "oracle_seconds": 0.273,
+   "oracle_seconds": 0.271,
    "permuted": false,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -3113,7 +3102,7 @@
      "ask": 0.9,
      "chute": 0.95,
      "handoff": 0.95,
-     "search/walk": 0.85,
+     "move": 0.85,
      "wait": 0.9
     },
     "optimal": [
@@ -3128,7 +3117,7 @@
    "best_by_family": {
     "ask": 0.9,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -3178,7 +3167,7 @@
    "optimal_first_actions": [
     "give(heidi)"
    ],
-   "oracle_seconds": 0.278,
+   "oracle_seconds": 0.282,
    "permuted": true,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -3212,7 +3201,7 @@
      "ask": 0.9,
      "chute": 0.95,
      "handoff": 0.95,
-     "search/walk": 0.85,
+     "move": 0.85,
      "wait": 0.9
     },
     "optimal": [
@@ -3227,7 +3216,7 @@
    "best_by_family": {
     "ask": 0.9,
     "handoff": 0.95,
-    "search/walk": 0.85,
+    "move": 0.85,
     "wait": 0.9
    },
    "candidates": [
@@ -3277,7 +3266,7 @@
    "optimal_first_actions": [
     "give(heidi)"
    ],
-   "oracle_seconds": 0.267,
+   "oracle_seconds": 0.27,
    "permuted": true,
    "prior_worlds": 6,
    "q_first_actions": {
@@ -3311,7 +3300,7 @@
      "ask": 0.9,
      "chute": 0.95,
      "handoff": 0.95,
-     "search/walk": 0.85,
+     "move": 0.85,
      "wait": 0.9
     },
     "optimal": [
@@ -3326,7 +3315,7 @@
    "best_by_family": {
     "ask": 0.81,
     "chute": 0.86,
-    "search/walk": 0.841,
+    "move": 0.841,
     "wait": 0.81
    },
    "candidates": [
@@ -3372,7 +3361,7 @@
    "optimal_first_actions": [
     "drop(suite_1)"
    ],
-   "oracle_seconds": 0.137,
+   "oracle_seconds": 0.135,
    "permuted": false,
    "prior_worlds": 12,
    "q_first_actions": {
@@ -3395,7 +3384,7 @@
    "best_by_family": {
     "ask": 0.791,
     "chute": 0.77,
-    "search/walk": 0.841,
+    "move": 0.841,
     "wait": 0.791
    },
    "candidates": [
@@ -3441,7 +3430,7 @@
    "optimal_first_actions": [
     "move(hall)"
    ],
-   "oracle_seconds": 0.138,
+   "oracle_seconds": 0.139,
    "permuted": false,
    "prior_worlds": 12,
    "q_first_actions": {
@@ -3464,7 +3453,7 @@
    "best_by_family": {
     "ask": 0.81,
     "chute": 0.86,
-    "search/walk": 0.841,
+    "move": 0.841,
     "wait": 0.81
    },
    "candidates": [
@@ -3510,7 +3499,7 @@
    "optimal_first_actions": [
     "drop(suite_1)"
    ],
-   "oracle_seconds": 0.14,
+   "oracle_seconds": 0.134,
    "permuted": true,
    "prior_worlds": 12,
    "q_first_actions": {
@@ -3533,7 +3522,7 @@
    "best_by_family": {
     "ask": 0.791,
     "chute": 0.77,
-    "search/walk": 0.841,
+    "move": 0.841,
     "wait": 0.791
    },
    "candidates": [
@@ -3579,7 +3568,7 @@
    "optimal_first_actions": [
     "move(hall)"
    ],
-   "oracle_seconds": 0.137,
+   "oracle_seconds": 0.138,
    "permuted": true,
    "prior_worlds": 12,
    "q_first_actions": {
@@ -3602,7 +3591,7 @@
    "best_by_family": {
     "ask": 0.8180064309,
     "chute": 0.8680064309,
-    "search/walk": 0.8435691318,
+    "move": 0.8435691318,
     "wait": 0.8180064309
    },
    "candidates": [
@@ -3678,7 +3667,7 @@
    "optimal_first_actions": [
     "drop(desk_14)"
    ],
-   "oracle_seconds": 0.786,
+   "oracle_seconds": 0.797,
    "permuted": false,
    "prior_worlds": 30,
    "q_first_actions": {
@@ -3702,7 +3691,7 @@
    "best_by_family": {
     "ask": 0.7935691318,
     "chute": 0.7860128617,
-    "search/walk": 0.8435691318,
+    "move": 0.8435691318,
     "wait": 0.7935691318
    },
    "candidates": [
@@ -3802,7 +3791,7 @@
    "best_by_family": {
     "ask": 0.8180064309,
     "chute": 0.8680064309,
-    "search/walk": 0.8435691318,
+    "move": 0.8435691318,
     "wait": 0.8180064309
    },
    "candidates": [
@@ -3878,7 +3867,7 @@
    "optimal_first_actions": [
     "drop(desk_14)"
    ],
-   "oracle_seconds": 0.793,
+   "oracle_seconds": 0.791,
    "permuted": true,
    "prior_worlds": 30,
    "q_first_actions": {
@@ -3902,7 +3891,7 @@
    "best_by_family": {
     "ask": 0.7935691318,
     "chute": 0.7860128617,
-    "search/walk": 0.8435691318,
+    "move": 0.8435691318,
     "wait": 0.7935691318
    },
    "candidates": [
@@ -3978,7 +3967,7 @@
    "optimal_first_actions": [
     "move(hall)"
    ],
-   "oracle_seconds": 0.81,
+   "oracle_seconds": 0.803,
    "permuted": true,
    "prior_worlds": 30,
    "q_first_actions": {
@@ -4002,7 +3991,7 @@
    "best_by_family": {
     "ask": 0.825,
     "chute": 0.875,
-    "search/walk": 0.8425,
+    "move": 0.8425,
     "wait": 0.825
    },
    "candidates": [
@@ -4045,7 +4034,7 @@
    "optimal_first_actions": [
     "drop(lab_north)"
    ],
-   "oracle_seconds": 0.062,
+   "oracle_seconds": 0.064,
    "permuted": false,
    "prior_worlds": 12,
    "q_first_actions": {
@@ -4067,7 +4056,7 @@
    "best_by_family": {
     "ask": 0.7925,
     "chute": 0.8,
-    "search/walk": 0.8425,
+    "move": 0.8425,
     "wait": 0.7925
    },
    "candidates": [
@@ -4132,7 +4121,7 @@
    "best_by_family": {
     "ask": 0.825,
     "chute": 0.875,
-    "search/walk": 0.8425,
+    "move": 0.8425,
     "wait": 0.825
    },
    "candidates": [
@@ -4175,7 +4164,7 @@
    "optimal_first_actions": [
     "drop(lab_north)"
    ],
-   "oracle_seconds": 0.066,
+   "oracle_seconds": 0.068,
    "permuted": true,
    "prior_worlds": 12,
    "q_first_actions": {
@@ -4197,7 +4186,7 @@
    "best_by_family": {
     "ask": 0.7925,
     "chute": 0.8,
-    "search/walk": 0.8425,
+    "move": 0.8425,
     "wait": 0.7925
    },
    "candidates": [
@@ -4240,7 +4229,7 @@
    "optimal_first_actions": [
     "move(hall)"
    ],
-   "oracle_seconds": 0.064,
+   "oracle_seconds": 0.065,
    "permuted": true,
    "prior_worlds": 12,
    "q_first_actions": {
@@ -4365,7 +4354,7 @@
     },
     "value": 0.8
    },
-   "gap_if_a_best_used_in_b": NaN,
+   "gap_if_a_best_used_in_b": "n/a: action illegal in b",
    "group_spec": "dev-v3-2a",
    "kind": "physical availability contrast (H departed)",
    "optimal_sets_differ": true,
