@@ -65,6 +65,7 @@ def _minds_snapshot(world: World) -> dict:
             "intent": m.intent,
             "beliefs": dict(sorted(m.beliefs.items())),
             "nested": {f"{o}:{f}": v for (o, f), v in sorted(m.nested.items())},
+            "assessments": dict(sorted(m.assessments.items())),
             "perceived": list(m.perceived),
         }
         for p, m in sorted(world.minds.items())

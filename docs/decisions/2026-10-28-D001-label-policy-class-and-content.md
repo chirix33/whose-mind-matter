@@ -1,6 +1,6 @@
 # D-001 — Policy class and content semantics for VoMI labels
 
-- Status: **proposed** (awaiting research review)
+- Status: **accepted with constraints — option C; the proposed mind-blind default was REJECTED** (review 2026-10-28)
 - Date: 2026-10-28
 - Affects: outline §3.3, §4.3 (oracle-content labels), §5.4 (gold labels, certification); AGENTS §5.2; `vomi/oracle.py`
 - Blocks: any bulk label generation and controller training
@@ -54,4 +54,19 @@ A controller trained on these labels would learn to instantiate people whose min
 (The B numbers are hand estimates under the proposed rule. They are not implemented yet.)
 
 ## Review outcome
-_(pending — record the decision supplied by Ashraf here)_
+**Accepted: option C, with constraints.** Supplied by the research review 2026-10-28 (`research-reviews/stage-0-research-review.md`, supplied by Ashraf; that folder is gitignored, so the binding points are restated here).
+
+- The main supervision target is a **grounded bounded-policy value**: a specified, computationally bounded actor plus evidence-grounded unit computations. An exact evaluator may enumerate worlds, but it must evaluate *that bounded actor*. It must not silently substitute a Bayes-optimal actor.
+- The perfect-hidden-content oracle stays as a clearly labeled **privileged perfect-content reference**. It is not the default training target and not automatically an upper bound.
+- **Rejected:** "testimony is uninformative until a K/R unit is purchased". Instead:
+  - every method gets the same observations, plus a literal report ledger (speaker, claim, time, provenance);
+  - the default bounded policy acts on direct, unambiguous reports at face value, with a documented fixed rule for conflicts;
+  - K assesses information access, false beliefs and relevance; R assesses how intent affects the use of reports; directed units assess the specified nested perspective;
+  - no single unit may run unrestricted whole-scene reasoning;
+  - the direct LLM baseline keeps the full transcript;
+  - gains must be tested under at least one alternative testimony default, and the default must not be chosen to maximize the router's advantage.
+- Three descriptive label records: privileged perfect-content reference; grounded bounded-policy value (main symbolic target); realized LLM value.
+- A unit with no visible support returns unknown or a calibrated distribution.
+- Required: a pair of hidden worlds with identical visible history must give identical candidates, features and grounded outputs.
+
+The "Recommendation" section above (mind-blind default) is **superseded** by this outcome. Implementation: implementation-spec §4 (v0.2).

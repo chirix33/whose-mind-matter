@@ -1,140 +1,199 @@
-# Implementation specification — scientific contract (draft v0.1, 2026-10-28)
+# Implementation specification — scientific contract (v0.2, 2026-10-28)
 
-Status: **draft with open choices**. Items marked **OPEN (D-00x)** are proposed decisions in `docs/decisions/` awaiting research review. Nothing here supersedes the outline (`docs/research/methods-experiments-v2.md`) or `AGENTS.md`. Where this spec narrows or clarifies them, the discrepancy log says so.
+**Status.** v0.2 incorporates the Stage 0 research review: D-001…D-006 are recorded as accepted, with constraints, in `docs/decisions/`. Items marked **OPEN** are new questions in `reports/review-request.md`. Nothing here supersedes the outline (`docs/research/methods-experiments-v2.md`) or `AGENTS.md`; narrowings are logged in `docs/decisions/discrepancy-log.md`. v0.1 values are preserved as the *legacy privileged perfect-content reference* (§6.1).
 
-Executable reference: `src/officeminds/` (world), `src/vomi/` (units, oracle), `tests/` (hand-checked constructions). Section numbers below are cited from code and tests.
+**Executable reference.**
+- `src/officeminds/`: world, scenarios, episodes.
+- `src/vomi/units.py`: units, defaults, candidates.
+- `src/vomi/oracle.py`: the three label records, the D-002 decomposition.
+- `src/vomi/allocation.py`: gold sets, D4, metrics.
+- `src/vomi/graph.py`: perspective graph, features.
+- `src/vomi/theory.py`: P2, audits.
+- `tests/`.
 
 ---
 
 ## 1. Scope implemented so far
-Tier 1 only: a deterministic world with rooms, closed offices, a lobby chute, people with private minds, templated answers, sincere tells, insincere claims, and relayed (nested) beliefs. Depth ≤ 2. Variables: Knowledge and Reliability. There are ten tiny scenarios (§6). Nothing here is LLM-labeled, and no bulk generation has been done.
+Tier 1 only, depth ≤ 2, Knowledge and Reliability. That includes nested Reliability **R(j→k)**, which the review kept in core scope. There are 10 legacy tiny cases and 6 grounded cases (§6), plus a parameterized conflicting-reports family for the stakes search (§7). There are no LLM labels, no bulk generation, and no training.
 
 ## 2. Information boundaries (AGENTS §5.1)
 | Layer | Type | Who may read it |
 |---|---|---|
-| Public task structure | `WorldConfig` (layout, roster, query facts, handoff availability, stakes, horizon) and the scenario `brief` | robot, controller, prompts |
-| Physical simulator state | `World` positions, holding flag, time | simulator, oracle |
-| Each person's private state | `PersonMind`: perceived event IDs, `beliefs`, `nested` beliefs, `intent` | simulator, oracle |
-| Robot-visible observations and history | `Observation`, `VisibleHistory` (actions **and** observations) | robot, controller, prompts — via `VisibleHistory.to_agent_dict()` only |
-| Robot's inferred perspective graph | `G_t` (§5.3) — **not implemented yet** | robot |
-| Privileged annotations | `PrivilegedTrace` (hidden params, full event log, per-step minds), oracle labels | evaluator and training-label generation only |
+| Public task structure | `WorldConfig` + scenario `brief` | robot, controller, prompts |
+| Physical state and objective truth | `World` positions, holding flag, time, `World.truth(fact)` | simulator, evaluator |
+| Private minds | `PersonMind`: beliefs, nested beliefs, **assessments** (R(j→k) content), intent, perceived events | simulator, evaluator |
+| Robot-visible history | `VisibleHistory` (actions **and** observations, including the literal report ledger of heard utterances). Serialized only via `to_agent_dict()` | robot, controller, prompts |
+| Robot perspective graph | `vomi.graph.PerspectiveGraph`: unit records built from visible evidence plus unit outputs | robot |
+| Controller features | `vomi.graph.visible_features` (depth, recency, spoke-to-robot, conflicting reports, stated incentive, stakes, the actor's own decision margin, evidence count) | controller |
+| Privileged annotations | `PrivilegedTrace`, label records, true contents | evaluator, label generation only |
 
-Guarantees tested in `tests/test_world.py` and `tests/test_units.py`:
-- Backstory events and events in other rooms never appear in the agent view.
-- `legal_actions` and `generate_candidates` produce identical outputs for worlds that differ only in hidden state.
-- Smoke-test prompts contain no hidden-parameter names.
+**Invariance test** (`test_invisible_world_pair_gives_identical_actor_inputs_and_outputs`): two hidden worlds of `false_belief` with an identical agent view yield identical candidates, features, grounded outputs and grounded actions. Only the privileged record lets the private difference (Alice's switch) reach an actor.
 
-The robot sees people only in its current room. Offices are closed: it learns who is inside only by entering.
+## 3. Units, content, ontology (D-004 accepted)
+- **K(j):** j's belief value per public query fact, or `unknown`. It may be false.
+- **K(j→k):** j's belief about k's belief.
+- **R(j):** intent ∈ {cooperative, obstructive}.
+- **R(j→k):** j's **assessment** of k's intent ∈ {cooperative, obstructive, unknown}. Not k's actual intent, and not j's reliability.
+- **Mistaken** = cooperative plus a false or outdated belief. It is a derived reporting slice (cooperative-accurate / mistaken / obstructive), computed per person from (intent, belief vs. truth). An obstructive person with a false belief is reported as obstructive.
+- Scenarios must declare objective truth for every non-location query fact. `World.truth` raises otherwise: an undeclared truth previously made every belief count as a default violation.
 
-## 3. Units, content, ontology
-Unit `u = (path, variable)`, path length 1 or 2. Depth-0 physical reasoning is always on and is never a unit.
+**Tier 1 scripted policies** (deterministic, inspectable; identical for every method):
 
-**Knowledge K(·).** Over the public *query facts* of the task (e.g. `alice_loc`, `meeting_room`). For each fact, j's epistemic state is one of: a supported belief value (which may be **false**), or `unknown`. Objective truth is stored separately in the physical state, never in a mind.
-- `K(j)` = j's belief value or `unknown`, per query fact.
-- `K(j→k)` = **j's belief about k's belief** per fact. This is neither k's actual belief nor the robot's belief about k. A test (`test_nested_content_is_js_belief_about_k_not_ks_state`) checks a case where `K(rec→alice)` is false while `K(alice)` is true.
+| Event | Effect |
+|---|---|
+| `witness` | the people present learn the fact |
+| `tell` (sincere) | the speaker holds the belief; listeners adopt it plus nested(speaker); the speaker sets nested(listener) |
+| `claim` | listeners update only nested(speaker). Answers to `ask` are claims. Obstructive people lie deterministically (the other domain value) or say "I don't know" |
+| `assert` (possibly insincere) | listener rule: a listener without her own belief adopts the value, unless she assesses the speaker as obstructive, in which case she adopts the other value of the binary domain; the speaker assumes listeners adopted it |
+| `assess` | listeners adopt "person X has intent v"; the speaker too, unless vouching for himself |
+| `enter` | a person walks into a room |
+| `say` | visible, with no belief effect |
 
-**Reliability R(·).** The stable intent type ∈ {cooperative, obstructive}. Statement correctness is *not* a variable: it is derived from belief vs. truth. So a cooperative person with a false belief ("mistaken") answers sincerely and wrongly. That is not an intentional lie. `R(j→k)` (j's belief about k's intent) has no Tier 1 mechanics yet and is never generated. **OPEN (D-004)**: confirm this ontology, including whether "mistaken" stays a generator label for "cooperative + false belief" rather than a third intent.
+Intent is never encoded in wording, names or order. The only reliability cues are templated incentive statements and conflicting claims.
 
-**Belief dynamics** (`World._apply`).
-- `witness`: people present learn the fact.
-- `tell` (sincere): the speaker holds the belief; listeners adopt it and set nested(speaker); the speaker sets nested(listener).
-- `claim` (possibly insincere, e.g. an answer to `ask`): listeners only update nested(speaker, fact) and do **not** adopt it.
-- `say`: visible, with no belief effect (e.g. incentives).
-- Obstructive people with a belief lie deterministically: they answer the first other domain value. With no belief they say "I don't know".
+## 4. Label records and evaluator contract (D-001, D-002 accepted)
 
-**OPEN (D-005)** lists these mechanics for review.
+### 4.1 Evaluator
+- Hidden-world posterior `b_h`: the finite scenario prior restricted to worlds that **replay** the visible history exactly, renormalized.
+- The evaluator enumerates these worlds to take expectations of realized returns. **Actors never see them.**
 
-## 4. VoMI and oracle contract (AGENTS §5.2)
-This defines the label type currently implemented, **exact symbolic-oracle VoMI** (`vomi/oracle.py`). Every quantity is computed by exhaustive enumeration. There is no sampling, so "exact" is literal *for this model and policy class*.
+### 4.2 The bounded actor (main policy class)
+- **Hypothesis space:** the generator's support, conditioned on h by replay. This is a modeling choice with a known risk (§10, OPEN Q2).
+- **Face-value defaults**, one per mental factor (all persons, all paths of depth ≤ 2):
+  - K(j): no false belief on query facts (belief ∈ {truth, unknown});
+  - R(j): cooperative;
+  - K(j→k): j's model of k's belief ∈ {k's belief, unknown};
+  - R(j→k): j's assessment ∈ {k's intent, unknown}.
+- **Actor prior** ∝ generator prior × ε^(number of violated defaults among UNMODELED factors):
+  - ε = 10⁻⁶: **face value** (main);
+  - ε = 0.25: **hedged** (the alternative testimony default the review required).
+- **Consequences:**
+  - A direct, unambiguous report is acted on at face value (`test_direct_testimony_default_acts_on_face_value`).
+  - **Conflict rule:** conflicting testimony is explained with the fewest default violations, with remaining ties weighted by the prior. This is lexicographic as ε → 0.
+- **Testimony:** heard utterances are physical observations in the literal ledger, and every method sees them. The actor conditions on them exactly through replay.
+- **What a mental computation is.** Instantiating unit u (i) removes u's default and (ii) I-projects the actor prior onto u's **grounded output**: the posterior P(default holds | h) of u's factor under the generator (iterative proportional fitting to 10⁻¹⁴).
+  - The output is *only* this accuracy/cooperation/mismodel probability, **never the content value**.
+  - Reason: exposing the content marginal let K(alice), whose belief equals the target, deliver the whole-scene posterior over the answer. It was found in `stakes_m4_q0.95` and a regression test now covers it.
+  - A unit with no visible support gets its prior accuracy, which carries no information: e.g. K(alice) in `depth1_knowledge` = 0.
+  - **OPEN Q1:** computing that scalar uses whole-generator inference; whether that is acceptable.
+- **Planning:** physical planning is belief-space expectimax under the actor's own model (depth-0 reasoning, mandatory). Only mental modeling is bounded.
 
-- **Hidden-world distribution.** Each scenario has a finite prior over hidden parameters. It is conditioned on the visible history by **replay**: a world is kept iff re-executing the robot's actions in it reproduces every observation exactly. The result is renormalized to `b_h`.
-- **Unit content.** Deterministic in each world (§3). The content is the true mental content ("oracle content").
-- **Decision policy a(S).** In world w the agent knows `c_S(w)`. Its belief is `b_{S,w} = b_h | c_S = c_S(w)`, and `a_S(w) = argmax_a Q(b_{S,w}, a)`. Ties are broken by canonical action order (sorted `Action` tuples), within a tolerance of 1e-9. **The policy reasons over the full raw history h.** See D-001: this is the central open question.
-- **Action values.** `Q(b,a) = Σ_w b(w)[r_w(a) + V*(b')]`, where `V*` is the finite-horizon belief-optimal value. Observations update the belief by exact filtering. There is no discount. Reward: +1 success, −0.05 every step (including the terminal one), −0.5 × stakes for an irreversible error (wrong chute drop, or a handoff routed to the wrong room). The episode ends at success, error, or the horizon (default 8), with no extra timeout penalty.
-- **Realized return.** `R_w(a, b)` = the return in true world w of taking a, then following the belief-optimal policy. The continuation belief starts at b and is updated by observations.
-- **Allocation value.** `J(S) = Σ_w b_h(w) R_w(a_S(w), b_cont)`.
-  - Under continuation **`retain`** (default), `b_cont = b_{S,w}`: instantiated units stay in the graph.
-  - Under **`drop`**, `b_cont = b_h`: the continuation forgets them.
-  - **OPEN (D-002).**
-- **VoMI.** `VoMI(u|S) = J(S∪{u}) − J(S) − λ·c(u)`. Cost `c(u)` is in **instantiation calls**: 1 per unit for now. It is a placeholder until real token and latency costs are measured. λ is in return units per call. Labels store the raw `ΔJ`; λ is applied at analysis time. Cache reuse is not modeled yet (§5.3).
-- **Naming.** These are values of an *observation-limited* Bayes-optimal agent. They are **not** `Q*` of a fully informed state oracle. The full-information value (each world known) is reported separately as a privileged bound, computed by independent brute-force sequence search.
-- **Validity.** A label is valid for a specific (scenario, visible history, S, continuation mode, candidate set, policy class, tie-break). Labels are not transferable across S.
+### 4.3 Three label records (descriptive names)
+| Record | Actor | Unit content given to the actor | Role |
+|---|---|---|---|
+| `privileged_bayes`: **legacy privileged perfect-content reference** | Bayes-optimal over h | true contents of S | Stage 0 values; reference only, never a target |
+| `privileged_bounded`: **privileged perfect-content, bounded actor** | face-value bounded actor | true contents of S (point-mass constraint) | reference; **not an upper bound** (it can be negative, §7) |
+| `grounded`: **grounded bounded-policy value** | face-value (or hedged) bounded actor | grounded outputs (§4.2) | **main symbolic target** |
+| realized LLM value | LLM | LLM-inferred | not implemented (Stage 2+) |
 
-### Three label records (kept distinct)
-1. **Exact symbolic-oracle VoMI**: implemented as above.
-2. **Oracle-content LLM marginal value**: true content supplied to the *LLM* policy. It requires real LLM calls and is possibly stochastic. Not implemented.
-3. **Realized LLM VoMI**: LLM-inferred content and LLM decisions, with recorded sampling. Not implemented.
+### 4.4 Fixed continuation and the D-002 decomposition
+- `Q_ref(w, m, a)` is the realized return in true world w of action a. After a, the **same actor with cognitive state m** continues: no new instantiations, retained content, beliefs updated by exact conditioning on new observations.
+- No allocation is re-solved per branch.
+- For a = a(m) and a_y = a(m ∪ {u}):
+  - `D_action = E[Q_ref(m, a_y) − Q_ref(m, a_0)]`
+  - `D_memory = E[Q_ref(m_y, a_y) − Q_ref(m, a_y)]`
+  - `VoMI_retained = D_action + D_memory − λc = J(S∪u) − J(S) − λc`
+- The residual is |…| < 10⁻¹² for every unit, case and record (`test_decomposition_identity_everywhere`). The identity is algebraic, not causal.
+- **Carryover effect** = positive value with zero current-action flips.
+- Measured patterns:
+  - pure current-action (`false_belief` K(rec): D_action 0.35, D_memory 0);
+  - pure carryover (`relevance_shift` K(rec): 0 / 0.16);
+  - **negative current-action component** (`path_asymmetry` K(rec→alice): −0.10 / +0.325). Without retention the flip alone is harmful, because the default continuation walks back and hands over the package anyway.
+- **Legacy display required by the review** (`depth2_handoff`, K(alice), legacy record):
+  - E[Q(m,a0)] = 0.80, E[Q(m,ay)] = 0.80, E[Q(my,ay)] = 0.85;
+  - D_action = 0, D_memory = 0.05, residual 0, carryover.
 
-The symbolic-to-LLM gap must be measured, not assumed. A symbolic label says nothing about how an LLM acts.
+### 4.5 Cost, λ, validity, naming
+- c(u) = 1 instantiation call (placeholder). λ is in return units per call.
+- Retained units cost no new instantiation in the symbolic actor; observation updates are free.
+- Labels store raw ΔJ and components; λ is applied at analysis time.
+- A label is valid for (scenario, h, S, record, testimony default, candidate set, continuation rule, tie-break).
+- No value is called Q*. The full-information value is a privileged bound computed by independent brute force.
 
-### Checks implemented
-- Hand-derived values for every tiny case (§6).
-- For every hypothesis world, point-mass belief expectimax equals exhaustive brute-force search (an independent code path).
-- `J(∅) = V*(b_h)`.
-- `V*(b_h) ≤ J(U) ≤ full-information bound`. Information never hurts the symbolic agent, so **negative VoMI arises only from cost in record 1**. Any harm from modeling (C3) must come from records 2 and 3.
+### 4.6 Checks implemented
+- Hand-derived values for 4 non-degenerate-posterior grounded cases (§6.2).
+- Point-mass expectimax equals brute force.
+- The decomposition identity holds everywhere.
+- Each episode's return equals its label rollout, and replay is identical.
+- An early-failure-incentive audit, by full-information search over every hypothesis world of every case, finds **none**.
 
-## 5. Allocation labels, candidates, memory
-### 5.1 Gold allocation (AGENTS §5.3)
-All three definitions are computed by exhaustive subset enumeration over the candidate set U:
-- **minimal sufficient**: J(S) = J(U) with no sufficient proper subset. May be non-unique.
-- **minimum-cost sufficient**.
-- **leave-one-out necessity**, as a value drop `J(U∖u) < J(U)` and as an action change.
+## 5. Allocation labels, candidates, memory (D-003 accepted)
+- **Sufficiency:** preserves the reference expected task value, J(S) ≥ J(U) − 10⁻⁹, under the stated record and testimony default.
+- We compute minimal sufficient sets, minimum-cost sufficient sets, and LOO necessity (both value-based and action-based).
+- **Matching:** a predicted allocation A is matched to ONE minimal sufficient set G*, chosen by maximum F1, then recall, then smaller |G|, then lexicographic order. P, R and F1 are computed against G*.
+- **Also reported:**
+  - regret vs. J(U) and vs. the best budget-feasible set;
+  - the optimal-action set (`optimal_action_set`);
+  - wasted units (conditional net value ≤ λc);
+  - missed units;
+  - **missed bundles**: minimal completions of size ≥ 2 with positive net value whose singletons are all non-positive.
+- **D4 target:** conditional relevance(u | S) = u ∈ some minimal completion of S. **STOP(S)** = S sufficient. There is a minimum-cost variant. In `substitutes`, all four units are relevant at ∅; after one is chosen, STOP and nothing else is relevant.
+- **Candidates** (visible only):
+  - K(j): j observed or named;
+  - K(j→k): visible contact between j and k;
+  - R(j): templated incentive or conflicting claims;
+  - **R(j→k):** the K(j→k) contact condition plus visible reliability evidence about k.
+- **Graph** (`PerspectiveGraph`): each record holds unit, path, variable, output, confidence, evidence IDs, timestamp, cost and status.
+  - Status is retained, stale (new visible evidence about the person), or contradicted (the robot later observed the claimed room without the recipient).
+  - Re-instantiating a retained unit is an error. Advancing costs nothing.
+- **Margin:** taken from the actor's own action values (`decision_margin`), never from true values. In an LLM pipeline, the call that produces it will be counted.
 
-The outline's "minimal set whose removal changes the oracle action" is ambiguous between these. **OPEN (D-003)**. The `substitutes` case shows four minimal sufficient singletons and *no* LOO-necessary unit, even though each unit has value 0.05.
+## 6. Tiny cases
+Layout: lobby — hall — {office_a, office_b}. Chute in the lobby where enabled. Walking from the lobby: right office 0.85, wrong-then-right 0.75.
 
-### 5.2 Candidates
-`generate_candidates` reads only the brief, the observations and the utterances:
-- **depth-1 K**: any roster person observed or named (word match).
-- **depth-2 K(j→k)**: j and k both known, plus visible communication (an utterance by one naming the other) or visible co-presence.
-- **R(j)**: j uttered a templated incentive phrase, or there are conflicting claims about one fact.
+### 6.1 Legacy privileged reference (Stage 0 values, unchanged)
+Reproduced in Part A of `reports/tiny-cases.md` and asserted in `tests/test_oracle.py`:
+- depth1: J(∅) 0.825, K(rec) 0.875, K(alice) 0.95;
+- distractor: 0.8375 / 0.8875 / 0.9125;
+- depth2: 0.80 / 0.85 / 0.80 / 0.90;
+- substitutes: 0.90 → 0.95;
+- stakes q = 0.975: ΔJ(R(bob)) 0.0375 / 0.075.
 
-It never reads intent, hidden co-presence or generator tags. Recall against privileged reference candidates (the union of minimal sufficient sets) will be reported separately from router quality. Rules for false-exclusion audits are TODO once balanced generation exists.
+Under the grounded record, all legacy cases except `stakes_m4_q0.95` have **zero** unit value: their generators contain no false beliefs that face value would mishandle, or they entail default violations (§10).
 
-### 5.3 Perspective graph and memory — specification, not implemented
-Each unit record holds: path, variable, typed content (value | `unknown` | distribution), confidence, visible evidence IDs, timestamp, cost incurred, and status (fresh | retained | stale | contradicted).
-- A **retained** unit is not re-inferred. It costs retrieval/prompt tokens (counted), not an instantiation call.
-- Invalidation: a unit becomes **stale** when new visible evidence touches its person or fact (they appear, speak, or a relevant event is observed). It becomes **contradicted** when a visible claim conflicts with its content.
-- Stale units are never presented as fresh. The graph is never silently cleared.
-- For the symbolic oracle, `retain` corresponds to this memory model.
-
-### 5.4 STOP and margin (planned)
-STOP label at state (h, S): STOP iff `max_u VoMI(u|S) ≤ 0` over the remaining candidates at the given λ.
-
-The deployment margin must come from the policy's own scores, never from true values. Options are an LLM self-score gap or a log-prob gap. The call that produces it is counted. **OPEN** with D-001, because it depends on the policy class.
-
-## 6. Tiny cases with hand derivations
-Layout: lobby — hall — {office_a, office_b}. The robot starts in the lobby holding the package. The chute is in the lobby (drop: 1 step). Walking: hall, office (see who is inside), then deliver = 3 steps → 0.85; if wrong, hall, other office, deliver = 5 steps → 0.75. Worlds are uniform over Alice's office unless stated.
-
-| Case | Hand derivation | Oracle |
+### 6.2 Grounded cases: hand derivations (face value unless noted)
+| Case | Derivation | Asserted |
 |---|---|---|
-| `depth0_visible` | Alice is in the lobby: deliver → 0.95. K(rec) has 1 bit of content entropy and P(flip) = 0 | ✔ |
-| `depth1_knowledge` | J(∅): ask rec (1 step). Known (½) → drop: 0.90. Unknown → walk: 0.80 − 0.05 = 0.75. Total **0.825**. J(K(rec)): known → drop 0.95; unknown → walk 0.80. Total **0.875** | ✔ |
-| `distractor_plausible` | J(∅): ask rec, then ask carol: ½·0.90 + ¼·0.85 + ¼·0.70 = **0.8375**. J(K(rec)) = J(K(carol)) = **0.8875**. Both = ¾·0.95 + ¼·0.80 = **0.9125** | ✔ |
-| `distractor_obvious` | Carol visibly "just got here", so K(carol) is constant: ΔJ = 0, P(flip) = 0 (P1) | ✔ |
-| `substitutes` | Alice told Bob. Ask Bob, then drop: **0.90**. Any one of K(alice), K(bob), K(bob→alice), K(alice→bob) → drop now: **0.95** | ✔ |
-| `depth2_handoff` | No chute. give(rec) succeeds iff rec's belief about Alice's meeting room equals Alice's belief (= her location). J(∅): walk **0.80**. J(K(alice)): walk to the known room **0.85**. J(K(rec→alice)) **0.80**. Both: match (½) → give 0.95, else walk known 0.85 → **0.90** | ✔ |
-| `stakes_m{1,4}_q0.975` | Bob claims office_a and states an incentive; P(coop) = q. drop(office_a) beats walk at both stakes (thresholds q > 0.929 / 0.966). R(bob): ΔJ = 0.025·(1 + 0.5m) = **0.0375 / 0.075**; P(flip) = **0.025** at both | ✔ |
-| `stakes_m{1,4}_q0.95` | Base action is drop at m=1 but walk at m=4, so P(flip) is **0.05 vs 1.0**. Naive stakes pairs change flip probability too (P5 caveat) | ✔ |
+| `false_belief` (Alice switched offices unseen with p = 0.3) | default: ask rec and trust the answer → 0.7·0.90 + 0.3·(−0.60) = **0.45**. K(rec) (P(outdated) = 0.3): walking now gives 0.80, beating ask-then-walk (0.77) → **0.80**; D_action 0.35, D_memory 0. **Hedged:** P_actor(moved) = 0.075/0.775, so the default already walks: **0.80, gain 0** | ✔ |
+| `holder_rec` / `holder_carol` | name swap: K(holder) 0.80, K(other) 0.45, J(∅) 0.45 in both | ✔ |
+| `relevance_shift` (Alice may walk in at t = 1) | J(∅) = ½·0.90 + ½·0.45 = **0.675**. K(rec) = ½·0.90 + ½·(0.7·0.80 + 0.3·0.70) = **0.835**, pure carryover. After Alice appears: J = 0.95 with or without K(rec) | ✔ |
+| `nested_reliability` | give fails iff Bob obstructive and rec naive (0.25): 0.75·0.95 − 0.25·0.55 = **0.575**. R(rec→bob), K(rec), K(rec→bob) each → walk **0.80**. R(bob) alone **0.575** (the default assumes rec sees through Bob). **Complementary pair** {K(bob→rec), R(bob)} → 0.80, while each alone gives 0.575 | ✔ |
+| `path_asymmetry` (F6) | forwarding fails iff Alice heard of the move and did not tell rec (0.25) → **0.575**. K(rec→alice) → **0.80**. K(alice→rec), K(rec), K(alice) → 0.575 (directed asymmetry). D_action: the default continuation returns and gives: 0.75·0.85 + 0.25·(−0.65) = 0.475 → **−0.10**; D_memory **+0.325** | ✔ |
+| `stakes_m4_q0.95` | face value drops at A: 0.95·0.95 − 0.05·2.05 = **0.80**. R(bob) → walk: 0.95·0.85 + 0.05·0.75 = **0.845** | ✔ |
 
-All values are asserted in `tests/test_oracle.py`. The generated table with every unit's report is `reports/tiny-cases.md`.
+## 7. Theory safeguards: status
+- **P1:** stated for the current-action component only. A no-flip certificate implies D_action = 0, not VoMI = −λc, whenever D_memory can be positive.
+- **P2:** `p2_certifies_no_flip` uses exact **pairwise-gap** decrease bounds with strict inequality.
+  - Tests cover the tie boundary.
+  - A counterexample shows a per-action bound |Δq| ≤ δ certifying wrongly (the gap moves by 2δ).
+  - An end-to-end check verifies that certification ⇒ no current-action flip.
+- **P3:**
+  - complements (grounded) `nested_reliability` {K(bob→rec), R(bob)}; complements (legacy) `depth2_handoff`;
+  - substitutes: legacy `substitutes`, and grounded K(rec)/K(rec→bob)/R(rec→bob) in `nested_reliability`.
+- **P4:** not implemented. No greedy claim.
+- **P5 / D-006:** the entropy objective is invariant across stakes in every stakes pair (same posterior). Ranking-reversal search: see `reports/latest.md` (§ D-006).
+- **Bounded actors can be hurt by information.**
+  - privileged_bounded K(alice) in legacy `depth2_handoff` = −0.60;
+  - grounded K(alice) under hedged testimony in `path_asymmetry` = −0.225.
 
-## 7. Theory safeguards — status
-- **P1:** the implemented check is conditional on the current S, the policy class, and *all* consistent worlds (exhaustive, not sampled). Under `retain`, a unit can have value without a first-step flip (`depth2_handoff` K(alice): residual 0.05; `distractor_plausible` K(rec): residual 0.0125). So "no flip ⇒ VoMI = −λc" **holds under `drop` but not under `retain`**. D-002.
-- **P2:** not implemented. It must bound changes in the *pairwise gap* Q(a1) − Q(a2), not per-action changes. Boundary and tie tests are TODO.
-- **P3:** (a) complementary: `depth2_handoff`. Neither K(alice) nor K(rec→alice) alone flips the first action; together they do. (b) substitutes: `substitutes`, plus K(alice→rec) substituting K(rec→alice) in `depth2_handoff`. Margin-triggered expansion is not claimed to find complements.
-- **P4:** not implemented. No general greedy guarantee is claimed. Pure complementarity gives γ = 0 (K(rec→alice) has singleton value 0 but conditional value 0.05).
-- **P5:** paired case verified numerically at q = 0.975: same P(flip), same content entropy, different ΔJ. At q = 0.95 the base action changes with stakes, and so does P(flip). Limitation: in this pair all three units move together, so it shows a change in VoMI **magnitude** relative to λ (allocation flips from STOP to instantiate when λc = 0.05) but **not a ranking change** among units. A ranking-change pair is TODO.
-- **Tie-break sensitivity:** in the symmetric `distractor_plausible`, the base action asks carol first purely by canonical order. That makes P(flip) for K(rec) and K(carol) 0.5 vs 1.0 while their ΔJ is equal (0.05). Flip-probability labels (D3) inherit tie-break artifacts. VoMI does not, in this case.
+  Partial modeling against remaining defaults can mislead. A Bayes-optimal actor cannot suffer this. The finding is relevant to C3. **OPEN Q3:** no clipping is proposed.
 
-## 8. Depth certification (AGENTS §5.5)
-Effective depth ℓ* = the smallest d such that the units with depth ≤ d reach J(U). This is **relative to the oracle policy class of §4 and the candidate set**. `depth2_handoff` certifies ℓ* = 2. `indistinguishable_pairs` also exhibits world pairs that are identical in history and in all depth-≤1 unit contents but whose fully allocated optimal actions differ. That is the controlled-pair form AGENTS asks for, but again only relative to the oracle's policy class. Nothing here constrains an LLM's internal reasoning depth.
+## 8. Depth certification
+ℓ* = the smallest d such that the units of depth ≤ d reach J(U), **relative to the record's actor class and candidate set**.
+- Grounded: ℓ* = 2 in `path_asymmetry` and `nested_reliability`.
+- The legacy pair construction (`indistinguishable_pairs`) applies to the privileged record only, because grounded actions are a function of h.
 
-## 9. Open choices (must be reviewed before bulk label generation)
-| ID | Question | Blocking |
-|---|---|---|
-| D-001 | Policy class and content semantics for labels: Bayes-optimal over raw h with oracle content (current) vs. graph-limited policy with evidence-grounded content | **all label generation** |
-| D-002 | Continuation `retain` vs `drop`; consequence for the §3.4 decomposition and P1 | labels, RQ2 |
-| D-003 | Which gold-allocation definition drives which metric | allocation metrics, D4 targets |
-| D-004 | Knowledge/Reliability ontology | generator, Tier 2 role cards |
-| D-005 | Tier 1 mechanics defaults (chute, handoff routing, sincere tell, deterministic lie, bystanders, timeout) | generator |
-| D-006 | Stakes-pair construction for P5/RQ2(b) | RQ2 subsets |
+## 9. Reward and transition semantics (D-005 accepted)
+- Every executed step costs −0.05, including the terminal one. Success is +1.
+- A wrong chute drop costs −0.5 × stakes, is terminal, and is irreversible.
+- `give` is terminal and irreversible, because the package leaves the robot's custody and Tier 1 has no recovery action.
+- At the cap, the transition applies first: a last-step success counts. Otherwise the episode times out with no penalty.
+- An invalid action is a costed no-op.
+- Audit: no early-failure incentive in any case. Tests are in `tests/test_allocation_theory.py`.
+
+## 10. Known limitations and open questions
+1. **OPEN Q1.** Unit outputs are exact generator marginals of a single scalar per factor. Whether a unit may use whole-generator inference to compute that scalar.
+2. **OPEN Q2.** The bounded actor's hypothesis space is the generator support. If a generator makes defaults jointly unsatisfiable, the actor "knows" a violation exists without any computation. That is structural leakage, seen in legacy `depth2_handoff`, where the default actor already walks. The grounded cases are built so that default violations are possible but not entailed. A generator audit is proposed.
+3. **OPEN Q3.** Negative grounded and privileged values (above).
+4. Robustness depends on the testimony default. Under hedged, the gains in `false_belief` and `path_asymmetry` vanish (the hedged default already walks), while the `nested_reliability` gain persists (`reports/tiny-cases.md`, Part B).
+5. c(u) is a placeholder. There are no LLM records yet. Tie-breaking is canonical order and has not yet been counterbalanced in generated sets.

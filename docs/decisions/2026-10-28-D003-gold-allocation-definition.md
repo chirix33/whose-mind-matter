@@ -1,6 +1,6 @@
 # D-003 — Which gold-allocation definition drives which metric
 
-- Status: **proposed**
+- Status: **accepted with revision — set-valued gold; static-union D4 target REJECTED** (review 2026-10-28)
 - Date: 2026-10-28
 - Affects: outline §5.4 ("minimal set of units whose removal changes the oracle action"), §6.5 allocation precision/recall, D4 relevance-classifier targets; AGENTS §5.3
 
@@ -30,4 +30,10 @@ Under a "removal changes the action" reading:
 - Report the minimum-cost sufficient set for compute-optimal analyses. Keep LOO necessity as a diagnostic only.
 
 ## Review outcome
-_(pending)_
+**Accepted with revision.** Supplied by the research review 2026-10-28 (`research-reviews/stage-0-research-review.md`, supplied by Ashraf; that folder is gitignored, so the binding points are restated here).
+
+- Distinguish minimal sufficient sets, minimum-cost sufficient sets, and LOO necessity. Declare what sufficiency preserves. This implementation uses **reference expected task value within tol = 1e-9**. Keep budget/λ dependence explicit.
+- Match each predicted allocation to **one** gold set under a declared rule, and compute P/R/F1 against that same set; the per-metric maximization proposed above is superseded.
+- Also report decision-value regret against the full and the budget-feasible references, and whether the chosen action is in the optimal-action set.
+- Wasted compute = conditional net value plus actual incremental cost. Distinguish missed units from missed complementary bundles.
+- **D4 target: conditional relevance for completing a sufficient allocation, plus STOP. Not the static union.** Give it a fair implementation and count re-evaluation/STOP cost in its compute.

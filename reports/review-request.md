@@ -1,49 +1,66 @@
-# Review request — 2026-10-28 (Stage 0)
+# Review request — 2026-10-28 (Stage 1: semantics and counterexamples)
 
-For: the research conversation, via Ashraf. These six decisions block label generation and training. In order of importance:
+For: the research conversation, via Ashraf. The Stage 0 rulings (D-001…D-006) are implemented and recorded as accepted. Implementing them raised the questions below. None of them blocks the small local pilot, but Q1 and Q2 affect what the pilot's symbolic labels mean. Evidence paths are relative to the repo root.
 
-## 1. D-001 — What should an oracle VoMI label measure? (blocking, most important)
-**Problem.** "Fill the unit with its true content, compute ΔQ" (outline §4.3) is implemented exactly, with a Bayes-optimal agent over the raw history. It produces the value of *perfect information about a hidden mind*. In `depth1_knowledge` the robot never saw Alice. Even so:
-- the gold label says to model Alice: ΔJ(K(alice)) = 0.125 vs. ΔJ(K(rec)) = 0.05;
-- the unique minimal sufficient set is {K(alice)}.
+## Q1 — What may a single unit's computation use? (affects D-001's "no unrestricted whole-scene reasoning")
+**What is implemented** (`src/vomi/oracle.py`, spec §4.2):
+- A unit's grounded output is ONE scalar per factor: P(the face-value default holds | h). That means "rec's belief is not false", "Bob is cooperative", "rec's model of Bob is accurate".
+- It is computed as an exact marginal under the full generator, then I-projected into the bounded actor. Other factors keep their defaults.
+- The content value is deliberately withheld. When it was exposed, K(alice) (whose belief equals the target) handed the actor the whole-scene posterior over the answer (`stakes_m4_q0.95`, now a regression test).
 
-The labels point at absent people whose minds happen to encode the answer. Restricting content to what the history supports doesn't rescue this: a Bayes-optimal agent already uses the history, so every unit would get value 0.
+**Concern:** computing even the scalar uses inference over every person's hidden state.
 
-**Alternatives.**
-- A. Keep these labels: privileged upper bounds, rewarding uninferable units.
-- B. A graph-limited "mind-blind" default policy plus evidence-grounded content. Units license interpreting social evidence (testimony, relayed beliefs). This matches outline §4.1 step 5: the policy decides from "physical state and G_t".
-- C. B as the training target, A kept as a reported bound.
+**Alternatives:**
+- **A (current):** exact generator marginal of the scalar.
+- **B (local):** the marginal under the actor's own defaulted model with only this factor freed. Doubts that require several deviations at once are then suppressed: in `nested_reliability`, no single unit would suffice, and a 4-unit bundle would be needed.
+- **C:** a person-local evidence rule, such as access-and-incentive features mapped to a fixed table. That needs a hand-specified inference rule per variable.
 
-**Recommendation: C.** It needs a ruling on how a mind-blind policy treats heard testimony. The proposal: uninformative until K/R units license it. The alternative: face value, with units only correcting it.
+**Recommendation:** A for the symbolic target, with B reported as a sensitivity analysis. The scalar cannot carry the answer itself, and B makes single-unit computations nearly useless whenever deviations co-occur.
 
-**Evidence.** `docs/decisions/2026-10-28-D001-label-policy-class-and-content.md`, `reports/tiny-cases.md`, `tests/test_oracle.py`.
+## Q2 — The bounded actor's hypothesis space is the generator support (structural leakage)
+The actor knows which worlds the generator can produce. If a generator makes the defaults jointly unsatisfiable, the actor "knows" a default is violated without any computation.
+- In legacy `depth2_handoff`, the receptionist's model of Alice can never match an informed Alice. The face-value actor therefore already hedges, and every grounded unit is worth 0.
 
-## 2. D-002 — Does instantiated content persist? (blocking for RQ2/P1)
-Under graph retention, a unit can be valuable without changing the current action. `depth2_handoff` K(alice): P(flip) = 0, ΔJ = 0.05. So the outline's §3.4 decomposition and the P1 pruning test fail as stated.
+**Proposal:**
+- Require generators to make each decision-relevant default violation *possible but not entailed*. The six Stage 1 cases are built this way.
+- Add a generator audit: for each scenario, check that some world consistent with h satisfies all defaults.
+- Alternatively, give the actor a generic structural prior (e.g. independent per-factor deviations) instead of the generator support. That removes the leakage but makes the actor's model misspecified by design.
 
-**Recommendation:** keep retention, and restate the flip in terms of the **trajectory**. The identity then holds exactly. Step-level flips remain the D3 baseline's target, and the residual is reported as value a one-step flip detector cannot see.
+**Recommendation:** the audit plus generator rules for the pilot. Revisit the generic prior if the audit proves too restrictive in balanced generation.
 
-Evidence: `docs/decisions/2026-10-28-D002-continuation-semantics.md`.
+## Q3 — Information can hurt bounded actors; no clipping proposed
+- privileged_bounded K(alice) in legacy `depth2_handoff`: **−0.60**. Revealing Alice's belief without its accuracy leads the actor to a cheaper but wrong explanation.
+- grounded K(alice) under hedged testimony in `path_asymmetry`: **−0.225**.
 
-## 3. D-003 — Gold-allocation definition
-The outline's "removal changes the action" gives an **empty** gold set in `substitutes`, where four units are each sufficient and each worth 0.05.
+A Bayes-optimal actor cannot be hurt this way. These are symbolic instances of the C3 mechanism (partial modeling against remaining defaults).
 
-**Recommendation:** score precision and recall against the set of minimal sufficient sets, with tolerance for equivalent sets. Wasted and missed units are defined by conditional ΔJ. D4's target is the union of minimal sufficient sets.
+**Recommendation:** keep negative labels (no clipping). Report them as a separate symbolic C3 diagnostic, distinct from LLM hallucination and leakage.
 
-Evidence: `docs/decisions/2026-10-28-D003-gold-allocation-definition.md`.
+## Q4 — Gains depend on the testimony default (as the review anticipated)
+| Case | Face value: J(∅) → J(gold) | Hedged (ε = 0.25) |
+|---|---|---|
+| false_belief | 0.45 → 0.80 | 0.80 → 0.80 (no gain) |
+| path_asymmetry | 0.575 → 0.80 | 0.80 → 0.80 (no gain) |
+| relevance_shift | 0.675 → 0.835 | 0.835 → 0.835 (no gain) |
+| nested_reliability | 0.575 → 0.80 | 0.575 → 0.80 (gain persists) |
 
-## 4. D-004 — Ontology
-Recommendation: "mistaken" = cooperative + false belief, not a third intent. Questions: should obstructive people lie deterministically or strategically? Should R(j→k) be in core scope?
+**Question:** which default should define the *main* symbolic labels? The two are equally principled.
 
-## 5. D-005 — Tier 1 mechanics
-Confirm the irreversible-error mechanics (wrong chute drop, mis-routed handoff), the −0.05 charge on the terminal step, and no timeout penalty.
+**Recommendation:** label under both, train on face value (closest to the review's "act on direct reports at face value"), and report every C1/C2 symbolic result under both. A gain present only under face value is a statement about naive default actors, and should be framed that way.
 
-## 6. D-006 — Stakes pairs
-Naive ×4 penalty pairs can change flip probability too (0.05 → 1.0 at q = 0.95).
+## Q5 — D-006 ranking reversal: see `reports/latest.md` § D-006
+The search result and the infeasibility analysis are there. The question is whether to accept the proposed alternative construction.
 
-**Recommendation:** keep only numerically verified isolating pairs for the P5 subset, and report the rest separately. Also: the current isolating pair shows a change in VoMI *magnitude* only, not a ranking change between units. A ranking-change construction is still to be built.
+## Q6 — Negative current-action components are common under retention
+In `path_asymmetry` and `nested_reliability`, D_action = **−0.10** and D_memory = **+0.325**. The flip alone is harmful: the default continuation walks back and hands the package over anyway.
+
+**Consequence:** the matched no-carryover subset for D3 will exclude many depth-2 states.
+
+**Question:** is this the intended reading (the value of a computation that changes plans is mostly carryover), or should the D3 comparison also include a "current action plus one-step lookahead" variant? **Recommendation:** keep the ruling as is and report the share of carryover states.
 
 ---
-**Also for awareness (no decision needed yet):**
-- Local Qwen3.6-27B and Gemma-4-31B checkpoints exist. A second family for Tier 2 needs approval and a serving test.
-- With the gpt-oss-20b server up, the GPU is at about 29.3 of 32.6 GB, so the role-player and controller must run sequentially.
+Evidence:
+- `docs/research/implementation-spec.md` (v0.2)
+- `reports/tiny-cases.md` (Part A legacy, Part B grounded)
+- `reports/bundle/` (manifest, paired trace)
+- `tests/test_grounded.py`, `tests/test_allocation_theory.py`

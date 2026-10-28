@@ -182,7 +182,7 @@ def depth2_handoff() -> Scenario:
             bs.append(Event("bs-move-announced", -2, "tell", "hall", "dave", "meeting_room", moved, present=("dave",) + heard))
             minds["dave"] = PersonMind()
         talk = Event("t0-rec-mentions", 0, "say", "lobby", "rec", text="Alice told me this morning where her meeting is.")
-        return World(cfg, "lobby", rooms, minds, tuple(bs), (talk,))
+        return World(cfg, "lobby", rooms, minds, tuple(bs), (talk,), facts={"meeting_room": moved})
 
     return Scenario(
         "depth2_handoff",
@@ -218,6 +218,169 @@ def reliability_stakes(stakes: float, q_coop: float) -> Scenario:
     )
 
 
+# ===================================================================== Stage 1 (grounded record)
+# Generators below are built so the face-value defaults are POSSIBLE but not ENTAILED:
+# every default violation that matters has a world where it does not occur, otherwise the
+# bounded actor's hypothesis space (the generator support) would leak structure.
+
+def _moved_world(p, people: tuple[str, ...], holder: str, timed=(), alice_returns=False) -> World:
+    """Alice first walked to `initial` (seen by `holder`); with p['moved'] she later switched
+    offices unseen. The holder's belief is then outdated (mistaken = cooperative + false belief)."""
+    cfg = _config(("alice",) + people, ["alice_loc"])
+    initial = p["initial"]
+    final = other(initial) if p["moved"] == "yes" else initial
+    rooms = {"alice": final, **{x: "lobby" for x in people}}
+    minds = {"alice": PersonMind(), **{x: PersonMind() for x in people}}
+    bs = [Event("bs-alice-walks", -3, "witness", "hall", "alice", "alice_loc", initial, present=("alice", holder))]
+    if p["moved"] == "yes":
+        bs.append(Event("bs-alice-switches", -1, "witness", final, "alice", "alice_loc", final, present=("alice",)))
+    timed = tuple(timed)
+    if alice_returns:
+        timed += (Event("t1-alice-returns", 1, "enter", "lobby", "alice"),)
+    return World(cfg, "lobby", rooms, minds, tuple(bs), timed)
+
+
+def false_belief(p_moved: float = 0.3) -> Scenario:
+    seen = Event("t0-rec-saw", 0, "say", "lobby", "rec", text="I saw Alice head to her office earlier.")
+    return Scenario(
+        "false_belief",
+        "Deliver the package to Alice.",
+        "Rec saw Alice's first office; Alice may have switched unseen (outdated belief). Face value trusts rec; "
+        "K(rec) supplies the possibility of a false belief.",
+        grid({"initial": ROOM_HALF, "moved": {"yes": p_moved, "no": 1 - p_moved}}),
+        lambda p: _moved_world(p, ("rec",), "rec", (seen,)),
+    )
+
+
+def holder_permutation(holder: str) -> Scenario:
+    """Same scene; only WHO visibly holds the (possibly outdated) observation differs."""
+    seen = Event("t0-holder-saw", 0, "say", "lobby", holder, text="I saw Alice head to her office earlier.")
+    return Scenario(
+        f"holder_{holder}",
+        "Deliver the package to Alice.",
+        "Information-holder permutation: rec and carol swap roles with layout and wording fixed.",
+        grid({"initial": ROOM_HALF, "moved": {"yes": 0.3, "no": 0.7}}),
+        lambda p: _moved_world(p, ("carol", "rec"), holder, (seen,)),
+    )
+
+
+def relevance_shift() -> Scenario:
+    seen = Event("t0-rec-saw", 0, "say", "lobby", "rec", text="I saw Alice head to her office earlier.")
+    return Scenario(
+        "relevance_shift",
+        "Deliver the package to Alice.",
+        "F3: Alice may walk into the lobby at t=1; once she is visible, K(rec) stops mattering.",
+        grid({"initial": ROOM_HALF, "moved": {"yes": 0.3, "no": 0.7}, "returns": HALF}),
+        lambda p: _moved_world(p, ("rec",), "rec", (seen,), alice_returns=p["returns"] == "yes"),
+    )
+
+
+def nested_reliability(p_naive: float = 0.5, q_coop: float = 0.5) -> Scenario:
+    """R(rec->bob): rec forwards packages by her own belief, which she got from Bob. If Bob is
+    obstructive he lied to her; a warned rec sees through it, a naive rec does not."""
+
+    def build(p):
+        cfg = _config(["alice", "bob", "rec"], ["alice_loc"], chute=False, handoff={"rec": ("", "alice_loc")})
+        loc, obstructive = p["alice_loc"], p["bob_intent"] == OBSTRUCTIVE
+        rooms = {"alice": loc, "bob": "lobby", "rec": "lobby"}
+        minds = {"alice": PersonMind(), "bob": PersonMind(intent=p["bob_intent"]), "rec": PersonMind(), "dave": PersonMind()}
+        if p["rec_naive"] == "yes":
+            vouch = Event("bs-bob-vouches", -3, "assess", "lobby", "bob", "bob", COOPERATIVE, present=("bob", "rec"))
+        else:
+            vouch = Event("bs-dave-warns", -3, "assess", "hall", "dave", "bob", p["bob_intent"], present=("dave", "rec"))
+        claimed = other(loc) if obstructive else loc
+        bs = (
+            Event("bs-bob-sees", -4, "witness", "hall", "bob", "alice_loc", loc, present=("alice", "bob")),
+            vouch,
+            Event("bs-bob-tells-rec", -2, "assert", "lobby", "bob", "alice_loc", claimed, present=("bob", "rec")),
+        )
+        incentive = Event("t0-bob-incentive", 0, "say", "lobby", "bob", text="I'd rather keep that package myself.")
+        return World(cfg, "lobby", rooms, minds, bs, (incentive,))
+
+    return Scenario(
+        "nested_reliability",
+        "Deliver the package to Alice. The receptionist can forward packages.",
+        "Nested R: forwarding fails iff Bob lied and rec misjudges Bob (naive). R(rec->bob) or K(rec) exposes it.",
+        grid({"alice_loc": ROOM_HALF, "bob_intent": {COOPERATIVE: q_coop, OBSTRUCTIVE: 1 - q_coop},
+              "rec_naive": {"yes": p_naive, "no": 1 - p_naive}}),
+        build,
+    )
+
+
+def path_asymmetry() -> Scenario:
+    """F6: forwarding works iff rec's belief about Alice's meeting room matches Alice's. Alice may
+    have heard that the meeting moved, and may or may not have told rec. Directed (rec->alice)
+    matters; the reverse direction (alice->rec) and rec's own knowledge do not."""
+
+    def build(p):
+        cfg = _config(["alice", "rec"], ["meeting_room"], chute=False, handoff={"rec": ("alice", "meeting_room")})
+        initial = p["initial"]
+        moved = other(initial)
+        heard, told = p["story"] != "not_heard", p["story"] == "heard_told_rec"
+        rooms = {"alice": moved if heard else initial, "rec": "lobby"}
+        minds = {"alice": PersonMind(), "rec": PersonMind(), "dave": PersonMind()}
+        bs = [Event("bs-alice-tells-rec", -4, "tell", "lobby", "alice", "meeting_room", initial, present=("alice", "rec"))]
+        # Rec's OWN knowledge of the move comes from an independent channel (decoupled from routing).
+        hearers = (("alice",) if heard else ()) + (("rec",) if p["rec_heard"] == "yes" else ())
+        if hearers:
+            bs.append(Event("bs-move-announced", -3, "tell", "hall", "dave", "meeting_room", moved, present=("dave",) + hearers))
+        if told:  # Alice tells rec where SHE is going: updates rec's model of Alice, not rec's own belief
+            bs.append(Event("bs-alice-updates-rec", -2, "claim", "lobby", "alice", "meeting_room", moved,
+                            present=("alice", "rec")))
+        talk = Event("t0-rec-mentions", 0, "say", "lobby", "rec", text="Alice told me this morning where her meeting is.")
+        return World(cfg, "lobby", rooms, minds, tuple(bs), (talk,), facts={"meeting_room": moved})
+
+    return Scenario(
+        "path_asymmetry",
+        "Deliver the package to Alice. The receptionist can forward packages.",
+        "F6 directed path: K(rec->alice) carries the decision; K(alice->rec), K(rec) do not.",
+        grid({"initial": ROOM_HALF, "story": {"not_heard": 0.5, "heard_told_rec": 0.25, "heard_not_told": 0.25},
+              "rec_heard": HALF}),
+        build,
+    )
+
+
+REPORTER_TYPES = ("accurate", "mistaken", "obstructive")  # mistaken = cooperative + false belief
+
+
+def conflicting_reports(bob: dict[str, float], carol: dict[str, float], stakes: float = 1.0,
+                        p_office_a: float = 0.5) -> Scenario:
+    """Stakes family for D-006: Bob and Carol each report Alice's office at t=0. Each reporter is
+    accurate, mistaken (believes the wrong office, says it sincerely) or obstructive (knows, lies)."""
+
+    def build(p):
+        cfg = _config(["alice", "bob", "carol"], ["alice_loc"], stakes=stakes)
+        loc = p["alice_loc"]
+        rooms = {"alice": loc, "bob": "lobby", "carol": "lobby"}
+        minds, bs, timed = {"alice": PersonMind()}, [], []
+        for i, who in enumerate(("bob", "carol")):
+            kind = p[f"{who}_type"]
+            minds[who] = PersonMind(intent=OBSTRUCTIVE if kind == "obstructive" else COOPERATIVE)
+            believed = other(loc) if kind == "mistaken" else loc
+            bs.append(Event(f"bs-{who}-sees", -2 - i, "witness", "hall", who, "alice_loc", believed, present=(who,)))
+            said = other(believed) if kind == "obstructive" else believed
+            timed.append(Event(f"t0-{who}-claims", 0, "claim", "lobby", who, "alice_loc", said, f"alice_loc = {said}"))
+        bs.append(Event("bs-alice-self", -4, "witness", loc, "alice", "alice_loc", loc, present=("alice",)))
+        return World(cfg, "lobby", rooms, minds, tuple(bs), tuple(timed))
+
+    return Scenario(
+        f"conflict_m{stakes:g}",
+        "Deliver the package to Alice.",
+        "Two reporters disagree; units resolve whom to believe. Used to search for stakes ranking reversals.",
+        grid({"alice_loc": {A: p_office_a, B: 1 - p_office_a}, "bob_type": bob, "carol_type": carol}),
+        build,
+    )
+
+
+GROUNDED_CASES: dict[str, Callable[[], Scenario]] = {
+    "false_belief": false_belief,
+    "holder_rec": lambda: holder_permutation("rec"),
+    "holder_carol": lambda: holder_permutation("carol"),
+    "relevance_shift": relevance_shift,
+    "nested_reliability": nested_reliability,
+    "path_asymmetry": path_asymmetry,
+}
+
 TINY_CASES: dict[str, Callable[[], Scenario]] = {
     "depth0_visible": depth0_visible,
     "depth1_knowledge": depth1_knowledge,
@@ -230,3 +393,5 @@ TINY_CASES: dict[str, Callable[[], Scenario]] = {
     "stakes_m1_q0.95": lambda: reliability_stakes(1.0, 0.95),
     "stakes_m4_q0.95": lambda: reliability_stakes(4.0, 0.95),
 }
+
+ALL_CASES: dict[str, Callable[[], Scenario]] = {**TINY_CASES, **GROUNDED_CASES}

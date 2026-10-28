@@ -1,6 +1,6 @@
 # D-002 — Continuation semantics: does instantiated content persist after the labeled step?
 
-- Status: **proposed**
+- Status: **accepted with modification — keep retention; trajectory-flip restatement REJECTED; use D_action + D_memory** (review 2026-10-28)
 - Date: 2026-10-28
 - Affects: outline §3.4 (flip × value decomposition), §3.5 P1, §5.4 divergence tags; AGENTS §5.2, §5.4 P1; `ExactOracle.evaluate(continuation=…)`
 
@@ -39,4 +39,16 @@ Evidence (`reports/tiny-cases.md`):
 `depth2_handoff`. Reproduce with `pytest tests/test_oracle.py::test_depth2_complementary_pair_and_certification`.
 
 ## Review outcome
-_(pending)_
+**Accepted with modification.** Supplied by the research review 2026-10-28 (`research-reviews/stage-0-research-review.md`, supplied by Ashraf; that folder is gitignored, so the binding points are restated here).
+
+- Keep graph retention. **Do not** replace the current-action flip analysis with an unqualified trajectory-flip theorem; "Recommendation C" above is superseded.
+- `Q_ref(s, m, a)` = expected return after action a, under a **fixed**, explicitly specified, observation-limited continuation policy with cognitive state m. The evaluator may enumerate worlds; the actor may not see them.
+  - `D_action = E[Q_ref(s,m,a_y) − Q_ref(s,m,a_0)]`
+  - `D_memory = E[Q_ref(s,m_y,a_y) − Q_ref(s,m,a_y)]`
+  - `VoMI_retained = D_action + D_memory − λ·incremental cost`
+  - This is an add-and-subtract identity, not a causal-mediation claim.
+- Keep both labels, distinctly named. The first exact continuation adds no new instantiations, retains existing content, and follows a specified update rule. The optimal allocation must not be re-solved per branch.
+- D3 trains on current-action flips. Report a matched no-carryover subset.
+- P1/P2 concern only the current-action component; they are not total-value pruning rules.
+- Positive value at zero flips is labeled a **carryover effect**.
+- Show both Q evaluations for `depth2_handoff`; the residual must be numerically 0.

@@ -46,6 +46,13 @@ class Event:
                 they now believe it.
       claim   - ``actor`` asserts ``fact = value`` (possibly a lie); listeners only update
                 their belief about what the actor believes.
+      assert  - a possibly insincere statement listeners may ADOPT (Tier 1 listener rule):
+                a listener with no own belief on ``fact`` adopts ``value`` unless she
+                assesses the actor as obstructive, in which case she adopts the other value
+                of the (binary) domain. The actor believes listeners now believe ``value``.
+      assess  - sincere statement that person ``fact`` has intent ``value``; listeners
+                adopt that assessment (so does the actor, unless vouching for himself).
+      enter   - ``actor`` walks into ``room``; people already there perceive it.
       say     - a visible utterance with no belief effect (e.g. a stated incentive).
 
     ``present`` overrides current positions for backstory events (t < 0), when people
@@ -70,12 +77,16 @@ class PersonMind:
     # (other, fact) -> value this person believes `other` believes.
     nested: dict[tuple[str, str], str] = field(default_factory=dict)
     perceived: list[str] = field(default_factory=list)
+    # other -> intent this person assesses `other` to have (R(j->k) content).
+    assessments: dict[str, str] = field(default_factory=dict)
 
     def copy(self) -> PersonMind:
-        return PersonMind(self.intent, dict(self.beliefs), dict(self.nested), list(self.perceived))
+        return PersonMind(self.intent, dict(self.beliefs), dict(self.nested), list(self.perceived),
+                          dict(self.assessments))
 
     def signature(self) -> tuple:
-        return (self.intent, tuple(sorted(self.beliefs.items())), tuple(sorted(self.nested.items())))
+        return (self.intent, tuple(sorted(self.beliefs.items())), tuple(sorted(self.nested.items())),
+                tuple(sorted(self.assessments.items())))
 
 
 @dataclass(frozen=True)
@@ -125,8 +136,10 @@ class World:
         minds: dict[str, PersonMind],
         backstory: tuple[Event, ...] = (),
         timed_events: tuple[Event, ...] = (),
+        facts: dict[str, str] | None = None,
     ):
         self.config = config
+        self.facts = dict(facts or {})  # objective truth of non-location query facts
         self.t = 0
         self.robot_room = robot_room
         self.holding = True
@@ -211,8 +224,17 @@ class World:
                     heard.append((ev.actor, ev.text))
         return heard
 
+    def truth(self, fact: str) -> str:
+        if fact == f"{self.config.recipient}_loc":
+            return self.people_rooms[self.config.recipient]
+        if fact not in self.facts:
+            raise KeyError(f"scenario declares no objective truth for query fact {fact!r}")
+        return self.facts[fact]
+
     def _apply(self, ev: Event) -> None:
         self.log.append(ev)
+        if ev.kind == "enter":
+            self.people_rooms[ev.actor] = ev.room
         present = ev.present if ev.present is not None else tuple(
             p for p, r in self.people_rooms.items() if r == ev.room
         )
@@ -231,6 +253,23 @@ class World:
         elif ev.kind == "claim":
             for p in listeners:
                 self.minds[p].nested[(ev.actor, ev.fact)] = ev.value
+        elif ev.kind == "assert":
+            flipped = next(v for v in self.config.fact_domains[ev.fact] if v != ev.value)
+            for p in listeners:
+                mind = self.minds[p]
+                distrusts = mind.assessments.get(ev.actor) == OBSTRUCTIVE
+                adopted = flipped if distrusts else ev.value
+                mind.nested[(ev.actor, ev.fact)] = adopted  # what she thinks he really believes
+                if ev.fact not in mind.beliefs:
+                    mind.beliefs[ev.fact] = adopted
+                self.minds[ev.actor].nested[(p, ev.fact)] = ev.value
+        elif ev.kind == "assess":
+            if ev.actor != ev.fact:
+                self.minds[ev.actor].assessments[ev.fact] = ev.value
+            for p in listeners:
+                self.minds[p].assessments[ev.fact] = ev.value
+        elif ev.kind == "enter":
+            pass  # position already updated before computing who is present
         elif ev.kind != "say":
             raise ValueError(f"unknown event kind {ev.kind}")
 
@@ -242,6 +281,7 @@ class World:
     def clone(self) -> World:
         w = object.__new__(World)
         w.config = self.config
+        w.facts = self.facts
         w.t = self.t
         w.robot_room = self.robot_room
         w.holding = self.holding

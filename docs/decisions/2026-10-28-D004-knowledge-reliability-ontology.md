@@ -1,6 +1,6 @@
 # D-004 — Knowledge / Reliability ontology
 
-- Status: **proposed**
+- Status: **accepted — mistaken = cooperative + false/outdated belief; R(j→k) KEPT in core** (review 2026-10-28)
 - Date: 2026-10-28
 - Affects: outline §3.2, §5.1 (intent types: cooperative, mistaken, obstructive), §5.2 role cards; AGENTS §5.1
 
@@ -21,4 +21,9 @@
 3. Add mechanics for `R(j→k)` in core scope, or defer?
 
 ## Review outcome
-_(pending)_
+**Accepted.** Supplied by the research review 2026-10-28 (`research-reviews/stage-0-research-review.md`, supplied by Ashraf; that folder is gitignored, so the binding points are restated here).
+
+- Mistaken = cooperative intent plus a false or outdated belief. Keep cooperative/mistaken/obstructive as derived reporting slices, and define how overlaps are reported.
+- Tier 1 uses fixed, inspectable scripted response policies: deterministic first, optional seeded stochastic variants, no equilibrium or strategic optimizer. The same policy applies to every method.
+- Never encode intent through wording, names, template order or hidden flags. Include visible evidence that makes some reliability decisions inferable, plus ambiguity controls.
+- **R(j→k) stays in the core ontology:** j's belief/assessment of k's intent. It needs a finite representation and a tiny example, and candidate eligibility still requires visible evidence. Answer to my question 3: do not defer it.

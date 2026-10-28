@@ -1,6 +1,6 @@
 # D-006 — Stakes-pair construction for P5 / RQ2(b)
 
-- Status: **proposed**
+- Status: **accepted — isolating vs general subsets; ranking reversal REQUIRED** (review 2026-10-28)
 - Date: 2026-10-28
 - Affects: outline §3.5 P5, §5.3 F5, RQ2(b); AGENTS §5.4 P5
 
@@ -15,4 +15,10 @@ Multiplying the error penalty ×4 with identical observations does **not** gener
 3. A pair should show a **ranking** change, not only a magnitude change. In the current pair, K(alice), K(bob) and R(bob) move together. A ranking-change construction needs one unit whose value comes from averting an error and one whose value comes from saving steps, with equal flip probability. That is TODO.
 
 ## Review outcome
-_(pending)_
+**Accepted.** Supplied by the research review 2026-10-28 (`research-reviews/stage-0-research-review.md`, supplied by Ashraf; that folder is gitignored, so the binding points are restated here).
+
+- Maintain (1) **isolating pairs**, where observations, priors, available computations, inference outputs, costs, eligibility and action-change probabilities are fixed while consequences scale, and (2) **general stakes pairs**, reported separately.
+- Do not force policies to ignore stakes.
+- Add a **ranking-reversal** construction at equal unit cost. The target table (U: P(flip) 0.025, gain 1.5/3.0; V: P(flip) 0.05, gain 1.0) is a design target only. Implement a feasible world and derive its values independently; if the target is infeasible, propose an alternative.
+- Carryover must be zero or equal; avoid ties. Check the invariance of the entropy objective as implemented.
+- Do not require learned flip-controller outputs to be numerically identical across stakes.

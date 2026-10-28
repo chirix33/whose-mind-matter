@@ -1,73 +1,58 @@
-# Milestone report — Stage 0 + smallest Stage 1 examples (2026-10-28)
+# Milestone report — Stage 1: semantics and counterexamples (2026-10-28)
 
-**Claims/RQs addressed:** none evaluated. This milestone is infrastructure plus the scientific contract. The tiny cases are executable constructions for P1, P3a, P3b, P5 and depth certification (RQ6 groundwork, C4 groundwork).
+**Scope.** Implements the Stage 0 research review: D-001…D-006 are recorded as accepted with constraints. No bulk labels, training, LLM labels or confirmatory runs. The model server was not needed. It was stopped at 04:01 on the workstation (GPU back to 2.1 GB used), and the smoke test was not repeated because no serving code or environment changed.
 
-**Environment:** every command below ran on the workstation: Windows 11 host, WSL2 Ubuntu 24.04.5, RTX 5090 32 GB, driver 610.60. Details: `docs/research/environment.md`.
+**Claims/RQs addressed:** none evaluated. This milestone delivers definitions plus checked constructions for RQ6 (P1/P2/P3), C4 groundwork (directed paths, certification), C2 groundwork (stakes pairs, D4 target), and C3 groundwork (bounded actors harmed by partial information).
 
-## What exists
-- **Repo:** branch `main`. Commits `e5b4f15` (Stage 0) and `a71bb7c` (regenerated tiny-case table). No remote. `.gitattributes` forces LF and stores the checksummed source documents byte-for-byte. Layout follows AGENTS §6; see `README.md`.
-- **Source outline:** preserved verbatim at `docs/research/methods-experiments-v2.md`, SHA-256 `8cc540f0…22d7d`; see `docs/research/source-manifest.md`.
-- **Simulator** (`src/officeminds/`): deterministic seeded Tier 1 world with private minds, sincere tells vs. insincere claims, nested beliefs, robot-visible observations, a privileged trace kept separate, and JSON replay.
-- **Exact symbolic oracle** (`src/vomi/oracle.py`): exact Bayesian conditioning by replay, belief-space expectimax, J(S), VoMI, flip probability with the decomposition residual, content entropy, exhaustive gold sets (three definitions), effective depth, and indistinguishable world pairs.
-- **Visible-only candidate generation** (`src/vomi/units.py`).
-- **Model client:** stdlib OpenAI-compatible client plus mock (`src/vomi/clients.py`), run manifests (`src/vomi/runlog.py`), model config (`configs/models/local_gpt_oss_20b.json`).
-- **Spec and decisions:** `docs/research/implementation-spec.md`; six proposed decisions D-001…D-006; `docs/decisions/discrepancy-log.md` (12 rows); `docs/research/roadmap.md` (C1–C5 / RQ1–7 / baseline status); `docs/research/baseline-fidelity.md` (stub).
+**Environment:** workstation, WSL2 Ubuntu 24.04, CPU only for everything in this report.
+
+## Review steps → what was done
+| # | Review step | Status | Where |
+|---|---|---|---|
+| 1 | Record rulings; relabel legacy values without overwriting provenance | done | `docs/decisions/` (all six accepted), `docs/decisions/discrepancy-log.md` (16 rows), spec v0.2; legacy values in Part A of `reports/tiny-cases.md` |
+| 2 | Grounded bounded-policy label path + graph retention | done | `src/vomi/oracle.py` (`GROUNDED`, bounded actor, I-projection), `src/vomi/graph.py` |
+| 3 | Invisible-world invariance pair; direct-testimony baseline; false-belief/reliability case; nested-R case | done | `tests/test_grounded.py`; cases `false_belief`, `nested_reliability` |
+| 4 | Retention counterexample with D_action / D_memory; identity check | done | `depth2_handoff`: E[Q(m,a0)] = 0.80, E[Q(m,ay)] = 0.80, E[Q(my,ay)] = 0.85 → D_action 0, D_memory 0.05, residual 0 (carryover). Identity < 1e-12 for every unit × case × record |
+| 5 | Non-unique gold sets; conditional D4 relevance / STOP on substitutes and complements | done | `src/vomi/allocation.py`, `tests/test_allocation_theory.py` |
+| 6 | Holder permutations, relevance shifts, directed-path asymmetry, P2 boundary checks, reward/horizon tests, stakes ranking reversal | done, except the ranking reversal (§ D-006) | cases `holder_*`, `relevance_shift`, `path_asymmetry`; P2 and D-005 tests |
+| 7 | Clean-commit rerun; a non-degenerate posterior with hand-worked values | done | hand values for 5 non-degenerate cases (spec §6.2); run IDs below |
+
+## Key results (exact, symbolic; face-value testimony unless noted)
+| Case | J(∅) | Gold (grounded) | J(gold) | D_action / D_memory of the gold unit | Hedged J(∅) → J(gold) |
+|---|---|---|---|---|---|
+| false_belief | 0.450 | {K(rec)} | 0.800 | +0.35 / 0 | 0.80 → 0.80 |
+| holder_rec / holder_carol | 0.450 | {K(holder)} | 0.800 | +0.35 / 0 (name-symmetric) | 0.80 → 0.80 |
+| relevance_shift | 0.675 | {K(rec)} | 0.835 | 0 / +0.16 (carryover); after Alice appears: 0 | 0.835 → 0.835 |
+| nested_reliability | 0.575 | {K(rec)}, {K(rec→bob)}, **{R(rec→bob)}**, {K(bob→rec), R(bob)} | 0.800 | −0.10 / +0.325 | 0.575 → 0.80 |
+| path_asymmetry (F6) | 0.575 | **{K(rec→alice)}** only; K(alice→rec), K(rec), K(alice) = 0 | 0.800 | −0.10 / +0.325 | 0.80 → 0.80 |
+| stakes_m4_q0.95 | 0.800 | {R(bob)} | 0.845 | +0.045 / 0 | same |
+| legacy cases (depth0/1, distractors, substitutes, depth2_handoff, other stakes) | — | ∅ | — | all units 0 under grounded | — |
+
+Values that differ from the legacy record, as the review predicted:
+- `depth1_knowledge` K(alice): **0.125 legacy → 0 grounded**. Uninferable content no longer earns value.
+- Every grounded value in this table has a hand derivation in spec §6.2 and is asserted in tests.
+
+## D-006 stakes ranking reversal
+_(filled in below once the search finishes)_
 
 ## Commands run and outcomes
-| Command | Outcome |
-|---|---|
-| `~/venvs/officeminds/bin/python -m pytest -q` | **46 passed** in 9.3 s (CPU only), at commit `e5b4f15` |
-| `python scripts/run_tiny_cases.py --seed 0` | 10 cases; all replays identical; run **`tiny-20261028-032629-565fb8`** (commit `e5b4f15`, clean tree) |
-| `bash scripts/serve_local_model.sh` | gpt-oss-20b served after three fixes (see environment.md); engine init 26.6 s |
-| `python3 scripts/smoke_local_model.py --n 10 --concurrency 4` | run **`smoke-20261028-032706-260d3d`** (commit `a71bb7c`, clean tree); results below |
+_(filled in at the clean-commit rerun)_
 
-Manifests: `~/officeminds-runs/{tiny,smoke}/<run_id>/manifest.json` (WSL). The runs cited here record a commit hash and `git_dirty: false`.
-
-Earlier runs on the uncommitted tree are kept on disk but superseded: `tiny-20261028-031743-88659e`, `tiny-20261028-032310-90b650`, `tiny-20261028-032315-8982a4`, `smoke-20261028-031813-05c2f6`, plus `smoke-20261028-032641-1b513b` (committed code, but the tree was dirty from a regenerated report). The clean re-runs reproduced every label value. Episode returns differ only by seed. The smoke numbers stayed within ±0.02 s median latency.
-
-## Results (exact symbolic oracle, record A — see D-001 before interpreting)
-| Case | J(∅) | J(all candidates) | ℓ* | Minimal sufficient sets |
-|---|---|---|---|---|
-| depth0_visible | 0.9500 | 0.9500 | 0 | {} |
-| depth1_knowledge | 0.8250 | 0.9500 | 1 | {K(alice)} ← uninferable-content issue (D-001) |
-| distractor_plausible | 0.8375 | 0.9500 | 1 | {K(alice)} |
-| distractor_obvious | 0.8250 | 0.9500 | 1 | {K(alice)}; K(carol) pruned (constant content) |
-| substitutes | 0.9000 | 0.9500 | 1 | four singletons; no LOO-necessary unit |
-| depth2_handoff | 0.8000 | 0.9000 | **2** | {K(alice), K(rec→alice)}, {K(alice), K(alice→rec)} |
-| stakes m1 / m4, q = 0.975 | 0.9125 / 0.8750 | 0.95 | 1 | R(bob): ΔJ 0.0375 / 0.075, P(flip) 0.025 / 0.025 |
-| stakes m1 / m4, q = 0.95 | 0.8750 / 0.8450 | 0.95 | 1 | R(bob): P(flip) 0.05 / **1.0** (P5 caveat) |
-
-All of these match the hand derivations in spec §6. Full per-unit table: `reports/tiny-cases.md`.
-
-**Local model smoke** (gpt-oss-20b, vLLM 0.32.0, Triton attention, MXFP4/MARLIN MoE, temperature 0, reasoning effort low, one 276-token decision prompt from `depth1_knowledge`):
-| Mode | n | Valid JSON + legal action | Median latency | Median completion tokens |
-|---|---|---|---|---|
-| prompt-only | 10 | 100% | 0.226 s | 59 |
-| JSON-schema constrained | 10 | 100% | 0.237 s | 62 |
-| schema, 4 concurrent | 8 | 100% | 0.296 s | 61 |
-
-- Concurrent batch: 0.60 s wall clock vs. 2.37 s sum of latencies (13.4 requests/s).
-- GPU memory with the server up: 29,284 MiB.
-- Reasoning text and reasoning-token counts are reported by the server.
-- Every call chose `ask(rec,alice_loc)`, the same as the exact oracle's a(∅) for this case. These are **10 repeats of one prompt at temperature 0**, not independent samples and not an evaluation.
-
-## Failures and problems found
-1. **Simulator bug (fixed):** sincere tellers did not hold the belief they told, so `K(alice) = unknown` leaked hidden state. Caught because the hand value for `depth2_handoff` disagreed (oracle 0.90 vs. hand 0.85). A regression test was added.
-2. **vLLM serving failed three times** before working: no system `nvcc`; `ninja` not on PATH; FlashInfer JIT header mismatch. Worked around with environment variables plus `--attention-backend TRITON_ATTN`. The existing venv was not modified. The FlashInfer path may be faster; that is untested.
-3. **Scientific issues surfaced by the exact labels:** D-001 (labels reward uninferable minds), D-002 (§3.4 decomposition fails under retention), D-003 (outline gold definition is empty under substitutes), D-006 (naive stakes pairs change flip probability). Plus a tie-break artifact that makes flip-probability labels asymmetric in a symmetric scene.
+## Failures and problems found (all fixed or flagged)
+1. **Leak in my first grounded-output definition.** Unit outputs initially included the content marginal. K(alice), whose belief equals the target, then handed the actor the whole-scene posterior (+0.045 in `stakes_m4_q0.95`). Fixed: outputs are now P(default holds | h) only. A regression test covers it.
+2. **Undeclared truth.** Legacy `depth2_handoff` never declared the truth of `meeting_room`, so every belief counted as a default violation. Fixed: the truth is declared, and `World.truth` now raises on undeclared facts. Legacy values are unchanged.
+3. **Spurious substitute.** In my first `path_asymmetry`, rec's own belief was coupled to what Alice told her, which made K(rec) a fake substitute. Fixed by decoupling the channels.
+4. **Wrong expectation in a test.** I expected the privileged content of K(rec) to differ across the invariance pair. It cannot (rec's belief is the same in both worlds), so the test now uses K(alice).
+5. **Structural leakage (OPEN Q2).** Generators that entail default violations make the bounded actor hedge for free. All legacy cases have zero grounded value for this reason, or because they contain no false beliefs.
+6. **Bounded actors can be hurt by information (OPEN Q3):** privileged_bounded K(alice) −0.60 in `depth2_handoff`; grounded hedged K(alice) −0.225 in `path_asymmetry`.
 
 ## Limitations
-- Ten hand-built tiny cases only; no balanced generator yet.
-- Cost c(u) = 1 call is a placeholder.
-- The perspective graph and memory are specified but not implemented.
-- Records 2 and 3 (LLM labels) are not implemented.
-- The "independent check" is brute-force search for point-mass beliefs plus hand derivations. There is no second implementation of belief-space expectimax.
-- GPU memory figures are the server's reservation, not a measured peak.
+- Tiny hand-built cases only, with no balanced generator.
+- The bounded actor plans physically by exact expectimax; only mental modeling is bounded.
+- Cost c(u) = 1 is a placeholder. No LLM records exist yet.
+- Graph contradiction detection covers location claims refuted by the robot's own observations only.
+- The P4 greedy theory is not implemented.
 
-## Resource usage
-Local only: no paid APIs, no downloads except pytest into a new venv. The GPU was used only for the smoke test. The vLLM server is **still running** in WSL on 127.0.0.1:8000 and holds about 27 GB of VRAM. Stop it when it's not needed.
-
-## Next actions
-1. Research review of D-001…D-006 (`reports/review-request.md`).
-2. Meanwhile, the review-independent Stage 1 work: holder-permutation pair, relevance shift (F3), path asymmetry (F6), a stakes ranking-change pair, P2 gap-bound tests, trajectory-flip computation, and perspective-graph memory records.
-3. After D-001: implement record-B labels and re-derive the tiny-case expectations by hand.
+## Next action
+1. Research review of Q1–Q6 (`reports/review-request.md`).
+2. After that, the small local end-to-end pilot (30–50 dev scenario groups, gpt-oss-20b) as the review directs. This requires a balanced generator that obeys the Q2 generator rule.

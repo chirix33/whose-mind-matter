@@ -1,0 +1,58 @@
+{
+  "run_id": "tiny-20261028-041847-4f924f",
+  "kind": "tiny",
+  "git_commit": "8aa5e0f3e463035035c5b7b6e983cab5961b87f4",
+  "git_dirty": true,
+  "config": {
+    "legacy_cases": [
+      "depth0_visible",
+      "depth1_knowledge",
+      "depth2_handoff",
+      "distractor_obvious",
+      "distractor_plausible",
+      "stakes_m1_q0.95",
+      "stakes_m1_q0.975",
+      "stakes_m4_q0.95",
+      "stakes_m4_q0.975",
+      "substitutes"
+    ],
+    "grounded_cases": [
+      "depth0_visible",
+      "depth1_knowledge",
+      "depth2_handoff",
+      "distractor_obvious",
+      "distractor_plausible",
+      "false_belief",
+      "holder_carol",
+      "holder_rec",
+      "nested_reliability",
+      "path_asymmetry",
+      "relevance_shift",
+      "stakes_m1_q0.95",
+      "stakes_m1_q0.975",
+      "stakes_m4_q0.95",
+      "stakes_m4_q0.975",
+      "substitutes"
+    ],
+    "seed": 0,
+    "testimony_defaults": [
+      "face_value",
+      "hedged"
+    ]
+  },
+  "config_hash": "e97d08d3da98033a",
+  "python": "3.12.3",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "started_at": "2026-10-28T09:18:47.900956+00:00",
+  "gpu_at_start": [
+    {
+      "name": "NVIDIA GeForce RTX 5090",
+      "driver": "610.60",
+      "memory_total_mib": 32607,
+      "memory_used_mib": 2171
+    }
+  ],
+  "all_replays_identical": true,
+  "any_early_failure_incentive": false,
+  "ended_at": "2026-10-28T09:19:14.001474+00:00"
+}

@@ -1,6 +1,6 @@
 # D-005 — Tier 1 mechanics defaults
 
-- Status: **proposed** (engineering defaults that touch reward and oracle semantics)
+- Status: **accepted with explicit transition semantics** (review 2026-10-28)
 - Date: 2026-10-28
 - Affects: outline §5.1; AGENTS §6 Stage 1
 
@@ -18,4 +18,11 @@
 Requested review: confirm that the irreversible-error mechanics and the terminal-step and timeout conventions are acceptable as Tier 1 defaults before the balanced generator is built.
 
 ## Review outcome
-_(pending)_
+**Accepted, with explicit semantics.** Supplied by the research review 2026-10-28 (`research-reviews/stage-0-research-review.md`, supplied by Ashraf; that folder is gitignored, so the binding points are restated here).
+
+- −0.05 on every executed step, including terminal ones. +1 on success.
+- A wrong chute drop is irreversible: −0.5 × stakes (only the error component is scaled), and the episode ends in failure. A one-step failure returns −0.55.
+- A mis-routed handoff is irreversible **only if the declared world rules make recovery impossible**. Declared rule (this implementation): after `give`, the package leaves the robot's custody and Tier 1 has no recovery action. The handoff is therefore terminal and irreversible.
+- At the step cap the transition and reward apply first, so a success on the last allowed step counts. Otherwise the episode times out with no extra penalty.
+- One fixed invalid-action protocol for all methods: an invalid action is a no-op that still costs the step. Generation retries are counted in compute.
+- Oracle audit for early-failure incentives: report affected scenarios; do not change reward magnitudes or drop cases.

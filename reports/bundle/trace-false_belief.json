@@ -1,0 +1,388 @@
+{
+ "agent_view": {
+  "brief": "Deliver the package to Alice.",
+  "steps": [
+   {
+    "action": null,
+    "obs": {
+     "t": 0,
+     "room": "lobby",
+     "people_present": [
+      "rec"
+     ],
+     "utterances": [
+      [
+       "rec",
+       "I saw Alice head to her office earlier."
+      ]
+     ],
+     "outcome": "",
+     "reward": 0.0,
+     "done": false
+    }
+   },
+   {
+    "action": "move(hall)",
+    "obs": {
+     "t": 1,
+     "room": "hall",
+     "people_present": [],
+     "utterances": [],
+     "outcome": "",
+     "reward": -0.05,
+     "done": false
+    }
+   },
+   {
+    "action": "move(office_a)",
+    "obs": {
+     "t": 2,
+     "room": "office_a",
+     "people_present": [],
+     "utterances": [],
+     "outcome": "",
+     "reward": -0.05,
+     "done": false
+    }
+   },
+   {
+    "action": "move(hall)",
+    "obs": {
+     "t": 3,
+     "room": "hall",
+     "people_present": [],
+     "utterances": [],
+     "outcome": "",
+     "reward": -0.05,
+     "done": false
+    }
+   },
+   {
+    "action": "move(lobby)",
+    "obs": {
+     "t": 4,
+     "room": "lobby",
+     "people_present": [
+      "rec"
+     ],
+     "utterances": [],
+     "outcome": "",
+     "reward": -0.05,
+     "done": false
+    }
+   },
+   {
+    "action": "drop(office_b)",
+    "obs": {
+     "t": 5,
+     "room": "lobby",
+     "people_present": [
+      "rec"
+     ],
+     "utterances": [],
+     "outcome": "success",
+     "reward": 0.95,
+     "done": true
+    }
+   }
+  ]
+ },
+ "privileged": {
+  "scenario_id": "false_belief",
+  "params": [
+   [
+    "initial",
+    "office_b"
+   ],
+   [
+    "moved",
+    "no"
+   ]
+  ],
+  "event_log": [
+   {
+    "id": "bs-alice-walks",
+    "t": -3,
+    "kind": "witness",
+    "room": "hall",
+    "actor": "alice",
+    "fact": "alice_loc",
+    "value": "office_b",
+    "text": "",
+    "present": [
+     "alice",
+     "rec"
+    ]
+   },
+   {
+    "id": "t0-rec-saw",
+    "t": 0,
+    "kind": "say",
+    "room": "lobby",
+    "actor": "rec",
+    "fact": "",
+    "value": "",
+    "text": "I saw Alice head to her office earlier.",
+    "present": null
+   }
+  ],
+  "minds_by_step": [
+   {
+    "alice": {
+     "room": "office_b",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks"
+     ]
+    },
+    "rec": {
+     "room": "lobby",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks",
+      "t0-rec-saw"
+     ]
+    }
+   },
+   {
+    "alice": {
+     "room": "office_b",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks"
+     ]
+    },
+    "rec": {
+     "room": "lobby",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks",
+      "t0-rec-saw"
+     ]
+    }
+   },
+   {
+    "alice": {
+     "room": "office_b",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks"
+     ]
+    },
+    "rec": {
+     "room": "lobby",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks",
+      "t0-rec-saw"
+     ]
+    }
+   },
+   {
+    "alice": {
+     "room": "office_b",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks"
+     ]
+    },
+    "rec": {
+     "room": "lobby",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks",
+      "t0-rec-saw"
+     ]
+    }
+   },
+   {
+    "alice": {
+     "room": "office_b",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks"
+     ]
+    },
+    "rec": {
+     "room": "lobby",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks",
+      "t0-rec-saw"
+     ]
+    }
+   },
+   {
+    "alice": {
+     "room": "office_b",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks"
+     ]
+    },
+    "rec": {
+     "room": "lobby",
+     "intent": "cooperative",
+     "beliefs": {
+      "alice_loc": "office_b"
+     },
+     "nested": {},
+     "assessments": {},
+     "perceived": [
+      "bs-alice-walks",
+      "t0-rec-saw"
+     ]
+    }
+   }
+  ]
+ },
+ "agent_view_sha256": "fe07f31fa59c2ef90b15f875b7a54f8bf8d4c560f01cbf368b86c613b09dc9c7",
+ "return": 0.75,
+ "robot_graph": [
+  {
+   "t": 0,
+   "units": {
+    "K(rec)": {
+     "unit": "K(rec)",
+     "path": [
+      "rec"
+     ],
+     "variable": "knowledge",
+     "output": {
+      "False": 0.3,
+      "True": 0.7
+     },
+     "confidence": 0.7,
+     "evidence": [
+      "t0:said0:rec",
+      "t0:seen:rec"
+     ],
+     "timestamp": 0,
+     "cost_calls": 1.0,
+     "status": "fresh"
+    }
+   }
+  },
+  {
+   "t": 1,
+   "units": {
+    "K(rec)": {
+     "status": "retained",
+     "evidence": [
+      "t0:said0:rec",
+      "t0:seen:rec"
+     ]
+    }
+   }
+  },
+  {
+   "t": 2,
+   "units": {
+    "K(rec)": {
+     "status": "retained",
+     "evidence": [
+      "t0:said0:rec",
+      "t0:seen:rec"
+     ]
+    }
+   }
+  },
+  {
+   "t": 3,
+   "units": {
+    "K(rec)": {
+     "status": "retained",
+     "evidence": [
+      "t0:said0:rec",
+      "t0:seen:rec"
+     ]
+    }
+   }
+  },
+  {
+   "t": 4,
+   "units": {
+    "K(rec)": {
+     "status": "stale",
+     "evidence": [
+      "t0:said0:rec",
+      "t0:seen:rec",
+      "t4:seen:rec"
+     ]
+    }
+   }
+  },
+  {
+   "t": 5,
+   "units": {
+    "K(rec)": {
+     "status": "stale",
+     "evidence": [
+      "t0:said0:rec",
+      "t0:seen:rec",
+      "t4:seen:rec",
+      "t5:seen:rec"
+     ]
+    }
+   }
+  }
+ ],
+ "allocation": [
+  "K(rec)"
+ ]
+}
