@@ -1,0 +1,193 @@
+state_id,condition,replicate,dispatch_index,return,outcome,steps,actions,fallbacks,failed_attempts,decision_prompt_tokens,decision_completion_tokens,wall_clock_s
+dev-v3-1c-stakes1-perm0,inferred,0,1,0.75,success,5,"ask(alice,ivan_loc) move(hall) wait() move(suite_1) deliver()",0,0,6778,710,5.03
+dev-v3-1c-stakes1-perm0,inferred,1,64,0.75,success,5,"ask(alice,ivan_loc) move(hall) wait() move(suite_1) deliver()",0,0,6778,688,4.21
+dev-v3-1c-stakes1-perm0,inferred,2,131,0.85,success,3,"ask(alice,ivan_loc) ask(alice,ivan_loc) drop(suite_1)",0,0,4040,407,2.46
+dev-v3-1c-stakes1-perm0,none,0,0,0.95,success,1,drop(suite_1),0,0,1203,161,1.42
+dev-v3-1c-stakes1-perm0,none,1,67,0.8,success,4,"ask(alice,ivan_loc) move(hall) move(suite_1) deliver()",0,0,5028,411,2.54
+dev-v3-1c-stakes1-perm0,none,2,130,0.95,success,1,drop(suite_1),0,0,1203,55,0.34
+dev-v3-1c-stakes1-perm0,privileged,0,3,0.8,success,4,"ask(alice,ivan_loc) move(hall) move(suite_1) deliver()",0,0,5295,294,2.36
+dev-v3-1c-stakes1-perm0,privileged,1,66,0.9,success,2,"ask(alice,ivan_loc) drop(suite_1)",0,0,2586,161,1.0
+dev-v3-1c-stakes1-perm0,privileged,2,129,0.85,success,3,move(hall) move(suite_1) deliver(),0,0,3837,486,2.91
+dev-v3-1c-stakes1-perm0,reference,0,2,0.8,success,4,"move(hall) move(lobby) ask(alice,ivan_loc) drop(suite_1)",0,0,5225,428,3.2
+dev-v3-1c-stakes1-perm0,reference,1,65,0.9,success,2,"ask(alice,ivan_loc) drop(suite_1)",0,0,2586,119,0.76
+dev-v3-1c-stakes1-perm0,reference,2,128,0.9,success,2,"ask(alice,ivan_loc) drop(suite_1)",0,0,2586,299,1.81
+dev-v3-1c-stakes1-perm1,inferred,0,11,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2700,237,1.56
+dev-v3-1c-stakes1-perm1,inferred,1,74,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2700,150,0.92
+dev-v3-1c-stakes1-perm1,inferred,2,137,0.95,success,1,drop(suite_1),0,0,1316,137,0.84
+dev-v3-1c-stakes1-perm1,none,0,10,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2459,266,1.7
+dev-v3-1c-stakes1-perm1,none,1,73,0.8,success,4,"ask(ivan,alice_loc) move(hall) move(suite_1) deliver()",0,0,5025,518,3.15
+dev-v3-1c-stakes1-perm1,none,2,136,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2459,169,1.05
+dev-v3-1c-stakes1-perm1,privileged,0,9,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2584,316,2.04
+dev-v3-1c-stakes1-perm1,privileged,1,72,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2584,167,1.05
+dev-v3-1c-stakes1-perm1,privileged,2,139,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2584,248,1.46
+dev-v3-1c-stakes1-perm1,reference,0,8,0.95,success,1,drop(suite_1),0,0,1258,75,0.51
+dev-v3-1c-stakes1-perm1,reference,1,75,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2584,175,1.05
+dev-v3-1c-stakes1-perm1,reference,2,138,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2584,298,1.77
+dev-v3-1c-stakes4-perm0,inferred,0,4,0.95,success,1,drop(suite_1),0,0,1283,100,0.66
+dev-v3-1c-stakes4-perm0,inferred,1,71,0.95,success,1,drop(suite_1),0,0,1283,73,0.45
+dev-v3-1c-stakes4-perm0,inferred,2,134,0.95,success,1,drop(suite_1),0,0,1283,106,0.65
+dev-v3-1c-stakes4-perm0,none,0,7,0.9,success,2,"ask(alice,ivan_loc) drop(suite_1)",0,0,2455,153,0.99
+dev-v3-1c-stakes4-perm0,none,1,70,0.8,success,4,"ask(alice,ivan_loc) move(hall) move(suite_1) deliver()",0,0,5020,296,1.86
+dev-v3-1c-stakes4-perm0,none,2,133,0.9,success,2,"ask(alice,ivan_loc) drop(suite_1)",0,0,2455,213,1.3
+dev-v3-1c-stakes4-perm0,privileged,0,6,0.8,success,4,"move(hall) move(lobby) ask(alice,ivan_loc) drop(suite_1)",0,0,5217,623,4.03
+dev-v3-1c-stakes4-perm0,privileged,1,69,0.9,success,2,"ask(alice,ivan_loc) drop(suite_1)",0,0,2582,161,1.01
+dev-v3-1c-stakes4-perm0,privileged,2,132,0.9,success,2,"ask(alice,ivan_loc) drop(suite_1)",0,0,2582,177,1.07
+dev-v3-1c-stakes4-perm0,reference,0,5,0.8,success,4,"ask(alice,ivan_loc) move(hall) move(suite_1) deliver()",0,0,5287,273,1.79
+dev-v3-1c-stakes4-perm0,reference,1,68,0.9,success,2,"ask(alice,ivan_loc) drop(suite_1)",0,0,2582,183,1.13
+dev-v3-1c-stakes4-perm0,reference,2,135,0.9,success,2,"ask(alice,ivan_loc) drop(suite_1)",0,0,2582,133,0.84
+dev-v3-1c-stakes4-perm1,inferred,0,14,0.85,success,3,move(hall) move(suite_1) deliver(),0,0,3994,229,1.55
+dev-v3-1c-stakes4-perm1,inferred,1,77,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2696,134,0.82
+dev-v3-1c-stakes4-perm1,inferred,2,140,0.95,success,1,drop(suite_1),0,0,1314,58,0.35
+dev-v3-1c-stakes4-perm1,none,0,13,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2455,208,1.37
+dev-v3-1c-stakes4-perm1,none,1,76,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2455,216,1.3
+dev-v3-1c-stakes4-perm1,none,2,143,0.95,success,1,drop(suite_1),0,0,1200,87,0.53
+dev-v3-1c-stakes4-perm1,privileged,0,12,0.9,success,2,"ask(ivan,alice_loc) drop(suite_1)",0,0,2580,142,0.98
+dev-v3-1c-stakes4-perm1,privileged,1,79,0.95,success,1,drop(suite_1),0,0,1256,98,0.6
+dev-v3-1c-stakes4-perm1,privileged,2,142,0.85,success,3,move(hall) move(suite_1) deliver(),0,0,3820,469,2.78
+dev-v3-1c-stakes4-perm1,reference,0,15,0.8,success,4,"ask(ivan,alice_loc) move(hall) move(suite_1) deliver()",0,0,5280,409,2.66
+dev-v3-1c-stakes4-perm1,reference,1,78,0.8,success,4,"ask(ivan,alice_loc) move(hall) move(suite_1) deliver()",0,0,5280,283,1.73
+dev-v3-1c-stakes4-perm1,reference,2,141,0.95,success,1,drop(suite_1),0,0,1256,218,1.28
+dev-v3-2a-stakes1-perm0,inferred,0,17,0.8,success,4,"ask(yara,leo_loc) move(hall) move(office_c) deliver()",0,0,7039,318,2.19
+dev-v3-2a-stakes1-perm0,inferred,1,80,0.8,success,4,"ask(yara,leo_loc) move(hall) move(office_c) deliver()",0,0,7039,503,3.05
+dev-v3-2a-stakes1-perm0,inferred,2,147,0.9,success,2,"ask(yara,leo_loc) give(yara)",0,0,3462,784,4.69
+dev-v3-2a-stakes1-perm0,none,0,16,0.9,success,2,"ask(yara,leo_loc) drop(office_c)",0,0,3042,287,1.93
+dev-v3-2a-stakes1-perm0,none,1,83,0.85,success,3,"ask(ravi,leo_loc) ask(yara,leo_loc) give(yara)",0,0,4698,488,2.95
+dev-v3-2a-stakes1-perm0,none,2,146,0.9,success,2,"ask(yara,leo_loc) give(yara)",0,0,3042,257,1.53
+dev-v3-2a-stakes1-perm0,privileged,0,19,0.8,success,4,"ask(yara,leo_loc) move(hall) move(office_c) deliver()",0,0,6703,660,4.24
+dev-v3-2a-stakes1-perm0,privileged,1,82,0.85,success,3,"ask(yara,leo_loc) ask(yara,leo_loc) give(yara)",0,0,5089,1146,6.85
+dev-v3-2a-stakes1-perm0,privileged,2,145,0.9,success,2,"ask(yara,leo_loc) give(yara)",0,0,3294,263,1.55
+dev-v3-2a-stakes1-perm0,reference,0,18,0.8,success,4,"ask(yara,leo_loc) move(hall) move(office_c) deliver()",0,1,8506,1578,10.25
+dev-v3-2a-stakes1-perm0,reference,1,81,0.75,success,5,"ask(ravi,leo_loc) ask(yara,leo_loc) move(hall) move(office_c) deliver()",0,0,8793,911,5.51
+dev-v3-2a-stakes1-perm0,reference,2,144,-0.6,error,2,"ask(yara,leo_loc) give(ravi)",0,0,3340,311,1.83
+dev-v3-2a-stakes1-perm1,inferred,0,27,0.9,success,2,"ask(ravi,yara_loc) drop(office_c)",0,0,3499,468,3.01
+dev-v3-2a-stakes1-perm1,inferred,1,90,0.85,success,3,"ask(ravi,yara_loc) ask(ravi,yara_loc) give(ravi)",0,0,5398,313,1.92
+dev-v3-2a-stakes1-perm1,inferred,2,153,0.9,success,2,"ask(ravi,yara_loc) drop(office_c)",0,0,3499,485,2.82
+dev-v3-2a-stakes1-perm1,none,0,26,0.95,success,1,give(ravi),0,0,1484,230,1.43
+dev-v3-2a-stakes1-perm1,none,1,89,0.9,success,2,"ask(ravi,yara_loc) drop(office_c)",0,0,3059,198,1.2
+dev-v3-2a-stakes1-perm1,none,2,152,0.8,success,4,"ask(ravi,yara_loc) move(hall) move(office_c) deliver()",0,0,6208,936,5.5
+dev-v3-2a-stakes1-perm1,privileged,0,25,0.9,success,2,"ask(ravi,yara_loc) drop(office_c)",0,0,3311,275,1.68
+dev-v3-2a-stakes1-perm1,privileged,1,88,0.8,success,4,"ask(ravi,yara_loc) move(hall) move(office_c) deliver()",0,0,6738,405,2.49
+dev-v3-2a-stakes1-perm1,privileged,2,155,0.9,success,2,"ask(ravi,yara_loc) drop(office_c)",0,0,3311,415,2.45
+dev-v3-2a-stakes1-perm1,reference,0,24,0.9,success,2,"ask(ravi,yara_loc) give(ravi)",0,0,3357,221,1.49
+dev-v3-2a-stakes1-perm1,reference,1,91,0.9,success,2,"ask(ravi,yara_loc) give(ravi)",0,0,3357,214,1.33
+dev-v3-2a-stakes1-perm1,reference,2,154,0.8,success,4,"ask(ravi,yara_loc) move(hall) move(office_c) deliver()",0,0,6830,508,3.02
+dev-v3-2a-stakes4-perm0,inferred,0,20,0.9,success,2,"ask(yara,leo_loc) drop(office_c)",0,0,3510,362,2.41
+dev-v3-2a-stakes4-perm0,inferred,1,87,0.9,success,2,"ask(yara,leo_loc) drop(office_c)",0,0,3510,240,1.44
+dev-v3-2a-stakes4-perm0,inferred,2,150,0.85,success,3,"ask(ravi,leo_loc) ask(ravi,leo_loc) give(yara)",0,0,5413,408,2.51
+dev-v3-2a-stakes4-perm0,none,0,23,0.9,success,2,"ask(yara,leo_loc) give(yara)",0,0,3038,279,1.83
+dev-v3-2a-stakes4-perm0,none,1,86,0.85,success,3,"ask(ravi,leo_loc) ask(yara,leo_loc) give(yara)",0,0,4692,553,3.33
+dev-v3-2a-stakes4-perm0,none,2,149,0.8,success,4,"ask(yara,leo_loc) move(hall) move(office_c) deliver()",0,0,6165,430,2.65
+dev-v3-2a-stakes4-perm0,privileged,0,22,0.8,success,4,"ask(yara,leo_loc) move(hall) move(office_c) deliver()",0,0,6695,504,3.24
+dev-v3-2a-stakes4-perm0,privileged,1,85,0.8,success,4,"ask(yara,leo_loc) move(hall) move(lobby) drop(office_c)",0,0,6765,799,4.81
+dev-v3-2a-stakes4-perm0,privileged,2,148,0.9,success,2,"ask(yara,leo_loc) give(yara)",0,0,3290,335,2.06
+dev-v3-2a-stakes4-perm0,reference,0,21,0.9,success,2,"ask(yara,leo_loc) drop(office_c)",0,0,3336,425,2.71
+dev-v3-2a-stakes4-perm0,reference,1,84,0.9,success,2,"ask(yara,leo_loc) drop(office_c)",0,0,3336,213,1.29
+dev-v3-2a-stakes4-perm0,reference,2,151,0.9,success,2,"ask(yara,leo_loc) give(yara)",0,0,3336,293,1.73
+dev-v3-2a-stakes4-perm1,inferred,0,30,0.8,success,4,"ask(ravi,yara_loc) move(hall) move(office_c) deliver()",0,0,7106,245,1.8
+dev-v3-2a-stakes4-perm1,inferred,1,93,0.9,success,2,"ask(ravi,yara_loc) drop(office_c)",0,0,3495,109,0.69
+dev-v3-2a-stakes4-perm1,inferred,2,156,0.9,success,2,"ask(ravi,yara_loc) give(ravi)",0,0,3495,235,1.42
+dev-v3-2a-stakes4-perm1,none,0,29,0.8,success,4,"ask(ravi,yara_loc) move(hall) move(office_c) deliver()",0,0,6200,255,1.72
+dev-v3-2a-stakes4-perm1,none,1,92,-2.05,error,1,give(judy),0,0,1482,556,3.34
+dev-v3-2a-stakes4-perm1,none,2,159,0.95,success,1,give(ravi),0,0,1482,235,1.38
+dev-v3-2a-stakes4-perm1,privileged,0,28,0.95,success,1,give(ravi),0,0,1595,133,0.95
+dev-v3-2a-stakes4-perm1,privileged,1,95,0.85,success,3,"ask(ravi,yara_loc) ask(leo,yara_loc) drop(office_c)",0,0,5107,373,2.25
+dev-v3-2a-stakes4-perm1,privileged,2,158,0.95,success,1,drop(office_c),0,0,1595,442,2.57
+dev-v3-2a-stakes4-perm1,reference,0,31,0.9,success,2,"ask(ravi,yara_loc) drop(office_c)",0,0,3353,264,1.82
+dev-v3-2a-stakes4-perm1,reference,1,94,0.9,success,2,"ask(ravi,yara_loc) drop(office_c)",0,0,3353,206,1.22
+dev-v3-2a-stakes4-perm1,reference,2,157,0.9,success,2,"ask(ravi,yara_loc) drop(office_c)",0,0,3353,252,1.5
+dev-v3-3c-stakes1-perm0,inferred,0,33,0.8,success,4,"ask(nadia,meeting_room) move(hall) move(office_b) deliver()",0,0,6545,424,2.79
+dev-v3-3c-stakes1-perm0,inferred,1,96,0.7,success,6,"move(hall) move(lobby) ask(nadia,meeting_room) move(hall) move(office_b) deliver()",0,0,9951,872,5.26
+dev-v3-3c-stakes1-perm0,inferred,2,163,0.8,success,4,"ask(nadia,meeting_room) move(hall) move(office_b) deliver()",0,0,6545,817,4.78
+dev-v3-3c-stakes1-perm0,none,0,32,0.8,success,4,"ask(nadia,meeting_room) move(hall) move(office_b) deliver()",0,0,6202,527,3.51
+dev-v3-3c-stakes1-perm0,none,1,99,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4498,335,2.03
+dev-v3-3c-stakes1-perm0,none,2,162,0.95,success,1,give(nadia),0,0,1482,318,1.83
+dev-v3-3c-stakes1-perm0,privileged,0,35,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4697,446,2.85
+dev-v3-3c-stakes1-perm0,privileged,1,98,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4697,287,1.76
+dev-v3-3c-stakes1-perm0,privileged,2,161,0.95,success,1,give(nadia),0,0,1544,120,0.7
+dev-v3-3c-stakes1-perm0,reference,0,34,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4697,292,1.81
+dev-v3-3c-stakes1-perm0,reference,1,97,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4697,281,1.72
+dev-v3-3c-stakes1-perm0,reference,2,160,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4697,456,2.67
+dev-v3-3c-stakes1-perm1,inferred,0,43,0.95,success,1,give(heidi),0,0,1566,393,2.46
+dev-v3-3c-stakes1-perm1,inferred,1,106,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4763,224,1.41
+dev-v3-3c-stakes1-perm1,inferred,2,169,0.8,success,4,"ask(heidi,meeting_room) move(hall) move(office_b) deliver()",0,0,6580,889,5.27
+dev-v3-3c-stakes1-perm1,none,0,42,0.65,success,7,"ask(heidi,meeting_room) move(hall) move(office_a) wait() move(hall) move(office_b) deliver()",0,0,11052,800,4.97
+dev-v3-3c-stakes1-perm1,none,1,105,0.8,success,4,"ask(heidi,meeting_room) move(hall) move(office_b) deliver()",0,0,6229,533,3.22
+dev-v3-3c-stakes1-perm1,none,2,168,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4516,504,2.99
+dev-v3-3c-stakes1-perm1,privileged,0,41,0.9,success,2,"ask(heidi,meeting_room) give(heidi)",0,0,3190,508,3.13
+dev-v3-3c-stakes1-perm1,privileged,1,104,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4718,780,4.68
+dev-v3-3c-stakes1-perm1,privileged,2,171,0.9,success,2,"ask(heidi,meeting_room) give(heidi)",0,0,3190,485,2.84
+dev-v3-3c-stakes1-perm1,reference,0,40,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4718,657,4.04
+dev-v3-3c-stakes1-perm1,reference,1,107,0.95,success,1,give(heidi),0,0,1551,145,0.89
+dev-v3-3c-stakes1-perm1,reference,2,170,0.9,success,2,"ask(heidi,meeting_room) give(heidi)",0,0,3190,204,1.22
+dev-v3-3c-stakes4-perm0,inferred,0,36,0.95,success,1,give(nadia),0,0,1598,204,1.3
+dev-v3-3c-stakes4-perm0,inferred,1,103,0.8,success,4,"move(hall) move(office_b) ask(frank,meeting_room) deliver()",0,0,6567,406,2.48
+dev-v3-3c-stakes4-perm0,inferred,2,166,0.95,success,1,give(nadia),0,0,1598,137,0.81
+dev-v3-3c-stakes4-perm0,none,0,39,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4492,411,2.57
+dev-v3-3c-stakes4-perm0,none,1,102,0.9,success,2,"ask(nadia,meeting_room) give(nadia)",0,0,3034,185,1.12
+dev-v3-3c-stakes4-perm0,none,2,165,-0.4,timeout,8,"ask(nadia,meeting_room) move(hall) move(office_a) move(hall) move(office_a) move(hall) move(office_a) wait()",0,0,12599,1195,7.11
+dev-v3-3c-stakes4-perm0,privileged,0,38,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4691,774,4.77
+dev-v3-3c-stakes4-perm0,privileged,1,101,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4691,443,2.69
+dev-v3-3c-stakes4-perm0,privileged,2,164,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4691,412,2.43
+dev-v3-3c-stakes4-perm0,reference,0,37,0.8,success,4,"move(hall) move(office_b) ask(frank,meeting_room) deliver()",0,0,6343,682,4.29
+dev-v3-3c-stakes4-perm0,reference,1,100,0.95,success,1,give(nadia),0,0,1542,108,0.66
+dev-v3-3c-stakes4-perm0,reference,2,167,0.8,success,4,"ask(nadia,meeting_room) move(hall) move(office_b) deliver()",0,0,6481,552,3.31
+dev-v3-3c-stakes4-perm1,inferred,0,46,0.95,success,1,give(heidi),0,0,1564,200,1.19
+dev-v3-3c-stakes4-perm1,inferred,1,109,0.9,success,2,"ask(heidi,meeting_room) give(heidi)",0,0,3216,270,1.6
+dev-v3-3c-stakes4-perm1,inferred,2,172,0.8,success,4,"ask(heidi,meeting_room) move(hall) move(office_b) deliver()",0,0,6572,486,2.9
+dev-v3-3c-stakes4-perm1,none,0,45,0.65,success,7,"ask(heidi,meeting_room) move(hall) move(office_a) wait() move(hall) move(office_b) deliver()",0,0,11038,735,4.69
+dev-v3-3c-stakes4-perm1,none,1,108,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4510,395,2.35
+dev-v3-3c-stakes4-perm1,none,2,175,0.8,success,4,"ask(heidi,meeting_room) move(hall) move(office_b) deliver()",0,0,6221,629,3.79
+dev-v3-3c-stakes4-perm1,privileged,0,44,0.8,success,4,"ask(heidi,meeting_room) move(hall) move(office_b) deliver()",0,0,6512,798,4.93
+dev-v3-3c-stakes4-perm1,privileged,1,111,0.85,success,3,move(hall) move(office_b) deliver(),0,0,4712,410,2.49
+dev-v3-3c-stakes4-perm1,privileged,2,174,0.8,success,4,move(hall) wait() move(office_b) deliver(),0,0,6292,604,3.65
+dev-v3-3c-stakes4-perm1,reference,0,47,0.9,success,2,"ask(heidi,meeting_room) give(heidi)",0,0,3186,293,1.86
+dev-v3-3c-stakes4-perm1,reference,1,110,0.8,success,4,"ask(heidi,meeting_room) move(hall) move(office_b) deliver()",0,0,6512,740,4.45
+dev-v3-3c-stakes4-perm1,reference,2,173,0.9,success,2,"ask(heidi,meeting_room) give(heidi)",0,0,3186,346,2.05
+dev-v3-4b-stakes1-perm0,inferred,0,49,0.85,success,3,"ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,4709,284,1.87
+dev-v3-4b-stakes1-perm0,inferred,1,112,0.8,success,4,"ask(kim,erin_loc) ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,6463,339,2.1
+dev-v3-4b-stakes1-perm0,inferred,2,179,0.8,success,4,"ask(kim,erin_loc) ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,6463,492,2.93
+dev-v3-4b-stakes1-perm0,none,0,48,0.8,success,4,"ask(kim,erin_loc) ask(uma,erin_loc) ask(kim,erin_loc) drop(desk_14)",0,0,6228,718,4.62
+dev-v3-4b-stakes1-perm0,none,1,115,0.8,success,4,"ask(kim,erin_loc) ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,6228,471,2.85
+dev-v3-4b-stakes1-perm0,none,2,178,0.8,success,4,"ask(kim,erin_loc) ask(uma,erin_loc) ask(kim,erin_loc) drop(desk_14)",0,0,6228,607,3.64
+dev-v3-4b-stakes1-perm0,privileged,0,51,0.9,success,2,"ask(kim,erin_loc) drop(desk_14)",0,0,3092,301,1.93
+dev-v3-4b-stakes1-perm0,privileged,1,114,0.85,success,3,"ask(kim,erin_loc) ask(kim,erin_loc) drop(desk_14)",0,0,4786,315,1.94
+dev-v3-4b-stakes1-perm0,privileged,2,177,0.8,success,4,"ask(kim,erin_loc) ask(uma,erin_loc) ask(kim,erin_loc) drop(desk_14)",0,0,6570,586,3.54
+dev-v3-4b-stakes1-perm0,reference,0,50,0.8,success,4,"ask(kim,erin_loc) ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,6630,989,6.14
+dev-v3-4b-stakes1-perm0,reference,1,113,0.85,success,3,"ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,4831,383,2.33
+dev-v3-4b-stakes1-perm0,reference,2,176,0.8,success,4,"ask(kim,erin_loc) ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,6630,364,2.22
+dev-v3-4b-stakes1-perm1,inferred,0,59,0.85,success,3,"ask(zane,kim_loc) ask(uma,kim_loc) drop(desk_14)",0,0,5064,833,5.19
+dev-v3-4b-stakes1-perm1,inferred,1,122,0.8,success,4,"ask(zane,kim_loc) ask(uma,kim_loc) ask(uma,kim_loc) drop(desk_14)",0,0,6941,1152,7.01
+dev-v3-4b-stakes1-perm1,inferred,2,185,-0.7,error,4,"ask(uma,kim_loc) ask(zane,kim_loc) ask(uma,kim_loc) drop(desk_9)",0,0,6940,979,5.92
+dev-v3-4b-stakes1-perm1,none,0,58,-0.7,error,4,"ask(uma,kim_loc) ask(uma,kim_loc) ask(zane,kim_loc) drop(desk_9)",0,0,6249,388,2.57
+dev-v3-4b-stakes1-perm1,none,1,121,0.85,success,3,"ask(uma,kim_loc) ask(uma,kim_loc) drop(desk_14)",0,0,4551,432,2.64
+dev-v3-4b-stakes1-perm1,none,2,184,0.9,success,2,"ask(uma,kim_loc) drop(desk_14)",0,0,2944,1387,8.33
+dev-v3-4b-stakes1-perm1,privileged,0,57,0.9,success,2,"ask(uma,kim_loc) drop(desk_14)",0,0,3104,187,1.25
+dev-v3-4b-stakes1-perm1,privileged,1,120,0.8,success,4,"ask(zane,kim_loc) ask(uma,kim_loc) ask(uma,kim_loc) drop(desk_14)",0,0,6597,566,3.44
+dev-v3-4b-stakes1-perm1,privileged,2,187,0.8,success,4,"ask(uma,kim_loc) ask(zane,kim_loc) ask(uma,kim_loc) drop(desk_14)",0,0,6596,589,3.57
+dev-v3-4b-stakes1-perm1,reference,0,56,0.95,success,1,drop(desk_14),0,0,1509,864,5.48
+dev-v3-4b-stakes1-perm1,reference,1,123,0.95,success,1,drop(desk_14),0,0,1509,111,0.68
+dev-v3-4b-stakes1-perm1,reference,2,186,0.85,success,3,"ask(uma,kim_loc) ask(zane,kim_loc) drop(desk_14)",0,0,4850,507,3.11
+dev-v3-4b-stakes4-perm0,inferred,0,52,-2.1,error,2,"ask(kim,erin_loc) drop(desk_9)",0,0,2910,912,5.63
+dev-v3-4b-stakes4-perm0,inferred,1,119,0.8,success,4,"ask(kim,erin_loc) ask(uma,erin_loc) ask(kim,erin_loc) drop(desk_14)",0,0,6180,1200,7.22
+dev-v3-4b-stakes4-perm0,inferred,2,182,0.8,success,4,"ask(kim,erin_loc) ask(uma,erin_loc) ask(kim,erin_loc) drop(desk_14)",0,0,6180,1031,6.22
+dev-v3-4b-stakes4-perm0,none,0,55,0.85,success,3,"ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,4530,341,2.17
+dev-v3-4b-stakes4-perm0,none,1,118,0.8,success,4,"ask(kim,erin_loc) ask(uma,erin_loc) ask(kim,erin_loc) drop(desk_14)",0,0,6220,1363,8.18
+dev-v3-4b-stakes4-perm0,none,2,181,-2.15,error,3,"ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_9)",0,0,4530,652,3.89
+dev-v3-4b-stakes4-perm0,privileged,0,54,0.85,success,3,"ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,4780,1071,6.6
+dev-v3-4b-stakes4-perm0,privileged,1,117,0.85,success,3,"ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,4780,388,2.33
+dev-v3-4b-stakes4-perm0,privileged,2,180,0.85,success,3,"ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,4780,1159,6.89
+dev-v3-4b-stakes4-perm0,reference,0,53,0.85,success,3,"ask(kim,erin_loc) ask(kim,erin_loc) drop(desk_14)",0,0,4825,526,3.21
+dev-v3-4b-stakes4-perm0,reference,1,116,0.8,success,4,"ask(kim,erin_loc) ask(kim,erin_loc) ask(uma,erin_loc) drop(desk_14)",0,0,6622,332,2.04
+dev-v3-4b-stakes4-perm0,reference,2,183,0.85,success,3,"ask(kim,erin_loc) ask(kim,erin_loc) drop(desk_14)",0,0,4825,413,2.49
+dev-v3-4b-stakes4-perm1,inferred,0,62,0.9,success,2,"ask(zane,kim_loc) drop(desk_14)",0,0,2921,896,5.42
+dev-v3-4b-stakes4-perm1,inferred,1,125,-2.3,error,6,"ask(uma,kim_loc) ask(uma,kim_loc) ask(zane,kim_loc) ask(zane,kim_loc) ask(uma,kim_loc) drop(desk_9)",0,0,9845,805,4.95
+dev-v3-4b-stakes4-perm1,inferred,2,188,0.8,success,4,"ask(uma,kim_loc) ask(zane,kim_loc) ask(zane,kim_loc) drop(desk_14)",0,0,6203,1313,6.55
+dev-v3-4b-stakes4-perm1,none,0,61,0.6,success,8,"ask(zane,kim_loc) ask(zane,kim_loc) ask(uma,kim_loc) move(hall) move(desk_9) move(hall) move(desk_14) deliver()",0,0,13104,1864,11.41
+dev-v3-4b-stakes4-perm1,none,1,124,0.85,success,3,"ask(uma,kim_loc) ask(zane,kim_loc) drop(desk_14)",0,0,4546,622,3.77
+dev-v3-4b-stakes4-perm1,none,2,191,0.9,success,2,"ask(zane,kim_loc) drop(desk_14)",0,0,2941,640,3.23
+dev-v3-4b-stakes4-perm1,privileged,0,60,0.85,success,3,"ask(uma,kim_loc) ask(uma,kim_loc) drop(desk_14)",0,0,4798,404,2.58
+dev-v3-4b-stakes4-perm1,privileged,1,127,0.85,success,3,"ask(uma,kim_loc) ask(uma,kim_loc) drop(desk_14)",0,1,6496,1433,8.64
+dev-v3-4b-stakes4-perm1,privileged,2,190,0.95,success,1,drop(desk_14),0,0,1492,114,0.71
+dev-v3-4b-stakes4-perm1,reference,0,63,0.9,success,2,"ask(uma,kim_loc) drop(desk_14)",0,1,4637,1345,8.19
+dev-v3-4b-stakes4-perm1,reference,1,126,0.75,success,5,"ask(uma,kim_loc) ask(zane,kim_loc) ask(zane,kim_loc) ask(uma,kim_loc) drop(desk_14)",0,0,8544,667,4.11
+dev-v3-4b-stakes4-perm1,reference,2,189,0.85,success,3,"ask(uma,kim_loc) ask(uma,kim_loc) drop(desk_14)",0,0,4843,346,2.09

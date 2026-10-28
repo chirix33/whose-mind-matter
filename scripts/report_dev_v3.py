@@ -27,7 +27,8 @@ EPS = 0.05
 
 def classify(ds: list[float]) -> str:
     """R10 stratum classification from per-state paired differences (condition - none, mean over draws)."""
-    m = sum(ds) / len(ds)
+    m = round(sum(ds) / len(ds), 9)  # exact-decimal boundary (fixed after Round B: 0.04999999999999999 is +0.05)
+    ds = [round(d, 9) for d in ds]
     if m >= EPS and sum(d > 0 for d in ds) >= 3:
         return "positive"
     if m <= -EPS and sum(d < 0 for d in ds) >= 3:

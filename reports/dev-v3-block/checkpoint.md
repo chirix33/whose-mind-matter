@@ -1,16 +1,9 @@
 # dev-v3 block checkpoint
 
-**Round A: complete.**
-- Plan gate: Opus PASS WITH REQUIRED CHANGES R1–R15, applied as Entry 1a.
-- Results gate: Opus PASS WITH REQUIRED CHANGES RC1–RC4, applied as Entry 1b; Sonnet CONSISTENT.
-- Freeze: `dev-v3-freeze.json` from clean commit `7871e4c`. `run_dev_v3_notes.py verify` passes.
-- No LLM had touched dev-v3 before the freeze commit.
+**Block complete (2026-10-28).** The stopping rule from D-014 ("return after these two rounds") is met.
 
-**Round B: next.** Local gpt-oss-20b.
-1. Freeze the notes (`notes`), then render (`render`).
-2. Run the policy for 3 replicates (`policy`).
-3. Report (`scripts/report_dev_v3.py`).
-4. Opus and Sonnet results gates.
-5. Optional B2 API batch, under Entry 1a R12.
-
-**Spend:** no paid calls in this block so far. The ledger still reads USD 3.8690 of 5.00; reconcile it before any B2 call.
+- **Round A:** complete and gated; frozen at `7871e4c`, committed in `984cb50`.
+- **Round B:** local run `dev-v3-notes-20261028-165208-67f601` is complete and gated (Opus PASS WITH REQUIRED CHANGES, applied; Sonnet reproduced the numbers, and its discrepancies are fixed). The B2 API batch was not run: its estimated cost exceeds the 0.80 allowance, and this is recorded as a deviation.
+- **Spend:** no paid calls in this block. The ledger reads USD 3.8690 of 5.00, with 0 reservations and 0 unresolved.
+- **Services:** the vLLM server is stopped. No cloud sessions were used.
+- **Resume:** nothing is pending. The next step is the research review of `FINAL_REVIEW.md` → "Decisions for the research review". Do not rerun Round B, and do not tune on its outcomes.

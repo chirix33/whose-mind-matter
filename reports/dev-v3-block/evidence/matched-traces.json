@@ -1,0 +1,361 @@
+{
+ "2a_holder_swap": [
+  {
+   "agent_visible": {
+    "card": "TASK: Deliver the package to Leo.\nRecipient: leo. People the robot knows of: judy, leo, ravi, yara.\nLayout (room: adjacent rooms): lobby: hall; hall: lobby, office_b, office_c, office_a; office_b: hall; office_c: hall; office_a: hall\nThe robot only sees who is in a room by being in that room.\nActions: move(room) to an adjacent room; ask(person,fact) a person in the same room; deliver() hands the package to the recipient if the recipient is in the robot's room; drop(room) sends the package through the chute in the lobby to that room; give(person) hands the package to ravi, yara, who forwards it to where they think it should go; wait().\nRewards: +1 for a successful delivery; -0.05 for every step taken; a delivery to the wrong place (wrong chute drop or wrongly forwarded package) costs -0.5 and ends the task. The task ends after 8 steps without further penalty.\nFacts that can be asked about: leo_loc (possible values: leo_loc: office_b, office_c, office_a).\nHow people come to believe things (the same rules apply to everyone):\n1. A person believes a fact if they saw it or heard it announced (an announcement to everyone present, or a quiet conversation addressed to them), and keeps that belief until they see or are told otherwise, so a belief can be outdated or false. A quiet conversation (shown as: X talks quietly to Y) is heard only by Y, the person addressed: others present see it but do not hear it. A person who neither saw nor was told anything about a fact has no belief about it.\n2. The recipient knows which office they are in. Nobody else learns that someone moved unless they saw it or were told. Seeing someone in the lobby, arriving there or leaving it, does not change what anyone believes about which office that person is in.\n3. When someone states a value for a fact (shown as: X says: \"fact = value\", including answers to the robot's questions, where \"I don't know.\" means no belief), everyone else present then thinks the speaker believes that value (or has no belief), but does not adopt it. A statement gives the speaker no belief about the listeners.\n4. Ordinary remarks (any other sentence) change no one's beliefs and no one's beliefs about beliefs. They still tell the robot what was said, which may or may not be accurate.\n5. Seeing someone, or hearing the same announcement as someone, does not tell a person what that other person believes. People form beliefs about others' beliefs only from statements and announcements: listeners think the speaker believes what the speaker stated or announced, and the speaker of an announcement or quiet conversation thinks the listeners now believe it. Watching a quiet conversation tells a bystander nothing about what the listener now believes.\n6. Some people may deliberately mislead; the public model of the task says who may, how likely it is, and how they answer.\nPUBLIC MODEL OF THIS TASK (given to the robot identically in every condition; it describes how this situation was generated. People in the scene form beliefs only as rules 1-5 describe.):\n- leo announced an office and went there. Later leo moved to one of the two other offices, stopping in the lobby on the way. A quiet conversation started by leo always tells the person addressed (and only that person) the office leo is about to go to. leo stays in the new office. Everyone in this task is cooperative: they answer questions sincerely (with what they believe).\n- ravi and yara accept handed-over packages and forward them to the office where they believe leo is. Nobody else accepts handed-over packages.\n- After the prologue shown in the history, nobody but the robot moves, and people's beliefs change only through what is said in answer to the robot's questions. Everyone shown in the lobby at the end of the prologue stays there.\n- judy was elsewhere during everything before arriving and saw and heard nothing about it.\n- Hidden quantities and their probabilities (the robot does not see the realized values):\n  - the office leo first went to / was first seen in: office_b 0.3333, office_c 0.3333, office_a 0.3333\n  - which of the two other offices leo moved to (each equally likely)",
+    "ledger": "HISTORY (robot's own observations):\n  [t0:note0] leo announces to everyone present: \"leo_loc = office_b\" (others present: ravi, yara)\n  [t0:note1] leo leaves the lobby (others present: ravi, yara)\n  [t0:note2] leo arrives in the lobby (others present: ravi, yara)\n  [t0:note3] leo talks quietly to yara; only yara can hear it, and the robot cannot hear what is said (others present: ravi)\n  [t0:note4] leo leaves the lobby (others present: ravi, yara)\n  [t0:note5] judy arrives in the lobby (others present: ravi, yara)\n  [t0:note6] judy says: \"I just got here.\" (others present: ravi, yara)\n  [t0:seen:judy] judy is in the lobby with the robot\n  [t0:seen:ravi] ravi is in the lobby with the robot\n  [t0:seen:yara] yara is in the lobby with the robot"
+   },
+   "exact_q_first_actions_public_model": {
+    "ask(judy,leo_loc)": 0.9,
+    "ask(ravi,leo_loc)": 0.9,
+    "ask(yara,leo_loc)": 0.9,
+    "drop(office_a)": 0.2,
+    "drop(office_b)": -0.55,
+    "drop(office_c)": 0.2,
+    "give(ravi)": -0.55,
+    "give(yara)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "optimal": [
+    "give(yara)"
+   ],
+   "pattern": "2a:0",
+   "privileged": {
+    "hidden": {
+     "a": "office_b",
+     "m1": "0",
+     "pattern": "2a:0"
+    },
+    "minds_t0": {
+     "judy": {
+      "assessments": {},
+      "beliefs": {},
+      "intent": "cooperative",
+      "nested": {},
+      "perceived": [
+       "t0-7-enter",
+       "t0-8-say"
+      ],
+      "room": "lobby"
+     },
+     "leo": {
+      "assessments": {},
+      "beliefs": {
+       "leo_loc": "office_c"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "ravi:leo_loc": "office_b",
+       "yara:leo_loc": "office_c"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-1-enter",
+       "t0-2-witness",
+       "t0-3-enter",
+       "t0-4-tell",
+       "t0-5-enter",
+       "t0-6-witness"
+      ],
+      "room": "office_c"
+     },
+     "ravi": {
+      "assessments": {},
+      "beliefs": {
+       "leo_loc": "office_b"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "leo:leo_loc": "office_b"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-3-enter",
+       "t0-7-enter",
+       "t0-8-say"
+      ],
+      "room": "lobby"
+     },
+     "yara": {
+      "assessments": {},
+      "beliefs": {
+       "leo_loc": "office_c"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "leo:leo_loc": "office_c"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-3-enter",
+       "t0-4-tell",
+       "t0-7-enter",
+       "t0-8-say"
+      ],
+      "room": "lobby"
+     }
+    }
+   }
+  },
+  {
+   "agent_visible": {
+    "card": "TASK: Deliver the package to Leo.\nRecipient: leo. People the robot knows of: judy, leo, ravi, yara.\nLayout (room: adjacent rooms): lobby: hall; hall: lobby, office_b, office_c, office_a; office_b: hall; office_c: hall; office_a: hall\nThe robot only sees who is in a room by being in that room.\nActions: move(room) to an adjacent room; ask(person,fact) a person in the same room; deliver() hands the package to the recipient if the recipient is in the robot's room; drop(room) sends the package through the chute in the lobby to that room; give(person) hands the package to ravi, yara, who forwards it to where they think it should go; wait().\nRewards: +1 for a successful delivery; -0.05 for every step taken; a delivery to the wrong place (wrong chute drop or wrongly forwarded package) costs -0.5 and ends the task. The task ends after 8 steps without further penalty.\nFacts that can be asked about: leo_loc (possible values: leo_loc: office_b, office_c, office_a).\nHow people come to believe things (the same rules apply to everyone):\n1. A person believes a fact if they saw it or heard it announced (an announcement to everyone present, or a quiet conversation addressed to them), and keeps that belief until they see or are told otherwise, so a belief can be outdated or false. A quiet conversation (shown as: X talks quietly to Y) is heard only by Y, the person addressed: others present see it but do not hear it. A person who neither saw nor was told anything about a fact has no belief about it.\n2. The recipient knows which office they are in. Nobody else learns that someone moved unless they saw it or were told. Seeing someone in the lobby, arriving there or leaving it, does not change what anyone believes about which office that person is in.\n3. When someone states a value for a fact (shown as: X says: \"fact = value\", including answers to the robot's questions, where \"I don't know.\" means no belief), everyone else present then thinks the speaker believes that value (or has no belief), but does not adopt it. A statement gives the speaker no belief about the listeners.\n4. Ordinary remarks (any other sentence) change no one's beliefs and no one's beliefs about beliefs. They still tell the robot what was said, which may or may not be accurate.\n5. Seeing someone, or hearing the same announcement as someone, does not tell a person what that other person believes. People form beliefs about others' beliefs only from statements and announcements: listeners think the speaker believes what the speaker stated or announced, and the speaker of an announcement or quiet conversation thinks the listeners now believe it. Watching a quiet conversation tells a bystander nothing about what the listener now believes.\n6. Some people may deliberately mislead; the public model of the task says who may, how likely it is, and how they answer.\nPUBLIC MODEL OF THIS TASK (given to the robot identically in every condition; it describes how this situation was generated. People in the scene form beliefs only as rules 1-5 describe.):\n- leo announced an office and went there. Later leo moved to one of the two other offices, stopping in the lobby on the way. A quiet conversation started by leo always tells the person addressed (and only that person) the office leo is about to go to. leo stays in the new office. Everyone in this task is cooperative: they answer questions sincerely (with what they believe).\n- ravi and yara accept handed-over packages and forward them to the office where they believe leo is. Nobody else accepts handed-over packages.\n- After the prologue shown in the history, nobody but the robot moves, and people's beliefs change only through what is said in answer to the robot's questions. Everyone shown in the lobby at the end of the prologue stays there.\n- judy was elsewhere during everything before arriving and saw and heard nothing about it.\n- Hidden quantities and their probabilities (the robot does not see the realized values):\n  - the office leo first went to / was first seen in: office_b 0.3333, office_c 0.3333, office_a 0.3333\n  - which of the two other offices leo moved to (each equally likely)",
+    "ledger": "HISTORY (robot's own observations):\n  [t0:note0] leo announces to everyone present: \"leo_loc = office_b\" (others present: ravi, yara)\n  [t0:note1] leo leaves the lobby (others present: ravi, yara)\n  [t0:note2] leo arrives in the lobby (others present: ravi, yara)\n  [t0:note3] leo talks quietly to ravi; only ravi can hear it, and the robot cannot hear what is said (others present: yara)\n  [t0:note4] leo leaves the lobby (others present: ravi, yara)\n  [t0:note5] judy arrives in the lobby (others present: ravi, yara)\n  [t0:note6] judy says: \"I just got here.\" (others present: ravi, yara)\n  [t0:seen:judy] judy is in the lobby with the robot\n  [t0:seen:ravi] ravi is in the lobby with the robot\n  [t0:seen:yara] yara is in the lobby with the robot"
+   },
+   "exact_q_first_actions_public_model": {
+    "ask(judy,leo_loc)": 0.9,
+    "ask(ravi,leo_loc)": 0.9,
+    "ask(yara,leo_loc)": 0.9,
+    "drop(office_a)": 0.2,
+    "drop(office_b)": -0.55,
+    "drop(office_c)": 0.2,
+    "give(ravi)": 0.95,
+    "give(yara)": -0.55,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "optimal": [
+    "give(ravi)"
+   ],
+   "pattern": "2a:1",
+   "privileged": {
+    "hidden": {
+     "a": "office_b",
+     "m1": "0",
+     "pattern": "2a:1"
+    },
+    "minds_t0": {
+     "judy": {
+      "assessments": {},
+      "beliefs": {},
+      "intent": "cooperative",
+      "nested": {},
+      "perceived": [
+       "t0-7-enter",
+       "t0-8-say"
+      ],
+      "room": "lobby"
+     },
+     "leo": {
+      "assessments": {},
+      "beliefs": {
+       "leo_loc": "office_c"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "ravi:leo_loc": "office_c",
+       "yara:leo_loc": "office_b"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-1-enter",
+       "t0-2-witness",
+       "t0-3-enter",
+       "t0-4-tell",
+       "t0-5-enter",
+       "t0-6-witness"
+      ],
+      "room": "office_c"
+     },
+     "ravi": {
+      "assessments": {},
+      "beliefs": {
+       "leo_loc": "office_c"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "leo:leo_loc": "office_c"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-3-enter",
+       "t0-4-tell",
+       "t0-7-enter",
+       "t0-8-say"
+      ],
+      "room": "lobby"
+     },
+     "yara": {
+      "assessments": {},
+      "beliefs": {
+       "leo_loc": "office_b"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "leo:leo_loc": "office_b"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-3-enter",
+       "t0-7-enter",
+       "t0-8-say"
+      ],
+      "room": "lobby"
+     }
+    }
+   }
+  }
+ ],
+ "3a_vs_3b_depth2": [
+  {
+   "agent_visible": {
+    "card": "TASK: Deliver the package to Uma.\nRecipient: uma. People the robot knows of: heidi, uma, vik.\nLayout (room: adjacent rooms): lobby: hall; hall: lobby, room_7, room_19, room_12; room_7: hall; room_19: hall; room_12: hall\nThe robot only sees who is in a room by being in that room.\nActions: move(room) to an adjacent room; ask(person,fact) a person in the same room; deliver() hands the package to the recipient if the recipient is in the robot's room; give(person) hands the package to heidi, who forwards it to where they think it should go; wait().\nRewards: +1 for a successful delivery; -0.05 for every step taken; a delivery to the wrong place (wrong chute drop or wrongly forwarded package) costs -0.5 and ends the task. The task ends after 8 steps without further penalty.\nFacts that can be asked about: meeting_room (possible values: meeting_room: room_7, room_19, room_12).\nHow people come to believe things (the same rules apply to everyone):\n1. A person believes a fact if they saw it or heard it announced (an announcement to everyone present, or a quiet conversation addressed to them), and keeps that belief until they see or are told otherwise, so a belief can be outdated or false. A quiet conversation (shown as: X talks quietly to Y) is heard only by Y, the person addressed: others present see it but do not hear it. A person who neither saw nor was told anything about a fact has no belief about it.\n2. The recipient knows which office they are in. Nobody else learns that someone moved unless they saw it or were told. Seeing someone in the lobby, arriving there or leaving it, does not change what anyone believes about which office that person is in.\n3. When someone states a value for a fact (shown as: X says: \"fact = value\", including answers to the robot's questions, where \"I don't know.\" means no belief), everyone else present then thinks the speaker believes that value (or has no belief), but does not adopt it. A statement gives the speaker no belief about the listeners.\n4. Ordinary remarks (any other sentence) change no one's beliefs and no one's beliefs about beliefs. They still tell the robot what was said, which may or may not be accurate.\n5. Seeing someone, or hearing the same announcement as someone, does not tell a person what that other person believes. People form beliefs about others' beliefs only from statements and announcements: listeners think the speaker believes what the speaker stated or announced, and the speaker of an announcement or quiet conversation thinks the listeners now believe it. Watching a quiet conversation tells a bystander nothing about what the listener now believes.\n6. Some people may deliberately mislead; the public model of the task says who may, how likely it is, and how they answer.\nPUBLIC MODEL OF THIS TASK (given to the robot identically in every condition; it describes how this situation was generated. People in the scene form beliefs only as rules 1-5 describe.):\n- vik organizes a meeting that uma attends. vik announced the meeting office, later changed it to one of the two other offices, and conveyed the change only in the quiet conversations shown. A quiet conversation started by vik or heidi in this task always tells the person addressed (and only that person) the current meeting office. Then vik left the building and does not come back during the task.\n- uma goes to, and stays in, the office where uma believes the meeting is.\n- heidi accepts handed-over packages and forwards them to the office where heidi thinks uma will go, that is, to what heidi thinks uma believes about meeting_room. Nobody else accepts handed-over packages. There is no chute in this building. Everyone in this task is cooperative: they answer questions sincerely (with what they believe).\n- After the prologue shown in the history, nobody but the robot moves, and people's beliefs change only through what is said in answer to the robot's questions. Everyone shown in the lobby at the end of the prologue stays there.\n- Hidden quantities and their probabilities (the robot does not see the realized values):\n  - the meeting office vik first announced: room_7 0.3333, room_19 0.3333, room_12 0.3333\n  - which of the two other offices vik changed the meeting to (each equally likely)",
+    "ledger": "HISTORY (robot's own observations):\n  [t0:note0] vik announces to everyone present: \"meeting_room = room_19\" (others present: heidi, uma)\n  [t0:note1] uma says: \"meeting_room = room_19\" (others present: heidi, vik)\n  [t0:note2] vik talks quietly to heidi; only heidi can hear it, and the robot cannot hear what is said (others present: uma)\n  [t0:note3] heidi talks quietly to uma; only uma can hear it, and the robot cannot hear what is said (others present: vik)\n  [t0:note4] vik leaves the lobby and the building (others present: heidi, uma)\n  [t0:note5] uma leaves the lobby (others present: heidi)\n  [t0:seen:heidi] heidi is in the lobby with the robot"
+   },
+   "exact_q_first_actions_public_model": {
+    "ask(heidi,meeting_room)": 0.9,
+    "give(heidi)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "optimal": [
+    "give(heidi)"
+   ],
+   "pattern": "3a:0",
+   "privileged": {
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "pattern": "3a:0"
+    },
+    "minds_t0": {
+     "heidi": {
+      "assessments": {},
+      "beliefs": {
+       "meeting_room": "room_7"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "uma:meeting_room": "room_7",
+       "vik:meeting_room": "room_7"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-1-claim",
+       "t0-2-tell",
+       "t0-3-tell"
+      ],
+      "room": "lobby"
+     },
+     "uma": {
+      "assessments": {},
+      "beliefs": {
+       "meeting_room": "room_7"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "heidi:meeting_room": "room_7",
+       "vik:meeting_room": "room_19"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-1-claim",
+       "t0-3-tell",
+       "t0-5-enter"
+      ],
+      "room": "room_7"
+     },
+     "vik": {
+      "assessments": {},
+      "beliefs": {
+       "meeting_room": "room_7"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "heidi:meeting_room": "room_7",
+       "uma:meeting_room": "room_19"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-1-claim",
+       "t0-2-tell",
+       "t0-4-enter"
+      ],
+      "room": "outside"
+     }
+    }
+   }
+  },
+  {
+   "agent_visible": {
+    "card": "TASK: Deliver the package to Uma.\nRecipient: uma. People the robot knows of: heidi, uma, vik.\nLayout (room: adjacent rooms): lobby: hall; hall: lobby, room_7, room_19, room_12; room_7: hall; room_19: hall; room_12: hall\nThe robot only sees who is in a room by being in that room.\nActions: move(room) to an adjacent room; ask(person,fact) a person in the same room; deliver() hands the package to the recipient if the recipient is in the robot's room; give(person) hands the package to heidi, who forwards it to where they think it should go; wait().\nRewards: +1 for a successful delivery; -0.05 for every step taken; a delivery to the wrong place (wrong chute drop or wrongly forwarded package) costs -0.5 and ends the task. The task ends after 8 steps without further penalty.\nFacts that can be asked about: meeting_room (possible values: meeting_room: room_7, room_19, room_12).\nHow people come to believe things (the same rules apply to everyone):\n1. A person believes a fact if they saw it or heard it announced (an announcement to everyone present, or a quiet conversation addressed to them), and keeps that belief until they see or are told otherwise, so a belief can be outdated or false. A quiet conversation (shown as: X talks quietly to Y) is heard only by Y, the person addressed: others present see it but do not hear it. A person who neither saw nor was told anything about a fact has no belief about it.\n2. The recipient knows which office they are in. Nobody else learns that someone moved unless they saw it or were told. Seeing someone in the lobby, arriving there or leaving it, does not change what anyone believes about which office that person is in.\n3. When someone states a value for a fact (shown as: X says: \"fact = value\", including answers to the robot's questions, where \"I don't know.\" means no belief), everyone else present then thinks the speaker believes that value (or has no belief), but does not adopt it. A statement gives the speaker no belief about the listeners.\n4. Ordinary remarks (any other sentence) change no one's beliefs and no one's beliefs about beliefs. They still tell the robot what was said, which may or may not be accurate.\n5. Seeing someone, or hearing the same announcement as someone, does not tell a person what that other person believes. People form beliefs about others' beliefs only from statements and announcements: listeners think the speaker believes what the speaker stated or announced, and the speaker of an announcement or quiet conversation thinks the listeners now believe it. Watching a quiet conversation tells a bystander nothing about what the listener now believes.\n6. Some people may deliberately mislead; the public model of the task says who may, how likely it is, and how they answer.\nPUBLIC MODEL OF THIS TASK (given to the robot identically in every condition; it describes how this situation was generated. People in the scene form beliefs only as rules 1-5 describe.):\n- vik organizes a meeting that uma attends. vik announced the meeting office, later changed it to one of the two other offices, and conveyed the change only in the quiet conversations shown. A quiet conversation started by vik or heidi in this task always tells the person addressed (and only that person) the current meeting office. Then vik left the building and does not come back during the task.\n- uma goes to, and stays in, the office where uma believes the meeting is.\n- heidi accepts handed-over packages and forwards them to the office where heidi thinks uma will go, that is, to what heidi thinks uma believes about meeting_room. Nobody else accepts handed-over packages. There is no chute in this building. Everyone in this task is cooperative: they answer questions sincerely (with what they believe).\n- After the prologue shown in the history, nobody but the robot moves, and people's beliefs change only through what is said in answer to the robot's questions. Everyone shown in the lobby at the end of the prologue stays there.\n- Hidden quantities and their probabilities (the robot does not see the realized values):\n  - the meeting office vik first announced: room_7 0.3333, room_19 0.3333, room_12 0.3333\n  - which of the two other offices vik changed the meeting to (each equally likely)",
+    "ledger": "HISTORY (robot's own observations):\n  [t0:note0] vik announces to everyone present: \"meeting_room = room_19\" (others present: heidi, uma)\n  [t0:note1] uma says: \"meeting_room = room_19\" (others present: heidi, vik)\n  [t0:note2] vik talks quietly to heidi; only heidi can hear it, and the robot cannot hear what is said (others present: uma)\n  [t0:note3] vik talks quietly to uma; only uma can hear it, and the robot cannot hear what is said (others present: heidi)\n  [t0:note4] vik leaves the lobby and the building (others present: heidi, uma)\n  [t0:note5] uma leaves the lobby (others present: heidi)\n  [t0:seen:heidi] heidi is in the lobby with the robot"
+   },
+   "exact_q_first_actions_public_model": {
+    "ask(heidi,meeting_room)": 0.8,
+    "give(heidi)": -0.55,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "optimal": [
+    "ask(heidi,meeting_room)",
+    "move(hall)"
+   ],
+   "pattern": "3b:0",
+   "privileged": {
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "pattern": "3b:0"
+    },
+    "minds_t0": {
+     "heidi": {
+      "assessments": {},
+      "beliefs": {
+       "meeting_room": "room_7"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "uma:meeting_room": "room_19",
+       "vik:meeting_room": "room_7"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-1-claim",
+       "t0-2-tell"
+      ],
+      "room": "lobby"
+     },
+     "uma": {
+      "assessments": {},
+      "beliefs": {
+       "meeting_room": "room_7"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "vik:meeting_room": "room_7"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-1-claim",
+       "t0-3-tell",
+       "t0-5-enter"
+      ],
+      "room": "room_7"
+     },
+     "vik": {
+      "assessments": {},
+      "beliefs": {
+       "meeting_room": "room_7"
+      },
+      "intent": "cooperative",
+      "nested": {
+       "heidi:meeting_room": "room_7",
+       "uma:meeting_room": "room_7"
+      },
+      "perceived": [
+       "t0-0-tell",
+       "t0-1-claim",
+       "t0-2-tell",
+       "t0-3-tell",
+       "t0-4-enter"
+      ],
+      "room": "outside"
+     }
+    }
+   }
+  }
+ ],
+ "note": "Same names, labels and hidden draw within each pair; Q values are exact Bayes (plain posterior, asks legal) under the stratum superset public model. 'privileged' is evaluator-only."
+}

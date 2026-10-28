@@ -1,4 +1,11 @@
-# Milestone report — Stage 2 pilot, steps 1–4, and the autonomous research block (2026-10-28)
+# Milestone report — Stage 2 pilot, the autonomous research block, and the dev-v3 qualification block (2026-10-28)
+
+> **Latest: dev-v3 qualification block complete (D-014).** See **[reports/dev-v3-block/FINAL_REVIEW.md](dev-v3-block/FINAL_REVIEW.md)** (recommendation first).
+> - **Round A** (symbolic): a new dev-v3 generator, 12 groups × 4 variants. It has a visible prologue and a declared public model that the reference uses in full. r6 rules are tested over every world, Q-values are exact and ask-aware, and the evidence-resolution check is non-vacuous. It was frozen before any LLM call.
+> - **Round B** (local gpt-oss-20b): 192 episodes. The pre-declared reading gives reference notes "headroom present", but that rests on 3 rare no-note failures; inferred notes read "inconclusive". The inferred notes have an interface gap (an invented public-model citation ID, 5/24 notes failed) and 4b content that copies the prior.
+> - Recommendation: no allocation learning; inference/integration fixes first; the headroom design goes to research review. No paid calls; the API confirmation was skipped on cost.
+>
+> **Earlier: the autonomous research block** (below).
 
 > **Latest: autonomous research block complete.** See **[reports/autonomous-block/FINAL_REVIEW.md](autonomous-block/FINAL_REVIEW.md)** (recommendation first).
 > - Three rounds were pre-registered and gated (Opus + Sonnet reviewers).
