@@ -6,7 +6,7 @@ Write-up: `reports/pilot/model-diagnostic.md`. Supporting files:
 - `reports/pilot/unit-contexts-v1.jsonl` (the exact frozen request payloads);
 - D-013.
 
-All local cells ran. **All API cells are blocked** because `OPENAI_API_KEY` is not configured. No paid call was made.
+All local cells ran. **All API cells are blocked:** the key now loads from the repo `.env`, but the OpenAI account has no credits. No paid call was made.
 
 ## Needed from Ashraf (not a research question)
 - The key is configured (repo `.env`), but the OpenAI account has no credits (HTTP 429 `credit_balance_exhausted`). Add credit; the cap stays USD 5 unless `OFFICEMINDS_API_CAP_USD` is set. The estimated spend for all API cells is about USD 1.4–2.9 (illustrative).
