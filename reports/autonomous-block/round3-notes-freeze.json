@@ -1,0 +1,107 @@
+{
+ "created_at": "2026-10-28T09:07:15-0500",
+ "derived_from_notes_file_sha256": "89481aa05e6f2cccc1130a918ba501fd1a24af8ed66118b6f723001771ba65d9",
+ "dirty_paths": [],
+ "doubt_mass": 0.2,
+ "git_commit": "47a366c4636fc320ae372c4ce9763eb2214d4f5b",
+ "states": {
+  "s1": {
+   "distribution": {
+    "desk_3": 0.4,
+    "desk_9": 0.4,
+    "unknown": 0.2
+   },
+   "note_sha256": "c34a658fbb243e4271e8ef4d4c377cdeff2234c457641f2eeef9a5c8641862f3",
+   "rendered_notes_sha256": "1ada4740a4496b8cc7fc8d431a880296976d96157865c9bdad0bf6cc602a4a62",
+   "status": "uncertain",
+   "unit": "K(wen)"
+  },
+  "s2": {
+   "distribution": {
+    "office_a": 0.04,
+    "office_b": 0.76,
+    "unknown": 0.2
+   },
+   "note_sha256": "0f24e1c34e37ebc7ef91cacf2892a4a9e933bbe1a86e6d76d2120584306e3c5f",
+   "rendered_notes_sha256": "c6c108f3b6c51a13930a5993b85b5a94213e9763b4467e914593f105196b8d11",
+   "status": "grounded",
+   "unit": "K(judy)"
+  },
+  "s3": {
+   "distribution": {
+    "lab_south": 0.8,
+    "unknown": 0.2
+   },
+   "note_sha256": "ef97d47bc23de4e8e878b16d755e289329e51d4d2851167a56621af374d195e5",
+   "rendered_notes_sha256": "a8be831afcde456bad756b2eb58c30ab78ff17f116cc08a2a710ff2fcab24a7a",
+   "status": "grounded",
+   "unit": "K(grace)"
+  },
+  "s4": {
+   "distribution": {
+    "office_a": 0.4,
+    "office_b": 0.4,
+    "unknown": 0.2
+   },
+   "note_sha256": "effed726ddc81abbdfc7220bfddb5097f979ef593127d5937a45b70d8b1d558d",
+   "rendered_notes_sha256": "9e481e8b7478cbb72b9e3bc20d173122682ec663ec616b12e3335f0bdb49ee33",
+   "status": "uncertain",
+   "unit": "K(carol)"
+  },
+  "s5": {
+   "distribution": {
+    "room_12": 0.4,
+    "room_7": 0.4,
+    "unknown": 0.2
+   },
+   "note_sha256": "f142f689b44913a77e6d1983a2d353f6500d763679483431bebb085bd87bff80",
+   "rendered_notes_sha256": "5a2d9e9caa00de9219c58d82008b04bf7fd0f39cb82e72e69970e2956c3ffba6",
+   "status": "uncertain",
+   "unit": "K(leo)"
+  },
+  "s6": {
+   "distribution": {
+    "room_12": 0.02,
+    "room_7": 0.78,
+    "unknown": 0.2
+   },
+   "note_sha256": "ccfbdb1ee57f00015bc6d048831d683e828b929568c6880539625b26d5be4db8",
+   "rendered_notes_sha256": "1f9c5a092e48a912075ed2bb32faa0547d34033d4e87c27cb0435c006ff55e35",
+   "status": "grounded",
+   "unit": "K(mia)"
+  },
+  "s7": {
+   "distribution": {
+    "desk_3": 0.6934,
+    "desk_9": 0.1066,
+    "unknown": 0.2
+   },
+   "note_sha256": "77abcb3bbc24488ac899ca5ac8d5c9cd38742ad374f9d6abc59c5ca24c62552a",
+   "rendered_notes_sha256": "e719290429df147941ae7a4e5381addb6d3aa4d763c31c3674584ee77281d485",
+   "status": "grounded",
+   "unit": "K(heidi)"
+  },
+  "s8": {
+   "distribution": {
+    "desk_3": 0.4,
+    "desk_9": 0.4,
+    "unknown": 0.2
+   },
+   "note_sha256": "1fb77f40d3b80f3c82dca7898d1c658d28ff839e04fb13cb2d68b8a687b55ba4",
+   "rendered_notes_sha256": "1fb33df076a7b092d004ea6c1fc0b987461a6e867939261a51c7abe9574c4a01",
+   "status": "uncertain",
+   "unit": "K(yara)"
+  },
+  "s9": {
+   "distribution": {
+    "lab_north": 0.4,
+    "lab_south": 0.4,
+    "unknown": 0.2
+   },
+   "note_sha256": "efc421e638cf8835c27cf603f4c7cd40bd49161197d9eae58c4a7a88fc012542",
+   "rendered_notes_sha256": "577574bdadd26870297c21b959117bca42652ecd5aa20338430e3ffc0e28e331",
+   "status": "uncertain",
+   "unit": "K(dave)"
+  }
+ }
+}
