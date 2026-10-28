@@ -27,7 +27,7 @@ Archived Stage 1 reports, with errata at the top: `reports/archive/stage1-latest
 - **Q5 (D-011).** The grounded **unit-vs-STOP** pair is the isolating test (table below). The privileged two-unit reversal is a diagnostic only.
 - **Q6 (D-012).** Carryover share reported per record.
 
-## Results (generated in `reports/tiny-cases.md`, run TINY_RUN)
+## Results (generated in `reports/tiny-cases.md`, run `tiny-20261028-052241-354655`, commit `c80c81c`, clean tree)
 **D-011 grounded unit-vs-STOP pair** (`reversal_m*`, `grounded_scalar`, face value; λ = 0.01 illustrative, held fixed):
 
 | Stakes | K(bob): a0 → ay | delta_J | net VoMI (λ = 0.01) | P(flip) | D_memory | STOP preferred |
@@ -50,8 +50,19 @@ Archived Stage 1 reports, with errata at the top: `reports/archive/stage1-latest
 
 Typed vs. scalar: the typed record gives positive value to more units (16 vs. 12), e.g. typed K(alice) in `stakes_m4_q0.95`. Whether this tracks LLM typed units is a pilot question.
 
-## Commands run and outcomes
-_(filled in at the clean-commit rerun)_
+## Commands run and outcomes (WSL, CPU, commit `c80c81c`, clean tree)
+| Command | Outcome |
+|---|---|
+| `~/venvs/officeminds/bin/python -m pytest -q` | **227 passed** in 52 s |
+| `~/venvs/officeminds/bin/python scripts/run_tiny_cases.py --seed 0` | run **`tiny-20261028-052241-354655`**: every episode replays identically and equals its label rollout; no early-failure incentive |
+
+Bundle (`reports/bundle/`):
+- `tiny-manifest.json` (commit `c80c81c`, `git_dirty: false`);
+- `trace-false_belief.json` (paired visible / privileged / robot-graph trace);
+- `trace-evidence-change.json` (D-007);
+- `stop-pair.json` (D-011, with posterior-to-outcome tables).
+
+The model server was not used; it has been stopped since 04:01.
 
 ## Not done (next steps of the authorized pilot)
 1. Freeze 30–50 development scenario groups before any LLM output is inspected (balanced; variants within groups; exclusions recorded).
