@@ -1,0 +1,171 @@
+{
+ "decoding": {
+  "max_tokens": 6000,
+  "reasoning_effort": "low"
+ },
+ "dirty_paths": [],
+ "ended_at": "2026-10-28T08:53:43-0500",
+ "git_commit": "15dfcc3777e70ab00ee1fff60fe2b60ea8207227",
+ "inferred_notes_usd_ledger_delta": 0.0610160000000004,
+ "model": "gpt-6.1-sol",
+ "notes_file_sha256": "89481aa05e6f2cccc1130a918ba501fd1a24af8ed66118b6f723001771ba65d9",
+ "package": "pilot-v2.1",
+ "prompt_sha256": "5d46df917a9fa0685c6d75f2d0c94092f1c8d319793226f22659262ee6edf065",
+ "render_revision": 5,
+ "started_at": "2026-10-28T08:52:53-0500",
+ "states": {
+  "s1": {
+   "inferred_status": "uncertain",
+   "note_sha256": {
+    "inferred": "085a38918a9a4bff1c5ff502f3353bfef9a34b16c280e3be04f90292891b42a8",
+    "inferred_bare": "1659c631010b97a02d0b2da2e77c567c602b64e6af27738550cd91d042acbb23",
+    "privileged": "b9aac278fd25014b1fca4fb262c69db7454072e8919b8ccd2ea45e2df504f2c0",
+    "reference": "183948bbc5215ddc0e17a9a8fc8127a657aa522b13a27a9405418b038b88c2e2"
+   },
+   "rendered_notes_sha256": {
+    "inferred": "a9134c807a36b4fd6103fa8046496686d3ceb7b2907cb3ad35628dcbf07bba13",
+    "inferred_bare": "1ada4740a4496b8cc7fc8d431a880296976d96157865c9bdad0bf6cc602a4a62",
+    "none": "36cf3514c12456caa00cd55c95a3cc8240d137085a822cfc7ed54fd478027f91",
+    "privileged": "63014d3c363beb33840a2a38296b538b643f239d82809e922d3a36842787c48b",
+    "reference": "14c5923e326948446d98a1ac9f230ad750e9a2fa05efd3df680fb1ea29d93045"
+   },
+   "unit": "K(wen)"
+  },
+  "s2": {
+   "inferred_status": "uncertain",
+   "note_sha256": {
+    "inferred": "cee0356e851460d2f03d1f6cf541f1f04828f3b56000cbbcd894029a6ac306ea",
+    "inferred_bare": "3baf8a29ea698784d649ef83b427454db2871d303ab3bfc074141b9bb3b8b65f",
+    "privileged": "409a6ddcf069b29587e0f9d815ef8bf088dddd5a25a86dc99b7abe88e68f86da",
+    "reference": "08b65def8a97926a87976740ea9a7b91583240c384b7048f3b395f6d29ac21ed"
+   },
+   "rendered_notes_sha256": {
+    "inferred": "d3a196dbb86ec27588ac2d9f7ac4970cb60858fb771722079467430eaa109521",
+    "inferred_bare": "00b9815e87569164c9fed510bcbf22fa8ca131fc0de36bccee5ce1edbfa78add",
+    "none": "36cf3514c12456caa00cd55c95a3cc8240d137085a822cfc7ed54fd478027f91",
+    "privileged": "1f506ebebd4b732985c639c3785f8a0f94caaa0e59734582f7ebe23e5c98201c",
+    "reference": "f064fa90c99aea6b5e32b742e7611a998e2b5a2a35cb3fb21464b22bf9e4c2b5"
+   },
+   "unit": "K(judy)"
+  },
+  "s3": {
+   "inferred_status": "grounded",
+   "note_sha256": {
+    "inferred": "0a8d1ce86b462b7f4ea7af7a0e3e8720bb08e87788de8d571be35863b458ddb7",
+    "inferred_bare": "bba163dc40a083e29fc50b7f64220d0b59c39c421b5df231296af5ee5f84a6dd",
+    "privileged": "8d1440208e18699a5fd33d87f10c8a5b451375f2ff20a3fb563fab4e060dc426",
+    "reference": "717e79c6df1975813eb1320a0b6a5eed207b65277a318116b9d28cde869ff02b"
+   },
+   "rendered_notes_sha256": {
+    "inferred": "a67d58624ab5e8f3b4d23bcbaabac5805b3a869fa02c5d629559a0dae2c4f662",
+    "inferred_bare": "2b7b70b3491f6b76b047c0ebb5afda422852cf0c72b1d5fec2e82add80a48d12",
+    "none": "36cf3514c12456caa00cd55c95a3cc8240d137085a822cfc7ed54fd478027f91",
+    "privileged": "ffe138eed77d0b9087a7cf650c9ebd7464af433e5a8f8afd97b685985770a875",
+    "reference": "ffe138eed77d0b9087a7cf650c9ebd7464af433e5a8f8afd97b685985770a875"
+   },
+   "unit": "K(grace)"
+  },
+  "s4": {
+   "inferred_status": "uncertain",
+   "note_sha256": {
+    "inferred": "b24c47397f114ed9ff7ed0b4078d7cd6b7ced9fe2a5717da220c1caadff733b9",
+    "inferred_bare": "1f5510c8b6c3a3182e707ab625d0d06b261432c6991888650fe8a7a602adbf76",
+    "privileged": "e3680449528939273b3dae52a846ff21d424fdda186f4e2b874dff414e8bcac6",
+    "reference": "acd20c47c0fa183f3e6aee84233876922eb8bc5325d08fa4fb21ebd37e8b47ee"
+   },
+   "rendered_notes_sha256": {
+    "inferred": "d1a88797ad20dde4d149471ad82f64d0f343784fe5b61a9e50fa3e5c20c45fe5",
+    "inferred_bare": "c679bda99e1dc1da7d887312bcbd1243d4f9db2ff875f0564f0611d2cceca5da",
+    "none": "36cf3514c12456caa00cd55c95a3cc8240d137085a822cfc7ed54fd478027f91",
+    "privileged": "0b0f1b1126eb536cdb86c2b33fee2606fb38e878daf9ba990d46be88ad273c1b",
+    "reference": "3ae6e0746b0b59324b014b9b81e1c58f9a1cfec5031616a05aab33317e3252f4"
+   },
+   "unit": "K(carol)"
+  },
+  "s5": {
+   "inferred_status": "uncertain",
+   "note_sha256": {
+    "inferred": "4884c959e3d5875fff50044b29ae8e8b4fd5a24e19c919c04ba4fa21c8ec8241",
+    "inferred_bare": "39707a3fe3a1440b2da0b7ac5fcdbf394679c971fcbd1e5be6f2c543190bbfd1",
+    "privileged": "154185be363031009fc11a2af626f72ca9f7e7fd40df0072d7d55bf5538e2cac",
+    "reference": "43ba04c10afd6de461bea2c8816c94bac4f562876f5506619edf86deb216b1d9"
+   },
+   "rendered_notes_sha256": {
+    "inferred": "b17a8bb0afe697379a2ea885a686bae0bfa78b07a21096de554fb6f1c081f5fb",
+    "inferred_bare": "f71bef0a6c4bb50ee2d8b1695971cbec28e6ea414f68da75fdcefb89342a9b96",
+    "none": "36cf3514c12456caa00cd55c95a3cc8240d137085a822cfc7ed54fd478027f91",
+    "privileged": "63616ea7fdcc29022e494ad733456ca173e71c94fbd66e962b6f8de6035ad7ce",
+    "reference": "a6f561f4eb013ebbf60c4aa020d0803927d2eafe517f2a3fbcf0315304e89ee5"
+   },
+   "unit": "K(leo)"
+  },
+  "s6": {
+   "inferred_status": "uncertain",
+   "note_sha256": {
+    "inferred": "e801d5472a33c7728acef8c5e27e40b32fc3525542ff9f71d4d014eb4247b87d",
+    "inferred_bare": "34a4a789878a547cfdc94303b1aa6194266286fa8ba9e2770944dbad6e32f033",
+    "privileged": "ae0827ba47431fc126cdd19737d86e4f7cf8d2302dd1074887d26b066d932fdf",
+    "reference": "78db42ae3db3660cf9c28f0f880c18f3f4ee5bbafe370ec3b0fc8dbe27885afb"
+   },
+   "rendered_notes_sha256": {
+    "inferred": "7b05d358f0976913a6d5fd2104da9f843c40fab67e1cca1ba706e6b57896b750",
+    "inferred_bare": "8a9e60dde790b974e4542a42ff492100e5ce8e63ad215db1c422b3b9cfb6e3fa",
+    "none": "36cf3514c12456caa00cd55c95a3cc8240d137085a822cfc7ed54fd478027f91",
+    "privileged": "c6548d68f0296a9f0b34f9fe7fc8da4c2c0afa15af07e9e5cda88fbb824f057f",
+    "reference": "7d2f189cba5ea77ad0d548bb9c2da2d01ae1798f32a766015cec8093e60ed5ac"
+   },
+   "unit": "K(mia)"
+  },
+  "s7": {
+   "inferred_status": "grounded",
+   "note_sha256": {
+    "inferred": "7aa07468707501f48b509e91351573925039424a26c6c8021d908ea6ad526786",
+    "inferred_bare": "b6538397e38f93ca87e8210c5c057f2ceb3e1bccdb32bddba889caf4583faac9",
+    "privileged": "2552f35997120773f418d2af0560f05758089dc0707e9cf2809f0d92dac3abfd",
+    "reference": "5053873394147548f3b82b1229e22ac52ffe737fa67baea0502e02876f5f76a6"
+   },
+   "rendered_notes_sha256": {
+    "inferred": "2337ba43990f81487a2da127335701902894b49c48b3e0a61789fecff6471797",
+    "inferred_bare": "3e450de404d93c4d900a1ab8dbf27f9dfd7a950831cf949e9302bb849f5e8199",
+    "none": "36cf3514c12456caa00cd55c95a3cc8240d137085a822cfc7ed54fd478027f91",
+    "privileged": "99499453575400ec96b4bfde4e966ef1aaf0c08d298899a0d7e6200d202f2ccc",
+    "reference": "f19812808c4e1711ba0f563ac7263d347e8489181ec4a2209cc03546d2701375"
+   },
+   "unit": "K(heidi)"
+  },
+  "s8": {
+   "inferred_status": "uncertain",
+   "note_sha256": {
+    "inferred": "90d3cf4b71cc113f265482367f2146b5cde3f4c1e357a8fbf2316edff0a1ed11",
+    "inferred_bare": "81febfd4c4d5b2409fb9af52f4b5da61a057e4c6f87a9207cec32cbe6493d14f",
+    "privileged": "6503c5e8162b6ea7da379b973bdbe4bf4a1cfaa82a31da946cbd461199c91d50",
+    "reference": "3952ea0b532176fb3e52b951fefbaa625d52ad1a13eb5b289f125d14081924a0"
+   },
+   "rendered_notes_sha256": {
+    "inferred": "7b7b9d54d918f2b65c08f01b07c837ee66f0c11d03ecf526c04ab41f89a40bb1",
+    "inferred_bare": "8724b27ca7a86f8676afb9fd7c9ddff83385e80ae3dd9f7db839d3c1f5300937",
+    "none": "36cf3514c12456caa00cd55c95a3cc8240d137085a822cfc7ed54fd478027f91",
+    "privileged": "a7c93fcc229a8239ce316117256a1d769ac7a22d9c29a56524d375e05a0734da",
+    "reference": "9705d2b9b8e2dae2db5f7ef5ea56292d84179f32da6e1644e961ecbd99129036"
+   },
+   "unit": "K(yara)"
+  },
+  "s9": {
+   "inferred_status": "uncertain",
+   "note_sha256": {
+    "inferred": "38e32185c5d559c22db528a25b48a1b7519c13e2b58b9db5aa2fa4829d04f4f1",
+    "inferred_bare": "ef43fee17ae6da3598ef9c13319d07c623ee27eccb72cd9f19fcfa1866cda701",
+    "privileged": "d1250f1586d7e98ec00fcdc724fde7be71cfc425423480b4b783acb65f1b6526",
+    "reference": "1128eb6bf7d8105f3b6fbb5443534e56047b73a45a03381ee6d9e53fcbcac03b"
+   },
+   "rendered_notes_sha256": {
+    "inferred": "5c879df1e883555cf60c45090bef90df0bc39c3270a3115c48bda8ca4db47f99",
+    "inferred_bare": "577574bdadd26870297c21b959117bca42652ecd5aa20338430e3ffc0e28e331",
+    "none": "36cf3514c12456caa00cd55c95a3cc8240d137085a822cfc7ed54fd478027f91",
+    "privileged": "438aed36c7d94764da2b2a660206919674e6c2ddbeb358e05c68cc1a2cd93b01",
+    "reference": "932cb84e337a305b2448d181cd12b8fe10f29dbd1b5a273d496dceca91c0b7b3"
+   },
+   "unit": "K(dave)"
+  }
+ }
+}
