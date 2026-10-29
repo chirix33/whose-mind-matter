@@ -12,8 +12,8 @@
 - Last commit: `9b0c38d`.
 
 **Next, in order:**
-1. The Opus gate on the v2.2 prompt, renderer and K, before any model call. It was re-run after the restart.
-2. `run_repair.py regress`: the Stage 1 regression check on inspected Round B states.
+1. DONE: the Opus prompt gate (S1–S10, applied as Entry 1b at `4367795`).
+2. DONE: the regression check (28/28 valid; reliability prior copies 5/8; `stage1-regress-*.json`).
 3. The Stage 1 results gate (Opus and Sonnet).
 4. `run_repair.py freeze` from a clean tree, then commit.
 5. `notes`, then commit `stage2-notes-freeze.json`.

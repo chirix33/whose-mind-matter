@@ -1,0 +1,699 @@
+{
+ "decoding": {
+  "max_tokens": 2048,
+  "reasoning_effort": "low",
+  "temperature": 1.0
+ },
+ "label": "Stage 1 regression check on INSPECTED dev-v3 Round B states (development/debugging only; temperature-1.0 single draws; no content pass/fail threshold)",
+ "prompt_sha256": "dc169d025f3e59467250e48b42a26f4fcf4f440ad77d4ca847b28b8d4e253266",
+ "rows": [
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "suite_1": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "suite_1": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-1c-stakes1-perm0",
+   "status": "grounded",
+   "top": "suite_1",
+   "tv_posterior": 0.0,
+   "unit": "K(alice)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "suite_1": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "suite_1": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-1c-stakes4-perm0",
+   "status": "grounded",
+   "top": "suite_1",
+   "tv_posterior": 0.0,
+   "unit": "K(alice)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "suite_1": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "suite_1": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [
+    "PM1"
+   ],
+   "state": "dev-v3-1c-stakes1-perm1",
+   "status": "grounded",
+   "top": "suite_1",
+   "tv_posterior": 0.0,
+   "unit": "K(ivan)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    [
+     "rule_citation_mismatch"
+    ],
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "suite_1": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "suite_1": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-1c-stakes4-perm1",
+   "status": "grounded",
+   "top": "suite_1",
+   "tv_posterior": 0.0,
+   "unit": "K(ivan)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "supported_spread",
+   "distribution": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "ok": true,
+   "posterior": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-2a-stakes1-perm0",
+   "status": "uncertain",
+   "top": "office_c",
+   "tv_posterior": 0.0,
+   "unit": "K(yara)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_a": 0.0,
+    "office_b": 1.0,
+    "office_c": 0.0,
+    "unknown": 0.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [
+    "PM1"
+   ],
+   "state": "dev-v3-2a-stakes1-perm0",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(ravi)",
+   "unsupported_mass": 0.0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "unsupported_committed",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-2a-stakes4-perm0",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 1.0,
+   "unit": "K(yara)",
+   "unsupported_mass": 1.0
+  },
+  {
+   "attempt_errors": [
+    [
+     "rule_citation_mismatch"
+    ],
+    [
+     "rule_citation_mismatch"
+    ],
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-2a-stakes4-perm0",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(ravi)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "supported_spread",
+   "distribution": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "ok": true,
+   "posterior": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "prior_copy": null,
+   "public_model_ids": [
+    "PM1"
+   ],
+   "state": "dev-v3-2a-stakes1-perm1",
+   "status": "uncertain",
+   "top": "office_c",
+   "tv_posterior": 0.0,
+   "unit": "K(ravi)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    [
+     "cites_non_visible_evidence"
+    ],
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-2a-stakes1-perm1",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(judy)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "supported_spread",
+   "distribution": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "ok": true,
+   "posterior": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "prior_copy": null,
+   "public_model_ids": [
+    "PM1"
+   ],
+   "state": "dev-v3-2a-stakes4-perm1",
+   "status": "uncertain",
+   "top": "office_c",
+   "tv_posterior": 0.0,
+   "unit": "K(ravi)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    [
+     "rule_citation_mismatch"
+    ],
+    [
+     "cites_non_visible_evidence"
+    ],
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-2a-stakes4-perm1",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(judy)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-3c-stakes1-perm0",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(nadia->frank)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [
+    "PM3"
+   ],
+   "state": "dev-v3-3c-stakes4-perm0",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(nadia->frank)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-3c-stakes1-perm1",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(heidi->grace)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-3c-stakes4-perm1",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(heidi->grace)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "cooperative": 0.98,
+    "obstructive": 0.02
+   },
+   "ok": true,
+   "posterior": {
+    "cooperative": 0.9453376205787781,
+    "obstructive": 0.05466237942122187
+   },
+   "prior_copy": true,
+   "public_model_ids": [
+    "PM1",
+    "PM5",
+    "PM6"
+   ],
+   "state": "dev-v3-4b-stakes1-perm0",
+   "status": "grounded",
+   "top": "cooperative",
+   "tv_posterior": 0.03466237942122186,
+   "unit": "R(kim)",
+   "unsupported_mass": 0.02
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "unsupported_committed",
+   "distribution": {
+    "cooperative": 0.7,
+    "obstructive": 0.3
+   },
+   "ok": true,
+   "posterior": {
+    "cooperative": 0.04501607717041801,
+    "obstructive": 0.954983922829582
+   },
+   "prior_copy": true,
+   "public_model_ids": [
+    "PM6",
+    "PM7"
+   ],
+   "state": "dev-v3-4b-stakes1-perm0",
+   "status": "uncertain",
+   "top": "cooperative",
+   "tv_posterior": 0.654983922829582,
+   "unit": "R(uma)",
+   "unsupported_mass": 0.7
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "cooperative": 0.9287,
+    "obstructive": 0.0713
+   },
+   "ok": true,
+   "posterior": {
+    "cooperative": 0.9453376205787781,
+    "obstructive": 0.05466237942122187
+   },
+   "prior_copy": false,
+   "public_model_ids": [
+    "PM1"
+   ],
+   "state": "dev-v3-4b-stakes4-perm0",
+   "status": "uncertain",
+   "top": "cooperative",
+   "tv_posterior": 0.016637620578778146,
+   "unit": "R(kim)",
+   "unsupported_mass": 0.0713
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "unsupported_committed",
+   "distribution": {
+    "cooperative": 0.8235,
+    "obstructive": 0.1765
+   },
+   "ok": true,
+   "posterior": {
+    "cooperative": 0.04501607717041801,
+    "obstructive": 0.954983922829582
+   },
+   "prior_copy": false,
+   "public_model_ids": [
+    "PM7",
+    "PM9"
+   ],
+   "state": "dev-v3-4b-stakes4-perm0",
+   "status": "grounded",
+   "top": "cooperative",
+   "tv_posterior": 0.778483922829582,
+   "unit": "R(uma)",
+   "unsupported_mass": 0.8235
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "cooperative": 0.9703,
+    "obstructive": 0.0297
+   },
+   "ok": true,
+   "posterior": {
+    "cooperative": 0.9453376205787781,
+    "obstructive": 0.05466237942122187
+   },
+   "prior_copy": true,
+   "public_model_ids": [
+    "PM6",
+    "PM7"
+   ],
+   "state": "dev-v3-4b-stakes1-perm1",
+   "status": "uncertain",
+   "top": "cooperative",
+   "tv_posterior": 0.024962379421221897,
+   "unit": "R(uma)",
+   "unsupported_mass": 0.0297
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "unsupported_committed",
+   "distribution": {
+    "cooperative": 0.7,
+    "obstructive": 0.3
+   },
+   "ok": true,
+   "posterior": {
+    "cooperative": 0.04501607717041801,
+    "obstructive": 0.954983922829582
+   },
+   "prior_copy": true,
+   "public_model_ids": [
+    "PM7"
+   ],
+   "state": "dev-v3-4b-stakes1-perm1",
+   "status": "uncertain",
+   "top": "cooperative",
+   "tv_posterior": 0.654983922829582,
+   "unit": "R(zane)",
+   "unsupported_mass": 0.7
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "cooperative": 0.9999,
+    "obstructive": 0.0001
+   },
+   "ok": true,
+   "posterior": {
+    "cooperative": 0.9453376205787781,
+    "obstructive": 0.05466237942122187
+   },
+   "prior_copy": true,
+   "public_model_ids": [
+    "PM6"
+   ],
+   "state": "dev-v3-4b-stakes4-perm1",
+   "status": "grounded",
+   "top": "cooperative",
+   "tv_posterior": 0.05456237942122187,
+   "unit": "R(uma)",
+   "unsupported_mass": 0.0001
+  },
+  {
+   "attempt_errors": [
+    [
+     "probabilities_not_normalized"
+    ],
+    [
+     "cites_non_visible_evidence",
+     "public_model_citation_mismatch"
+    ],
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "cooperative": 0.106,
+    "obstructive": 0.894
+   },
+   "ok": true,
+   "posterior": {
+    "cooperative": 0.04501607717041801,
+    "obstructive": 0.954983922829582
+   },
+   "prior_copy": false,
+   "public_model_ids": [
+    "PM6",
+    "PM7"
+   ],
+   "state": "dev-v3-4b-stakes4-perm1",
+   "status": "grounded",
+   "top": "obstructive",
+   "tv_posterior": 0.06098392282958198,
+   "unit": "R(zane)",
+   "unsupported_mass": 0.106
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-3c-stakes1-perm0",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(frank)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [
+    "PM1"
+   ],
+   "state": "dev-v3-3c-stakes4-perm0",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(frank)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-3c-stakes1-perm1",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(grace)",
+   "unsupported_mass": 0
+  },
+  {
+   "attempt_errors": [
+    []
+   ],
+   "category": "correct_supported",
+   "distribution": {
+    "office_b": 1.0
+   },
+   "ok": true,
+   "posterior": {
+    "office_b": 1.0
+   },
+   "prior_copy": null,
+   "public_model_ids": [],
+   "state": "dev-v3-3c-stakes4-perm1",
+   "status": "grounded",
+   "top": "office_b",
+   "tv_posterior": 0.0,
+   "unit": "K(grace)",
+   "unsupported_mass": 0
+  }
+ ],
+ "run": "20261028-234117",
+ "summary": {
+  "categories": {
+   "correct_supported": 21,
+   "supported_spread": 3,
+   "unsupported_committed": 4
+  },
+  "coverage": 1.0,
+  "mean_tv": 0.1172,
+  "mean_unsupported_mass": 0.1232,
+  "notes": 28,
+  "notes_citing_pm": 14,
+  "reliability_prior_copies": "5/8",
+  "valid": 28
+ }
+}
