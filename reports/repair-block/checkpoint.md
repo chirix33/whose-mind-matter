@@ -8,8 +8,8 @@
 - Freeze: `stage1-freeze.json`, committed in `27c324e` (K = 24; seeds 20261100–20261123; 576 states); `verify` passes.
 
 **Running / next:**
-1. `run_repair.py notes`, which is resumable: after a restart, just rerun it, and finished calls are kept in `data/repair-block/stage2-notes-partial.jsonl`. When it finishes, commit `reports/repair-block/stage2-notes-freeze.json`.
-2. `run_repair.py policy`, from a clean tree. If interrupted, run `run_repair.py policy --resume ~/officeminds-runs/repair/<run_id>`; the run dir is printed at start and is the newest under `~/officeminds-runs/repair/`.
+1. DONE: notes (856/864 valid; proof committed in `aa75046`).
+2. DONE: policy run `repair-stage2-20261029-132459-743ace` (24 blocks, 4032 episodes, 39 min).
 3. `report_repair_stage2.py <run_dir>`, then the results gates (Opus and Sonnet), then the handoff.
 
 **Rules in force:**

@@ -1,0 +1,61 @@
+{
+  "run_id": "repair-stage2-20261029-132459-743ace",
+  "kind": "repair-stage2",
+  "git_commit": "aa75046df3eac0dbb625e756815cfb0873835689",
+  "git_dirty": false,
+  "config": {
+    "stage": "policy",
+    "freeze_sha256": "e0fc8b94b488ad3ead12e63db89ba0fad8652fe48ab0af017bb95ca14139dad2",
+    "notes_file_sha256": "4861cb6bbba51845ff9683e0e47a4ddded29083faeeeed0d32a9d0e0c86eaaf1",
+    "decoding": {
+      "temperature": 1.0,
+      "max_tokens": 1024,
+      "reasoning_effort": "low"
+    },
+    "draws": 2,
+    "concurrency": 8,
+    "limit_s": 14400,
+    "package": "pilot-v2.2",
+    "render_revision": 7
+  },
+  "config_hash": "0c29f1d52c28c889",
+  "python": "3.12.3",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "started_at": "2026-10-29T18:24:59.256487+00:00",
+  "gpu_at_start": [
+    {
+      "name": "NVIDIA GeForce RTX 5090",
+      "driver": "610.60",
+      "memory_total_mib": 32607,
+      "memory_used_mib": 29829
+    }
+  ],
+  "wall_clock_s": 2362.512934311,
+  "completed_seed_blocks": [
+    20261100,
+    20261101,
+    20261102,
+    20261103,
+    20261104,
+    20261105,
+    20261106,
+    20261107,
+    20261108,
+    20261109,
+    20261110,
+    20261111,
+    20261112,
+    20261113,
+    20261114,
+    20261115,
+    20261116,
+    20261117,
+    20261118,
+    20261119,
+    20261120,
+    20261121,
+    20261122,
+    20261123
+  ],
+  "ended_at": "2026-10-29T19:04:21.812453+00:00"
+}
