@@ -1,0 +1,1887 @@
+{
+ "after_ask_next_action": {
+  "1a|inferred|1": {
+   "ask": 1,
+   "drop": 9,
+   "move": 12
+  },
+  "1a|inferred|4": {
+   "drop": 9,
+   "move": 14
+  },
+  "1a|none|1": {
+   "drop": 10,
+   "move": 15,
+   "wait": 1
+  },
+  "1a|none|4": {
+   "ask": 1,
+   "drop": 11,
+   "move": 10
+  },
+  "1a|reference|1": {
+   "drop": 11,
+   "move": 3
+  },
+  "1a|reference|4": {
+   "ask": 1,
+   "drop": 10,
+   "move": 12
+  },
+  "1b|inferred|1": {
+   "ask": 15,
+   "deliver": 1,
+   "drop": 15,
+   "drop_wrong": 11,
+   "move": 15,
+   "wait": 4
+  },
+  "1b|inferred|4": {
+   "ask": 29,
+   "drop": 10,
+   "drop_wrong": 14,
+   "move": 18,
+   "wait": 10
+  },
+  "1b|none|1": {
+   "ask": 3,
+   "drop": 11,
+   "drop_wrong": 13,
+   "move": 16,
+   "wait": 3
+  },
+  "1b|none|4": {
+   "ask": 15,
+   "drop": 7,
+   "drop_wrong": 11,
+   "move": 23,
+   "wait": 7
+  },
+  "1b|reference|1": {
+   "ask": 23,
+   "drop": 10,
+   "drop_wrong": 7,
+   "move": 29,
+   "wait": 2
+  },
+  "1b|reference|4": {
+   "ask": 21,
+   "drop": 10,
+   "drop_wrong": 13,
+   "move": 16,
+   "wait": 11
+  },
+  "1c|inferred|1": {
+   "ask": 2,
+   "deliver": 1,
+   "drop": 10,
+   "move": 8
+  },
+  "1c|inferred|4": {
+   "ask": 1,
+   "drop": 12,
+   "move": 9
+  },
+  "1c|none|1": {
+   "ask": 1,
+   "drop": 10,
+   "move": 10
+  },
+  "1c|none|4": {
+   "ask": 1,
+   "drop": 11,
+   "move": 7
+  },
+  "1c|reference|1": {
+   "ask": 1,
+   "drop": 7,
+   "move": 11
+  },
+  "1c|reference|4": {
+   "deliver": 1,
+   "drop": 9,
+   "move": 10
+  },
+  "2a|inferred|1": {
+   "ask": 13,
+   "drop": 17,
+   "drop_wrong": 2,
+   "give": 22,
+   "give_wrong": 1,
+   "move": 6
+  },
+  "2a|inferred|4": {
+   "ask": 11,
+   "drop": 18,
+   "give": 15,
+   "give_wrong": 3,
+   "move": 6
+  },
+  "2a|none|1": {
+   "ask": 9,
+   "drop": 14,
+   "give": 24,
+   "move": 6
+  },
+  "2a|none|4": {
+   "ask": 9,
+   "drop": 17,
+   "drop_wrong": 1,
+   "give": 17,
+   "give_wrong": 1,
+   "move": 9
+  },
+  "2a|reference|1": {
+   "ask": 12,
+   "deliver": 1,
+   "drop": 18,
+   "drop_wrong": 2,
+   "give": 16,
+   "give_wrong": 4,
+   "move": 7
+  },
+  "2a|reference|4": {
+   "ask": 15,
+   "drop": 15,
+   "give": 26,
+   "move": 4,
+   "wait": 1
+  },
+  "2b|inferred|1": {
+   "ask": 3,
+   "drop": 7,
+   "drop_wrong": 13,
+   "give_wrong": 3,
+   "move": 4,
+   "wait": 2
+  },
+  "2b|inferred|4": {
+   "ask": 2,
+   "drop": 5,
+   "drop_wrong": 9,
+   "give_wrong": 4,
+   "move": 5,
+   "wait": 3
+  },
+  "2b|none|1": {
+   "ask": 1,
+   "drop": 6,
+   "drop_wrong": 5,
+   "give_wrong": 7,
+   "move": 2,
+   "wait": 1
+  },
+  "2b|none|4": {
+   "ask": 3,
+   "drop": 4,
+   "drop_wrong": 9,
+   "give_wrong": 6,
+   "move": 8,
+   "wait": 2
+  },
+  "2b|reference|1": {
+   "drop": 3,
+   "drop_wrong": 11,
+   "give_wrong": 7,
+   "move": 5
+  },
+  "2b|reference|4": {
+   "ask": 4,
+   "drop": 3,
+   "drop_wrong": 13,
+   "give_wrong": 4,
+   "move": 3,
+   "wait": 3
+  },
+  "2c|inferred|1": {
+   "ask": 29,
+   "drop": 8,
+   "drop_wrong": 12,
+   "give": 13,
+   "give_wrong": 8,
+   "move": 5
+  },
+  "2c|inferred|4": {
+   "ask": 23,
+   "drop": 8,
+   "drop_wrong": 7,
+   "give": 11,
+   "give_wrong": 16,
+   "move": 6,
+   "wait": 1
+  },
+  "2c|none|1": {
+   "ask": 23,
+   "drop": 6,
+   "drop_wrong": 9,
+   "give": 8,
+   "give_wrong": 12,
+   "move": 10
+  },
+  "2c|none|4": {
+   "ask": 22,
+   "drop": 7,
+   "drop_wrong": 9,
+   "give": 12,
+   "give_wrong": 11,
+   "move": 9,
+   "wait": 1
+  },
+  "2c|reference|1": {
+   "ask": 38,
+   "drop": 8,
+   "drop_wrong": 7,
+   "give": 10,
+   "give_wrong": 15,
+   "move": 9,
+   "wait": 1
+  },
+  "2c|reference|4": {
+   "ask": 42,
+   "drop": 7,
+   "drop_wrong": 10,
+   "give": 7,
+   "give_wrong": 17,
+   "move": 6,
+   "wait": 1
+  },
+  "3a|inferred|1": {
+   "ask": 1,
+   "give": 18,
+   "move": 12
+  },
+  "3a|inferred|4": {
+   "ask": 3,
+   "give": 18,
+   "move": 15
+  },
+  "3a|none|1": {
+   "give": 19,
+   "move": 12
+  },
+  "3a|none|4": {
+   "ask": 1,
+   "give": 13,
+   "move": 17
+  },
+  "3a|reference|1": {
+   "ask": 3,
+   "give": 27,
+   "move": 13
+  },
+  "3a|reference|4": {
+   "deliver": 1,
+   "give": 20,
+   "move": 21
+  },
+  "3b|inferred|1": {
+   "ask": 2,
+   "give_wrong": 23,
+   "move": 13,
+   "wait": 2
+  },
+  "3b|inferred|4": {
+   "ask": 4,
+   "give_wrong": 20,
+   "move": 20
+  },
+  "3b|none|1": {
+   "ask": 1,
+   "give_wrong": 11,
+   "move": 33
+  },
+  "3b|none|4": {
+   "ask": 4,
+   "give_wrong": 15,
+   "move": 26
+  },
+  "3b|reference|1": {
+   "ask": 1,
+   "give_wrong": 10,
+   "move": 13
+  },
+  "3b|reference|4": {
+   "ask": 1,
+   "give_wrong": 17,
+   "move": 15
+  },
+  "3c|inferred|1": {
+   "give": 9,
+   "move": 14
+  },
+  "3c|inferred|4": {
+   "deliver": 1,
+   "give": 9,
+   "move": 14
+  },
+  "3c|none|1": {
+   "give": 16,
+   "move": 17
+  },
+  "3c|none|4": {
+   "give": 11,
+   "move": 24
+  },
+  "3c|reference|1": {
+   "give": 12,
+   "move": 12
+  },
+  "3c|reference|4": {
+   "give": 7,
+   "move": 14
+  },
+  "4a|inferred|1": {
+   "ask": 22,
+   "deliver": 1,
+   "drop": 32,
+   "drop_wrong": 1,
+   "move": 7
+  },
+  "4a|inferred|4": {
+   "ask": 21,
+   "drop": 28,
+   "move": 11
+  },
+  "4a|none|1": {
+   "ask": 34,
+   "drop": 32,
+   "drop_wrong": 2,
+   "move": 8
+  },
+  "4a|none|4": {
+   "ask": 19,
+   "drop": 32,
+   "drop_wrong": 3,
+   "move": 5,
+   "wait": 1
+  },
+  "4a|reference|1": {
+   "ask": 22,
+   "drop": 27,
+   "drop_wrong": 1,
+   "move": 7
+  },
+  "4a|reference|4": {
+   "ask": 22,
+   "deliver": 1,
+   "drop": 25,
+   "move": 11
+  },
+  "4b|inferred|1": {
+   "ask": 114,
+   "drop": 39,
+   "drop_wrong": 4,
+   "move": 3,
+   "wait": 2
+  },
+  "4b|inferred|4": {
+   "ask": 103,
+   "drop": 34,
+   "drop_wrong": 8,
+   "move": 8
+  },
+  "4b|none|1": {
+   "ask": 74,
+   "drop": 35,
+   "drop_wrong": 7,
+   "move": 5
+  },
+  "4b|none|4": {
+   "ask": 70,
+   "drop": 34,
+   "drop_wrong": 5,
+   "move": 6,
+   "wait": 1
+  },
+  "4b|reference|1": {
+   "ask": 98,
+   "drop": 39,
+   "drop_wrong": 5,
+   "move": 5
+  },
+  "4b|reference|4": {
+   "ask": 100,
+   "drop": 34,
+   "drop_wrong": 5,
+   "move": 8
+  },
+  "4c|inferred|1": {
+   "ask": 22,
+   "drop": 24,
+   "drop_wrong": 7,
+   "move": 10
+  },
+  "4c|inferred|4": {
+   "ask": 29,
+   "drop": 19,
+   "drop_wrong": 6,
+   "move": 12,
+   "wait": 5
+  },
+  "4c|none|1": {
+   "ask": 27,
+   "drop": 28,
+   "drop_wrong": 7,
+   "move": 13,
+   "wait": 1
+  },
+  "4c|none|4": {
+   "ask": 30,
+   "drop": 23,
+   "drop_wrong": 2,
+   "move": 18,
+   "wait": 1
+  },
+  "4c|reference|1": {
+   "ask": 32,
+   "drop": 23,
+   "drop_wrong": 6,
+   "move": 10
+  },
+  "4c|reference|4": {
+   "ask": 33,
+   "drop": 27,
+   "drop_wrong": 1,
+   "move": 12
+  }
+ },
+ "existing_asks_symbolic": {
+  "2a|asked-H|K(bob)": {
+   "asks": 18,
+   "posterior_unchanged": 10,
+   "true_content_unchanged": 18
+  },
+  "2a|asked-H|K(carol)": {
+   "asks": 10,
+   "posterior_unchanged": 7,
+   "true_content_unchanged": 10
+  },
+  "2a|asked-H|K(frank)": {
+   "asks": 7,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 7
+  },
+  "2a|asked-H|K(grace)": {
+   "asks": 11,
+   "posterior_unchanged": 11,
+   "true_content_unchanged": 11
+  },
+  "2a|asked-H|K(judy)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "2a|asked-H|K(leo)": {
+   "asks": 4,
+   "posterior_unchanged": 4,
+   "true_content_unchanged": 4
+  },
+  "2a|asked-H|K(mia)": {
+   "asks": 26,
+   "posterior_unchanged": 19,
+   "true_content_unchanged": 26
+  },
+  "2a|asked-H|K(nadia)": {
+   "asks": 20,
+   "posterior_unchanged": 12,
+   "true_content_unchanged": 20
+  },
+  "2a|asked-H|K(omar)": {
+   "asks": 5,
+   "posterior_unchanged": 5,
+   "true_content_unchanged": 5
+  },
+  "2a|asked-H|K(pia)": {
+   "asks": 8,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 8
+  },
+  "2a|asked-H|K(quinn)": {
+   "asks": 19,
+   "posterior_unchanged": 4,
+   "true_content_unchanged": 19
+  },
+  "2a|asked-H|K(ravi)": {
+   "asks": 6,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 6
+  },
+  "2a|asked-H|K(sara)": {
+   "asks": 9,
+   "posterior_unchanged": 5,
+   "true_content_unchanged": 9
+  },
+  "2a|asked-H|K(tomas)": {
+   "asks": 14,
+   "posterior_unchanged": 6,
+   "true_content_unchanged": 14
+  },
+  "2a|asked-H|K(uma)": {
+   "asks": 8,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 8
+  },
+  "2a|asked-H|K(vik)": {
+   "asks": 8,
+   "posterior_unchanged": 8,
+   "true_content_unchanged": 8
+  },
+  "2a|asked-H|K(wen)": {
+   "asks": 11,
+   "posterior_unchanged": 7,
+   "true_content_unchanged": 11
+  },
+  "2a|asked-H|K(yara)": {
+   "asks": 6,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 6
+  },
+  "2a|asked-N|K(bob)": {
+   "asks": 2,
+   "posterior_unchanged": 2,
+   "true_content_unchanged": 2
+  },
+  "2a|asked-N|K(carol)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "2a|asked-N|K(frank)": {
+   "asks": 2,
+   "posterior_unchanged": 2,
+   "true_content_unchanged": 2
+  },
+  "2a|asked-N|K(grace)": {
+   "asks": 2,
+   "posterior_unchanged": 2,
+   "true_content_unchanged": 2
+  },
+  "2a|asked-N|K(judy)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "2a|asked-N|K(mia)": {
+   "asks": 4,
+   "posterior_unchanged": 4,
+   "true_content_unchanged": 4
+  },
+  "2a|asked-N|K(nadia)": {
+   "asks": 5,
+   "posterior_unchanged": 5,
+   "true_content_unchanged": 5
+  },
+  "2a|asked-N|K(omar)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "2a|asked-N|K(pia)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "2a|asked-N|K(quinn)": {
+   "asks": 4,
+   "posterior_unchanged": 4,
+   "true_content_unchanged": 4
+  },
+  "2a|asked-N|K(ravi)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "2a|asked-N|K(sara)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "2a|asked-N|K(tomas)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "2a|asked-N|K(uma)": {
+   "asks": 2,
+   "posterior_unchanged": 2,
+   "true_content_unchanged": 2
+  },
+  "2a|asked-N|K(vik)": {
+   "asks": 4,
+   "posterior_unchanged": 4,
+   "true_content_unchanged": 4
+  },
+  "2a|asked-N|K(wen)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "2a|asked-N|K(yara)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "2a|asked-R|K(tomas)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "2a|asked-R|K(wen)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "2b|asked-N|K(alice)": {
+   "asks": 7,
+   "posterior_unchanged": 7,
+   "true_content_unchanged": 7
+  },
+  "2b|asked-N|K(dave)": {
+   "asks": 5,
+   "posterior_unchanged": 5,
+   "true_content_unchanged": 5
+  },
+  "2b|asked-N|K(erin)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "2b|asked-N|K(frank)": {
+   "asks": 2,
+   "posterior_unchanged": 2,
+   "true_content_unchanged": 2
+  },
+  "2b|asked-N|K(ivan)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "2b|asked-N|K(kim)": {
+   "asks": 11,
+   "posterior_unchanged": 11,
+   "true_content_unchanged": 11
+  },
+  "2b|asked-N|K(leo)": {
+   "asks": 8,
+   "posterior_unchanged": 8,
+   "true_content_unchanged": 8
+  },
+  "2b|asked-N|K(omar)": {
+   "asks": 4,
+   "posterior_unchanged": 4,
+   "true_content_unchanged": 4
+  },
+  "2b|asked-N|K(pia)": {
+   "asks": 7,
+   "posterior_unchanged": 7,
+   "true_content_unchanged": 7
+  },
+  "2b|asked-N|K(vik)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "2b|asked-N|K(wen)": {
+   "asks": 2,
+   "posterior_unchanged": 2,
+   "true_content_unchanged": 2
+  },
+  "2b|asked-N|K(yara)": {
+   "asks": 7,
+   "posterior_unchanged": 7,
+   "true_content_unchanged": 7
+  },
+  "3a|asked-F|K(alice->bob)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(alice->carol)": {
+   "asks": 3,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 3
+  },
+  "3a|asked-F|K(erin->judy)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(grace->alice)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(grace->kim)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(ivan->bob)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(leo->frank)": {
+   "asks": 3,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 3
+  },
+  "3a|asked-F|K(leo->grace)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(leo->heidi)": {
+   "asks": 4,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(leo->nadia)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(leo->zane)": {
+   "asks": 3,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 3
+  },
+  "3a|asked-F|K(omar->erin)": {
+   "asks": 2,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 2
+  },
+  "3a|asked-F|K(pia->alice)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(quinn->mia)": {
+   "asks": 5,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 5
+  },
+  "3a|asked-F|K(ravi->nadia)": {
+   "asks": 3,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 3
+  },
+  "3a|asked-F|K(ravi->omar)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(ravi->pia)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(ravi->uma)": {
+   "asks": 3,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 3
+  },
+  "3a|asked-F|K(sara->uma)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(tomas->dave)": {
+   "asks": 2,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 2
+  },
+  "3a|asked-F|K(uma->omar)": {
+   "asks": 3,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 3
+  },
+  "3a|asked-F|K(yara->ravi)": {
+   "asks": 3,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 3
+  },
+  "3a|asked-F|K(zane->alice)": {
+   "asks": 4,
+   "posterior_unchanged": 0,
+   "true_content_unchanged": 4
+  },
+  "3a|asked-F|K(zane->yara)": {
+   "asks": 3,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 3
+  },
+  "3a|asked-R|K(pia->alice)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "3b|asked-F|K(alice->frank)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(alice->vik)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "3b|asked-F|K(carol->vik)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(frank->sara)": {
+   "asks": 2,
+   "posterior_unchanged": 2,
+   "true_content_unchanged": 2
+  },
+  "3b|asked-F|K(heidi->quinn)": {
+   "asks": 2,
+   "posterior_unchanged": 2,
+   "true_content_unchanged": 2
+  },
+  "3b|asked-F|K(ivan->kim)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "3b|asked-F|K(judy->pia)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(kim->mia)": {
+   "asks": 2,
+   "posterior_unchanged": 2,
+   "true_content_unchanged": 2
+  },
+  "3b|asked-F|K(leo->carol)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(mia->sara)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(mia->vik)": {
+   "asks": 2,
+   "posterior_unchanged": 2,
+   "true_content_unchanged": 2
+  },
+  "3b|asked-F|K(mia->yara)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(omar->grace)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(pia->omar)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(sara->mia)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(sara->tomas)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(tomas->frank)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "3b|asked-F|K(tomas->heidi)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(uma->alice)": {
+   "asks": 2,
+   "posterior_unchanged": 2,
+   "true_content_unchanged": 2
+  },
+  "3b|asked-F|K(uma->judy)": {
+   "asks": 3,
+   "posterior_unchanged": 3,
+   "true_content_unchanged": 3
+  },
+  "3b|asked-F|K(uma->ravi)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "3b|asked-F|K(yara->quinn)": {
+   "asks": 4,
+   "posterior_unchanged": 4,
+   "true_content_unchanged": 4
+  },
+  "3b|asked-F|K(yara->ravi)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "3b|asked-P|K(judy->pia)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  },
+  "3b|asked-P|K(uma->judy)": {
+   "asks": 1,
+   "posterior_unchanged": 1,
+   "true_content_unchanged": 1
+  }
+ },
+ "first_action": {
+  "1a|inferred|1": {
+   "ask": 20,
+   "drop": 13,
+   "move": 15
+  },
+  "1a|inferred|4": {
+   "ask": 20,
+   "drop": 11,
+   "move": 17
+  },
+  "1a|none|1": {
+   "ask": 24,
+   "drop": 16,
+   "move": 8
+  },
+  "1a|none|4": {
+   "ask": 20,
+   "drop": 16,
+   "move": 12
+  },
+  "1a|reference|1": {
+   "ask": 13,
+   "drop": 20,
+   "move": 15
+  },
+  "1a|reference|4": {
+   "ask": 22,
+   "drop": 17,
+   "move": 9
+  },
+  "1b|inferred|1": {
+   "ask": 38,
+   "drop": 4,
+   "move": 5,
+   "wait": 1
+  },
+  "1b|inferred|4": {
+   "ask": 41,
+   "drop": 3,
+   "move": 2,
+   "wait": 2
+  },
+  "1b|none|1": {
+   "ask": 42,
+   "drop": 4,
+   "move": 2
+  },
+  "1b|none|4": {
+   "ask": 44,
+   "drop": 2,
+   "move": 2
+  },
+  "1b|reference|1": {
+   "ask": 42,
+   "drop": 4,
+   "move": 2
+  },
+  "1b|reference|4": {
+   "ask": 40,
+   "drop": 3,
+   "move": 4,
+   "wait": 1
+  },
+  "1c|inferred|1": {
+   "ask": 17,
+   "drop": 17,
+   "move": 14
+  },
+  "1c|inferred|4": {
+   "ask": 20,
+   "drop": 14,
+   "move": 14
+  },
+  "1c|none|1": {
+   "ask": 18,
+   "drop": 17,
+   "move": 13
+  },
+  "1c|none|4": {
+   "ask": 18,
+   "drop": 18,
+   "move": 12
+  },
+  "1c|reference|1": {
+   "ask": 11,
+   "drop": 13,
+   "move": 24
+  },
+  "1c|reference|4": {
+   "ask": 18,
+   "drop": 15,
+   "move": 15
+  },
+  "2a|inferred|1": {
+   "ask": 45,
+   "give": 1,
+   "move": 2
+  },
+  "2a|inferred|4": {
+   "ask": 40,
+   "drop": 3,
+   "give": 3,
+   "move": 2
+  },
+  "2a|none|1": {
+   "ask": 44,
+   "drop": 2,
+   "give": 2
+  },
+  "2a|none|4": {
+   "ask": 44,
+   "drop": 2,
+   "give": 1,
+   "move": 1
+  },
+  "2a|reference|1": {
+   "ask": 47,
+   "give": 1
+  },
+  "2a|reference|4": {
+   "ask": 46,
+   "give": 2
+  },
+  "2b|inferred|1": {
+   "ask": 25,
+   "drop": 15,
+   "give": 1,
+   "move": 7
+  },
+  "2b|inferred|4": {
+   "ask": 23,
+   "drop": 14,
+   "give": 3,
+   "move": 7,
+   "wait": 1
+  },
+  "2b|none|1": {
+   "ask": 21,
+   "drop": 21,
+   "give": 1,
+   "move": 5
+  },
+  "2b|none|4": {
+   "ask": 26,
+   "drop": 18,
+   "wait": 4
+  },
+  "2b|reference|1": {
+   "ask": 21,
+   "drop": 16,
+   "give": 4,
+   "move": 7
+  },
+  "2b|reference|4": {
+   "ask": 22,
+   "drop": 15,
+   "give": 1,
+   "move": 7,
+   "wait": 3
+  },
+  "2c|inferred|1": {
+   "ask": 43,
+   "drop": 1,
+   "give": 3,
+   "move": 1
+  },
+  "2c|inferred|4": {
+   "ask": 45,
+   "drop": 1,
+   "give": 2
+  },
+  "2c|none|1": {
+   "ask": 44,
+   "give": 4
+  },
+  "2c|none|4": {
+   "ask": 43,
+   "drop": 2,
+   "give": 1,
+   "wait": 2
+  },
+  "2c|reference|1": {
+   "ask": 47,
+   "drop": 1
+  },
+  "2c|reference|4": {
+   "ask": 47,
+   "wait": 1
+  },
+  "3a|inferred|1": {
+   "ask": 30,
+   "give": 16,
+   "move": 2
+  },
+  "3a|inferred|4": {
+   "ask": 31,
+   "give": 14,
+   "move": 3
+  },
+  "3a|none|1": {
+   "ask": 29,
+   "give": 13,
+   "move": 6
+  },
+  "3a|none|4": {
+   "ask": 27,
+   "give": 15,
+   "move": 6
+  },
+  "3a|reference|1": {
+   "ask": 39,
+   "give": 5,
+   "move": 4
+  },
+  "3a|reference|4": {
+   "ask": 38,
+   "give": 7,
+   "move": 3
+  },
+  "3b|inferred|1": {
+   "ask": 35,
+   "give": 7,
+   "move": 6
+  },
+  "3b|inferred|4": {
+   "ask": 37,
+   "give": 6,
+   "move": 5
+  },
+  "3b|none|1": {
+   "ask": 44,
+   "give": 2,
+   "move": 2
+  },
+  "3b|none|4": {
+   "ask": 40,
+   "give": 8
+  },
+  "3b|reference|1": {
+   "ask": 22,
+   "give": 18,
+   "move": 8
+  },
+  "3b|reference|4": {
+   "ask": 30,
+   "give": 10,
+   "move": 8
+  },
+  "3c|inferred|1": {
+   "ask": 23,
+   "give": 14,
+   "move": 11
+  },
+  "3c|inferred|4": {
+   "ask": 23,
+   "give": 10,
+   "move": 15
+  },
+  "3c|none|1": {
+   "ask": 31,
+   "give": 8,
+   "move": 9
+  },
+  "3c|none|4": {
+   "ask": 30,
+   "give": 3,
+   "move": 15
+  },
+  "3c|reference|1": {
+   "ask": 22,
+   "give": 15,
+   "move": 11
+  },
+  "3c|reference|4": {
+   "ask": 21,
+   "give": 17,
+   "move": 10
+  },
+  "4a|inferred|1": {
+   "ask": 38,
+   "drop": 9,
+   "move": 1
+  },
+  "4a|inferred|4": {
+   "ask": 37,
+   "drop": 10,
+   "move": 1
+  },
+  "4a|none|1": {
+   "ask": 40,
+   "drop": 6,
+   "move": 2
+  },
+  "4a|none|4": {
+   "ask": 39,
+   "drop": 6,
+   "move": 3
+  },
+  "4a|reference|1": {
+   "ask": 34,
+   "drop": 12,
+   "move": 2
+  },
+  "4a|reference|4": {
+   "ask": 35,
+   "drop": 11,
+   "move": 2
+  },
+  "4b|inferred|1": {
+   "ask": 48
+  },
+  "4b|inferred|4": {
+   "ask": 47,
+   "drop": 1
+  },
+  "4b|none|1": {
+   "ask": 47,
+   "drop": 1
+  },
+  "4b|none|4": {
+   "ask": 45,
+   "drop": 3
+  },
+  "4b|reference|1": {
+   "ask": 48
+  },
+  "4b|reference|4": {
+   "ask": 46,
+   "drop": 1,
+   "move": 1
+  },
+  "4c|inferred|1": {
+   "ask": 40,
+   "drop": 8
+  },
+  "4c|inferred|4": {
+   "ask": 35,
+   "drop": 9,
+   "move": 3,
+   "wait": 1
+  },
+  "4c|none|1": {
+   "ask": 42,
+   "drop": 3,
+   "move": 3
+  },
+  "4c|none|4": {
+   "ask": 43,
+   "drop": 5
+  },
+  "4c|reference|1": {
+   "ask": 37,
+   "drop": 10,
+   "move": 1
+  },
+  "4c|reference|4": {
+   "ask": 35,
+   "drop": 8,
+   "move": 5
+  }
+ },
+ "label": "Audit of repair Stage 2 traces (no model calls); action patterns are the main evidence",
+ "later_give_drop_wrong": {
+  "1a|inferred|1": "0/10",
+  "1a|inferred|4": "0/9",
+  "1a|none|1": "0/11",
+  "1a|none|4": "0/11",
+  "1a|reference|1": "0/13",
+  "1a|reference|4": "0/11",
+  "1b|inferred|1": "15/30",
+  "1b|inferred|4": "16/29",
+  "1b|none|1": "14/26",
+  "1b|none|4": "17/26",
+  "1b|reference|1": "11/25",
+  "1b|reference|4": "17/30",
+  "1c|inferred|1": "0/12",
+  "1c|inferred|4": "0/15",
+  "1c|none|1": "0/11",
+  "1c|none|4": "0/14",
+  "1c|reference|1": "0/10",
+  "1c|reference|4": "0/13",
+  "2a|inferred|1": "3/43",
+  "2a|inferred|4": "3/37",
+  "2a|none|1": "0/39",
+  "2a|none|4": "2/36",
+  "2a|reference|1": "6/41",
+  "2a|reference|4": "1/42",
+  "2b|inferred|1": "19/26",
+  "2b|inferred|4": "16/24",
+  "2b|none|1": "15/21",
+  "2b|none|4": "19/25",
+  "2b|reference|1": "21/25",
+  "2b|reference|4": "19/25",
+  "2c|inferred|1": "21/44",
+  "2c|inferred|4": "24/43",
+  "2c|none|1": "22/38",
+  "2c|none|4": "20/40",
+  "2c|reference|1": "24/42",
+  "2c|reference|4": "28/44",
+  "3a|inferred|1": "0/19",
+  "3a|inferred|4": "0/19",
+  "3a|none|1": "0/19",
+  "3a|none|4": "0/13",
+  "3a|reference|1": "0/27",
+  "3a|reference|4": "0/21",
+  "3b|inferred|1": "25/25",
+  "3b|inferred|4": "20/20",
+  "3b|none|1": "12/12",
+  "3b|none|4": "15/15",
+  "3b|reference|1": "12/12",
+  "3b|reference|4": "18/18",
+  "3c|inferred|1": "0/10",
+  "3c|inferred|4": "0/10",
+  "3c|none|1": "0/19",
+  "3c|none|4": "0/11",
+  "3c|reference|1": "0/15",
+  "3c|reference|4": "0/8",
+  "4a|inferred|1": "2/34",
+  "4a|inferred|4": "0/31",
+  "4a|none|1": "2/34",
+  "4a|none|4": "3/36",
+  "4a|reference|1": "2/30",
+  "4a|reference|4": "0/28",
+  "4b|inferred|1": "4/43",
+  "4b|inferred|4": "9/43",
+  "4b|none|1": "7/43",
+  "4b|none|4": "5/39",
+  "4b|reference|1": "5/44",
+  "4b|reference|4": "5/39",
+  "4c|inferred|1": "7/31",
+  "4c|inferred|4": "9/30",
+  "4c|none|1": "8/38",
+  "4c|none|4": "2/28",
+  "4c|reference|1": "6/30",
+  "4c|reference|4": "2/29"
+ },
+ "reasoning_by_outcome": {
+  "2b": {
+   "belief_as_location": {},
+   "forwarding_rule": {
+    "error": 4
+   },
+   "other": {
+    "error": 51,
+    "success": 31
+   },
+   "uncertain": {},
+   "uses_own_belief": {}
+  },
+  "3b": {
+   "belief_as_location": {},
+   "forwarding_rule": {
+    "error": 28
+   },
+   "other": {
+    "error": 21
+   },
+   "uncertain": {
+    "error": 8
+   },
+   "uses_own_belief": {
+    "error": 1
+   }
+  }
+ },
+ "reasoning_classes": {
+  "2b": {
+   "forwarding_rule": 4,
+   "other": 82
+  },
+  "3b": {
+   "forwarding_rule": 28,
+   "other": 21,
+   "uncertain": 8,
+   "uses_own_belief": 1
+  }
+ },
+ "reasoning_examples": {
+  "2b": {
+   "belief_as_location": [],
+   "forwarding_rule": [
+    {
+     "action": "give(alice)",
+     "class": "forwarding_rule",
+     "excerpt": "We know Alice says room_19. That is true. We need deliver to mia, but we don't know where she is currently (after moving). She moved to one of two other rooms. She is now somewhere else, likely not in lobby. The robot can't deliver directly. We could ask Alice again? she already answered. We could ask? no. Could drop? no. Could give to Alice: Alice will forward to office she believes mia is: she b",
+     "outcome": "error",
+     "replicate": 1,
+     "state_id": "s20261105-dev-v3-2b-stakes1-perm0",
+     "step": 1
+    },
+    {
+     "action": "drop(suite_1)",
+     "class": "forwarding_rule",
+     "excerpt": "We need to deliver package to kim. We are in lobby. Kim likely at one of suite_1 or 3; she announced suite_2 earlier, but moved to another. He told quiet conversation to nadia but not us. Our info: both times asked pia, got suite_2 answer. That's outdated. Probability: 1/2 each. Best is give(pia) to forward? She will forward to office she believes kim is: she thinks suite_2. That's wrong. Drop to ",
+     "outcome": "error",
+     "replicate": 1,
+     "state_id": "s20261114-dev-v3-2b-stakes4-perm0",
+     "step": 2
+    },
+    {
+     "action": "drop(desk_14)",
+     "class": "forwarding_rule",
+     "excerpt": "We are at step1. We know Zane is in the lobby currently? After earlier history: zane leaves lobby to go somewhere? Wait: t0: note0 zane announces desk_3, leaves lobby then arrives lobby then quiet to alice then leaves lobby again then left building. After that, nobody moves. We're at t1. So zane is not in lobby; he is in one of the two other offices: desk_14 or desk_9. Unknown which. We can ask pi",
+     "outcome": "error",
+     "replicate": 0,
+     "state_id": "s20261122-dev-v3-2b-stakes4-perm0",
+     "step": 1
+    }
+   ],
+   "other": [
+    {
+     "action": "drop(desk_9)",
+     "class": "other",
+     "excerpt": "We need deliver to Frank. Frank location unknown: he first announced desk_14 but then moved to one of other two. Frank is currently in unknown desk; we don't know which. Dave believes frank_loc=desk_14. We can ask Dave for frank_loc; he'll answer with his belief (desk_14). That would not be correct. So better get correct location: maybe ask Dave in quiet conversation? not possible. Could drop in c",
+     "outcome": "success",
+     "replicate": 0,
+     "state_id": "s20261100-dev-v3-2b-stakes1-perm0",
+     "step": 0
+    },
+    {
+     "action": "drop(desk_9)",
+     "class": "other",
+     "excerpt": "We need best action. Frank moved to one of the two other offices. We don't know which. Daves says desk_14. That is false; he doesn't know? Actually he reports. He believes frank first went to desk_14 (per announcement). After move, he still thinks frank_loc=desk_14 because not told else. So giving to dave will forward to desk_14, wrong. Dropping to desk_14 or desk_9 or desk_3? chance: Frank initia",
+     "outcome": "success",
+     "replicate": 0,
+     "state_id": "s20261100-dev-v3-2b-stakes4-perm0",
+     "step": 1
+    },
+    {
+     "action": "drop(desk_9)",
+     "class": "other",
+     "excerpt": "We need best action. We know frank announced desk_14 but then moved to second office. After leaving lobby, frank goes to another office, leaving lobby. We don't know which. We have dave in lobby who believes frank_loc=desk_14. Frank left lobby, then entered some other office. So actual frank_loc is that new office. We need to deliver to correct office. We can ask Dave about frank_loc but Dave's be",
+     "outcome": "success",
+     "replicate": 1,
+     "state_id": "s20261100-dev-v3-2b-stakes4-perm0",
+     "step": 0
+    }
+   ],
+   "uses_own_belief": []
+  },
+  "3b": {
+   "belief_as_location": [],
+   "forwarding_rule": [
+    {
+     "action": "give(tomas)",
+     "class": "forwarding_rule",
+     "excerpt": "We need to deliver to Heidi. Heidi is in a room where she believes meeting_room; we don't know which. Tomas knows meeting_room? He answered room_12. Tomas thinks heidi believes meeting_room = ?. He says he knows? He answered question about meeting_room: gave room_12. That indicates his belief about meeting_room? Actually he says fact=room_12. That indicates his belief of meeting_room. But that's w",
+     "outcome": "error",
+     "replicate": 0,
+     "state_id": "s20261101-dev-v3-3b-stakes4-perm0",
+     "step": 1
+    },
+    {
+     "action": "give(tomas)",
+     "class": "forwarding_rule",
+     "excerpt": "We need best to deliver. Tomas forwards to where he thinks Heidi will go; he believes meeting_room=room_7. Tom knows Heidi believes meeting_room=room_7? He announces meeting_room=room_7. So Tom also thinks Heidi believes it. So deliver to tom then he'll forward to room_7 where Heidi is. So give(tomas).",
+     "outcome": "error",
+     "replicate": 1,
+     "state_id": "s20261101-dev-v3-3b-stakes1-perm0",
+     "step": 0
+    },
+    {
+     "action": "give(tomas)",
+     "class": "forwarding_rule",
+     "excerpt": "We need to find correct meeting room. We know from history: Initially mia announced meeting_room=office_b to everyone present: frank, pia, tomas. That established belief among them. Then quiet conversation with tomas tells tomas current meeting office (i.e., new? but unknown). Likewise with frank. That changes their belief? Quiet conversation is addressed to them only; changes their belief to curr",
+     "outcome": "error",
+     "replicate": 1,
+     "state_id": "s20261103-dev-v3-3b-stakes1-perm0",
+     "step": 0
+    }
+   ],
+   "other": [
+    {
+     "action": "give(sara)",
+     "class": "other",
+     "excerpt": "We already asked and got answer. We need to deliver to Mia. Sara says meeting_room=desk_9. That's what sara believes. Mia trusts sara, so forward to desk_9. Giving to sara would forward. So give(sara).",
+     "outcome": "error",
+     "replicate": 0,
+     "state_id": "s20261100-dev-v3-3b-stakes4-perm0",
+     "step": 1
+    },
+    {
+     "action": "give(omar)",
+     "class": "other",
+     "excerpt": "We need to deliver to Grace. Grace is in the office she believes meeting is. She believes meeting_room = lab_south initially. Zane changed to a different office, but only told omar and grace privately. We don't know which changed office. Grace remains in office she believes meeting is, which was lab_south originally, but after change, did she update? She had private conversation with zane telling ",
+     "outcome": "error",
+     "replicate": 0,
+     "state_id": "s20261102-dev-v3-3b-stakes1-perm0",
+     "step": 0
+    },
+    {
+     "action": "give(tomas)",
+     "class": "other",
+     "excerpt": "We need deliver to frank. Frank is in unknown office. Robot can ask someone? only pia or tomas in lobby. Tomas will give package to where he thinks frank goes. He believes frank thinks meeting_room= office_c (t0:said). So giving to tomas will forward to office_c. But we don't know if that's correct. Better to ask someone about meeting_room. But cannot ask about Frank, only about meeting_room. We n",
+     "outcome": "error",
+     "replicate": 0,
+     "state_id": "s20261103-dev-v3-3b-stakes1-perm0",
+     "step": 1
+    }
+   ],
+   "uses_own_belief": [
+    {
+     "action": "give(sara)",
+     "class": "uses_own_belief",
+     "excerpt": "We need ensure correct delivery. Meeting_room unknown to robot. Kim announced desk_14, then changed to one of two others: desk_9 or desk_3, unknown. Quiet conversations to sara and mia delivered that change. Sara knows current meeting_room due to quiet conv. So Sara knows the meeting, and will forward to that office. Robot wants to deliver to Mia. Best is give(sara) to forward. But robot currently",
+     "outcome": "error",
+     "replicate": 0,
+     "state_id": "s20261100-dev-v3-3b-stakes1-perm0",
+     "step": 0
+    }
+   ]
+  }
+ },
+ "reasoning_rubric": {
+  "belief_as_location": "\\b(believes|says|said|thinks|told|answer\\w*)\\b[^.]{0,80}\\b(so|therefore|thus|hence|meaning)\\b[^.]{0,60}\\b(is|likely|probably|must be|should be)\\b",
+  "forwarding_rule": "forward\\w*[^.]{0,80}\\b(thinks|believes|think|believe)\\b[^.]{0,40}\\b(believes|thinks|will go|goes)\\b",
+  "uses_own_belief": "\\b(knows|believes|thinks|said|says|told)\\b[^.]{0,50}\\b(meeting(_room)?|meeting is|new office|current office|changed)\\b[^.]{0,60}\\b(give|forward|hand)"
+ },
+ "reasoning_uncertain": {
+  "2b": [],
+  "3b": [
+   {
+    "action": "give(omar)",
+    "class": "uncertain",
+    "excerpt": "We need to deliver to Grace. Grace is in the office where she believes meeting_room. We have no info of Grace's current belief: she left lobby after zane left. At t0 note0, zane announced meeting_room=lab_south. Grace said it too. So Grace believes meeting_room=lab_south. Then zane gave quiet to omar and grace. So omar and grace got new info possibly. According to PM1, zane announces then changes ",
+    "outcome": "error",
+    "replicate": 1,
+    "state_id": "s20261102-dev-v3-3b-stakes1-perm0",
+    "step": 1
+   },
+   {
+    "action": "give(omar)",
+    "class": "uncertain",
+    "excerpt": "We have package, grace in lab_south or other? We know omar says meeting_room = lab_west. That means omar believes grace thinks meeting_room lab_west. Om is honest. So grace thinks meeting_room lab_west. Therefore grace is in lab_west. So deliver to grace in lab_west. Path: lobby->hall->lab_west. Need 2 moves. but can use give to omar to forward? Omar will forward to where he thinks grace will go: ",
+    "outcome": "error",
+    "replicate": 1,
+    "state_id": "s20261102-dev-v3-3b-stakes4-perm0",
+    "step": 1
+   },
+   {
+    "action": "give(tomas)",
+    "class": "uncertain",
+    "excerpt": "We need find where Frank is. Frank went to office where he believes meeting. He knows meeting_room currently? At start, mia announced office_b, frank said meeting_room=office_b, so frank believes office_b. No further. So Frank is in office_b.\n\nBut robot can't see Frank. Should ask Tomas or Pia to confirm? Tomas knows meeting_room? From quiet conversation, he knows actual meeting? He had a quiet co",
+    "outcome": "error",
+    "replicate": 0,
+    "state_id": "s20261103-dev-v3-3b-stakes4-perm0",
+    "step": 0
+   },
+   {
+    "action": "give(mia)",
+    "class": "uncertain",
+    "excerpt": "We know Yara is in meeting office where she believes. After history, we know the initial announcement was suite_2. Then wem quiet to mia and yara, but unknown. later wen changed to one of two others equally likely: either suite_1 or suite_3. Mia got statement meeting_room= suite_3 at t1. That is her answer to our question. She says so but might be based on what she believes\u2014that is what she heard ",
+    "outcome": "error",
+    "replicate": 1,
+    "state_id": "s20261105-dev-v3-3b-stakes4-perm0",
+    "step": 1
+   },
+   {
+    "action": "give(alice)",
+    "class": "uncertain",
+    "excerpt": "We need next step: best to ask erin? But alice has answered meeting_room=room_12. We need to deliver to Vik. Vik is in room_12. Alice thinks Vik believes meeting_room=room_12. So give(alice) will forward to room_12. But package remains with alice for she forwards to where she thinks Vik will go. Since she thinks Vik thinks meeting_room=room_12, she will forward to room_12. That is correct. So give",
+    "outcome": "error",
+    "replicate": 0,
+    "state_id": "s20261107-dev-v3-3b-stakes4-perm0",
+    "step": 1
+   },
+   {
+    "action": "give(yara)",
+    "class": "uncertain",
+    "excerpt": "We want to deliver to ravi. Need to know where ravi is: he goes to office where he believes meeting is. He believed meeting_room = desk_9 after hearing announcements. He may have changed after quiet conversation by heidi to other office, but ravi could have been told only by quiet conversation so yes he knows new. But who knows new? Yara heard too. Omar not. Robot didn't hear. So robot doesn't kno",
+    "outcome": "error",
+    "replicate": 1,
+    "state_id": "s20261112-dev-v3-3b-stakes4-perm0",
+    "step": 0
+   },
+   {
+    "action": "give(sara)",
+    "class": "uncertain",
+    "excerpt": "We need deliver to tomas. He is in his office of meeting_room. We don't know which. We can ask wen? No info. Sara says meeting_room=suite1. According to PM3, sara forwards to where she thinks tomas will go, i.e., what sara thinks about meeting_room. She says suite_1. So if we give to sara, she will forward to suite_1. But maybe tomas is there? likely yes. Maybe tomas stays in the office she thinks",
+    "outcome": "error",
+    "replicate": 0,
+    "state_id": "s20261114-dev-v3-3b-stakes1-perm0",
+    "step": 1
+   },
+   {
+    "action": "give(uma)",
+    "class": "uncertain",
+    "excerpt": "We need choose action. We want to deliver to Ravi. Who is Ravi currently? He left lobby, goes to office where he believes meeting. He believes meeting_room=office_b initially because he heard. But maybe changed by quiet conversation with Judy at t0: Judy told Ravi presumably changed? Actually Judy changed to one of two other offices but told only via quiet conversation with Ravi. He will have upda",
+    "outcome": "error",
+    "replicate": 1,
+    "state_id": "s20261122-dev-v3-3b-stakes4-perm0",
+    "step": 0
+   }
+  ]
+ },
+ "rubric_version": "v2",
+ "run": "repair-stage2-20261029-132459-743ace",
+ "stale_exposure_later_decisions": {
+  "1a|inferred|1": "47/76",
+  "1a|inferred|4": "58/89",
+  "1a|reference|1": "22/50",
+  "1a|reference|4": "51/67",
+  "1b|inferred|1": "115/128",
+  "1b|inferred|4": "162/167",
+  "1b|reference|1": "177/184",
+  "1b|reference|4": "150/160",
+  "1c|inferred|1": "38/65",
+  "1c|inferred|4": "42/68",
+  "1c|reference|1": "50/91",
+  "1c|reference|4": "50/78",
+  "2a|inferred|1": "79/81",
+  "2a|inferred|4": "65/71",
+  "2a|reference|1": "74/74",
+  "2a|reference|4": "71/71",
+  "2b|inferred|1": "61/70",
+  "2b|inferred|4": "60/76",
+  "2b|reference|1": "46/58",
+  "2b|reference|4": "46/71",
+  "2c|inferred|1": "88/89",
+  "2c|inferred|4": "92/92",
+  "2c|reference|1": "120/120",
+  "2c|reference|4": "110/110",
+  "3a|inferred|1": "60/74",
+  "3a|inferred|4": "69/81",
+  "3a|reference|1": "82/95",
+  "3a|reference|4": "108/112",
+  "3b|inferred|1": "81/91",
+  "3b|inferred|4": "99/114",
+  "3b|reference|1": "61/92",
+  "3b|reference|4": "78/119",
+  "3c|inferred|1": "53/87",
+  "3c|inferred|4": "96/124",
+  "3c|reference|1": "80/91",
+  "3c|reference|4": "83/96",
+  "4a|inferred|1": "80/81",
+  "4a|inferred|4": "84/90",
+  "4a|reference|1": "71/75",
+  "4a|reference|4": "83/95",
+  "4b|inferred|1": "171/171",
+  "4b|inferred|4": "168/168",
+  "4b|reference|1": "157/157",
+  "4b|reference|4": "163/165",
+  "4c|inferred|1": "85/85",
+  "4c|inferred|4": "113/117",
+  "4c|reference|1": "103/105",
+  "4c|reference|4": "103/113"
+ },
+ "stale_exposure_split": {
+  "1a|inferred|1": {
+   "after_ask": "46/46",
+   "sighting_only": "1/30"
+  },
+  "1a|inferred|4": {
+   "after_ask": "55/55",
+   "sighting_only": "3/34"
+  },
+  "1a|reference|1": {
+   "after_ask": "20/20",
+   "sighting_only": "2/30"
+  },
+  "1a|reference|4": {
+   "after_ask": "47/47",
+   "sighting_only": "4/20"
+  },
+  "1b|inferred|1": {
+   "after_ask": "111/112",
+   "sighting_only": "4/16"
+  },
+  "1b|inferred|4": {
+   "after_ask": "159/159",
+   "sighting_only": "3/8"
+  },
+  "1b|reference|1": {
+   "after_ask": "174/174",
+   "sighting_only": "3/10"
+  },
+  "1b|reference|4": {
+   "after_ask": "147/147",
+   "sighting_only": "3/13"
+  },
+  "1c|inferred|1": {
+   "after_ask": "36/37",
+   "sighting_only": "2/28"
+  },
+  "1c|inferred|4": {
+   "after_ask": "40/40",
+   "sighting_only": "2/28"
+  },
+  "1c|reference|1": {
+   "after_ask": "41/41",
+   "sighting_only": "9/50"
+  },
+  "1c|reference|4": {
+   "after_ask": "45/46",
+   "sighting_only": "5/32"
+  },
+  "2a|inferred|1": {
+   "after_ask": "77/77",
+   "sighting_only": "2/4"
+  },
+  "2a|inferred|4": {
+   "after_ask": "65/65",
+   "sighting_only": "0/6"
+  },
+  "2a|reference|1": {
+   "after_ask": "74/74",
+   "sighting_only": "0/0"
+  },
+  "2a|reference|4": {
+   "after_ask": "71/71",
+   "sighting_only": "0/0"
+  },
+  "2b|inferred|1": {
+   "after_ask": "54/54",
+   "sighting_only": "7/16"
+  },
+  "2b|inferred|4": {
+   "after_ask": "54/57",
+   "sighting_only": "6/19"
+  },
+  "2b|reference|1": {
+   "after_ask": "40/40",
+   "sighting_only": "6/18"
+  },
+  "2b|reference|4": {
+   "after_ask": "38/38",
+   "sighting_only": "8/33"
+  },
+  "2c|inferred|1": {
+   "after_ask": "87/87",
+   "sighting_only": "1/2"
+  },
+  "2c|inferred|4": {
+   "after_ask": "92/92",
+   "sighting_only": "0/0"
+  },
+  "2c|reference|1": {
+   "after_ask": "120/120",
+   "sighting_only": "0/0"
+  },
+  "2c|reference|4": {
+   "after_ask": "109/109",
+   "sighting_only": "1/1"
+  },
+  "3a|inferred|1": {
+   "after_ask": "60/60",
+   "sighting_only": "0/14"
+  },
+  "3a|inferred|4": {
+   "after_ask": "67/67",
+   "sighting_only": "2/14"
+  },
+  "3a|reference|1": {
+   "after_ask": "78/78",
+   "sighting_only": "4/17"
+  },
+  "3a|reference|4": {
+   "after_ask": "105/105",
+   "sighting_only": "3/7"
+  },
+  "3b|inferred|1": {
+   "after_ask": "75/76",
+   "sighting_only": "6/15"
+  },
+  "3b|inferred|4": {
+   "after_ask": "95/95",
+   "sighting_only": "4/19"
+  },
+  "3b|reference|1": {
+   "after_ask": "56/56",
+   "sighting_only": "5/36"
+  },
+  "3b|reference|4": {
+   "after_ask": "68/68",
+   "sighting_only": "10/51"
+  },
+  "3c|inferred|1": {
+   "after_ask": "42/65",
+   "sighting_only": "11/22"
+  },
+  "3c|inferred|4": {
+   "after_ask": "76/84",
+   "sighting_only": "20/40"
+  },
+  "3c|reference|1": {
+   "after_ask": "69/69",
+   "sighting_only": "11/22"
+  },
+  "3c|reference|4": {
+   "after_ask": "73/73",
+   "sighting_only": "10/23"
+  },
+  "4a|inferred|1": {
+   "after_ask": "79/79",
+   "sighting_only": "1/2"
+  },
+  "4a|inferred|4": {
+   "after_ask": "83/88",
+   "sighting_only": "1/2"
+  },
+  "4a|reference|1": {
+   "after_ask": "71/71",
+   "sighting_only": "0/4"
+  },
+  "4a|reference|4": {
+   "after_ask": "82/91",
+   "sighting_only": "1/4"
+  },
+  "4b|inferred|1": {
+   "after_ask": "171/171",
+   "sighting_only": "0/0"
+  },
+  "4b|inferred|4": {
+   "after_ask": "168/168",
+   "sighting_only": "0/0"
+  },
+  "4b|reference|1": {
+   "after_ask": "157/157",
+   "sighting_only": "0/0"
+  },
+  "4b|reference|4": {
+   "after_ask": "163/163",
+   "sighting_only": "0/2"
+  },
+  "4c|inferred|1": {
+   "after_ask": "85/85",
+   "sighting_only": "0/0"
+  },
+  "4c|inferred|4": {
+   "after_ask": "110/110",
+   "sighting_only": "3/7"
+  },
+  "4c|reference|1": {
+   "after_ask": "103/103",
+   "sighting_only": "0/2"
+  },
+  "4c|reference|4": {
+   "after_ask": "100/100",
+   "sighting_only": "3/13"
+  }
+ }
+}
