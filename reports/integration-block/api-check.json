@@ -1,0 +1,350 @@
+{
+ "calls": 16,
+ "worst_case_usd": 0.42,
+ "reconciled_committed_usd": 3.86895,
+ "stage_cap_usd": 4.36895,
+ "ledger_after_usd": 3.9240399999999958,
+ "incremental_usd": 0.05509,
+ "decisions": [
+  {
+   "state_id": "s20261200-dev-v3-2a-stakes1-perm0",
+   "context": "t0",
+   "condition": "none",
+   "action": "give(ivan)",
+   "fallback": false,
+   "outcome_if_taken": "success",
+   "wrong": false,
+   "correct_handoff": true,
+   "handoff": true,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "give(ivan)"
+   ],
+   "prompt_sha256": "529e3e0242b71fe800ce432b3a32a6761a3153d45b5616245e2d679b60b02b0f",
+   "finish_reason": "completed",
+   "tokens": [
+    1557,
+    15
+   ]
+  },
+  {
+   "state_id": "s20261200-dev-v3-2a-stakes1-perm0",
+   "context": "t0",
+   "condition": "content|shown",
+   "action": "give(ivan)",
+   "fallback": false,
+   "outcome_if_taken": "success",
+   "wrong": false,
+   "correct_handoff": true,
+   "handoff": true,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "give(ivan)"
+   ],
+   "prompt_sha256": "8425f7e3456c39e419dd4eb37cd654b028ca0db7a153a6d89a0a014af4e8b06a",
+   "finish_reason": "completed",
+   "tokens": [
+    1673,
+    15
+   ]
+  },
+  {
+   "state_id": "s20261200-dev-v3-2a-stakes1-perm0",
+   "context": "post",
+   "condition": "none",
+   "action": "drop(lab_west)",
+   "fallback": false,
+   "outcome_if_taken": "success",
+   "wrong": false,
+   "correct_handoff": true,
+   "handoff": true,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "drop(lab_west)",
+    "give(ivan)"
+   ],
+   "prompt_sha256": "f2de602511e223f3a79d318ceabe369b95f88d2d0626b66ef2a24aba7253194a",
+   "finish_reason": "completed",
+   "tokens": [
+    1650,
+    17
+   ]
+  },
+  {
+   "state_id": "s20261200-dev-v3-2a-stakes1-perm0",
+   "context": "post",
+   "condition": "content|shown",
+   "action": "drop(lab_west)",
+   "fallback": false,
+   "outcome_if_taken": "success",
+   "wrong": false,
+   "correct_handoff": true,
+   "handoff": true,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "drop(lab_west)",
+    "give(ivan)"
+   ],
+   "prompt_sha256": "3ffe8215dfa4dab746428d2c130a5aca58699e86d465a2cdf167ed5e88c3bd50",
+   "finish_reason": "completed",
+   "tokens": [
+    1800,
+    17
+   ]
+  },
+  {
+   "state_id": "s20261204-dev-v3-2b-stakes4-perm0",
+   "context": "t0",
+   "condition": "none",
+   "action": "move(hall)",
+   "fallback": false,
+   "outcome_if_taken": "",
+   "wrong": false,
+   "correct_handoff": false,
+   "handoff": false,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "prompt_sha256": "f39ca26570d2ab6bf662982e6ceb0d15580f6e1544a2d675fbebdd67f3ef8d98",
+   "finish_reason": "completed",
+   "tokens": [
+    1437,
+    62
+   ]
+  },
+  {
+   "state_id": "s20261204-dev-v3-2b-stakes4-perm0",
+   "context": "t0",
+   "condition": "content|shown",
+   "action": "move(hall)",
+   "fallback": false,
+   "outcome_if_taken": "",
+   "wrong": false,
+   "correct_handoff": false,
+   "handoff": false,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "prompt_sha256": "c7fd8bfe04712e1e961384227b1f7213f5cd1771f2af98903e61dd288220f298",
+   "finish_reason": "completed",
+   "tokens": [
+    1499,
+    46
+   ]
+  },
+  {
+   "state_id": "s20261204-dev-v3-2b-stakes4-perm0",
+   "context": "post",
+   "condition": "none",
+   "action": "move(hall)",
+   "fallback": false,
+   "outcome_if_taken": "",
+   "wrong": false,
+   "correct_handoff": false,
+   "handoff": false,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "prompt_sha256": "3393fac1e3f590c841ac6775c9133c0ea646da9926e979846729a0979e5d9723",
+   "finish_reason": "completed",
+   "tokens": [
+    1492,
+    47
+   ]
+  },
+  {
+   "state_id": "s20261204-dev-v3-2b-stakes4-perm0",
+   "context": "post",
+   "condition": "content|shown",
+   "action": "move(hall)",
+   "fallback": false,
+   "outcome_if_taken": "",
+   "wrong": false,
+   "correct_handoff": false,
+   "handoff": false,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "prompt_sha256": "5cac3e955185d36444af79a0f6ca067dcdf13eb007f639a1fcda84019e8d1b68",
+   "finish_reason": "completed",
+   "tokens": [
+    1571,
+    15
+   ]
+  },
+  {
+   "state_id": "s20261206-dev-v3-3a-stakes1-perm0",
+   "context": "t0",
+   "condition": "none",
+   "action": "give(vik)",
+   "fallback": false,
+   "outcome_if_taken": "success",
+   "wrong": false,
+   "correct_handoff": true,
+   "handoff": true,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "give(vik)"
+   ],
+   "prompt_sha256": "dc14a0a5b052228637d1975e990901bbdb7147f1b7266e66b244d1e342acd7c8",
+   "finish_reason": "completed",
+   "tokens": [
+    1439,
+    37
+   ]
+  },
+  {
+   "state_id": "s20261206-dev-v3-3a-stakes1-perm0",
+   "context": "t0",
+   "condition": "content|shown",
+   "action": "give(vik)",
+   "fallback": false,
+   "outcome_if_taken": "success",
+   "wrong": false,
+   "correct_handoff": true,
+   "handoff": true,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "give(vik)"
+   ],
+   "prompt_sha256": "7417bc9d11433ae229939a7f73e9917d3e9c182749dbbe7e44d959dfd5ce280d",
+   "finish_reason": "completed",
+   "tokens": [
+    1511,
+    34
+   ]
+  },
+  {
+   "state_id": "s20261206-dev-v3-3a-stakes1-perm0",
+   "context": "post",
+   "condition": "none",
+   "action": "give(vik)",
+   "fallback": false,
+   "outcome_if_taken": "success",
+   "wrong": false,
+   "correct_handoff": true,
+   "handoff": true,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "give(vik)"
+   ],
+   "prompt_sha256": "43cc655040a960b44531e59a63dfd09ada062d80ce1e51ed70a3e879fc742a7d",
+   "finish_reason": "completed",
+   "tokens": [
+    1492,
+    38
+   ]
+  },
+  {
+   "state_id": "s20261206-dev-v3-3a-stakes1-perm0",
+   "context": "post",
+   "condition": "content|shown",
+   "action": "give(vik)",
+   "fallback": false,
+   "outcome_if_taken": "success",
+   "wrong": false,
+   "correct_handoff": true,
+   "handoff": true,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "give(vik)"
+   ],
+   "prompt_sha256": "7a2c0b191a8dd72da65a72a9958d1ad7a5a9f8f4ce0a74ba1fcce6dfd536b898",
+   "finish_reason": "completed",
+   "tokens": [
+    1581,
+    39
+   ]
+  },
+  {
+   "state_id": "s20261202-dev-v3-3b-stakes1-perm0",
+   "context": "t0",
+   "condition": "none",
+   "action": "ask(ivan,meeting_room)",
+   "fallback": false,
+   "outcome_if_taken": "",
+   "wrong": false,
+   "correct_handoff": false,
+   "handoff": false,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "ask(ivan,meeting_room)",
+    "move(hall)"
+   ],
+   "prompt_sha256": "b303cb09d8df23f4c4a49c6c9aa4d8ffe85017bbf266f6a4720f63d99d20587f",
+   "finish_reason": "completed",
+   "tokens": [
+    1518,
+    40
+   ]
+  },
+  {
+   "state_id": "s20261202-dev-v3-3b-stakes1-perm0",
+   "context": "t0",
+   "condition": "content|shown",
+   "action": "ask(ivan,meeting_room)",
+   "fallback": false,
+   "outcome_if_taken": "",
+   "wrong": false,
+   "correct_handoff": false,
+   "handoff": false,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "ask(ivan,meeting_room)",
+    "move(hall)"
+   ],
+   "prompt_sha256": "bec0f3598d34a68d20d9e3706cc60c9242c32c0e74c086187fe44932a2aee9bc",
+   "finish_reason": "completed",
+   "tokens": [
+    1587,
+    18
+   ]
+  },
+  {
+   "state_id": "s20261202-dev-v3-3b-stakes1-perm0",
+   "context": "post",
+   "condition": "none",
+   "action": "move(hall)",
+   "fallback": false,
+   "outcome_if_taken": "",
+   "wrong": false,
+   "correct_handoff": false,
+   "handoff": false,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "prompt_sha256": "d59194ae12eb0d61da5913176923d2e8abb6a670cdf9d99eac49513d3ee5793b",
+   "finish_reason": "completed",
+   "tokens": [
+    1591,
+    39
+   ]
+  },
+  {
+   "state_id": "s20261202-dev-v3-3b-stakes1-perm0",
+   "context": "post",
+   "condition": "content|shown",
+   "action": "move(hall)",
+   "fallback": false,
+   "outcome_if_taken": "",
+   "wrong": false,
+   "correct_handoff": false,
+   "handoff": false,
+   "gap": 0.0,
+   "bayes_optimal": [
+    "move(hall)"
+   ],
+   "prompt_sha256": "701be2ac8bd0243a41cf078e6895fef75726fdfe70384f6d4b62006642dbcade",
+   "finish_reason": "completed",
+   "tokens": [
+    1677,
+    15
+   ]
+  }
+ ]
+}
