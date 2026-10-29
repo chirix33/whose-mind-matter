@@ -165,3 +165,22 @@ Gate report: `reviews/stage1-prompt-opus.md` (PASS WITH REQUIRED CHANGES S1–S1
   - exact sign-flip enumeration when 2^n ≤ 10^6;
   - the policy stage requires a clean tree with the notes-freeze proof committed;
   - a seed block starts only if a full block (about 8 min) still fits in the 4 h limit.
+
+## Entry 1c — Stage 1 results gate and resumability (2026-10-29; after the Stage 1 regression output, before the freeze and before any Stage 2 output)
+Gate reports:
+- `reviews/stage1-results-opus.md`: PASS WITH REQUIRED CHANGES R1–R3, all applied. The first run of this gate was lost in a second PC restart; this is the re-run.
+- `reviews/stage1-results-sonnet.md`: CONSISTENT.
+
+**Stage 1 regression result** (development, inspected states; no content threshold). Validity: 28/28. Prior copies: 5/8 by the raw count, but only 2 of the 4 diagnosable notes under the R1 count.
+- Under R1 the 4 diagnosable notes are the four 4b notes for the high-rate reporter. Two copy the prior, cooperative 0.70 against a posterior of 0.045. The other two give obstructive 0.18 and 0.89.
+- The other 3 raw "copies" are X-unit coincidences: there the prior (0.02) and the posterior (0.055) are within the tolerance.
+- The 4 unsupported_committed notes are real inference failures: one 2a leakage (the holder credited with an announcement she could not hear) and three 4b misses for the high-rate reporter.
+
+**Changes applied** (none touches the prompt, decoding, validator acceptance or retries):
+- **R1 (defined AFTER the Stage 1 output; reporting only).** A prior copy is counted as diagnosable only where |posterior − prior| > 0.04. The raw count is kept beside it. Addendum: `stage1-regress-R1-addendum.json`.
+- **R2.** Decision attempts with missing token usage are counted per condition, never turned into 0.
+- **R3.** The freeze hashes `configs/models/local_gpt_oss_20b.json`. `verify()` also checks the power, qualification and model-config hashes and the decoding values.
+- **Resumability** (engineering, after two machine restarts):
+  - The notes stage appends every finished call to `data/repair-block/stage2-notes-partial.jsonl` and skips finished calls when re-run. Wall clock is summed over segments.
+  - `policy --resume <run_dir>` keeps complete seed blocks. A block cut off by a restart goes to `aborted-episodes.jsonl` and is re-run in full, so only complete blocks are analyzed.
+  - Every resume is recorded in the manifest. The time spent inside an aborted partial block is not added to the 4 h budget, which is disclosed.

@@ -204,19 +204,23 @@ def score_row(inst, u, parsed, dist, rec=None):
     domain = list(cfg.fact_domains[cfg.query_facts[0]])
     vals = PACKAGES[PACKAGE].schema(domain, u.variable)["properties"]["hypotheses"]["items"]["properties"]["value"]["enum"]
     s = score_output_v3(parsed, content(w, u)[0], dist, robot_known_values(h, cfg.recipient), vals, False)
-    prior_copy = None
+    prior_copy = prior_copy_discriminating = prior = None
     if u.variable == "reliability" and parsed:
         r = dict(inst.spec.rates)
         key = {"X": "r_X", "Y": "r_Y"}.get(next(k for k, v in inst.role.items() if v == u.path[0]), "r_incentive")
         prior = float(r.get(key, r.get("r_incentive", 0)))
         pm = {h_["value"]: h_["p"] for h_ in parsed["hypotheses"]}
         prior_copy = abs(pm.get("obstructive", 0) - prior) <= 0.02 and abs(pm.get("cooperative", 0) - (1 - prior)) <= 0.02
+        # R1 (Stage 1 results gate; defined AFTER the Stage 1 output): a copy is only diagnosable where the posterior
+        # is far from the prior. The raw flag is kept.
+        prior_copy_discriminating = prior_copy and abs(dist.get("obstructive", 0.0) - prior) > 0.04
     errs = [a["validation_errors"] for a in (rec.attempts if rec else [])]
     return {"state": inst.instance_id, "unit": str(u), "ok": parsed is not None, "category": s.get("category"),
             "tv_posterior": s.get("tv_posterior"), "unsupported_mass": s.get("unsupported_mass"),
             "top": s.get("top"), "posterior": dist, "status": (parsed or {}).get("status"),
             "distribution": {h_["value"]: h_["p"] for h_ in (parsed or {}).get("hypotheses", [])},
-            "prior_copy": prior_copy, "attempt_errors": errs,
+            "prior_copy": prior_copy, "prior_copy_discriminating": prior_copy_discriminating,
+            "prior": prior if u.variable == "reliability" and parsed else None, "attempt_errors": errs,
             "public_model_ids": (parsed or {}).get("public_model_ids"), "call": asdict(rec) if rec else None}
 
 
@@ -228,6 +232,9 @@ def summarize(rows):
             "mean_unsupported_mass": round(sum(r["unsupported_mass"] for r in ok) / len(ok), 4) if ok else None,
             "categories": {c: sum(r["category"] == c for r in rows) for c in sorted({str(r["category"]) for r in rows})},
             "reliability_prior_copies": f"{sum(bool(r['prior_copy']) for r in rel)}/{len(rel)}",
+            "reliability_prior_copies_discriminating": (
+                f"{sum(bool(r.get('prior_copy_discriminating')) for r in rel)}/"
+                f"{sum(r.get('prior') is not None and abs(r['posterior'].get('obstructive', 0.0) - r['prior']) > 0.04 for r in rel)}"),
             "notes_citing_pm": sum(bool(r["public_model_ids"]) for r in ok)}
 
 
@@ -258,6 +265,7 @@ def stage_freeze(args):
           "render_revision": REV, "prompt_sha256": prompt_hashes(PACKAGE),
           "source_sha256": {f: hashlib.sha256((ROOT / f).read_bytes()).hexdigest() for f in FROZEN_SOURCES},
           "power_sha256": hashlib.sha256((BLOCK / "power.json").read_bytes()).hexdigest(), "K": chosen_k(),
+          "model_config_sha256": hashlib.sha256(MODEL_CFG.read_bytes()).hexdigest(),
           "seeds": [SEED0 + k for k in range(chosen_k())], "notes_decoding": decoding("notes"),
           "policy_decoding": decoding("policy"), "concurrency": CONCURRENCY, "draws": 2,
           "model": json.loads(MODEL_CFG.read_text())["hf_snapshot"],
@@ -272,6 +280,12 @@ def verify(_args=None):
     bad = [f for f, hsh in fz["source_sha256"].items() if hashlib.sha256((ROOT / f).read_bytes()).hexdigest() != hsh]
     if prompt_hashes(PACKAGE) != fz["prompt_sha256"]:
         bad.append("prompts")
+    for key, path in (("power_sha256", BLOCK / "power.json"), ("qualification_sha256", BLOCK / "stage2-qualification.json"),
+                      ("model_config_sha256", MODEL_CFG)):
+        if hashlib.sha256(path.read_bytes()).hexdigest() != fz[key]:
+            bad.append(key)
+    if decoding("notes") != fz["notes_decoding"] or decoding("policy") != fz["policy_decoding"]:
+        bad.append("decoding")
     prompts = load_prompts(PACKAGE)
     for st in stage2_states(fz["K"]):
         row = fz["states"][st["state_id"]]
@@ -308,11 +322,33 @@ def stage_notes(args):
     out = {"started_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "freeze_sha256": hashlib.sha256(FREEZE.read_bytes()).hexdigest(),
            "states": {}}
     t_start = time.monotonic()
-    with ThreadPoolExecutor(CONCURRENCY) as pool:
-        for sid, us, rec in pool.map(job, jobs):
-            row = out["states"].setdefault(sid, {"inferred": {}, "calls": {}})
-            row["inferred"][us] = dict(rec.parsed, source="inferred") if rec.ok else None
-            row["calls"][us] = asdict(rec)
+    partial = DATA / "stage2-notes-partial.jsonl"  # resumable after a machine restart: finished calls are kept
+    DATA.mkdir(parents=True, exist_ok=True)
+    done = {}
+    if partial.exists():
+        for line in partial.read_text().splitlines():
+            if line.strip():
+                r = json.loads(line)
+                done[(r["sid"], r["unit"])] = r
+    out["resumed_calls"] = len(done)
+    seg = time.strftime("%Y%m%d-%H%M%S")
+    segs = {}
+    for r in done.values():  # earlier segments: each one's elapsed time is its largest recorded elapsed
+        segs[r.get("segment", "?")] = max(segs.get(r.get("segment", "?"), 0.0), r.get("segment_wall_s", 0.0))
+    out["prior_wall_s"] = round(sum(segs.values()), 1)
+    out["segments"] = sorted(segs) + [seg]
+    todo = [j for j in jobs if j not in done]
+    with ThreadPoolExecutor(CONCURRENCY) as pool, partial.open("a") as pf:
+        for sid, us, rec in pool.map(job, todo):
+            r = {"sid": sid, "unit": us, "ok": rec.ok, "parsed": rec.parsed, "call": asdict(rec),
+                 "segment": seg, "segment_wall_s": round(time.monotonic() - t_start, 1)}
+            pf.write(json.dumps(r, default=str) + "\n")
+            pf.flush()
+            done[(sid, us)] = r
+    for (sid, us), r in sorted(done.items()):
+        row = out["states"].setdefault(sid, {"inferred": {}, "calls": {}})
+        row["inferred"][us] = dict(r["parsed"], source="inferred") if r["ok"] else None
+        row["calls"][us] = r["call"]
     t_ref = time.process_time()
     for st in sts:
         row = out["states"].setdefault(st["state_id"], {"inferred": {}, "calls": {}})
@@ -323,7 +359,7 @@ def stage_notes(args):
         row["rendered_sha256"] = {c: sha(rendered(st, c, out)[1]) for c in st["conds"]}
     out["reference_oracle_s"] = round(time.process_time() - t_ref, 2)  # includes rendering; non-deployable oracle CPU
     out["ended_at"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
-    out["wall_s"] = round(time.monotonic() - t_start, 1)
+    out["wall_s"] = round(time.monotonic() - t_start + out["prior_wall_s"], 1)  # summed over segments (restarts)
     DATA.mkdir(parents=True, exist_ok=True)
     NOTES.write_text(json.dumps(out, indent=1, sort_keys=True, default=str))
     proof = {"notes_file_sha256": sha(out["states"]), "freeze_sha256": out["freeze_sha256"], "wall_s": out["wall_s"],
@@ -381,13 +417,38 @@ def stage_policy(args):
     meta = {"stage": "policy", "freeze_sha256": hashlib.sha256(FREEZE.read_bytes()).hexdigest(),
             "notes_file_sha256": proof["notes_file_sha256"], "decoding": decoding("policy"), "draws": 2,
             "concurrency": CONCURRENCY, "limit_s": 4 * 3600, "package": PACKAGE, "render_revision": REV}
-    manifest = runlog.new_manifest("repair-stage2", meta)
-    out = RUNS / manifest["run_id"]
-    out.mkdir(parents=True, exist_ok=True)
+    resume = getattr(args, "resume", None)
+    prior_blocks, prior_wall, kept = [], 0.0, []
+    if resume:
+        out = Path(resume)
+        manifest = json.loads((out / "manifest.json").read_text()) if (out / "manifest.json").exists() else \
+            json.loads((out / "manifest-start.json").read_text())
+        prev = [json.loads(l) for l in (out / "episodes.jsonl").read_text().splitlines() if l.strip()]
+        per_block = 2 * sum(len(st["conds"]) for st in sts if st["k"] == 0)
+        aborted = []
+        for seed in sorted({e["seed"] for e in prev}):
+            es = [e for e in prev if e["seed"] == seed]
+            if len(es) == per_block:
+                prior_blocks.append(seed)
+                kept.extend(es)
+            else:  # a block cut off by a restart is logged and re-run in full; it never enters the analysis
+                aborted.extend(es)
+        with (out / "aborted-episodes.jsonl").open("a") as af:
+            af.write("".join(json.dumps(e, default=str) + "\n" for e in aborted))
+        prior_wall = float(json.loads((out / "progress.json").read_text())["wall_s"]) if (out / "progress.json").exists() else 0.0
+        manifest.setdefault("resumes", []).append({"at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "kept_blocks": prior_blocks,
+                                                   "aborted_episodes": len(prev) - len(kept), "prior_wall_s": prior_wall})
+        (out / "episodes.jsonl").write_text("".join(json.dumps(e, default=str) + "\n" for e in kept))
+    else:
+        manifest = runlog.new_manifest("repair-stage2", meta)
+        out = RUNS / manifest["run_id"]
+        out.mkdir(parents=True, exist_ok=True)
+        (out / "manifest-start.json").write_text(json.dumps(manifest, indent=1, default=str))
+    print("run dir", out, flush=True)
     client = LengthGuard(make_client(json.loads(MODEL_CFG.read_text())))
-    t_start = time.monotonic()
+    t_start = time.monotonic() - prior_wall
     budget = 4 * 3600 - float(notes.get("wall_s", 0))
-    completed = []
+    completed = list(prior_blocks)
 
     def job(item):
         n, (st, cond, r) = item
@@ -399,8 +460,10 @@ def stage_policy(args):
             return {**base, "blocked": f"error: {type(e).__name__}: {e}"}
         return {**base, "units": [str(u) for u in st["conds"][cond]], **asdict(res)}
 
-    with (out / "episodes.jsonl").open("w") as f, ThreadPoolExecutor(CONCURRENCY) as pool:
+    with (out / "episodes.jsonl").open("a") as f, ThreadPoolExecutor(CONCURRENCY) as pool:
         for k in range(fz["K"]):
+            if SEED0 + k in completed:
+                continue
             if time.monotonic() - t_start + 8 * 60 > budget:
                 break  # overrun rule: start a seed block only if a full block (~8 min) still fits in the 4 h limit
             block = [st for st in sts if st["k"] == k]
@@ -414,6 +477,8 @@ def stage_policy(args):
                 f.write(json.dumps(res, default=str) + "\n")
                 f.flush()
             completed.append(SEED0 + k)
+            (out / "progress.json").write_text(json.dumps({"completed_seed_blocks": completed,
+                                                           "wall_s": round(time.monotonic() - t_start, 1)}))
             print("seed block done", SEED0 + k, round(time.monotonic() - t_start), "s", flush=True)
     runlog.finish(manifest, out, wall_clock_s=time.monotonic() - t_start, completed_seed_blocks=completed)
     print("out", out, "blocks", len(completed))
@@ -422,6 +487,7 @@ def stage_policy(args):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=("qualify", "regress", "freeze", "verify", "notes", "policy"))
+    ap.add_argument("--resume", help="policy: an interrupted run dir to continue (complete seed blocks are kept)")
     args = ap.parse_args()
     {"qualify": stage_qualify, "regress": stage_regress, "freeze": stage_freeze, "verify": verify,
      "notes": stage_notes, "policy": stage_policy}[args.stage](args)

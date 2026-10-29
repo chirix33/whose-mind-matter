@@ -181,7 +181,8 @@ def main():
             r = score_row(st["inst"], u, parsed, dist)
             fid.append({"state_id": sid, "construction": st["inst"].construction, "unit": us, "ok": r["ok"],
                         "category": r["category"], "tv": r["tv_posterior"], "unsupported_mass": r["unsupported_mass"],
-                        "status": r["status"], "prior_copy": r["prior_copy"], "distribution": r["distribution"],
+                        "status": r["status"], "prior_copy": r["prior_copy"],
+                        "prior_copy_discriminating": r["prior_copy_discriminating"], "distribution": r["distribution"],
                         "posterior": r["posterior"]})
     fid_by = defaultdict(list)
     for f in fid:
@@ -192,7 +193,8 @@ def main():
                    "abstained": sum(f["status"] == "abstain" for f in v),
                    "categories": {k: sum(str(f["category"]) == k for f in v) for k in sorted({str(f["category"]) for f in v})},
                    # in 4c the posterior equals the prior, so a prior match there is CORRECT (S6)
-                   ("matches_prior_correct_in_4c" if c == "4c" else "prior_copies"): sum(bool(f["prior_copy"]) for f in v),
+                   ("matches_prior_correct_in_4c" if c == "4c" else "prior_copies_raw"): sum(bool(f["prior_copy"]) for f in v),
+                   **({"prior_copies_discriminating": sum(bool(f["prior_copy_discriminating"]) for f in v)} if c != "4c" else {}),
                    **({"over_updates_4c": sum(f["ok"] and f["prior_copy"] is False for f in v)} if c == "4c" else {})}
                for c, v in sorted(fid_by.items())}
     (ROOT / "data" / "repair-block").mkdir(parents=True, exist_ok=True)
@@ -218,6 +220,11 @@ def main():
     for e in good:
         d = e["usage"].get("decision", {})
         c = comp[e["condition"]]
+        for call in e.get("calls", []):
+            if call.get("kind") == "decision":
+                for a in call.get("attempts", []):
+                    c["decision_attempts"] += 1
+                    c["decision_attempts_missing_usage"] += int(a.get("prompt_tokens") is None or a.get("completion_tokens") is None)
         c["episodes"] += 1
         c["decision_calls"] += d.get("calls", 0)
         c["decision_prompt_tokens"] += d.get("prompt_tokens", 0)

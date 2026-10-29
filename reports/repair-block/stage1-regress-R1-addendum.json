@@ -1,0 +1,90 @@
+{
+ "label": "R1 addendum (prior-copy metric defined AFTER the Stage 1 output; reporting only)",
+ "source": "regress-20261028-234117.json",
+ "summary": {
+  "raw": "5/8",
+  "discriminating": "2/4"
+ },
+ "rows": [
+  {
+   "state": "dev-v3-4b-stakes1-perm0",
+   "unit": "R(kim)",
+   "prior": 0.02,
+   "posterior": 0.0547,
+   "note_obstructive": 0.02,
+   "raw_copy": true,
+   "discriminating": false,
+   "copy_discriminating": false
+  },
+  {
+   "state": "dev-v3-4b-stakes1-perm0",
+   "unit": "R(uma)",
+   "prior": 0.3,
+   "posterior": 0.955,
+   "note_obstructive": 0.3,
+   "raw_copy": true,
+   "discriminating": true,
+   "copy_discriminating": true
+  },
+  {
+   "state": "dev-v3-4b-stakes4-perm0",
+   "unit": "R(kim)",
+   "prior": 0.02,
+   "posterior": 0.0547,
+   "note_obstructive": 0.0713,
+   "raw_copy": false,
+   "discriminating": false,
+   "copy_discriminating": false
+  },
+  {
+   "state": "dev-v3-4b-stakes4-perm0",
+   "unit": "R(uma)",
+   "prior": 0.3,
+   "posterior": 0.955,
+   "note_obstructive": 0.1765,
+   "raw_copy": false,
+   "discriminating": true,
+   "copy_discriminating": false
+  },
+  {
+   "state": "dev-v3-4b-stakes1-perm1",
+   "unit": "R(uma)",
+   "prior": 0.02,
+   "posterior": 0.0547,
+   "note_obstructive": 0.0297,
+   "raw_copy": true,
+   "discriminating": false,
+   "copy_discriminating": false
+  },
+  {
+   "state": "dev-v3-4b-stakes1-perm1",
+   "unit": "R(zane)",
+   "prior": 0.3,
+   "posterior": 0.955,
+   "note_obstructive": 0.3,
+   "raw_copy": true,
+   "discriminating": true,
+   "copy_discriminating": true
+  },
+  {
+   "state": "dev-v3-4b-stakes4-perm1",
+   "unit": "R(uma)",
+   "prior": 0.02,
+   "posterior": 0.0547,
+   "note_obstructive": 0.0001,
+   "raw_copy": true,
+   "discriminating": false,
+   "copy_discriminating": false
+  },
+  {
+   "state": "dev-v3-4b-stakes4-perm1",
+   "unit": "R(zane)",
+   "prior": 0.3,
+   "posterior": 0.955,
+   "note_obstructive": 0.894,
+   "raw_copy": false,
+   "discriminating": true,
+   "copy_discriminating": false
+  }
+ ]
+}
