@@ -1,17 +1,17 @@
-# Review request — 2026-10-29 (repair-and-validation block, D-015, final)
+# Review request — 2026-10-29 (integration diagnostic, D-016, final)
 
-**Read first:** `reports/repair-block/FINAL_REVIEW.md` (recommendation first). Details are in `reports/repair-block/stage2-summary.md`; gate reports are in `reports/repair-block/reviews/`; the bundle index is `reports/repair-block/evidence/README.md`.
+**Read first:** `reports/integration-block/FINAL_REVIEW.md`. Gate reports are in `reports/integration-block/reviews/`.
 
-The previous request (the dev-v3 block) was answered by D-015.
-
-**Pre-declared outcome: D-015 §5(3), reconsider the method/environment fit.** On 288 fresh base scenarios with the local backbone:
-- reference − none is −0.024 [−0.074, +0.028], "no practical value";
-- inferred − none is −0.043 [−0.098, +0.013], "fails";
-- headroom against the exact Bayes actor is about 0.50.
+**Outcome: D-016 §5 bullet 4. Neither factor helped,** so content and display tuning stops and the work returns to a method/environment review.
+- The action-consequence line harmed at t0 (3b; descriptive).
+- After the ask, the implication effect is unresolved.
+- Omitting the stale line harmed, acting as a generic caution signal.
+- The API policy was optimal on 8/8 contexts with and without notes (a ceiling result).
 
 ## Decisions that need research review
-1. **Accept §5(3), and decide what to reconsider:**
-   - policy integration: the policy does not turn correct notes into correct actions. In 3b a correct note *increases* the wrong handoff, 28 vs 10 of 96;
-   - or the environment's suitability for explicit mental notes.
-2. **The proposed 3b/2b 2×2 diagnostic** on fresh seeds: content-only vs content plus decision-implication rendering, × the after-ask stale relabel on vs off, compared with the exact Bayes actor. It changes the rendering method, so it needs approval, modification or rejection.
-3. **Whether a stronger policy backbone is in scope** as a separate integration check. The ledger stands at USD 3.869 of 5; no spending is proposed without a decision.
+1. **The direction of the method/environment review.** Options:
+   - allocate complementary units together: in 3b, the missing piece was K(R) next to a correct K(F→R);
+   - the policy backbone;
+   - the environment's fit for explicit mental notes.
+2. **The unresolved post-ask implication effect** (+0.083 [−0.036, +0.208]): test it with about 45–50 seeds per construction, or drop it?
+3. **A properly designed backbone comparison** under a separate budget: yes or no? About USD 1.08 of the original USD 5 cap remains.

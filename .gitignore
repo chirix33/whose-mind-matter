@@ -37,3 +37,6 @@ reports/dev-v3-block/*.zip
 
 # repair block source archive (regenerable from git)
 reports/repair-block/*.zip
+
+# integration block source archive (regenerable from git)
+reports/integration-block/*.zip

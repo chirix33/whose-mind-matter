@@ -1,4 +1,12 @@
-# Milestone report — Stage 2 pilot, the autonomous block, the dev-v3 block, and the repair-and-validation block (2026-10-29)
+# Milestone report — through the integration diagnostic (2026-10-29)
+
+> **Latest: integration diagnostic complete (D-016).** See **[reports/integration-block/FINAL_REVIEW.md](integration-block/FINAL_REVIEW.md)**.
+> - 1,536 single-decision probes on fresh seeds (3b and 2b, with positive controls 3a and 2a) and a 16-call API check (USD 0.055).
+> - Neither the action-consequence line nor omitting the stale label helped. The line harmed at t0 in 3b (descriptive); omission harmed as a caution signal; the post-ask implication effect is unresolved.
+> - The API policy was optimal on 8/8 contexts with and without notes (a ceiling result).
+> - Outcome §5 bullet 4: stop content and display tuning; method/environment review.
+>
+> **Earlier blocks** below.
 
 > **Latest: repair-and-validation block complete (D-015).** See **[reports/repair-block/FINAL_REVIEW.md](repair-block/FINAL_REVIEW.md)** (recommendation first).
 > - **Stage 1:** the one package revision, pilot-v2.2 (citable public-model IDs, a prior-vs-posterior section, a matched note renderer), then a regression check, a precision simulation (K = 24), symbolic qualification of 576 fresh states, and a freeze.

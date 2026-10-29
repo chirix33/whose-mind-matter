@@ -1,0 +1,18 @@
+{
+ "reports/integration-block/FINAL_REVIEW.md": "dd10f19b784bfab9fa38740278e78d061a76c15abad5d22383c01b938c18cee1",
+ "reports/integration-block/api-check.json": "d1f1a96ebfe9a7a71b77eaaca5e73f818732b2e29ec590c894f52256c9278e77",
+ "reports/integration-block/audit-v1-pregate.json": "4d097b2765672e5ff9a7dd14a1ecddc9e66f31837987ae9331fc2f5a4c3d057c",
+ "reports/integration-block/audit-v1-pregate.md": "f4b6dbe6baed585c38f29e3c6d560c47cc98ad66d0716f526d9741811e2cd632",
+ "reports/integration-block/audit.json": "261e0d2ba54614b192af987574019c119910ff264c68b0786cddd9d2ae5cbfe3",
+ "reports/integration-block/audit.md": "8704927d2a63cfdaf15a1cd78664a45bf44b138b9b09c32732f92810898429e1",
+ "reports/integration-block/evidence/README.md": "b8aa7e57ed8992f4c6750d485c3f8fe8e81c0a7155e6c1d4ed98a30ad29ee8f3",
+ "reports/integration-block/evidence/decisions-local.csv": "f745249fbab808e3155369b7bbfff98a9a7de4cef79797b6d0101fd599a1b1f3",
+ "reports/integration-block/experiment-plan.md": "b43ae82b08a81cbcce43344bedec1f237f9ba8eb8c2e3dd970868d717645d33c",
+ "reports/integration-block/integration-freeze.json": "080a1fd7223121eb23712a754fcaa32dcc3c40b04bcdb4bdd188dc600302acb8",
+ "reports/integration-block/qualification.json": "653d8c562e2956250c8a157211132233c0a2a736faae051b65ea0558dd42414e",
+ "reports/integration-block/results.json": "cebba7d6ee34205a30f570e412be606b944555c969d9f5c09cedfb40cb04d147",
+ "reports/integration-block/results.md": "8d7dbc5cc48cd76ab3c1f3844b935c0aa27499b31f75341205c721d2da232dc4",
+ "reports/integration-block/reviews/plan-opus.md": "8e219674a02642f3a004108cb28043ac013e7f02df7f134452201d28f0d52290",
+ "reports/integration-block/reviews/results-opus.md": "4b07c405231cf6887c4a5f2b3a349dc31867259e3a6ecaeb418b51d5c3dde446",
+ "reports/integration-block/reviews/results-sonnet.md": "3687361832a3337a774f91497bad9d78fe8a00bba03081d7dd05d3f897eb60df"
+}

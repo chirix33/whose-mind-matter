@@ -1,0 +1,809 @@
+diff --git a/scripts/audit_integration.py b/scripts/audit_integration.py
+new file mode 100644
+index 0000000..942851d
+--- /dev/null
++++ b/scripts/audit_integration.py
+@@ -0,0 +1,168 @@
++"""Integration block part A: audit of the existing repair Stage 2 traces (no model calls). D-016 §3A.
++
++    python3 scripts/audit_integration.py   -> reports/integration-block/audit.{json,md}
++
++Action patterns are the main evidence. The reasoning classification uses the keyword rubric below (written before any
++coding of traces), reported with examples and every uncertain case; written reasoning is not a causal record. No causal
++comparison between episodes that did and did not ask.
++"""
++
++from __future__ import annotations
++
++import json
++import re
++import sys
++from collections import Counter, defaultdict
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++sys.path.insert(0, str(ROOT / "scripts"))
++
++from officeminds.episode import VisibleHistory  # noqa: E402
++from officeminds.world import Action  # noqa: E402
++from run_repair import NOTES, frozen_for, stage2_states  # noqa: E402
++from vomi.graph import PerspectiveGraph  # noqa: E402
++
++RUN = Path("/home/aashraf/officeminds-runs/repair/repair-stage2-20261029-132459-743ace")
++OUT = ROOT / "reports" / "integration-block"
++FOCUS = ("2a", "2b", "3a", "3b")
++# Rubric v1 was applied once BEFORE the plan gate (output kept as audit-v1-pregate.json). Rubric v2 (below) adds code (v)
++# "uses the courier's own belief" (plan-gate RC7) and is fixed in experiment-plan.md Entry 1a, with its hash, before re-coding.
++RUBRIC = {
++    "uses_own_belief": re.compile(r"\b(knows|believes|thinks|said|says|told)\b[^.]{0,50}\b(meeting(_room)?|meeting is|new office|"
++                                  r"current office|changed)\b[^.]{0,60}\b(give|forward|hand)", re.I),
++    "forwarding_rule": re.compile(r"forward\w*[^.]{0,80}\b(thinks|believes|think|believe)\b[^.]{0,40}\b(believes|thinks|will go|goes)\b", re.I),
++    "belief_as_location": re.compile(r"\b(believes|says|said|thinks|told|answer\w*)\b[^.]{0,80}\b(so|therefore|thus|hence|meaning)\b"
++                                     r"[^.]{0,60}\b(is|likely|probably|must be|should be)\b", re.I),
++}
++
++
++def G_focal(st):
++    from officeminds.devgen3 import focal_units
++    return focal_units(st["inst"])
++
++
++def parse(a: str) -> Action:
++    kind, _, rest = a.partition("(")
++    args = [x for x in rest.rstrip(")").split(",") if x]
++    return Action(kind, *args)
++
++
++def classify(text: str) -> str:
++    if not text.strip():
++        return "uncertain"
++    hits = [k for k, rx in RUBRIC.items() if rx.search(text)]
++    if len(hits) == 1:
++        return hits[0]
++    return "uncertain" if len(hits) > 1 else "other"
++
++
++def main():
++    eps = [json.loads(l) for l in (RUN / "episodes.jsonl").read_text().splitlines() if l.strip()]
++    notes = json.loads(NOTES.read_text())
++    sts = {st["state_id"]: st for st in stage2_states(24)}
++    first = defaultdict(Counter)
++    after_ask = defaultdict(Counter)
++    stale_exp = defaultdict(lambda: [0, 0])
++    stale_split = defaultdict(lambda: {"after_ask": [0, 0], "sighting_only": [0, 0]})
++    ask_sym = defaultdict(lambda: {"asks": 0, "true_content_unchanged": 0, "posterior_unchanged": 0})
++    later_wrong = defaultdict(lambda: [0, 0])
++    coded = defaultdict(list)
++    for e in eps:
++        st = sts[e["state_id"]]
++        c, cond = st["inst"].construction, e["condition"]
++        if cond not in ("none", "inferred", "reference"):
++            continue
++        stakes = st["inst"].variant.stakes
++        key = f"{c}|{cond}|{stakes:g}"
++        acts = [parse(a) for a in e["actions"]]
++        first[key][acts[0].kind] += 1
++        # replay: world + graph status per decision (robot-visible replay of the recorded actions)
++        w = st["inst"].scenario.build(st["inst"].hidden)
++        h = VisibleHistory(st["inst"].scenario.brief, [(None, w.reset())])
++        g = None
++        if cond != "none":
++            keep, fr = frozen_for(st, cond, notes)
++            g = PerspectiveGraph(recipient=st["inst"].scenario.config.recipient, refutation_mode="fact_only")
++            for u in keep:
++                g.instantiate(u, fr[str(u)], fr[str(u)].get("evidence_ids", []), t=0, cost=0.0)
++        dec_calls = [cl for cl in e["calls"] if cl["kind"] == "decision"]
++        for t, a in enumerate(acts):
++            if t > 0 and g is not None:
++                g.advance(h)
++                stale = any(r["status"] == "stale" for r in g.policy_view())
++                stale_exp[key][0] += stale
++                stale_exp[key][1] += 1
++                kind = "after_ask" if any(x.kind == "ask" for x in acts[:t]) else "sighting_only"
++                stale_split[key][kind][0] += stale
++                stale_split[key][kind][1] += 1
++            if a.kind == "ask" and c in FOCUS and cond == "reference":
++                from vomi.oracle import ExactOracle
++                from vomi.units import content
++                h2 = VisibleHistory(h.brief, list(h.steps) + [(a, w.clone().step(a))])
++                o_a, o_b = ExactOracle(st["inst"].scenario, h), ExactOracle(st["inst"].scenario, h2)
++                wb = w.clone()
++                wb.step(a)
++                for u in G_focal(st):
++                    pa, pb = {}, {}
++                    for p_, x in o_a.belief:
++                        pa[content(x, u)[0]] = pa.get(content(x, u)[0], 0) + p_
++                    for p_, x in o_b.belief:
++                        pb[content(x, u)[0]] = pb.get(content(x, u)[0], 0) + p_
++                    k2 = f"{c}|asked-{next((r for r, n in st['inst'].role.items() if n == a.target), '?')}|{u}"
++                    ask_sym[k2]["asks"] += 1
++                    ask_sym[k2]["true_content_unchanged"] += content(w, u) == content(wb, u)
++                    ask_sym[k2]["posterior_unchanged"] += all(abs(pa.get(v, 0) - pb.get(v, 0)) < 1e-9 for v in set(pa) | set(pb))
++            o = w.step(a)
++            if t > 0 and a.kind in ("give", "drop"):
++                later_wrong[key][1] += 1
++                later_wrong[key][0] += o.outcome == "error"
++            if t > 0 and acts[t - 1].kind == "ask":
++                after_ask[key][a.kind + ("_wrong" if a.kind in ("give", "drop") and o.outcome == "error" else "")] += 1
++            if c in ("2b", "3b") and cond == "reference" and a.kind in ("give", "drop") and t < len(dec_calls):
++                text = (dec_calls[t]["attempts"][-1].get("reasoning") or "")
++                coded[c].append({"state_id": e["state_id"], "replicate": e["replicate"], "step": t, "action": str(a),
++                                 "outcome": o.outcome, "class": classify(text), "excerpt": text[:400]})
++            h.steps.append((a, o))
++            if o.done:
++                break
++    res = {"label": "Audit of repair Stage 2 traces (no model calls); action patterns are the main evidence",
++           "run": RUN.name,
++           "first_action": {k: dict(v) for k, v in sorted(first.items())},
++           "after_ask_next_action": {k: dict(v) for k, v in sorted(after_ask.items())},
++           "stale_exposure_later_decisions": {k: f"{a}/{b}" for k, (a, b) in sorted(stale_exp.items())},
++           "later_give_drop_wrong": {k: f"{a}/{b}" for k, (a, b) in sorted(later_wrong.items())},
++           "stale_exposure_split": {k: {kk: f"{a}/{b}" for kk, (a, b) in v.items()} for k, v in sorted(stale_split.items())},
++           "existing_asks_symbolic": {k: dict(v) for k, v in sorted(ask_sym.items())},
++           "rubric_version": "v2",
++           "reasoning_rubric": {k: rx.pattern for k, rx in RUBRIC.items()},
++           "reasoning_classes": {c: dict(Counter(x["class"] for x in v)) for c, v in coded.items()},
++           "reasoning_examples": {c: {cl: [x for x in v if x["class"] == cl][:3] for cl in ("uses_own_belief", "forwarding_rule", "belief_as_location", "other")}
++                                  for c, v in coded.items()},
++           "reasoning_uncertain": {c: [x for x in v if x["class"] == "uncertain"] for c, v in coded.items()},
++           "reasoning_by_outcome": {c: {cl: dict(Counter(x["outcome"] for x in v if x["class"] == cl))
++                                        for cl in ("uses_own_belief", "forwarding_rule", "belief_as_location", "other", "uncertain")}
++                                    for c, v in coded.items()}}
++    OUT.mkdir(parents=True, exist_ok=True)
++    (OUT / "audit.json").write_text(json.dumps(res, indent=1, sort_keys=True) + "\n")
++    L = ["# Audit of existing repair Stage 2 traces (no model calls)", "", f"Run `{RUN.name}`. Action patterns first; "
++         "reasoning classes are a keyword-rubric heuristic, not a causal record.", "", "## First action (t0) by construction | condition | stakes", ""]
++    L += [f"- {k}: {dict(v)}" for k, v in sorted(first.items()) if k.split("|")[0] in FOCUS]
++    L += ["", "## Later decisions (t ≥ 1)", "", "Stale-label exposure (decisions with any shown note marked stale / later decisions):"]
++    L += [f"- {k}: {v}" for k, v in res["stale_exposure_later_decisions"].items() if k.split("|")[0] in FOCUS and "|none|" not in k]
++    L += ["", "Stale exposure split (after an ask / after a sighting or mention only):"]
++    L += [f"- {k}: {v}" for k, v in res["stale_exposure_split"].items() if k.split("|")[0] in FOCUS and "|none|" not in k]
++    L += ["", "Asks that occurred (reference episodes): true content unchanged / posterior unchanged:"]
++    L += [f"- {k}: {v}" for k, v in res["existing_asks_symbolic"].items()]
++    L += ["", "Action right after an ask (suffix _wrong = immediate wrong delivery):"]
++    L += [f"- {k}: {v}" for k, v in res["after_ask_next_action"].items() if k.split("|")[0] in FOCUS]
++    L += ["", "## Reasoning classes (2b/3b reference give/drop decisions)", "", json.dumps(res["reasoning_classes"]),
++          "", "By outcome: " + json.dumps(res["reasoning_by_outcome"]), "",
++          f"Uncertain cases listed in audit.json: { {c: len(v) for c, v in res['reasoning_uncertain'].items()} }"]
++    (OUT / "audit.md").write_text("\n".join(L) + "\n", encoding="utf-8")
++    print(json.dumps(res["reasoning_classes"]), json.dumps({k: v for k, v in res["first_action"].items() if k.startswith("3b")}))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/report_integration.py b/scripts/report_integration.py
+new file mode 100644
+index 0000000..ec2ec4a
+--- /dev/null
++++ b/scripts/report_integration.py
+@@ -0,0 +1,175 @@
++"""Integration diagnostic analysis (frozen before outputs; experiment-plan.md Entry 1 §E + Entry 1a RC5/RC6).
++
++    python3 scripts/report_integration.py   -> reports/integration-block/results.{json,md}
++
++Unit: base unit = (seed, construction); its value per condition and context = mean over x1/x4 x 3 draws. Contrasts are
++paired within base units; 95% bootstrap CI resampling seeds within construction (10,000) plus an exact paired sign-flip
++p (2^n enumeration). Negative pair = 2b+3b; positive pair = 2a+3a. Descriptive diagnostic (8 seeds per construction).
++"""
++
++from __future__ import annotations
++
++import itertools
++import json
++import random
++import statistics
++import sys
++from collections import defaultdict
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++BLOCK = ROOT / "reports" / "integration-block"
++DATA = ROOT / "data" / "integration-block"
++NEG, POS = ("2b", "3b"), ("2a", "3a")
++GAP_TOL = 0.10  # RC5(b): positive-pair gap increase tolerance
++
++
++def boot(d_by, seed=20261201, n=10000):
++    rng = random.Random(seed)
++    cons = sorted(d_by)
++    ms = sorted(statistics.mean(statistics.mean(rng.choices(d_by[c], k=len(d_by[c]))) for c in cons) for _ in range(n))
++    return ms[int(0.025 * n)], ms[int(0.975 * n) - 1]
++
++
++def signflip(d):
++    n = len(d)
++    if n == 0:
++        return None
++    obs = abs(sum(d) / n)
++    if 2 ** n > 2 ** 20:
++        rng = random.Random(7)
++        hits = sum(abs(sum(x if rng.random() < .5 else -x for x in d) / n) >= obs - 1e-12 for _ in range(200000))
++        return (hits + 1) / 200001
++    return sum(abs(sum(x * s for x, s in zip(d, sg)) / n) >= obs - 1e-12 for sg in itertools.product((1, -1), repeat=n)) / 2 ** n
++
++
++def main(api_only=False):
++    rows = [json.loads(l) for l in (DATA / "local-decisions.jsonl").read_text().splitlines() if l.strip()]
++    q = {r["state_id"]: r for r in json.loads((BLOCK / "qualification.json").read_text())["states"]}
++    cons_of = {sid: r["construction"] for sid, r in q.items()}
++    role_of = {sid: r["ask_subject_role"] for sid, r in q.items()}
++
++    def values(ctx, metric, keep=lambda r: True):
++        v = defaultdict(lambda: defaultdict(list))
++        for r in rows:
++            if r["context"] == ctx and keep(r):
++                v[(q[r["state_id"]]["seed"], cons_of[r["state_id"]])][r["condition"]].append(float(r[metric]))
++        return {k: {c: statistics.mean(x) for c, x in cs.items()} for k, cs in v.items()}
++
++    def contrast(vals, f, cons):
++        d_by = defaultdict(list)
++        for (seed, c), cs in vals.items():
++            if c in cons:
++                try:
++                    d_by[c].append(f(cs))
++                except KeyError:
++                    pass
++        d = [x for v in d_by.values() for x in v]
++        if not d:
++            return None
++        est = statistics.mean(statistics.mean(v) for v in d_by.values())
++        lo, hi = boot(d_by)
++        return {"estimate": round(est, 4), "ci95": [round(lo, 4), round(hi, 4)], "n": len(d), "signflip_p": signflip(d)}
++
++    C = {"t0": {"content-none": lambda c: c["content"] - c["none"], "impl-none": lambda c: c["impl"] - c["none"],
++                "impl-content": lambda c: c["impl"] - c["content"]},
++         "post": {**{f"{k}-none": (lambda k: lambda c: c[k] - c["none"])(k) for k in
++                     ("content|shown", "content|omitted", "impl|shown", "impl|omitted")},
++                  "impl_main": lambda c: (c["impl|shown"] + c["impl|omitted"] - c["content|shown"] - c["content|omitted"]) / 2,
++                  "omit_main": lambda c: (c["content|omitted"] + c["impl|omitted"] - c["content|shown"] - c["impl|shown"]) / 2,
++                  "interaction": lambda c: (c["impl|omitted"] - c["impl|shown"]) - (c["content|omitted"] - c["content|shown"]),
++                  "impl_avg-none": lambda c: (c["impl|shown"] + c["impl|omitted"]) / 2 - c["none"],
++                  "omit_avg-none": lambda c: (c["content|omitted"] + c["impl|omitted"]) / 2 - c["none"]}}
++    res = {"decisions": len(rows), "contrasts": {}, "rates": {}, "fallbacks": {}, "readings": {}}
++    for sens, keep in (("primary", lambda r: True), ("excl_fallbacks", lambda r: not r["fallback"])):
++        for ctx, fs in C.items():
++            for metric in ("wrong", "gap", "correct_handoff", "handoff"):
++                vals = values(ctx, metric, keep)
++                for group, cons in (("negative", NEG), ("positive", POS), *((c, (c,)) for c in NEG + POS)):
++                    for name, f in fs.items():
++                        res["contrasts"][f"{sens}|{ctx}|{metric}|{group}|{name}"] = contrast(vals, f, cons)
++    # per-condition raw rates by construction x stakes x context; 2a post-ask split by asked role (RC1)
++    agg = defaultdict(list)
++    for r in rows:
++        st = r["state_id"]
++        key = f"{r['context']}|{cons_of[st]}|{'x4' if 'stakes4' in st else 'x1'}|{r['condition']}"
++        agg[key].append(r)
++        if cons_of[st] == "2a" and r["context"] == "post":
++            agg[f"post|2a-asked-{role_of[st]}|{r['condition']}"].append(r)
++    res["rates"] = {k: {"n": len(v), "wrong": statistics.mean(x["wrong"] for x in v),
++                        "correct_handoff": statistics.mean(x["correct_handoff"] for x in v),
++                        "gap": statistics.mean(x["gap"] for x in v), "fallbacks": sum(x["fallback"] for x in v),
++                        "actions": dict(sorted({a: sum(x["action"] == a for x in v) for a in {x["action"] for x in v}}.items()))}
++                    for k, v in sorted(agg.items())}
++    fb = defaultdict(lambda: [0, 0, 0])
++    for r in rows:
++        k = f"{r['context']}|{r['condition']}"
++        fb[k][0] += r["fallback"]
++        fb[k][1] += 1
++        fb[k][2] += sum(bool(a.get("validation_errors")) for a in r["call"]["attempts"])
++    res["fallbacks"] = {k: {"fallbacks": a, "decisions": b, "failed_attempts": c} for k, (a, b, c) in sorted(fb.items())}
++    flag = []
++    for ctx, conds in (("t0", ("none", "content", "impl")), ("post", ("none", "content|shown", "content|omitted",
++                                                                      "impl|shown", "impl|omitted"))):
++        rates = {c: res["fallbacks"].get(f"{ctx}|{c}", {"fallbacks": 0, "decisions": 1}) for c in conds}
++        r_ = {c: v["fallbacks"] / v["decisions"] for c, v in rates.items()}
++        if max(r_.values()) - min(r_.values()) > 0.05:
++            flag.append(ctx)
++    res["fallback_rate_flag_contexts"] = flag
++
++    # pre-declared reading (Entry 1 §E as amended by RC5), separately for t0 and post-ask
++    def X(ctx, metric, group, name):
++        return res["contrasts"][f"primary|{ctx}|{metric}|{group}|{name}"]
++
++    def reading(ctx, factor, vs_none):
++        w_f, w_n = X(ctx, "wrong", "negative", factor), X(ctx, "wrong", "negative", vs_none)
++        c_n = X(ctx, "correct_handoff", "positive", vs_none)
++        c_f = X(ctx, "correct_handoff", "positive", factor)
++        g_f, g_p = X(ctx, "gap", "negative", factor), X(ctx, "gap", "positive", factor)
++        if (w_f["ci95"][0] > 0) or (c_f["ci95"][1] < 0):
++            return "harm"
++        helps = (w_f["ci95"][1] < 0 and w_n["estimate"] < 0 and c_n["estimate"] >= -0.10 and c_f["estimate"] >= -0.10
++                 and g_f["estimate"] <= 0 and g_p["estimate"] <= GAP_TOL)
++        if helps:
++            return "helps (preserving positive controls)"
++        if w_f["ci95"][1] < 0 and w_n["estimate"] >= 0:
++            return "repairs note-induced harm only"
++        if w_f["estimate"] >= -0.05 and (w_f["ci95"][0] <= 0 <= w_f["ci95"][1] or w_f["estimate"] >= 0):
++            return "neither (practically small)"
++        return "uncertain"
++    rd = {"t0|implication": reading("t0", "impl-content", "impl-none"),
++          "post|implication": reading("post", "impl_main", "impl_avg-none"),
++          "post|omission": reading("post", "omit_main", "omit_avg-none")}
++    post_impl, post_omit = rd["post|implication"], rd["post|omission"]
++    if post_impl.startswith("helps") and post_omit.startswith("helps"):
++        rd["post|both"] = "both factors help"
++    res["readings"] = rd
++    api = BLOCK / "api-check.json"
++    res["api_check"] = json.loads(api.read_text()) if api.exists() else None
++    (BLOCK / "results.json").write_text(json.dumps(res, indent=1, sort_keys=True, default=str) + "\n")
++    fmt = lambda c: "n/a" if not c else f"{c['estimate']:+.3f} [{c['ci95'][0]:+.3f}, {c['ci95'][1]:+.3f}] p={c['signflip_p']:.3f} (n={c['n']})"
++    L = ["# Integration diagnostic results (local probe; single decisions; development data)", "",
++         f"`scripts/report_integration.py` (frozen before outputs). {len(rows)} decisions. Descriptive: 8 seeds per construction; "
++         "the CI resamples seeds within construction; p = exact paired sign-flip. Not a return estimate.", "",
++         f"**Pre-declared readings:** {json.dumps(rd)}", "", "## Key contrasts (primary, including fallbacks)", ""]
++    for ctx, names in (("t0", ("content-none", "impl-none", "impl-content")),
++                       ("post", ("content|shown-none", "impl|shown-none", "impl_main", "omit_main", "interaction",
++                                 "impl_avg-none", "omit_avg-none"))):
++        for metric in ("wrong", "correct_handoff", "gap"):
++            for group in ("negative", "positive"):
++                L.append(f"- {ctx} | {metric} | {group} | " + "; ".join(f"{n}: {fmt(X(ctx, metric, group, n))}" for n in names))
++    L += ["", "## Raw rates (context | construction | stakes | condition)", ""]
++    L += [f"- {k}: n={v['n']} wrong={v['wrong']:.2f} correct={v['correct_handoff']:.2f} gap={v['gap']:.3f} fb={v['fallbacks']} {v['actions']}"
++          for k, v in res["rates"].items()]
++    L += ["", f"Fallbacks: {json.dumps(res['fallbacks'])}; contexts with >5-point fallback-rate spread: {flag or 'none'}"]
++    if res["api_check"]:
++        L += ["", "## API policy check (descriptive; not pooled)", "",
++              f"Worst case {res['api_check']['worst_case_usd']}, incremental USD {res['api_check']['incremental_usd']}.", ""]
++        L += [f"- {d['state_id']} {d['context']} {d['condition']}: {d['action']} wrong={d['wrong']} gap={d['gap']:.3f} "
++              f"fallback={d['fallback']} finish={d['finish_reason']}" for d in res["api_check"]["decisions"]]
++    (BLOCK / "results.md").write_text("\n".join(L) + "\n", encoding="utf-8")
++    print(json.dumps(rd))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/run_integration.py b/scripts/run_integration.py
+new file mode 100644
+index 0000000..f2e6d7a
+--- /dev/null
++++ b/scripts/run_integration.py
+@@ -0,0 +1,366 @@
++"""Integration diagnostic (D-016): single-decision probe + small API policy check. experiment-plan.md Entries 1, 1a.
++
++    python3 scripts/run_integration.py qualify   # contexts, ask list, statuses, implication table, Bayes sets (no calls)
++    python3 scripts/run_integration.py freeze    # integration-freeze.json (clean tree)
++    python3 scripts/run_integration.py local     # 1,536 local decisions (resumable)
++    python3 scripts/run_integration.py api       # 16 API decisions (one attempt each; capped)
++"""
++
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import os
++import sys
++import time
++from concurrent.futures import ThreadPoolExecutor
++from dataclasses import asdict
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++sys.path.insert(0, str(ROOT / "scripts"))
++
++from officeminds import devgen3 as G  # noqa: E402
++from officeminds.episode import VisibleHistory  # noqa: E402
++from officeminds.world import Action, legal_actions  # noqa: E402
++from run_repair import LengthGuard, reference_note, sha  # noqa: E402
++from vomi.clients import make_client  # noqa: E402
++from vomi.graph import PerspectiveGraph, visible_evidence  # noqa: E402
++from vomi.oracle import ExactOracle  # noqa: E402
++from vomi.pilot import (call_with_protocol, implication_line, load_prompts, policy_messages, policy_schema,  # noqa: E402
++                        _json_validate)
++from vomi.units import content  # noqa: E402
++
++PACKAGE, REV = "pilot-v2.2", 7
++BLOCK = ROOT / "reports" / "integration-block"
++DATA = ROOT / "data" / "integration-block"
++FREEZE = BLOCK / "integration-freeze.json"
++SEEDS = tuple(20261200 + k for k in range(8))
++CONS = ("2a", "2b", "3a", "3b")
++DRAWS = 3
++T0_CONDS = ("none", "content", "impl")
++POST_CONDS = ("none", "content|shown", "content|omitted", "impl|shown", "impl|omitted")
++LOCAL_CFG = ROOT / "configs" / "models" / "local_gpt_oss_20b.json"
++API_CFG = ROOT / "configs" / "models" / "api_gpt_6_1_sol.json"
++CONCURRENCY = 8
++
++
++def states():
++    out = []
++    for seed in SEEDS:
++        for inst in G.generate(seed):
++            if inst.construction in CONS and not inst.variant.permuted:
++                out.append({"state_id": f"s{seed}-{inst.instance_id}", "seed": seed, "inst": inst,
++                            "units": sorted(G.focal_units(inst), key=str)})
++    assert len(out) == 64
++    return out
++
++
++def ask_of(st):
++    """RC1: subject = path[0] of the first focal unit in canonical (alphabetical) order; the task's query fact."""
++    u = st["units"][0]
++    subj = u.path[0]
++    role = next(r for r, n in st["inst"].role.items() if n == subj)
++    return Action("ask", subj, st["inst"].scenario.config.query_facts[0]), role
++
++
++def contexts(st):
++    """(t0 world, t0 history, post-ask world, post-ask history)."""
++    inst = st["inst"]
++    w0 = inst.scenario.build(inst.hidden)
++    h0 = VisibleHistory(inst.scenario.brief, [(None, w0.reset())])
++    w1 = w0.clone()
++    a, _ = ask_of(st)
++    assert a in legal_actions(w0.config, h0.last), (st["state_id"], a)
++    h1 = VisibleHistory(inst.scenario.brief, list(h0.steps) + [(a, w1.step(a))])
++    return w0, h0, w1, h1
++
++
++def frozen_notes(st):
++    return {str(u): reference_note(st["inst"], u)[0] for u in st["units"]}
++
++
++def graph_for(st, hist, notes):
++    g = PerspectiveGraph(recipient=st["inst"].scenario.config.recipient, refutation_mode="fact_only")
++    for u in st["units"]:
++        g.instantiate(u, notes[str(u)], [], t=0, cost=0.0)
++    if hist.last.t > 0:
++        g.advance(hist)  # unchanged graph semantics (RC2): statuses computed, never set by hand
++    return g
++
++
++def render_opts(cond):
++    if cond == "none":
++        return None
++    kind, _, stale = cond.partition("|")
++    return {"implication": kind == "impl", "show_stale": stale != "omitted"}
++
++
++def prompt(st, ctx, cond, notes, hist=None):
++    inst = st["inst"]
++    if hist is None:
++        _, h0, _, h1 = contexts(st)
++        hist = h0 if ctx == "t0" else h1
++    g = None if cond == "none" else graph_for(st, hist, notes)
++    msgs, acts = policy_messages(load_prompts(PACKAGE), inst.scenario.config, inst.scenario.brief, hist, g, REV,
++                                 render_opts(cond) if cond != "none" else None)
++    return msgs, acts
++
++
++def bayes(scenario, hist):
++    o = ExactOracle(scenario, hist)
++    qs = {str(a): q for a, q in o.ranked_actions(o.belief, o.obs)}
++    best = max(qs.values())
++    return qs, sorted(a for a, q in qs.items() if q >= best - 1e-9), o
++
++
++# ----------------------------------------------------------------------------- qualification (no calls)
++def stage_qualify(args):
++    rows, imp_rows = [], []
++    for st in states():
++        inst = st["inst"]
++        cfg = inst.scenario.config
++        w0, h0, w1, h1 = contexts(st)
++        notes = frozen_notes(st)
++        a, role = ask_of(st)
++        g1 = graph_for(st, h1, notes)
++        statuses = {r["unit"]: r["status"] for r in g1.policy_view()}
++        assert set(statuses.values()) <= {"stale", "retained", "fresh"}, statuses  # RC2: only stale may appear
++        triggers = {str(u): [e for e in visible_evidence(h1, u.path) if int(e.split(":")[0][1:]) > 0] for u in st["units"]}
++        q0, opt0, o0 = bayes(inst.scenario, h0)
++        q1, opt1, o1 = bayes(inst.scenario, h1)
++        sym = {}
++        for u in st["units"]:
++            post0 = {}
++            for p, x in o0.belief:
++                post0[content(x, u)[0]] = post0.get(content(x, u)[0], 0) + p
++            post1 = {}
++            for p, x in o1.belief:
++                post1[content(x, u)[0]] = post1.get(content(x, u)[0], 0) + p
++            sym[str(u)] = {"true_content_unchanged": content(w0, u) == content(w1, u),
++                           "posterior_unchanged": all(abs(post0.get(k, 0) - post1.get(k, 0)) < 1e-9 for k in set(post0) | set(post1)),
++                           "posterior_t0": post0, "posterior_post_ask": post1}
++            mass = {h["value"]: h["p"] for h in notes[str(u)]["hypotheses"]}
++            line = implication_line(u, mass, cfg)
++            if line:
++                give = Action("give", u.path[0])
++                ps = pw = 0.0
++                for p, x in o0.belief:
++                    y = x.clone()
++                    out = y.step(give).outcome
++                    ps += p * (out == "success")
++                    pw += p * (out == "error")
++                imp_rows.append({"state_id": st["state_id"], "unit": str(u), "note_distribution": mass, "line": line,
++                                 "destination_distribution": mass, "p_success_given_give": round(ps, 6),
++                                 "p_wrong_given_give": round(pw, 6), "unknown_mass": mass.get("unknown", 0.0)})
++        p_t0 = {c: sha(prompt(st, "t0", c, notes, h0)[0][1]["content"]) for c in ("none", "content|shown", "content|omitted",
++                                                                               "impl|shown", "impl|omitted")}
++        assert p_t0["content|shown"] == p_t0["content|omitted"] and p_t0["impl|shown"] == p_t0["impl|omitted"]
++        p_post = {c: sha(prompt(st, "post", c, notes, h1)[0][1]["content"]) for c in POST_CONDS}
++        assert len(set(p_post.values())) == 5, (st["state_id"], "post-ask prompts must all differ")
++        rows.append({"state_id": st["state_id"], "seed": st["seed"], "construction": inst.construction,
++                     "stakes": inst.variant.stakes, "ask": str(a), "ask_subject_role": role,
++                     "post_ask_statuses": statuses, "stale_triggers": triggers, "symbolic": sym,
++                     "bayes_opt_t0": opt0, "bayes_v_t0": max(q0.values()), "bayes_opt_post": opt1,
++                     "bayes_v_post": max(q1.values()), "note_sha256": {k: sha(v) for k, v in notes.items()},
++                     "prompt_sha256_t0": {"none": p_t0["none"], "content": p_t0["content|shown"], "impl": p_t0["impl|shown"]},
++                     "prompt_sha256_post": p_post})
++    assert all(r["unknown_mass"] < 0.005 for r in imp_rows)
++    out = {"states": rows, "implication_table": imp_rows,
++           "implication_template": "Given this estimate and the stated forwarding rule, give(<X>) sends the package to "
++                                   "<office> with probability <p>[, to <office> with probability <p> ...].",
++           "checks": {"states": len(rows), "implication_lines": len(imp_rows),
++                      "any_unknown_mass": any(r["unknown_mass"] >= 0.005 for r in imp_rows),
++                      "only_stale_status_post_ask": all(set(r["post_ask_statuses"].values()) <= {"stale"} for r in rows),
++                      "t0_duplicate_prompts_identical": True}}
++    out["implication_table_sha256"] = sha(imp_rows)
++    BLOCK.mkdir(parents=True, exist_ok=True)
++    (BLOCK / "qualification.json").write_text(json.dumps(out, indent=1, sort_keys=True) + "\n")
++    print(json.dumps(out["checks"]))
++    for r in imp_rows[:8]:
++        print(r["state_id"], r["unit"], r["line"], "P(success|give)", r["p_success_given_give"])
++
++
++# ----------------------------------------------------------------------------- freeze
++SRC = ["src/vomi/pilot.py", "src/vomi/graph.py", "src/vomi/oracle.py", "src/vomi/units.py", "src/vomi/clients.py",
++       "src/officeminds/devgen3.py", "src/officeminds/world.py", "scripts/run_integration.py",
++       "scripts/report_integration.py", "scripts/run_repair.py", "prompts/pilot-v1/policy_system.txt",
++       "configs/models/local_gpt_oss_20b.json", "configs/models/api_gpt_6_1_sol.json"]
++
++
++def jobs():
++    out = []
++    sts = states()
++    for d in range(DRAWS):
++        for i, st in enumerate(sts):
++            for ctx, conds in (("t0", T0_CONDS), ("post", POST_CONDS)):
++                for j in range(len(conds)):
++                    out.append((st["state_id"], ctx, conds[(i + d + j) % len(conds)], d))
++    assert len(out) == 1536
++    return out
++
++
++def api_selection():
++    sel = []
++    sts = {st["state_id"]: st for st in states()}
++    for c in CONS:
++        k = int(hashlib.sha256(f"integration:api:{c}".encode()).hexdigest(), 16) % 8
++        stakes = 4 if int(hashlib.sha256(f"integration:api:stakes:{c}".encode()).hexdigest(), 16) % 2 else 1
++        sid = f"s{SEEDS[k]}-{G.DEV_VERSION}-{c}-stakes{stakes}-perm0"
++        assert sid in sts
++        sel += [(sid, "t0"), (sid, "post")]
++    return sel
++
++
++def stage_freeze(args):
++    dirty = [x for x in os.popen(f'git -C "{ROOT}" status --porcelain').read().split("\n") if x.strip()]
++    if dirty:
++        raise SystemExit(f"freeze needs a clean tree: {dirty}")
++    q = json.loads((BLOCK / "qualification.json").read_text())
++    fz = {"created_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
++          "git_commit": os.popen(f'git -C "{ROOT}" rev-parse HEAD').read().strip(),
++          "seeds": SEEDS, "constructions": CONS, "draws": DRAWS, "t0_conditions": T0_CONDS, "post_conditions": POST_CONDS,
++          "asks": {r["state_id"]: [r["ask"], r["ask_subject_role"]] for r in q["states"]},
++          "note_sha256": {r["state_id"]: r["note_sha256"] for r in q["states"]},
++          "prompt_sha256": {r["state_id"]: {"t0": r["prompt_sha256_t0"], "post": r["prompt_sha256_post"]} for r in q["states"]},
++          "bayes_optimal": {r["state_id"]: {"t0": r["bayes_opt_t0"], "post": r["bayes_opt_post"]} for r in q["states"]},
++          "implication_table_sha256": q["implication_table_sha256"],
++          "qualification_sha256": hashlib.sha256((BLOCK / "qualification.json").read_bytes()).hexdigest(),
++          "source_sha256": {f: hashlib.sha256((ROOT / f).read_bytes()).hexdigest() for f in SRC},
++          "local_decoding": {**json.loads(LOCAL_CFG.read_text())["decoding"], "temperature": 1.0, "max_tokens": 1024},
++          "api": {"model": json.loads(API_CFG.read_text())["model"], "reasoning_effort": "low", "max_output_tokens": 2000,
++                  "attempts": 1, "selection": api_selection()},
++          "dispatch_order": jobs(), "concurrency": CONCURRENCY,
++          "cache_policy": "no cache: every (state, context, condition, draw) is a fresh call; the draw index is part of the "
++                          "record key; nothing is replayed"}
++    FREEZE.write_text(json.dumps(fz, indent=1, sort_keys=True) + "\n")
++    print("freeze written;", len(fz["dispatch_order"]), "local decisions;", len(fz["api"]["selection"]), "API contexts")
++
++
++def verify():
++    fz = json.loads(FREEZE.read_text())
++    bad = [f for f, h in fz["source_sha256"].items() if hashlib.sha256((ROOT / f).read_bytes()).hexdigest() != h]
++    if hashlib.sha256((BLOCK / "qualification.json").read_bytes()).hexdigest() != fz["qualification_sha256"]:
++        bad.append("qualification")
++    if bad:
++        raise SystemExit(f"FREEZE MISMATCH: {bad}")
++    return fz
++
++
++# ----------------------------------------------------------------------------- decisions
++def decide(client, st, ctx, cond, decoding, attempts=3):
++    notes = frozen_notes(st)
++    w0, h0, w1, h1 = contexts(st)
++    hist, world = (h0, w0) if ctx == "t0" else (h1, w1)
++    msgs, acts = prompt(st, ctx, cond, notes, hist)
++    validate = (lambda txt, acts=acts: (lambda o, e: (o, e) if o is None or o["action"] in acts else (None, ["illegal_action"]))(
++        *_json_validate(("action",))(txt)))
++    if attempts == 1:
++        params = dict(decoding)
++        params["response_format"] = {"type": "json_schema", "json_schema": {"name": "decision", "schema": policy_schema(acts)}}
++        r = client.chat(msgs, **params)
++        parsed, errors = (None, ["request_error"]) if r.error else validate(r.text)
++        rec = {"attempts": [{"text": r.text, "reasoning": r.reasoning, "finish_reason": r.finish_reason,
++                             "prompt_tokens": r.prompt_tokens, "completion_tokens": r.completion_tokens,
++                             "reasoning_tokens": r.reasoning_tokens, "latency_s": r.latency_s, "error": r.error,
++                             "validation_errors": errors}], "ok": parsed is not None, "parsed": parsed}
++    else:
++        rec = asdict(call_with_protocol(client, "decision", hist.last.t, "policy", msgs, policy_schema(acts), validate, decoding))
++    action = rec["parsed"]["action"] if rec["ok"] else "wait()"
++    a = next(x for x in legal_actions(st["inst"].scenario.config, hist.last) if str(x) == action)
++    y = world.clone()
++    out = y.step(a).outcome
++    qs, opt, _ = bayes(st["inst"].scenario, hist)
++    return {"action": action, "fallback": not rec["ok"], "outcome_if_taken": out, "wrong": out == "error",
++            "correct_handoff": a.kind in ("give", "drop") and out == "success", "handoff": a.kind in ("give", "drop"),
++            "gap": max(qs.values()) - qs[action], "bayes_optimal": opt, "prompt_sha256": sha(msgs[1]["content"]),
++            "call": rec}
++
++
++def stage_local(args):
++    fz = verify()
++    sts = {st["state_id"]: st for st in states()}
++    client = LengthGuard(make_client(json.loads(LOCAL_CFG.read_text())))
++    decoding = fz["local_decoding"]
++    DATA.mkdir(parents=True, exist_ok=True)
++    part = DATA / "local-decisions.jsonl"  # resumable: finished decisions are kept and skipped on rerun
++    done = set()
++    if part.exists():
++        for l in part.read_text().splitlines():
++            if l.strip():
++                r = json.loads(l)
++                done.add((r["state_id"], r["context"], r["condition"], r["draw"]))
++    todo = [tuple(j) for j in fz["dispatch_order"] if tuple(j) not in done]
++    t_start = time.monotonic()
++
++    def job(j):
++        sid, ctx, cond, d = j
++        r = decide(client, sts[sid], ctx, cond, decoding)
++        assert r["prompt_sha256"] == fz["prompt_sha256"][sid][ctx][cond if ctx == "post" else cond.split("|")[0]]
++        return {"state_id": sid, "context": ctx, "condition": cond, "draw": d, **r}
++
++    with ThreadPoolExecutor(CONCURRENCY) as pool, part.open("a") as f:
++        for r in pool.map(job, todo):
++            f.write(json.dumps(r, default=str) + "\n")
++            f.flush()
++    seg = {"at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "decisions": len(todo), "wall_s": round(time.monotonic() - t_start, 1)}
++    log = DATA / "local-segments.json"
++    segs = json.loads(log.read_text()) if log.exists() else []
++    log.write_text(json.dumps(segs + [seg], indent=1))
++    print("local decisions done:", len(done) + len(todo), seg)
++
++
++def stage_api(args):
++    fz = verify()
++    cfg = json.loads(API_CFG.read_text())
++    sts = {st["state_id"]: st for st in states()}
++    sel = [tuple(x) for x in fz["api"]["selection"]]
++    price_in, price_out = cfg["price_per_mtok"]["input"] / 1e6, cfg["price_per_mtok"]["output"] / 1e6
++    prompts_ = []
++    for sid, ctx in sel:
++        for cond in ("none", "content|shown"):
++            msgs, _ = prompt(sts[sid], ctx, cond if ctx == "post" else cond.split("|")[0], frozen_notes(sts[sid]))
++            prompts_.append((sid, ctx, cond, msgs))
++    # conservative ceiling: 1 token per 2 characters of the full request (system + user)
++    worst = sum((len(m[0]["content"]) + len(m[1]["content"])) / 2 * price_in for *_, m in prompts_) \
++        + len(prompts_) * fz["api"]["max_output_tokens"] * price_out
++    led = json.load(open(os.path.expanduser(cfg["budget"]["ledger_path"])))
++    spent = led["spent_usd"] + led.get("unresolved_usd", 0) + sum(led.get("reserved", {}).values())
++    plan = {"calls": len(prompts_), "worst_case_usd": round(worst, 4), "reconciled_committed_usd": round(spent, 5),
++            "stage_cap_usd": round(spent + 0.50, 5)}
++    print(json.dumps(plan))
++    if worst > 0.50 or spent + worst >= 5.0:
++        (BLOCK / "api-check-skipped.json").write_text(json.dumps({**plan, "skipped": "worst case does not fit"}, indent=1))
++        raise SystemExit("API check skipped: worst case does not fit the caps")
++    os.environ["OFFICEMINDS_API_CAP_USD"] = str(spent + 0.50)
++    client = make_client(cfg)
++    decoding = {"reasoning_effort": "low", "max_tokens": fz["api"]["max_output_tokens"]}
++    out = []
++    for sid, ctx, cond, _ in prompts_:  # one attempt each, no retries
++        r = decide(client, sts[sid], ctx, cond if ctx == "post" else cond.split("|")[0], decoding, attempts=1)
++        out.append({"state_id": sid, "context": ctx, "condition": cond, **r})
++    led2 = json.load(open(os.path.expanduser(cfg["budget"]["ledger_path"])))
++    res = {**plan, "ledger_after_usd": led2["spent_usd"], "incremental_usd": round(led2["spent_usd"] - led["spent_usd"], 5),
++           "decisions": out}
++    DATA.mkdir(parents=True, exist_ok=True)
++    (DATA / "api-decisions.json").write_text(json.dumps(res, indent=1, default=str))
++    pub = {k: v for k, v in res.items() if k != "decisions"}
++    pub["decisions"] = [{k: v for k, v in d.items() if k != "call"} | {"finish_reason": d["call"]["attempts"][0]["finish_reason"],
++                                                                      "tokens": [d["call"]["attempts"][0]["prompt_tokens"],
++                                                                                 d["call"]["attempts"][0]["completion_tokens"]]}
++                        for d in out]
++    (BLOCK / "api-check.json").write_text(json.dumps(pub, indent=1, default=str) + "\n")
++    print("API check done; incremental USD", res["incremental_usd"])
++
++
++def main():
++    ap = argparse.ArgumentParser()
++    ap.add_argument("stage", choices=("qualify", "freeze", "local", "api"))
++    args = ap.parse_args()
++    {"qualify": stage_qualify, "freeze": stage_freeze, "local": stage_local, "api": stage_api}[args.stage](args)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/src/vomi/pilot.py b/src/vomi/pilot.py
+index 10dbf05..3243625 100644
+--- a/src/vomi/pilot.py
++++ b/src/vomi/pilot.py
+@@ -285,7 +285,7 @@ def _excerpts(hist: VisibleHistory, ids: list[str], width: int = 110) -> str:
+ 
+ 
+ def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = None, rev: int | None = None,
+-               cfg: WorldConfig | None = None) -> str:
++               cfg: WorldConfig | None = None, render: dict | None = None) -> str:
+     rev = RENDER_REVISION if rev is None else rev
+     if graph is None:
+         return "MIND NOTES: (none; this agent does not use separate mind-inference steps)"
+@@ -293,7 +293,7 @@ def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = Non
+     if not view:
+         return "MIND NOTES: (none instantiated)"
+     if rev >= 7:
+-        return matched_notes_text(view, cfg)
++        return matched_notes_text(view, cfg, **(render or {}))
+     lines = []
+     for r in view:
+         out = r["output"]
+@@ -330,7 +330,24 @@ def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = Non
+ INTENT_ORDER = ("cooperative", "obstructive", "unknown")
+ 
+ 
+-def matched_notes_text(view: list[dict], cfg: WorldConfig) -> str:
++def implication_line(u: Unit, mass: dict[str, float], cfg: WorldConfig) -> str | None:
++    """Integration block (D-016) action-consequence mapping: computed ONLY from the note's own value distribution and the
++    declared public handoff route of the unit's subject (K(j) for an own-belief courier; K(F->R) for F). Returns None
++    when the unit is not that courier's routing unit. No hidden destination, truth label, optimal action or advice."""
++    route = cfg.handoff_routes.get(u.path[0])
++    if route is None or u.variable != KNOWLEDGE:
++        return None
++    other, _fact = route
++    if (other == "" and u.depth != 1) or (other != "" and tuple(u.path) != (u.path[0], other)):
++        return None
++    assert mass.get("unknown", 0.0) < 0.005, "implication undefined for 'unknown' mass (none expected in the probe)"
++    order = list(cfg.fact_domains[cfg.query_facts[0]])
++    parts = [f"to {v} with probability {mass[v]:.2f}" for v in order if v in mass and round(mass[v], 2) >= 0.005]
++    return (f"Given this estimate and the stated forwarding rule, give({u.path[0]}) sends the package "
++            + ", ".join(parts) + ".")
++
++
++def matched_notes_text(view: list[dict], cfg: WorldConfig, implication: bool = False, show_stale: bool = True) -> str:
+     """r7 matched typed-content template (D-015; repair-block plan RC7-RC9). Every note source renders through the same
+     canonical fields, built only from the unit definition and the hypothesis distribution:
+       - unit label and `about` from the unit definition (describe_unit), never from model output;
+@@ -356,7 +373,7 @@ def matched_notes_text(view: list[dict], cfg: WorldConfig) -> str:
+                 f"what {who} thinks {u.path[1]} believes" if u.variable == KNOWLEDGE else
+                 f"{who}'s intent" if u.depth == 1 else f"{who}'s assessment of {u.path[1]}")
+         line = f"  {u} about {about} (as of step {r['as_of']}): {dist}"
+-        if r.get("status") in STATUS_TEXT:
++        if r.get("status") in STATUS_TEXT and (show_stale or r["status"] != "stale"):
+             line += f"\n    note status: {STATUS_TEXT[r['status']]}"
+         if out.get("status") in ABSTAIN_STATUSES:
+             line += "\n    INFERENCE ABSTAINED: the robot's evidence does not settle this person's state"
+@@ -364,6 +381,10 @@ def matched_notes_text(view: list[dict], cfg: WorldConfig) -> str:
+             high = max(mass.values(), default=0.0) >= 0.8
+             line += (f"\n    robot's confidence in this estimate of {what}: "
+                      + ("high (one value has probability at least 0.8)" if high else "low (several values remain possible)"))
++        if implication:
++            imp = implication_line(u, mass, cfg)
++            if imp:
++                line += "\n    " + imp
+         lines.append(line)
+     return ("MIND NOTES (estimates of people's mental states from separate inference steps; they may be wrong, and a "
+             "person's belief can itself be false or outdated):\n" + "\n".join(lines))
+@@ -380,10 +401,11 @@ def describe_unit(u: Unit, cfg: WorldConfig) -> tuple[str, str]:
+     return f"reliability path {u.path[0]} -> {u.path[1]}: how {u.path[0]} assesses {u.path[1]}", u.path[1]
+ 
+ 
+-def policy_messages(prompts, cfg, brief, hist, graph, rev: int | None = None) -> tuple[list[dict], list[str]]:
++def policy_messages(prompts, cfg, brief, hist, graph, rev: int | None = None,
++                    render: dict | None = None) -> tuple[list[dict], list[str]]:
+     led, _ = ledger(hist)
+     acts = [str(a) for a in legal_actions(cfg, hist.last)]
+-    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev, cfg),
++    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev, cfg, render),
+                         "LEGAL ACTIONS NOW: " + ", ".join(acts), 'Respond as JSON: {"action": "<one legal action>"}'])
+     return [{"role": "system", "content": prompts["policy_system"]}, {"role": "user", "content": user}], acts
+ 
