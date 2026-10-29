@@ -1,0 +1,1380 @@
+diff --git a/prompts/pilot-v2.2/unit_system.txt b/prompts/pilot-v2.2/unit_system.txt
+new file mode 100644
+index 0000000..18b731c
+--- /dev/null
++++ b/prompts/pilot-v2.2/unit_system.txt
+@@ -0,0 +1,40 @@
++You infer ONE aspect of ONE person's mind for an office delivery robot, using only the robot's own history of observations and the numbered public rules about how people come to believe things (in the task description). Tie every claim to evidence IDs from that history or to a numbered rule.
++
++The aspect is one of:
++- knowledge of person j: what j currently believes about the given fact. A belief can be false or outdated. The value "unknown" means j HAS NO BELIEF about the fact (for example, j saw nothing and was told nothing);
++- knowledge path j -> k: what j believes k believes about the given fact ("unknown" means j has no view about k's belief);
++- reliability of person j: whether j is cooperative (sincerely reports what they believe) or obstructive (may deliberately mislead);
++- reliability path j -> k: how j assesses k (cooperative / obstructive / unknown = no assessment).
++
++Three different things must not be confused:
++- the PERSON has no belief: put probability on "unknown", supported by evidence or a rule (for example, rule 5: no statement was made, so j has no view of k's belief);
++- the ROBOT is unsure which belief the person has: spread probability over the possible beliefs. This is a normal, useful output, not a failure;
++- the robot cannot assess the aspect at all: abstain (rare; see below).
++
++Output rules:
++1. Give a probability distribution over the allowed values (probabilities sum to 1). It may be broad.
++2. For each value with probability 0.05 or more, list its support: an evidence ID from the history or a rule ID ("RULE1" ... "RULE6"), the kind of support, and a short note.
++   - observation: the robot saw it directly;
++   - testimony: someone said it in the robot's presence (evidence about what the speaker said, not automatically the truth);
++   - access_inference: a reasoned conclusion about who could have seen or heard what;
++   - public_rule: a numbered public rule applied to this person (cite it as RULE<n>).
++3. Set status:
++   - "grounded": the evidence and rules make one value clearly most likely;
++   - "uncertain": the evidence and rules leave several values plausible; your distribution shows which;
++   - "abstain": only if neither the history nor the rules say anything that bears on this aspect, so you cannot form even a rough distribution. Still give your best distribution.
++   Do not abstain merely because the robot did not see the person's belief directly; apply the rules (for example, rule 2: the recipient knows where they were at the start).
++4. List unresolved uncertainties or contradictions.
++5. Do not recommend robot actions and do not describe other people's minds beyond what this one aspect requires.
++
++Two examples from a different setting (a warehouse with boxes on shelves; not your task):
++- Supported false belief. History: [t1:said0] Pat says "box = shelf_1"; [t2:said0] Lee says "I moved the box to shelf_2 while Pat was at lunch". For knowledge of Pat about box: status grounded; shelf_1 p 0.85 with support t1:said0 (testimony: Pat states shelf_1) and t2:said0 (access_inference: the move happened while Pat was away); shelf_2 p 0.15 with support t2:said0 (access_inference: Pat might have been told later).
++- Robot unsure which belief. History: [t0:seen:sam] Sam is in the room; Sam is the warehouse manager, and a rule says the manager knows where every box was this morning. For knowledge of Sam about box: status uncertain; shelf_1 p 0.5 and shelf_2 p 0.5, each supported by the rule (public_rule: Sam knows the location; the robot does not know which it is); no probability on "unknown", because the rule says Sam has a belief.
++
++Public model of the task (when the task description has one):
++- Its lines carry IDs [PM1], [PM2], ... Cite such a line with that exact ID and kind "public_model". Use only IDs that appear in this task description; never invent an ID.
++- Probabilities stated in the public model are the probabilities with which the situation was generated, given exactly what each line says they depend on; they are not yet updated on the rest of the history. Your distribution must be the POSTERIOR: update on the events and statements in the history that those probabilities do not already take into account.
++- To get the posterior: (1) list the combinations of hidden possibilities (for example who is cooperative or obstructive, who moved, which wrong value a misleading person names) that could have produced exactly the events and statements in the history; (2) give each combination its prior probability by multiplying the prior probabilities of its parts; (3) drop combinations that contradict the history; (4) divide by the total of what remains; (5) add up the combinations in which the aspect has each value. Statements that conflict usually rule out many combinations, so the posterior can be far from the prior.
++- Example from a different setting (a warehouse; not your task): the box is on shelf_1 with prior probability 0.75 and on shelf_2 with 0.25; one clerk misreports with prior probability 0.35, and a misreporting clerk names the other shelf. She says "box = shelf_2". Combinations that fit: box on shelf_2 and she is truthful: 0.25 x 0.65 = 0.1625; box on shelf_1 and she misreports: 0.75 x 0.35 = 0.2625. Total 0.425. Posterior that she misreports (obstructive): 0.2625 / 0.425 = 0.62, although her prior was 0.35. Had she said "box = shelf_1": truthful 0.75 x 0.65 = 0.4875, misreporting 0.25 x 0.35 = 0.0875, so the posterior would be 0.0875 / 0.575 = 0.15. For reliability of the clerk after "box = shelf_2": cooperative p 0.38, obstructive p 0.62, citing her statement (testimony) and the public-model lines with the shelf prior and the 0.35 rate (public_model).
++- The evidence does not always move the posterior: had both shelves been equally likely (0.5 each), either statement would leave her at the prior, cooperative p 0.65, obstructive p 0.35. Always do the calculation rather than assume a direction.
++
++Respond with JSON only, matching the schema.
+diff --git a/scripts/power_repair_stage2.py b/scripts/power_repair_stage2.py
+new file mode 100644
+index 0000000..77b9435
+--- /dev/null
++++ b/scripts/power_repair_stage2.py
+@@ -0,0 +1,140 @@
++"""Repair block Stage 2 precision simulation (experiment-plan.md Entry 1a RC2/RC3/RC4/RC5). PLANNING ONLY.
++
++    ~/venvs/vllm/bin/python scripts/power_repair_stage2.py   # numpy (planning tool only; not the project stack)
++
++Planning input: dev-v3 Round B `none` episode returns (reports/dev-v3-block/evidence/episodes-roundB-local.csv), pooled by
++stratum (1c->1, 2a->2, 3c->3, 4b->4) and stakes. These are exploratory planning inputs, not known rates. Writes
++reports/repair-block/power.json and power.md.
++"""
++
++from __future__ import annotations
++
++import csv
++import json
++from pathlib import Path
++
++import numpy as np
++
++ROOT = Path(__file__).resolve().parents[1]
++OUT = ROOT / "reports" / "repair-block"
++DELTA = 0.05
++KS = (3, 4, 5, 6, 8, 12, 16, 20, 24)
++EFFECTS = (0.0, 0.05, 0.10)
++RHO = 0.5
++SIMS, FLIPS, BOOTS = 400, 2000, 1000
++MIN_PER_SEED = 8.0  # estimated wall-clock minutes per seed (Round B: 192 episodes in ~8 min; one seed ~168 + notes)
++LIMIT_MIN = 240.0
++STRATUM = {"1c": 1, "2a": 2, "3c": 3, "4b": 4}
++
++
++def pools():
++    rows = list(csv.DictReader((ROOT / "reports/dev-v3-block/evidence/episodes-roundB-local.csv").open()))
++    p = {}
++    for r in rows:
++        if r["condition"] != "none":
++            continue
++        c = r["state_id"].split("-")[2]
++        st = 4.0 if "stakes4" in r["state_id"] else 1.0
++        p.setdefault((STRATUM[c], st), []).append((float(r["return"]), r["outcome"]))
++    return p
++
++
++def condition_sampler(pool, target, scale):
++    vals = np.array([v for v, _ in pool])
++    bad = np.array([o != "success" for _, o in pool])
++    mu = vals.mean()
++    vals = mu + scale * (vals - mu)
++    succ = vals[~bad] if (~bad).any() else vals
++    gain = RHO * np.mean(np.where(bad, succ.mean() - vals, 0.0))
++    rho, shift = RHO, 0.0
++    if target <= 0:
++        rho, shift = 0.0, 0.0
++    elif gain > target:
++        rho, shift = RHO * target / gain, 0.0
++    else:
++        shift = target - gain
++
++    def none(rng, n):
++        return vals[rng.integers(0, len(vals), n)]
++
++    def cond(rng, n):
++        idx = rng.integers(0, len(vals), n)
++        x = vals[idx].copy()
++        repl = bad[idx] & (rng.random(n) < rho)
++        x[repl] = succ[rng.integers(0, len(succ), repl.sum())]
++        return x + shift
++    return none, cond
++
++
++def simulate(K, effect, scale, rng, pl):
++    n = 12 * K
++    strata = np.repeat([1, 2, 3, 4], 3 * K)  # 3 constructions per stratum, K bases each
++    cons = np.repeat(np.arange(12), K)
++    samplers = {(s, st): condition_sampler(pl[(s, st)], 0.0 if s == 1 else effect * 4 / 3, scale)
++                for s in (1, 2, 3, 4) for st in (1.0, 4.0)}
++    classes = {"helps": 0, "no practical value": 0, "unresolved": 0}
++    halfw = []
++    signs = rng.choice([-1.0, 1.0], size=(FLIPS, n))
++    for _ in range(SIMS):
++        d = np.zeros(n)
++        for s in (1, 2, 3, 4):
++            m = strata == s
++            k = m.sum()
++            tot_n = np.zeros(k)
++            tot_c = np.zeros(k)
++            for st in (1.0, 4.0):
++                none, cond = samplers[(s, st)]
++                tot_n += none(rng, 2 * k).reshape(k, 2).sum(1)
++                tot_c += cond(rng, 2 * k).reshape(k, 2).sum(1)
++            d[m] = (tot_c - tot_n) / 4.0
++        obs = abs(d.mean())
++        p = (np.abs((signs * d).mean(1)) >= obs - 1e-12).mean()
++        dk = d.reshape(12, K)  # bases are grouped by construction (cons = repeat(arange(12), K))
++        pick = rng.integers(0, K, size=(BOOTS, 12, K))
++        boots = np.take_along_axis(np.broadcast_to(dk, (BOOTS, 12, K)), pick, axis=2).mean(axis=2).mean(axis=1)
++        lo, hi = np.percentile(boots, [2.5, 97.5])
++        halfw.append((hi - lo) / 2)
++        if p < 0.025 and d.mean() >= DELTA:
++            classes["helps"] += 1
++        elif hi < DELTA:
++            classes["no practical value"] += 1
++        else:
++            classes["unresolved"] += 1
++    return {k: v / SIMS for k, v in classes.items()}, float(np.mean(halfw))
++
++
++def main():
++    rng = np.random.default_rng(20261100)
++    pl = pools()
++    res = {}
++    for K in KS:
++        feasible = K * MIN_PER_SEED <= LIMIT_MIN
++        for var, scale in (("A", 1.0), ("B", 1.5)):
++            for eff in EFFECTS:
++                probs, hw = simulate(K, eff, scale, rng, pl)
++                res[f"K{K}|{var}|{eff}"] = {"K": K, "feasible": feasible, "variance": var, "effect": eff,
++                                             "probs": probs, "ci_halfwidth": hw}
++                print(K, var, eff, probs, round(hw, 4), flush=True)
++    ok = [K for K in KS if K * MIN_PER_SEED <= LIMIT_MIN
++          and res[f"K{K}|B|0.1"]["probs"]["helps"] >= 0.8 and res[f"K{K}|B|0.0"]["probs"]["no practical value"] >= 0.8]
++    feas = [K for K in KS if K * MIN_PER_SEED <= LIMIT_MIN]
++    chosen = min(ok) if ok else max(feas)
++    out = {"label": "PLANNING ONLY (Round B none returns as exploratory input)", "delta": DELTA, "rho": RHO,
++           "sims": SIMS, "flips": FLIPS, "boots": BOOTS, "minutes_per_seed_estimate": MIN_PER_SEED,
++           "limit_minutes": LIMIT_MIN, "criterion_met": ok, "chosen_K": chosen, "cells": res}
++    (OUT / "power.json").write_text(json.dumps(out, indent=1, sort_keys=True) + "\n")
++    L = ["# Stage 2 precision simulation (planning only)", "",
++         f"Rule (Entry 1a RC5): smallest feasible K with P(helps | Δ=0.10) ≥ 0.8 and P(no practical value | Δ=0) ≥ 0.8 under "
++         f"variance B; otherwise the largest feasible K. Criterion met for K = {ok or 'none'}; **chosen K = {chosen}** "
++         f"({12 * chosen} base scenarios).", "",
++         "| K | var | Δ | P(helps) | P(no practical value) | P(unresolved) | CI half-width |", "|---|---|---|---|---|---|---|"]
++    for v in res.values():
++        p = v["probs"]
++        L.append(f"| {v['K']} | {v['variance']} | {v['effect']} | {p['helps']:.2f} | {p['no practical value']:.2f} | "
++                 f"{p['unresolved']:.2f} | {v['ci_halfwidth']:.3f} |")
++    (OUT / "power.md").write_text("\n".join(L) + "\n", encoding="utf-8")
++    print("chosen K", chosen)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/report_repair_stage2.py b/scripts/report_repair_stage2.py
+new file mode 100644
+index 0000000..e250b92
+--- /dev/null
++++ b/scripts/report_repair_stage2.py
+@@ -0,0 +1,288 @@
++"""Repair block Stage 2 analysis (fixed before outcomes: experiment-plan.md Entry 2 + Entry 1a RC3/RC4/RC6/RC13/RC14).
++
++    python3 scripts/report_repair_stage2.py <run_dir>   -> reports/repair-block/stage2-results.{json,md}
++
++Unit: the base scenario (seed, construction); its value per condition = mean return over its x1/x4 variants x draws.
++Estimand: equal-weight mean over the 12 constructions and x1/x4 of expected return (new draws of these constructions).
++Decision statistic (RC3 rule i): Holm-adjusted two-sided sign-flip over base scenarios decides "> 0" (smaller p at
++0.025, larger at 0.05); the point estimate decides ">= delta"; delta statements use the 95% stratified percentile
++bootstrap CI (resampling base scenarios within construction, 10,000 resamples).
++"""
++
++from __future__ import annotations
++
++import json
++import random
++import statistics
++import sys
++from collections import defaultdict
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++sys.path.insert(0, str(ROOT / "scripts"))
++from run_repair import BLOCK, NOTES, reference_note, score_row, stage2_states  # noqa: E402
++
++DELTA = 0.05
++BOOTS, FLIPS = 10000, 100000
++
++
++def sign_flip_p(d, seed=20261101):
++    n = len(d)
++    obs = abs(sum(d) / n)
++    if 2 ** n <= 10 ** 6:  # RC3: exact enumeration for small n
++        import itertools
++        hits = sum(abs(sum(x * s for x, s in zip(d, signs)) / n) >= obs - 1e-12
++                   for signs in itertools.product((1, -1), repeat=n))
++        return hits / 2 ** n
++    rng = random.Random(seed)
++    hits = 0
++    for _ in range(FLIPS):
++        if abs(sum(x if rng.random() < 0.5 else -x for x in d) / n) >= obs - 1e-12:
++            hits += 1
++    return (hits + 1) / (FLIPS + 1)
++
++
++def strat_ci(d_by_cons, seed=20261102):
++    rng = random.Random(seed)
++    cons = sorted(d_by_cons)
++    means = []
++    for _ in range(BOOTS):
++        means.append(statistics.mean(statistics.mean(rng.choices(d_by_cons[c], k=len(d_by_cons[c]))) for c in cons))
++    means.sort()
++    return means[int(0.025 * BOOTS)], means[int(0.975 * BOOTS) - 1]
++
++
++def contrast(vals, a, b, keys):
++    """Paired base-scenario differences a - b over `keys` (base scenarios having both)."""
++    d_by = defaultdict(list)
++    excluded = []
++    for key in keys:
++        if a in vals[key] and b in vals[key]:
++            d_by[key[1]].append(vals[key][a] - vals[key][b])
++        else:
++            excluded.append({"base": list(key), "missing": [c for c in (a, b) if c not in vals[key]]})
++    d = [x for v in d_by.values() for x in v]
++    est = statistics.mean(statistics.mean(v) for v in d_by.values()) if d_by else None  # equal construction weight
++    lo, hi = strat_ci(d_by) if d_by else (None, None)
++    return {"n_base": len(d), "estimate": est, "ci95": [lo, hi], "d_by_construction_mean":
++            {c: statistics.mean(v) for c, v in sorted(d_by.items())}, "excluded_base_scenarios": excluded, "_d": d}
++
++
++def depth_diffs(sts, notes):
++    """S7 / RC13(a): 3a and 3c reference K(F->R) vs K(R) rendered blocks; count states differing beyond the unit label
++    and the 'estimate of ...' wording."""
++    import re
++    from run_repair import rendered
++    out = {"states": 0, "differ_beyond_labels": 0, "examples": []}
++    for sid, st in sts.items():
++        if st["inst"].construction not in ("3a", "3c"):
++            continue
++        a, b = rendered(st, "reference", notes)[1], rendered(st, "reference_KR", notes)[1]
++        norm = lambda t: re.sub(r"estimate of [^:]+:", "estimate of X:", re.sub(r"K\([^)]*\)", "K(.)", t))
++        out["states"] += 1
++        if norm(a) != norm(b):
++            out["differ_beyond_labels"] += 1
++            if len(out["examples"]) < 3:
++                out["examples"].append({"state_id": sid, "reference": a, "reference_KR": b})
++    return out
++
++
++def main():
++    run = Path(sys.argv[1])
++    eps = [json.loads(l) for l in (run / "episodes.jsonl").read_text().splitlines() if l.strip()]
++    manifest = json.loads((run / "manifest.json").read_text())
++    blocks = set(manifest.get("completed_seed_blocks", []))
++    eps = [e for e in eps if e["seed"] in blocks]
++    blocked = [e for e in eps if "blocked" in e]
++    good = [e for e in eps if "blocked" not in e]
++    sts = {st["state_id"]: st for st in stage2_states(len(blocks))}
++    qual = {r["state_id"]: r for r in json.loads((BLOCK / "stage2-qualification.json").read_text())["states"]}
++    vals_raw = defaultdict(lambda: defaultdict(list))
++    for e in good:
++        st = sts[e["state_id"]]
++        vals_raw[(st["seed"], st["inst"].construction)][e["condition"]].append(e["return_"])
++    vals = {k: {c: statistics.mean(v) for c, v in cs.items()} for k, cs in vals_raw.items()}
++    keys = sorted(vals)
++    ref, inf = contrast(vals, "reference", "none", keys), contrast(vals, "inferred", "none", keys)
++    ps = {"reference": sign_flip_p(ref["_d"]), "inferred": sign_flip_p(inf["_d"])}
++    order = sorted(ps, key=ps.get)
++    sig = {order[0]: ps[order[0]] < 0.025}
++    sig[order[1]] = sig[order[0]] and ps[order[1]] < 0.05
++    inf_ref = contrast(vals, "inferred", "reference", keys)
++
++    def ref_class():
++        if sig["reference"] and ref["estimate"] > 0 and ref["estimate"] >= DELTA:
++            return "helps"
++        if ref["ci95"][1] < DELTA:
++            return "no practical value"
++        return "unresolved"
++
++    anomaly = inf_ref["ci95"][0] is not None and inf_ref["ci95"][0] > DELTA
++
++    def inf_class():
++        if anomaly:  # S5: precedence over "approximates"
++            return "anomaly (inferred above reference)"
++        if sig["inferred"] and inf["estimate"] > 0 and inf["estimate"] >= DELTA and inf_ref["ci95"][0] >= -DELTA:
++            return "helps and approximates"
++        if inf["ci95"][1] < DELTA or inf_ref["ci95"][1] < -DELTA:
++            return "fails"
++        return "unresolved"
++    rc, ic = ref_class(), inf_class()
++    table = {("helps", "helps and approximates"): "§5(1) propose a small allocation feasibility study",
++             ("helps", "fails"): "§5(2) inference bottleneck",
++             ("helps", "unresolved"): "§5(4) uncertainty too large (inferred)",
++             ("no practical value", "helps and approximates"): "anomaly: mechanism check; §5(3)",
++             ("no practical value", "fails"): "§5(3) reconsider method/environment fit",
++             ("no practical value", "unresolved"): "§5(3) reconsider method/environment fit",
++             ("unresolved", "helps and approximates"): "anomaly; §5(4)",
++             ("unresolved", "fails"): "§5(4) uncertainty too large",
++             ("unresolved", "unresolved"): "§5(4) uncertainty too large",
++             ("helps", "anomaly (inferred above reference)"): "mechanism check; no §5(1)",
++             ("no practical value", "anomaly (inferred above reference)"): "mechanism check; no §5(1)",
++             ("unresolved", "anomaly (inferred above reference)"): "mechanism check; no §5(1)"}
++    # secondary: per stratum, outcomes, by construction and stakes
++    strata = {}
++    for s in (1, 2, 3, 4):
++        ks = [k for k in keys if k[1][0] == str(s)]
++        strata[s] = {c: {k: v for k, v in contrast(vals, c, "none", ks).items() if k != "_d"} for c in ("reference", "inferred")}
++    outc = defaultdict(lambda: defaultdict(int))
++    steps = defaultdict(list)
++    by_cs = defaultdict(list)
++    for e in good:
++        st = sts[e["state_id"]]
++        outc[e["condition"]][e["outcome"]] += 1
++        steps[e["condition"]].append(e["steps"])
++        by_cs[(e["condition"], st["inst"].construction, st["inst"].variant.stakes)].append(e["return_"])
++    # depth (RC13): stratum 3, K(F->R) vs K(R) notes, and the 3b - 3a difference-in-differences
++    depth = {}
++    for cond in ("reference", "inferred"):
++        for c in ("3a", "3b", "3c"):
++            ks = [k for k in keys if k[1] == c]
++            depth[f"{cond}|{c}|K(F->R)-K(R)"] = {k: v for k, v in contrast(vals, cond, f"{cond}_KR", ks).items() if k != "_d"}
++        did = []
++        for seed in sorted({k[0] for k in keys}):
++            a, b = vals.get((seed, "3a"), {}), vals.get((seed, "3b"), {})
++            if all(x in a and x in b for x in (cond, "none")):
++                did.append((b[cond] - b["none"]) - (a[cond] - a["none"]))
++        lo, hi = strat_ci({"all": did}) if did else (None, None)
++        depth[f"{cond}|DiD (cond-none)[3b]-(cond-none)[3a]"] = {"n": len(did), "estimate": statistics.mean(did) if did else None,
++                                                              "ci95": [lo, hi]}
++    # fidelity of inferred notes (all Stage 2 notes, incl. K(R))
++    notes = json.loads(NOTES.read_text())
++    fid = []
++    for sid, row in notes["states"].items():
++        if sid not in sts:
++            continue
++        st = sts[sid]
++        for us, parsed in row["inferred"].items():
++            u = next(u for cs in st["conds"].values() for u in cs if str(u) == us)
++            _, dist = reference_note(st["inst"], u)
++            r = score_row(st["inst"], u, parsed, dist)
++            fid.append({"state_id": sid, "construction": st["inst"].construction, "unit": us, "ok": r["ok"],
++                        "category": r["category"], "tv": r["tv_posterior"], "unsupported_mass": r["unsupported_mass"],
++                        "status": r["status"], "prior_copy": r["prior_copy"],
++                        "prior_copy_discriminating": r["prior_copy_discriminating"], "distribution": r["distribution"],
++                        "posterior": r["posterior"]})
++    fid_by = defaultdict(list)
++    for f in fid:
++        fid_by[f["construction"]].append(f)
++    fid_sum = {c: {"n": len(v), "valid": sum(f["ok"] for f in v),
++                   "mean_tv": statistics.mean(f["tv"] for f in v if f["ok"]) if any(f["ok"] for f in v) else None,
++                   "mean_unsupported_mass": statistics.mean(f["unsupported_mass"] for f in v if f["ok"]) if any(f["ok"] for f in v) else None,
++                   "abstained": sum(f["status"] == "abstain" for f in v),
++                   "categories": {k: sum(str(f["category"]) == k for f in v) for k in sorted({str(f["category"]) for f in v})},
++                   # in 4c the posterior equals the prior, so a prior match there is CORRECT (S6)
++                   ("matches_prior_correct_in_4c" if c == "4c" else "prior_copies_raw"): sum(bool(f["prior_copy"]) for f in v),
++                   **({"prior_copies_discriminating": sum(bool(f["prior_copy_discriminating"]) for f in v)} if c != "4c" else {}),
++                   **({"over_updates_4c": sum(f["ok"] and f["prior_copy"] is False for f in v)} if c == "4c" else {})}
++               for c, v in sorted(fid_by.items())}
++    (ROOT / "data" / "repair-block").mkdir(parents=True, exist_ok=True)
++    (ROOT / "data" / "repair-block" / "stage2-fidelity-rows.json").write_text(json.dumps(fid, indent=1, default=str))
++    # compute (RC14): notes charged to the inferred conditions that show them; decisions per condition
++    comp = defaultdict(lambda: defaultdict(float))
++    for sid, row in notes["states"].items():
++        if sid not in sts:
++            continue
++        for us, call in row["calls"].items():
++            cond = "inferred_KR" if us in [str(u) for u in sts[sid]["conds"].get("inferred_KR", [])] and \
++                us not in [str(u) for u in sts[sid]["conds"]["inferred"]] else "inferred"
++            for a in call["attempts"]:
++                comp[cond]["note_attempts"] += 1
++                comp[cond]["note_attempts_missing_usage"] += int(a.get("prompt_tokens") is None or a.get("completion_tokens") is None)
++                if a.get("reasoning_tokens") is None:
++                    comp[cond]["note_reasoning_tokens_unavailable_attempts"] += 1
++                else:
++                    comp[cond]["note_reasoning_tokens"] += a["reasoning_tokens"]
++                comp[cond]["note_prompt_tokens"] += a.get("prompt_tokens") or 0
++                comp[cond]["note_completion_tokens"] += a.get("completion_tokens") or 0
++                comp[cond]["note_latency_s"] += a.get("latency_s") or 0
++    for e in good:
++        d = e["usage"].get("decision", {})
++        c = comp[e["condition"]]
++        for call in e.get("calls", []):
++            if call.get("kind") == "decision":
++                for a in call.get("attempts", []):
++                    c["decision_attempts"] += 1
++                    c["decision_attempts_missing_usage"] += int(a.get("prompt_tokens") is None or a.get("completion_tokens") is None)
++        c["episodes"] += 1
++        c["decision_calls"] += d.get("calls", 0)
++        c["decision_prompt_tokens"] += d.get("prompt_tokens", 0)
++        c["decision_completion_tokens"] += d.get("completion_tokens", 0)
++        c["decision_latency_s"] += d.get("latency_s", 0)
++        c["failed_attempts"] += sum(v.get("attempts_failed", 0) for v in e["usage"].values())
++        if d and d.get("reasoning_tokens_known"):
++            c["decision_reasoning_tokens"] += d.get("reasoning_tokens", 0)
++        else:
++            c["decision_reasoning_tokens_unavailable_episodes"] += 1
++        c["fallbacks"] += sum(v.get("fallbacks", 0) for v in e["usage"].values())
++    headroom = {c: statistics.mean(qual[sid]["bayes_value_t0"] for sid in sts) - statistics.mean(
++        e["return_"] for e in good if e["condition"] == c) for c in ("none", "inferred", "reference")}
++    res = {"run_id": manifest["run_id"], "completed_seed_blocks": sorted(blocks), "base_scenarios": len(keys),
++           "episodes": len(good), "blocked": len(blocked),
++           "primary": {"reference_minus_none": {k: v for k, v in ref.items() if k != "_d"},
++                       "inferred_minus_none": {k: v for k, v in inf.items() if k != "_d"},
++                       "sign_flip_p": ps, "holm_significant": sig},
++           "inferred_minus_reference": {k: v for k, v in inf_ref.items() if k != "_d"},
++           "reference_class": rc, "inferred_class": ic, "outcome": table[(rc, ic)], "anomaly_inferred_above_reference": anomaly,
++           "strata": strata, "outcomes": {c: dict(v) for c, v in outc.items()},
++           "mean_steps": {c: statistics.mean(v) for c, v in steps.items()},
++           "by_construction_stakes": {f"{c}|{k}|{s:g}": statistics.mean(v) for (c, k, s), v in sorted(by_cs.items())},
++           "depth": depth, "fidelity_by_construction": fid_sum, "compute": {c: dict(v) for c, v in comp.items()},
++           "headroom_bayes_minus_condition": headroom,
++           "blocked_episodes": [{k: e[k] for k in ("state_id", "condition", "replicate", "blocked")} for e in blocked],
++           "wall_clock": {"notes_stage_s": notes.get("wall_s"), "policy_stage_s": manifest.get("wall_clock_s"),
++                          "concurrency": manifest.get("concurrency"),
++                          "reference_oracle_cpu_s_not_deployable": notes.get("reference_oracle_s")},
++           "depth_render_diffs_3a_3c": depth_diffs(sts, notes)}
++    (BLOCK / "stage2-results.json").write_text(json.dumps(res, indent=1, sort_keys=True, default=str) + "\n")
++    fmt = lambda c: f"{c['estimate']:+.4f} [{c['ci95'][0]:+.4f}, {c['ci95'][1]:+.4f}] (n={c['n_base']})"
++    L = [f"# Stage 2 results — run `{manifest['run_id']}`", "",
++         f"`scripts/report_repair_stage2.py` (frozen before outcomes). {len(keys)} base scenarios from "
++         f"{len(blocks)} complete seed blocks; {len(good)} episodes, {len(blocked)} blocked. Development data, local backbone.", "",
++         "## Primary (paired by base scenario; equal construction weight; 95% stratified bootstrap CI)", "",
++         f"- reference − none: {fmt(ref)}; sign-flip p = {ps['reference']:.5f}; Holm-significant: {sig['reference']}",
++         f"- inferred − none: {fmt(inf)}; sign-flip p = {ps['inferred']:.5f}; Holm-significant: {sig['inferred']}",
++         f"- inferred − reference (secondary): {fmt(inf_ref)}", "",
++         f"**Reference class: {rc}. Inferred class: {ic}. Pre-declared outcome: {table[(rc, ic)]}.**"
++         + (" Anomaly: inferred − reference CI lower > +δ." if anomaly else ""), "",
++         "## Per stratum (condition − none)", ""]
++    for s, v in strata.items():
++        L.append(f"- stratum {s}: " + "; ".join(f"{c} {fmt(x)}" for c, x in v.items()))
++    L += ["", "## Outcomes and steps", ""] + [f"- {c}: {dict(v)}; mean steps {statistics.mean(steps[c]):.2f}" for c, v in outc.items()]
++    L += ["", f"Headroom (Bayes V* − condition mean): { {k: round(v, 4) for k, v in headroom.items()} }", "",
++          "## Depth (RC13; descriptive; 3a/3c are label-only controls)", ""]
++    for k, v in depth.items():
++        L.append(f"- {k}: " + (fmt(v) if "n_base" in v else f"{v['estimate']} {v['ci95']} (n={v['n']})"))
++    L += ["", "## Inferred-note fidelity by construction", ""] + [f"- {c}: {v}" for c, v in fid_sum.items()]
++    L += ["", f"Depth render diffs 3a/3c (reference K(F->R) vs K(R)): { {k: v for k, v in res['depth_render_diffs_3a_3c'].items() if k != 'examples'} }",
++          "", f"Blocked episodes: {len(blocked)}; excluded base scenarios (reference−none / inferred−none): "
++          f"{ref['excluded_base_scenarios']} / {inf['excluded_base_scenarios']}", "", f"Wall clock: {res['wall_clock']}"]
++    L += ["", "## Compute (all attempts charged)", ""] + [f"- {c}: {dict(v)}" for c, v in res["compute"].items()]
++    L += ["", "## By construction × stakes (mean return)", ""] + [f"- {k}: {v:.3f}" for k, v in res["by_construction_stakes"].items()]
++    (BLOCK / "stage2-results.md").write_text("\n".join(L) + "\n", encoding="utf-8")
++    print(rc, "|", ic, "|", table[(rc, ic)])
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/run_repair.py b/scripts/run_repair.py
+new file mode 100644
+index 0000000..01b9959
+--- /dev/null
++++ b/scripts/run_repair.py
+@@ -0,0 +1,497 @@
++"""Repair block (D-015) runner: reports/repair-block/experiment-plan.md Entries 1, 1a, 2.
++
++    python3 scripts/run_repair.py qualify            # RC12: symbolic checks on every Stage 2 fresh-seed instance
++    python3 scripts/run_repair.py regress            # Stage 1 regression check on inspected Round B states (local)
++    python3 scripts/run_repair.py freeze             # stage1-freeze.json (clean tree)
++    python3 scripts/run_repair.py verify             # current code == freeze
++    python3 scripts/run_repair.py notes              # Stage 2 frozen note payloads (all seeds)
++    python3 scripts/run_repair.py policy             # Stage 2 policy, complete seed blocks
++
++Package pilot-v2.2, render r7 (citable PM IDs, matched notes), local gpt-oss-20b. Notes: temperature 1.0, max_tokens
++2048; policy: temperature 1.0, max_tokens 1024; reasoning low; up to 3 attempts; truncation = failed attempt.
++"""
++
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import os
++import sys
++import time
++from concurrent.futures import ThreadPoolExecutor
++from dataclasses import asdict
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++sys.path.insert(0, str(ROOT / "scripts"))
++
++from officeminds import devgen3 as G  # noqa: E402
++from officeminds.episode import VisibleHistory  # noqa: E402
++from vomi import runlog  # noqa: E402
++from vomi.clients import make_client  # noqa: E402
++from vomi.graph import PerspectiveGraph  # noqa: E402
++from vomi.oracle import ExactOracle  # noqa: E402
++from vomi.pilot import (PACKAGES, call_with_protocol, describe_unit, load_prompts, policy_messages,  # noqa: E402
++                        prompt_hashes, run_episode_arm, unit_messages)
++from vomi.units import K, content  # noqa: E402
++
++PACKAGE, REV = "pilot-v2.2", 7
++BLOCK = ROOT / "reports" / "repair-block"
++DATA = ROOT / "data" / "repair-block"  # PRIVILEGED payloads (gitignored)
++FREEZE = BLOCK / "stage1-freeze.json"
++RUNS = Path(os.environ.get("OFFICEMINDS_RUNS", Path.home() / "officeminds-runs")) / "repair"
++SEED0 = 20261100
++CONCURRENCY = 8
++MODEL_CFG = ROOT / "configs" / "models" / "local_gpt_oss_20b.json"
++CONDS = ("none", "inferred", "reference")
++DEPTH_CONDS = ("inferred_KR", "reference_KR")
++MARKERS = ("[PM1]", "Watching a quiet conversation tells a bystander nothing")
++
++
++def sha(obj) -> str:
++    return hashlib.sha256((obj if isinstance(obj, str) else json.dumps(obj, sort_keys=True)).encode()).hexdigest()
++
++
++class LengthGuard:
++    def __init__(self, inner):
++        self.inner, self.model = inner, getattr(inner, "model", "?")
++
++    def chat(self, messages, **params):
++        r = self.inner.chat(messages, **params)
++        if (r.finish_reason == "length" or str(r.finish_reason or "").startswith("incomplete")) and not r.error:
++            r.error = "truncated: finish_reason=length"
++        return r
++
++
++def decoding(kind):
++    d = dict(json.loads(MODEL_CFG.read_text())["decoding"])
++    return {**d, "temperature": 1.0, "max_tokens": 2048 if kind == "notes" else 1024}
++
++
++def chosen_k() -> int:
++    return json.loads((BLOCK / "power.json").read_text())["chosen_K"]
++
++
++def stage2_states(k_max: int | None = None):
++    """Seed-qualified t0 states: every construction's unpermuted x1 and x4 variants, seeds SEED0 + k."""
++    out = []
++    for k in range(k_max if k_max is not None else chosen_k()):
++        seed = SEED0 + k
++        for inst in G.generate(seed):
++            if inst.variant.permuted:
++                continue
++            units = G.focal_units(inst)
++            conds = {c: units for c in CONDS}
++            if inst.stratum == 3:
++                kr = [K(inst.role["R"])]
++                conds.update({"inferred_KR": kr, "reference_KR": kr})
++            out.append({"state_id": f"s{seed}-{inst.instance_id}", "seed": seed, "k": k, "inst": inst, "conds": conds})
++    return out
++
++
++def t0(inst):
++    w = inst.scenario.build(inst.hidden)
++    return w, VisibleHistory(inst.scenario.brief, [(None, w.reset())])
++
++
++def reference_note(inst, u) -> tuple[dict, dict]:
++    w, h = t0(inst)
++    o = ExactOracle(inst.scenario, h)  # plain posterior b_h under the declared public model
++    dist = {}
++    for p, x in o.belief:
++        v = content(x, u)[0]
++        dist[v] = dist.get(v, 0.0) + p
++    hyps = [{"value": v, "p": round(p, 6)} for v, p in sorted(dist.items()) if p > 0]
++    note = {"path": list(u.path), "variable": u.variable, "about": describe_unit(u, inst.scenario.config)[1],
++            "as_of_step": 0, "status": "grounded" if max(dist.values()) >= 0.8 else "uncertain", "hypotheses": hyps,
++            "unresolved": [], "evidence_ids": [], "rule_ids": [], "source": "reference"}
++    return note, dist
++
++
++def infer_note(client, inst, u):
++    cfg = inst.scenario.config
++    _, h = t0(inst)
++    pkg = PACKAGES[PACKAGE]
++    msgs, domain, ids = unit_messages(load_prompts(PACKAGE), cfg, inst.scenario.brief, h, u, PACKAGE, REV)
++    assert all(m in msgs[1]["content"] for m in MARKERS)
++    return call_with_protocol(client, "unit", 0, str(u), msgs, pkg.schema(domain, u.variable),
++                              lambda t: pkg.validate(t, u.path, u.variable, domain, ids), decoding("notes"))
++
++
++# ----------------------------------------------------------------------------- RC12 symbolic qualification
++def stage_qualify(args):
++    import qualify_dev_v3 as Q
++    sys.path.insert(0, str(ROOT / "tests"))
++    import test_dev_v3 as T
++    sts = stage2_states()
++    insts = [s["inst"] for s in sts]
++    T.INSTS, T.BY_ID = insts, {i.instance_id: i for i in insts}
++    rule_tests = ["test_rule1_and_rule5_quiet_conversations", "test_rule2_recipient_knows_own_office",
++                  "test_rule2_lobby_sightings_change_no_beliefs", "test_rule3_statements_are_not_adopted_and_give_speaker_nothing",
++                  "test_rule4_remarks_change_nothing", "test_rule5_nested_beliefs_only_from_statements_and_announcements",
++                  "test_rule6_only_declared_people_may_mislead", "test_designed_contents", "test_evidence_resolved_access_status",
++                  "test_card_has_r6_and_public_model_and_no_hidden_values", "test_reference_inputs_are_the_disclosed_spec",
++                  "test_agent_visible_text_has_no_design_labels"]
++    results = {}
++    for name in rule_tests:
++        try:
++            getattr(T, name)()
++            results[name] = "pass"
++        except AssertionError as e:
++            results[name] = f"FAIL: {e}"
++    recs, t_start = [], time.monotonic()
++    for st in sts:
++        r = Q.instance_record(st["inst"])
++        recs.append({"state_id": st["state_id"], "seed": st["seed"], "construction": r["construction"],
++                     "stakes": r["stakes"], "rates": {k: float(v) for k, v in st["inst"].spec.rates},
++                     "optimal": r["optimal_first_actions"], "bayes_value_t0": r["bayes_value_t0"],
++                     "focal": r["focal"], "focal_in_candidates": r["focal_in_candidates"],
++                     "superset_ok": (r["superset"]["max_abs_q_diff"] < 1e-9 and r["superset"]["focal_posterior_equal"])
++                     if "superset" in r else None, "oracle_seconds": r["oracle_seconds"]})
++    by = {}
++    for r in recs:
++        by.setdefault((r["seed"], r["construction"]), {})[r["stakes"]] = r
++    flips = {f"{s}|{c}": v[1.0]["optimal"] != v[4.0]["optimal"] for (s, c), v in by.items() if c.startswith("4")}
++    checks = {"states": len(recs), "seeds": len({r["seed"] for r in recs}), "rule_and_text_tests": results,
++              "access_status_unique_strata_1_3": all(len(f["access_status_set"]) == 1 for r in recs
++                                                    if r["construction"][0] in "123" for f in r["focal"]),
++              "focal_in_candidates_all": all(r["focal_in_candidates"] for r in recs),
++              "superset_ok_all": all(r["superset_ok"] for r in recs if r["superset_ok"] is not None),
++              "stratum4_flip": {"all": all(flips.values()), "failing": sorted(k for k, v in flips.items() if not v)},
++              "max_oracle_seconds": max(r["oracle_seconds"] for r in recs),
++              "wall_s": round(time.monotonic() - t_start, 1)}
++    (BLOCK / "stage2-qualification.json").write_text(json.dumps({"checks": checks, "states": recs}, indent=1,
++                                                                sort_keys=True) + "\n")
++    print(json.dumps(checks, indent=1))
++
++
++# ----------------------------------------------------------------------------- Stage 1 regression (inspected material)
++def stage_regress(args):
++    sel = {"1c", "2a", "3c", "4b"}
++    insts = [i for i in G.generate() if i.construction in sel]
++    jobs = [(i, u) for i in insts for u in G.focal_units(i)] + [(i, K(i.role["R"])) for i in insts if i.stratum == 3]
++    client = LengthGuard(make_client(json.loads(MODEL_CFG.read_text())))
++    tag = time.strftime("%Y%m%d-%H%M%S")
++
++    def job(item):
++        inst, u = item
++        rec = infer_note(client, inst, u)
++        _, dist = reference_note(inst, u)
++        return inst, u, rec, dist
++
++    rows = []
++    with ThreadPoolExecutor(CONCURRENCY) as pool:
++        for inst, u, rec, dist in pool.map(job, jobs):
++            rows.append(score_row(inst, u, rec.parsed if rec.ok else None, dist, rec))
++    out = {"label": "Stage 1 regression check on INSPECTED dev-v3 Round B states (development/debugging only; "
++                    "temperature-1.0 single draws; no content pass/fail threshold)", "run": tag,
++           "prompt_sha256": prompt_hashes(PACKAGE)["unit_system"], "decoding": decoding("notes"), "rows": rows,
++           "summary": summarize(rows)}
++    DATA.mkdir(parents=True, exist_ok=True)
++    (DATA / f"regress-{tag}.json").write_text(json.dumps(out, indent=1, sort_keys=True, default=str))
++    pub = {k: v for k, v in out.items() if k != "rows"}
++    pub["rows"] = [{k: v for k, v in r.items() if k not in ("call",)} for r in rows]
++    (BLOCK / f"stage1-regress-{tag}.json").write_text(json.dumps(pub, indent=1, sort_keys=True, default=str) + "\n")
++    print(json.dumps(out["summary"], indent=1))
++
++
++def score_row(inst, u, parsed, dist, rec=None):
++    from vomi.fidelity import robot_known_values, score_output_v3
++    w, h = t0(inst)
++    cfg = inst.scenario.config
++    domain = list(cfg.fact_domains[cfg.query_facts[0]])
++    vals = PACKAGES[PACKAGE].schema(domain, u.variable)["properties"]["hypotheses"]["items"]["properties"]["value"]["enum"]
++    s = score_output_v3(parsed, content(w, u)[0], dist, robot_known_values(h, cfg.recipient), vals, False)
++    prior_copy = prior_copy_discriminating = prior = None
++    if u.variable == "reliability" and parsed:
++        r = dict(inst.spec.rates)
++        key = {"X": "r_X", "Y": "r_Y"}.get(next(k for k, v in inst.role.items() if v == u.path[0]), "r_incentive")
++        prior = float(r.get(key, r.get("r_incentive", 0)))
++        pm = {h_["value"]: h_["p"] for h_ in parsed["hypotheses"]}
++        prior_copy = abs(pm.get("obstructive", 0) - prior) <= 0.02 and abs(pm.get("cooperative", 0) - (1 - prior)) <= 0.02
++        # R1 (Stage 1 results gate; defined AFTER the Stage 1 output): a copy is only diagnosable where the posterior
++        # is far from the prior. The raw flag is kept.
++        prior_copy_discriminating = prior_copy and abs(dist.get("obstructive", 0.0) - prior) > 0.04
++    errs = [a["validation_errors"] for a in (rec.attempts if rec else [])]
++    return {"state": inst.instance_id, "unit": str(u), "ok": parsed is not None, "category": s.get("category"),
++            "tv_posterior": s.get("tv_posterior"), "unsupported_mass": s.get("unsupported_mass"),
++            "top": s.get("top"), "posterior": dist, "status": (parsed or {}).get("status"),
++            "distribution": {h_["value"]: h_["p"] for h_ in (parsed or {}).get("hypotheses", [])},
++            "prior_copy": prior_copy, "prior_copy_discriminating": prior_copy_discriminating,
++            "prior": prior if u.variable == "reliability" and parsed else None, "attempt_errors": errs,
++            "public_model_ids": (parsed or {}).get("public_model_ids"), "call": asdict(rec) if rec else None}
++
++
++def summarize(rows):
++    ok = [r for r in rows if r["ok"]]
++    rel = [r for r in ok if r["unit"].startswith("R(")]
++    return {"notes": len(rows), "valid": len(ok), "coverage": round(len(ok) / len(rows), 3),
++            "mean_tv": round(sum(r["tv_posterior"] for r in ok) / len(ok), 4) if ok else None,
++            "mean_unsupported_mass": round(sum(r["unsupported_mass"] for r in ok) / len(ok), 4) if ok else None,
++            "categories": {c: sum(r["category"] == c for r in rows) for c in sorted({str(r["category"]) for r in rows})},
++            "reliability_prior_copies": f"{sum(bool(r['prior_copy']) for r in rel)}/{len(rel)}",
++            "reliability_prior_copies_discriminating": (
++                f"{sum(bool(r.get('prior_copy_discriminating')) for r in rel)}/"
++                f"{sum(r.get('prior') is not None and abs(r['posterior'].get('obstructive', 0.0) - r['prior']) > 0.04 for r in rel)}"),
++            "notes_citing_pm": sum(bool(r["public_model_ids"]) for r in ok)}
++
++
++# ----------------------------------------------------------------------------- freeze / verify
++FROZEN_SOURCES = ["src/officeminds/devgen3.py", "src/officeminds/world.py", "src/officeminds/scenarios.py",
++                  "src/officeminds/episode.py", "src/vomi/oracle.py", "src/vomi/units.py", "src/vomi/pilot.py",
++                  "src/vomi/fidelity.py", "src/vomi/unit_schema.py", "src/vomi/graph.py", "src/vomi/clients.py",
++                  "scripts/run_repair.py", "scripts/report_repair_stage2.py", "scripts/power_repair_stage2.py",
++                  "scripts/qualify_dev_v3.py", "prompts/pilot-v1/policy_system.txt", "prompts/pilot-v2.2/unit_system.txt"]
++
++
++def stage_freeze(args):
++    dirty = [x for x in os.popen(f'git -C "{ROOT}" status --porcelain').read().split("\n") if x.strip()]
++    if dirty:
++        raise SystemExit(f"freeze needs a clean tree: {dirty}")
++    sts = stage2_states()
++    prompts = load_prompts(PACKAGE)
++    rows = {}
++    for st in sts:
++        inst = st["inst"]
++        _, h = t0(inst)
++        cfg = inst.scenario.config
++        rows[st["state_id"]] = {"agent_view_t0_sha256": sha(json.dumps(h.to_agent_dict(), sort_keys=True)),
++                                "policy_prompt_t0_direct_sha256": sha(policy_messages(prompts, cfg, inst.scenario.brief, h, None, REV)[0][1]["content"]),
++                                "conditions": {c: [str(u) for u in us] for c, us in st["conds"].items()}}
++    fz = {"created_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
++          "git_commit": os.popen(f'git -C "{ROOT}" rev-parse HEAD').read().strip(), "package": PACKAGE,
++          "render_revision": REV, "prompt_sha256": prompt_hashes(PACKAGE),
++          "source_sha256": {f: hashlib.sha256((ROOT / f).read_bytes()).hexdigest() for f in FROZEN_SOURCES},
++          "power_sha256": hashlib.sha256((BLOCK / "power.json").read_bytes()).hexdigest(), "K": chosen_k(),
++          "model_config_sha256": hashlib.sha256(MODEL_CFG.read_bytes()).hexdigest(),
++          "seeds": [SEED0 + k for k in range(chosen_k())], "notes_decoding": decoding("notes"),
++          "policy_decoding": decoding("policy"), "concurrency": CONCURRENCY, "draws": 2,
++          "model": json.loads(MODEL_CFG.read_text())["hf_snapshot"],
++          "qualification_sha256": hashlib.sha256((BLOCK / "stage2-qualification.json").read_bytes()).hexdigest(),
++          "states": rows}
++    FREEZE.write_text(json.dumps(fz, indent=1, sort_keys=True) + "\n")
++    print("freeze", len(rows), "states, K =", fz["K"])
++
++
++def verify(_args=None):
++    fz = json.loads(FREEZE.read_text())
++    bad = [f for f, hsh in fz["source_sha256"].items() if hashlib.sha256((ROOT / f).read_bytes()).hexdigest() != hsh]
++    if prompt_hashes(PACKAGE) != fz["prompt_sha256"]:
++        bad.append("prompts")
++    for key, path in (("power_sha256", BLOCK / "power.json"), ("qualification_sha256", BLOCK / "stage2-qualification.json"),
++                      ("model_config_sha256", MODEL_CFG)):
++        if hashlib.sha256(path.read_bytes()).hexdigest() != fz[key]:
++            bad.append(key)
++    if decoding("notes") != fz["notes_decoding"] or decoding("policy") != fz["policy_decoding"]:
++        bad.append("decoding")
++    prompts = load_prompts(PACKAGE)
++    for st in stage2_states(fz["K"]):
++        row = fz["states"][st["state_id"]]
++        inst = st["inst"]
++        _, h = t0(inst)
++        if sha(json.dumps(h.to_agent_dict(), sort_keys=True)) != row["agent_view_t0_sha256"]:
++            bad.append(st["state_id"])
++    if bad:
++        raise SystemExit(f"FREEZE MISMATCH: {bad[:10]}")
++    print("freeze verified", len(fz["states"]), "states")
++    return fz
++
++
++# ----------------------------------------------------------------------------- Stage 2 notes and policy
++NOTES = DATA / "stage2-notes.json"
++
++
++def stage_notes(args):
++    fz = verify()
++    if NOTES.exists():
++        raise SystemExit("notes frozen; refusing to regenerate")
++    sts = stage2_states(fz["K"])
++    client = LengthGuard(make_client(json.loads(MODEL_CFG.read_text())))
++    jobs = sorted({(st["state_id"], str(u)) for st in sts for c, us in st["conds"].items() if c.startswith("inferred")
++                   for u in us})
++    by = {st["state_id"]: st for st in sts}
++
++    def job(item):
++        sid, us = item
++        st = by[sid]
++        u = next(u for c, uu in st["conds"].items() for u in uu if str(u) == us)
++        return sid, us, infer_note(client, st["inst"], u)
++
++    out = {"started_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "freeze_sha256": hashlib.sha256(FREEZE.read_bytes()).hexdigest(),
++           "states": {}}
++    t_start = time.monotonic()
++    partial = DATA / "stage2-notes-partial.jsonl"  # resumable after a machine restart: finished calls are kept
++    DATA.mkdir(parents=True, exist_ok=True)
++    done = {}
++    if partial.exists():
++        for line in partial.read_text().splitlines():
++            if line.strip():
++                r = json.loads(line)
++                done[(r["sid"], r["unit"])] = r
++    out["resumed_calls"] = len(done)
++    seg = time.strftime("%Y%m%d-%H%M%S")
++    segs = {}
++    for r in done.values():  # earlier segments: each one's elapsed time is its largest recorded elapsed
++        segs[r.get("segment", "?")] = max(segs.get(r.get("segment", "?"), 0.0), r.get("segment_wall_s", 0.0))
++    out["prior_wall_s"] = round(sum(segs.values()), 1)
++    out["segments"] = sorted(segs) + [seg]
++    todo = [j for j in jobs if j not in done]
++    with ThreadPoolExecutor(CONCURRENCY) as pool, partial.open("a") as pf:
++        for sid, us, rec in pool.map(job, todo):
++            r = {"sid": sid, "unit": us, "ok": rec.ok, "parsed": rec.parsed, "call": asdict(rec),
++                 "segment": seg, "segment_wall_s": round(time.monotonic() - t_start, 1)}
++            pf.write(json.dumps(r, default=str) + "\n")
++            pf.flush()
++            done[(sid, us)] = r
++    for (sid, us), r in sorted(done.items()):
++        row = out["states"].setdefault(sid, {"inferred": {}, "calls": {}})
++        row["inferred"][us] = dict(r["parsed"], source="inferred") if r["ok"] else None
++        row["calls"][us] = r["call"]
++    t_ref = time.process_time()
++    for st in sts:
++        row = out["states"].setdefault(st["state_id"], {"inferred": {}, "calls": {}})
++        row["reference"] = {}
++        for us in {str(u) for c, uu in st["conds"].items() for u in uu}:
++            u = next(u for c, uu in st["conds"].items() for u in uu if str(u) == us)
++            row["reference"][us] = reference_note(st["inst"], u)[0]
++        row["rendered_sha256"] = {c: sha(rendered(st, c, out)[1]) for c in st["conds"]}
++    out["reference_oracle_s"] = round(time.process_time() - t_ref, 2)  # includes rendering; non-deployable oracle CPU
++    out["ended_at"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
++    out["wall_s"] = round(time.monotonic() - t_start + out["prior_wall_s"], 1)  # summed over segments (restarts)
++    DATA.mkdir(parents=True, exist_ok=True)
++    NOTES.write_text(json.dumps(out, indent=1, sort_keys=True, default=str))
++    proof = {"notes_file_sha256": sha(out["states"]), "freeze_sha256": out["freeze_sha256"], "wall_s": out["wall_s"],
++             "coverage": f"{sum(v is not None for r in out['states'].values() for v in r['inferred'].values())}/"
++                         f"{sum(len(r['inferred']) for r in out['states'].values())}",
++             "states": {s: {"rendered_sha256": r["rendered_sha256"],
++                            "inferred_ok": {u: v is not None for u, v in r["inferred"].items()}}
++                        for s, r in out["states"].items()}}
++    (BLOCK / "stage2-notes-freeze.json").write_text(json.dumps(proof, indent=1, sort_keys=True) + "\n")
++    print("notes frozen; coverage", proof["coverage"], "wall_s", out["wall_s"])
++
++
++def frozen_for(st, cond, notes):
++    units = st["conds"][cond]
++    src = "inferred" if cond.startswith("inferred") else "reference"
++    pay = notes["states"][st["state_id"]][src]
++    keep = [u for u in units if pay.get(str(u)) is not None]
++    return keep, {str(u): pay[str(u)] for u in keep}
++
++
++def condition_kwargs(st, cond, notes):
++    if cond == "none":
++        return {"arm": "direct"}
++    keep, frozen = frozen_for(st, cond, notes)
++    return {"arm": "fixed", "initial_units": keep, "allocate": False, "frozen_notes": frozen}
++
++
++def rendered(st, cond, notes):
++    inst = st["inst"]
++    _, h = t0(inst)
++    g = None
++    if cond != "none":
++        keep, frozen = frozen_for(st, cond, notes)
++        g = PerspectiveGraph(recipient=inst.scenario.config.recipient, refutation_mode="fact_only")
++        for u in keep:
++            g.instantiate(u, frozen[str(u)], frozen[str(u)].get("evidence_ids", []), t=0, cost=0.0)
++    user = policy_messages(load_prompts(PACKAGE), inst.scenario.config, inst.scenario.brief, h, g, REV)[0][1]["content"]
++    return user, "MIND NOTES" + user.split("MIND NOTES", 1)[1].split("LEGAL ACTIONS NOW", 1)[0].rstrip()
++
++
++def stage_policy(args):
++    fz = verify()
++    dirty = [x for x in os.popen(f'git -C "{ROOT}" status --porcelain').read().split("\n") if x.strip()]
++    tracked = os.popen(f'git -C "{ROOT}" ls-files reports/repair-block/stage2-notes-freeze.json').read().strip()
++    if dirty or not tracked:
++        raise SystemExit(f"policy needs a clean tree with the notes-freeze proof committed: dirty={dirty} tracked={tracked!r}")
++    notes = json.loads(NOTES.read_text())
++    proof = json.loads((BLOCK / "stage2-notes-freeze.json").read_text())
++    assert proof["notes_file_sha256"] == sha(notes["states"])
++    sts = stage2_states(fz["K"])
++    for st in sts:
++        for c in st["conds"]:
++            user, part = rendered(st, c, notes)
++            assert all(m in user for m in MARKERS) and sha(part) == proof["states"][st["state_id"]]["rendered_sha256"][c]
++    meta = {"stage": "policy", "freeze_sha256": hashlib.sha256(FREEZE.read_bytes()).hexdigest(),
++            "notes_file_sha256": proof["notes_file_sha256"], "decoding": decoding("policy"), "draws": 2,
++            "concurrency": CONCURRENCY, "limit_s": 4 * 3600, "package": PACKAGE, "render_revision": REV}
++    resume = getattr(args, "resume", None)
++    prior_blocks, prior_wall, kept = [], 0.0, []
++    if resume:
++        out = Path(resume)
++        manifest = json.loads((out / "manifest.json").read_text()) if (out / "manifest.json").exists() else \
++            json.loads((out / "manifest-start.json").read_text())
++        prev = [json.loads(l) for l in (out / "episodes.jsonl").read_text().splitlines() if l.strip()]
++        per_block = 2 * sum(len(st["conds"]) for st in sts if st["k"] == 0)
++        aborted = []
++        for seed in sorted({e["seed"] for e in prev}):
++            es = [e for e in prev if e["seed"] == seed]
++            if len(es) == per_block:
++                prior_blocks.append(seed)
++                kept.extend(es)
++            else:  # a block cut off by a restart is logged and re-run in full; it never enters the analysis
++                aborted.extend(es)
++        with (out / "aborted-episodes.jsonl").open("a") as af:
++            af.write("".join(json.dumps(e, default=str) + "\n" for e in aborted))
++        prior_wall = float(json.loads((out / "progress.json").read_text())["wall_s"]) if (out / "progress.json").exists() else 0.0
++        manifest.setdefault("resumes", []).append({"at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "kept_blocks": prior_blocks,
++                                                   "aborted_episodes": len(prev) - len(kept), "prior_wall_s": prior_wall})
++        (out / "episodes.jsonl").write_text("".join(json.dumps(e, default=str) + "\n" for e in kept))
++    else:
++        manifest = runlog.new_manifest("repair-stage2", meta)
++        out = RUNS / manifest["run_id"]
++        out.mkdir(parents=True, exist_ok=True)
++        (out / "manifest-start.json").write_text(json.dumps(manifest, indent=1, default=str))
++    print("run dir", out, flush=True)
++    client = LengthGuard(make_client(json.loads(MODEL_CFG.read_text())))
++    t_start = time.monotonic() - prior_wall
++    budget = 4 * 3600 - float(notes.get("wall_s", 0))
++    completed = list(prior_blocks)
++
++    def job(item):
++        n, (st, cond, r) = item
++        base = {"state_id": st["state_id"], "seed": st["seed"], "condition": cond, "replicate": r, "dispatch_index": n}
++        try:
++            res = run_episode_arm(client, st["inst"], decoding=decoding("policy"), package=PACKAGE, rev=REV,
++                                  **condition_kwargs(st, cond, notes))
++        except Exception as e:  # recorded, never silently retried
++            return {**base, "blocked": f"error: {type(e).__name__}: {e}"}
++        return {**base, "units": [str(u) for u in st["conds"][cond]], **asdict(res)}
++
++    with (out / "episodes.jsonl").open("a") as f, ThreadPoolExecutor(CONCURRENCY) as pool:
++        for k in range(fz["K"]):
++            if SEED0 + k in completed:
++                continue
++            if time.monotonic() - t_start + 8 * 60 > budget:
++                break  # overrun rule: start a seed block only if a full block (~8 min) still fits in the 4 h limit
++            block = [st for st in sts if st["k"] == k]
++            jobs = []
++            for r in range(2):
++                for i, st in enumerate(block):
++                    cs = list(st["conds"])
++                    for j in range(len(cs)):
++                        jobs.append((st, cs[(i + r + j) % len(cs)], r))
++            for res in pool.map(job, [(len(completed) * 10000 + n, x) for n, x in enumerate(jobs)]):
++                f.write(json.dumps(res, default=str) + "\n")
++                f.flush()
++            completed.append(SEED0 + k)
++            (out / "progress.json").write_text(json.dumps({"completed_seed_blocks": completed,
++                                                           "wall_s": round(time.monotonic() - t_start, 1)}))
++            print("seed block done", SEED0 + k, round(time.monotonic() - t_start), "s", flush=True)
++    runlog.finish(manifest, out, wall_clock_s=time.monotonic() - t_start, completed_seed_blocks=completed)
++    print("out", out, "blocks", len(completed))
++
++
++def main():
++    ap = argparse.ArgumentParser()
++    ap.add_argument("stage", choices=("qualify", "regress", "freeze", "verify", "notes", "policy"))
++    ap.add_argument("--resume", help="policy: an interrupted run dir to continue (complete seed blocks are kept)")
++    args = ap.parse_args()
++    {"qualify": stage_qualify, "regress": stage_regress, "freeze": stage_freeze, "verify": verify,
++     "notes": stage_notes, "policy": stage_policy}[args.stage](args)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/src/vomi/pilot.py b/src/vomi/pilot.py
+index b54d158..10dbf05 100644
+--- a/src/vomi/pilot.py
++++ b/src/vomi/pilot.py
+@@ -32,8 +32,9 @@ from officeminds.world import World, WorldConfig, legal_actions
+ 
+ from .clients import ChatClient, ChatResult
+ from .graph import PerspectiveGraph
+-from .unit_schema import (unit_output_schema, unit_output_schema_v2, unit_output_schema_v21, validate_unit_output,
+-                          validate_unit_output_v2, validate_unit_output_v21)
++from .unit_schema import (unit_output_schema, unit_output_schema_v2, unit_output_schema_v21, unit_output_schema_v22,
++                          validate_unit_output, validate_unit_output_v2, validate_unit_output_v21,
++                          validate_unit_output_v22)
+ from .units import KNOWLEDGE, Unit, content, generate_candidates
+ 
+ ROOT = Path(__file__).resolve().parents[2]
+@@ -55,28 +56,33 @@ class Package:
+         return ROOT / "prompts" / self.name
+ 
+     def schema(self, domain, variable):
+-        f = {"pilot-v1": unit_output_schema, "pilot-v2": unit_output_schema_v2, "pilot-v2.1": unit_output_schema_v21}[self.name]
++        f = {"pilot-v1": unit_output_schema, "pilot-v2": unit_output_schema_v2, "pilot-v2.1": unit_output_schema_v21,
++             "pilot-v2.2": unit_output_schema_v22}[self.name]
+         return f(domain, variable)
+ 
+     def validate(self, text, path, variable, domain, ids):
+         f = {"pilot-v1": validate_unit_output, "pilot-v2": validate_unit_output_v2,
+-             "pilot-v2.1": validate_unit_output_v21}[self.name]
++             "pilot-v2.1": validate_unit_output_v21, "pilot-v2.2": validate_unit_output_v22}[self.name]
+         return f(text, path, variable, domain, ids)
+ 
+     def fields_hint(self, u, about, step) -> str:
+         head = f'Respond as JSON with fields: path={json.dumps(list(u.path))}, variable="{u.variable}", about="{about}", as_of_step={step}, '
+         if self.name == "pilot-v1":
+             return head + 'hypotheses=[{"value","p"}], evidence_ids=[...], unresolved=[...].'
+-        status = '"grounded"|"uncertain"|"abstain"' if self.name == "pilot-v2.1" else '"attributed"|"insufficient_evidence"'
++        status = ('"grounded"|"uncertain"|"abstain"' if self.name in ("pilot-v2.1", "pilot-v2.2")
++                  else '"attributed"|"insufficient_evidence"')
+         return head + (f'status={status}, hypotheses=[{{"value","p","support":[{{"evidence_id","kind","note"}}]}}], '
+                        'unresolved=[...].')
+ 
+     @property
+     def min_render_revision(self) -> int:
++        if self.name == "pilot-v2.2":
++            return 7  # v2.2 cites the PM<n> public-model IDs rendered from r7
+         return 4 if self.name == "pilot-v2.1" else 1  # v2.1 cites the numbered r4 rules
+ 
+ 
+-PACKAGES = {"pilot-v1": Package("pilot-v1"), "pilot-v2": Package("pilot-v2"), "pilot-v2.1": Package("pilot-v2.1")}
++PACKAGES = {"pilot-v1": Package("pilot-v1"), "pilot-v2": Package("pilot-v2"), "pilot-v2.1": Package("pilot-v2.1"),
++            "pilot-v2.2": Package("pilot-v2.2")}
+ ABSTAIN_STATUSES = ("insufficient_evidence", "abstain")  # pilot-v2 / pilot-v2.1 full abstention
+ 
+ 
+@@ -167,6 +173,18 @@ PEOPLE_RULES_R6 = (  # r6 (dev-v3 block): every clause holds over ALL positive-p
+     "they answer.")
+ 
+ 
++def numbered_public_model(text: str) -> tuple[str, list[str]]:
++    """r7: give every bullet line of the PUBLIC MODEL paragraph a stable visible ID [PM1], [PM2], ... (in order)."""
++    out, ids = [], []
++    for line in text.splitlines():
++        stripped = line.lstrip()
++        if stripped.startswith("- "):
++            ids.append(f"PM{len(ids) + 1}")
++            line = line[: len(line) - len(stripped)] + f"- [{ids[-1]}] " + stripped[2:]
++        out.append(line)
++    return "\n".join(out), ids
++
++
+ def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
+     rev = RENDER_REVISION if rev is None else rev
+     err = 0.5 * cfg.stakes
+@@ -190,7 +208,7 @@ def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
+     if rev >= 6:
+         lines.append(PEOPLE_RULES_R6)
+         if cfg.public_model:
+-            lines.append(cfg.public_model)
++            lines.append(numbered_public_model(cfg.public_model)[0] if rev >= 7 else cfg.public_model)
+     elif rev >= 5:
+         lines.append(PEOPLE_RULES_R5)
+     elif rev == 4:
+@@ -266,13 +284,16 @@ def _excerpts(hist: VisibleHistory, ids: list[str], width: int = 110) -> str:
+     return " ".join(lines[i][:width] for i in ids if i in lines)
+ 
+ 
+-def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = None, rev: int | None = None) -> str:
++def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = None, rev: int | None = None,
++               cfg: WorldConfig | None = None) -> str:
+     rev = RENDER_REVISION if rev is None else rev
+     if graph is None:
+         return "MIND NOTES: (none; this agent does not use separate mind-inference steps)"
+     view = graph.policy_view()
+     if not view:
+         return "MIND NOTES: (none instantiated)"
++    if rev >= 7:
++        return matched_notes_text(view, cfg)
+     lines = []
+     for r in view:
+         out = r["output"]
+@@ -306,6 +327,48 @@ def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = Non
+     return "MIND NOTES (from separate inference steps; may be wrong or outdated):\n" + "\n".join(lines)
+ 
+ 
++INTENT_ORDER = ("cooperative", "obstructive", "unknown")
++
++
++def matched_notes_text(view: list[dict], cfg: WorldConfig) -> str:
++    """r7 matched typed-content template (D-015; repair-block plan RC7-RC9). Every note source renders through the same
++    canonical fields, built only from the unit definition and the hypothesis distribution:
++      - unit label and `about` from the unit definition (describe_unit), never from model output;
++      - values in a fixed order (fact-domain order then "unknown"; or cooperative, obstructive, unknown), each value's
++        mass summed, rounded to 2 dp, values below 0.005 after rounding omitted;
++      - one confidence line derived from the UNROUNDED distribution by one rule (high if one value >= 0.8, else low),
++        worded as the robot's confidence in its estimate, never as the belief being true;
++      - an abstained inferred output shows its distribution and the abstain banner instead of the confidence line;
++      - graph statuses other than fresh (STATUS_TEXT) are shown identically for every source.
++    Never shown for any source: citations, excerpts, unresolved items, source labels, model-chosen status, correctness."""
++    lines = []
++    for r in sorted(view, key=lambda r: r["unit"]):  # canonical unit order (role order would be a cue; S3)
++        out = r["output"]
++        u = Unit(tuple(r["unit"][2:-1].split("->")), KNOWLEDGE if r["unit"].startswith("K(") else "reliability")
++        _, about = describe_unit(u, cfg)
++        order = (list(cfg.fact_domains[cfg.query_facts[0]]) + ["unknown"]) if u.variable == KNOWLEDGE else list(INTENT_ORDER)
++        mass: dict[str, float] = {}
++        for h in out.get("hypotheses", []):
++            mass[h["value"]] = mass.get(h["value"], 0.0) + float(h["p"])
++        dist = ", ".join(f"{v}: {mass[v]:.2f}" for v in order if v in mass and round(mass[v], 2) >= 0.005)
++        who = u.path[0]
++        what = (f"{who}'s belief" if u.variable == KNOWLEDGE and u.depth == 1 else
++                f"what {who} thinks {u.path[1]} believes" if u.variable == KNOWLEDGE else
++                f"{who}'s intent" if u.depth == 1 else f"{who}'s assessment of {u.path[1]}")
++        line = f"  {u} about {about} (as of step {r['as_of']}): {dist}"
++        if r.get("status") in STATUS_TEXT:
++            line += f"\n    note status: {STATUS_TEXT[r['status']]}"
++        if out.get("status") in ABSTAIN_STATUSES:
++            line += "\n    INFERENCE ABSTAINED: the robot's evidence does not settle this person's state"
++        else:
++            high = max(mass.values(), default=0.0) >= 0.8
++            line += (f"\n    robot's confidence in this estimate of {what}: "
++                     + ("high (one value has probability at least 0.8)" if high else "low (several values remain possible)"))
++        lines.append(line)
++    return ("MIND NOTES (estimates of people's mental states from separate inference steps; they may be wrong, and a "
++            "person's belief can itself be false or outdated):\n" + "\n".join(lines))
++
++
+ def describe_unit(u: Unit, cfg: WorldConfig) -> tuple[str, str]:
+     fact = cfg.query_facts[0]
+     if u.variable == KNOWLEDGE:
+@@ -320,7 +383,7 @@ def describe_unit(u: Unit, cfg: WorldConfig) -> tuple[str, str]:
+ def policy_messages(prompts, cfg, brief, hist, graph, rev: int | None = None) -> tuple[list[dict], list[str]]:
+     led, _ = ledger(hist)
+     acts = [str(a) for a in legal_actions(cfg, hist.last)]
+-    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev),
++    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev, cfg),
+                         "LEGAL ACTIONS NOW: " + ", ".join(acts), 'Respond as JSON: {"action": "<one legal action>"}'])
+     return [{"role": "system", "content": prompts["policy_system"]}, {"role": "user", "content": user}], acts
+ 
+@@ -333,6 +396,8 @@ def policy_schema(acts):
+ def unit_messages(prompts, cfg, brief, hist, u, package: str = "pilot-v1",
+                   rev: int | None = None) -> tuple[list[dict], list[str], set[str]]:
+     led, ids = ledger(hist)
++    if (rev if rev is not None else RENDER_REVISION) >= 7 and cfg.public_model:
++        ids = ids + numbered_public_model(cfg.public_model)[1]  # PM<n> IDs are citable (pilot-v2.2)
+     desc, about = describe_unit(u, cfg)
+     domain = list(cfg.fact_domains[cfg.query_facts[0]])
+     user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist),
+@@ -343,7 +408,7 @@ def unit_messages(prompts, cfg, brief, hist, u, package: str = "pilot-v1",
+ def router_messages(prompts, cfg, brief, hist, graph, cands, remaining, rev: int | None = None):
+     led, _ = ledger(hist)
+     lines = [f"  {u}: {describe_unit(u, cfg)[0]}" for u in cands]
+-    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev),
++    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev, cfg),
+                         "CANDIDATE ASPECTS (not yet inferred):\n" + "\n".join(lines),
+                         f"REMAINING BUDGET: {remaining} inference call(s).",
+                         'Respond as JSON: {"select": [<candidate ids>], "stop": <true if you select none>}'])
+diff --git a/src/vomi/unit_schema.py b/src/vomi/unit_schema.py
+index 6101b62..812c609 100644
+--- a/src/vomi/unit_schema.py
++++ b/src/vomi/unit_schema.py
+@@ -185,3 +185,55 @@ def validate_unit_output_v21(text: str, path: tuple[str, ...], variable: str, fa
+         obj["evidence_ids"] = sorted({s["evidence_id"] for s in supports if s["evidence_id"] not in RULE_IDS})
+         obj["rule_ids"] = sorted({s["evidence_id"] for s in supports if s["evidence_id"] in RULE_IDS})
+     return (obj if not errors else None), errors
++
++
++# pilot-v2.2 (repair block, D-015): the task card's PUBLIC MODEL lines carry visible IDs PM1, PM2, ... (render r7).
++# A support item may cite a visible history ID, RULE1..6 (kind public_rule), or a PM<n> that exists in THIS card
++# (kind public_model). Invented or foreign IDs (e.g. "PUBLIC_MODEL", "PM99") are rejected as before.
++SUPPORT_KINDS_V22 = SUPPORT_KINDS_V21 + ("public_model",)
++
++
++def unit_output_schema_v22(fact_domain: list[str], variable: str) -> dict:
++    s = unit_output_schema_v21(fact_domain, variable)
++    s["properties"]["hypotheses"]["items"]["properties"]["support"]["items"]["properties"]["kind"]["enum"] = list(SUPPORT_KINDS_V22)
++    return s
++
++
++def validate_unit_output_v22(text: str, path: tuple[str, ...], variable: str, fact_domain: list[str],
++                             visible_ids: set[str], tol: float = 1e-3) -> tuple[dict | None, list[str]]:
++    """`visible_ids` = ledger IDs plus the PM IDs of this instance's card (pilot.unit_messages at rev >= 7)."""
++    pm_ids = {i for i in visible_ids if i.startswith("PM")}
++    errors = []
++    try:
++        obj = json.loads(text)
++    except json.JSONDecodeError:
++        return None, ["not_json"]
++    if not isinstance(obj, dict):
++        return None, ["not_object"]
++    if FORBIDDEN_KEYS & set(obj):
++        errors.append("out_of_scope_field")
++    if tuple(obj.get("path", ())) != tuple(path) or obj.get("variable") != variable:
++        errors.append("wrong_unit")
++    if obj.get("status") not in STATUSES_V21:
++        errors.append("bad_status")
++    allowed = set(fact_domain) | {"unknown"} if variable == "knowledge" else set(INTENT_VALUES)
++    hyps = obj.get("hypotheses") or []
++    if not hyps or any(h.get("value") not in allowed for h in hyps):
++        errors.append("bad_hypothesis_value")
++    elif abs(sum(float(h.get("p", 0)) for h in hyps) - 1.0) > tol:
++        errors.append("probabilities_not_normalized")
++    supports = [s for h in hyps for s in (h.get("support") or [])]
++    if any(s.get("evidence_id") not in visible_ids | set(RULE_IDS) for s in supports):
++        errors.append("cites_non_visible_evidence")
++    if any((s.get("kind") == "public_rule") != (s.get("evidence_id") in RULE_IDS) for s in supports):
++        errors.append("rule_citation_mismatch")
++    if any((s.get("kind") == "public_model") != (s.get("evidence_id") in pm_ids) for s in supports):
++        errors.append("public_model_citation_mismatch")
++    if obj.get("status") != "abstain" and any(float(h.get("p", 0)) >= SUPPORT_MIN_P and not h.get("support") for h in hyps):
++        errors.append("unsupported_hypothesis")
++    if not errors:
++        cited = {s["evidence_id"] for s in supports}
++        obj["evidence_ids"] = sorted(cited - set(RULE_IDS) - pm_ids)
++        obj["rule_ids"] = sorted(cited & set(RULE_IDS))
++        obj["public_model_ids"] = sorted(cited & pm_ids)
++    return (obj if not errors else None), errors
+diff --git a/tests/test_repair_stage1.py b/tests/test_repair_stage1.py
+new file mode 100644
+index 0000000..6bb0121
+--- /dev/null
++++ b/tests/test_repair_stage1.py
+@@ -0,0 +1,149 @@
++"""Repair block Stage 1 (D-015): citable public model (r7), pilot-v2.2 validator, matched note renderer."""
++
++from __future__ import annotations
++
++import hashlib
++import json
++import re
++from pathlib import Path
++
++from officeminds.devgen3 import PURPOSE, STRATA, focal_units, generate
++from officeminds.episode import VisibleHistory
++from vomi.graph import PerspectiveGraph
++from vomi.pilot import (PACKAGES, load_prompts, notes_text, numbered_public_model, policy_messages, task_card,
++                        unit_messages)
++
++ROOT = Path(__file__).resolve().parents[1]
++INSTS = generate()
++
++
++def t0(inst):
++    w = inst.scenario.build(inst.hidden)
++    return w, VisibleHistory(inst.scenario.brief, [(None, w.reset())])
++
++
++def test_dev_v3_generator_unchanged_since_freeze():
++    fz = json.loads((ROOT / "reports/dev-v3-block/dev-v3-freeze.json").read_text())
++    for f in ("src/officeminds/devgen3.py", "src/officeminds/world.py"):
++        assert hashlib.sha256((ROOT / f).read_bytes()).hexdigest() == fz["source_sha256"][f]
++
++
++def test_pm_ids_stable_and_sequential():
++    for inst in INSTS:
++        cfg = inst.scenario.config
++        text, ids = numbered_public_model(cfg.public_model)
++        assert ids == [f"PM{i}" for i in range(1, len(ids) + 1)] and len(ids) >= 3
++        assert all(f"[{i}]" in text for i in ids)
++        card7, card6 = task_card(cfg, inst.scenario.brief, rev=7), task_card(cfg, inst.scenario.brief, rev=6)
++        assert "[PM1]" in card7 and "[PM1]" not in card6
++        assert card7.replace("[PM", "").count("PUBLIC MODEL") == card6.count("PUBLIC MODEL")
++        assert numbered_public_model(cfg.public_model) == (text, ids)  # deterministic
++
++
++def _note(path, variable, hyps, status="grounded"):
++    return json.dumps({"path": list(path), "variable": variable, "about": "x", "as_of_step": 0, "status": status,
++                       "hypotheses": hyps, "unresolved": []})
++
++
++def test_v22_validator_citations():
++    inst = next(i for i in INSTS if i.construction == "4b")
++    cfg = inst.scenario.config
++    _, h = t0(inst)
++    u = focal_units(inst)[0]
++    msgs, domain, ids = unit_messages(load_prompts("pilot-v2.2"), cfg, inst.scenario.brief, h, u, "pilot-v2.2", 7)
++    assert {"PM1", "PM2"} <= ids and "t0:note0" in ids
++    v = PACKAGES["pilot-v2.2"].validate
++
++    def hyp(eid, kind):
++        return [{"value": "cooperative", "p": 0.9, "support": [{"evidence_id": eid, "kind": kind, "note": "n"}]},
++                {"value": "obstructive", "p": 0.1, "support": [{"evidence_id": "t0:note0", "kind": "testimony", "note": "n"}]}]
++    ok, err = v(_note(u.path, u.variable, hyp("PM3", "public_model")), u.path, u.variable, domain, ids)
++    assert ok is not None and ok["public_model_ids"] == ["PM3"], err
++    ok, err = v(_note(u.path, u.variable, hyp("RULE6", "public_rule")), u.path, u.variable, domain, ids)
++    assert ok is not None, err
++    for bad_id, kind, code in (("PUBLIC_MODEL", "public_model", "cites_non_visible_evidence"),
++                               ("PM99", "public_model", "cites_non_visible_evidence"),
++                               ("PM3", "testimony", "public_model_citation_mismatch"),
++                               ("t0:note0", "public_model", "public_model_citation_mismatch")):
++        ok, err = v(_note(u.path, u.variable, hyp(bad_id, kind)), u.path, u.variable, domain, ids)
++        assert ok is None and code in err, (bad_id, kind, err)
++
++
++def _render(inst, note):
++    _, h = t0(inst)
++    g = PerspectiveGraph(recipient=inst.scenario.config.recipient, refutation_mode="fact_only")
++    u = focal_units(inst)[0]
++    g.instantiate(u, note, note.get("evidence_ids", []), t=0, cost=0.0)
++    return notes_text(g, h, rev=7, cfg=inst.scenario.config)
++
++
++def test_matched_renderer_identical_for_equal_distributions_and_no_cues():
++    inst = next(i for i in INSTS if i.construction == "2a")
++    u = focal_units(inst)[0]
++    inferred = {"path": list(u.path), "variable": u.variable, "about": "leo_loc", "as_of_step": 0, "status": "uncertain",
++                "hypotheses": [{"value": "office_c", "p": 0.5, "support": [{"evidence_id": "t0:note3", "kind": "access_inference", "note": "q"}]},
++                               {"value": "office_a", "p": 0.5, "support": [{"evidence_id": "PM1", "kind": "public_model", "note": "r"}]}],
++                "unresolved": ["which office"], "evidence_ids": ["t0:note3"], "rule_ids": [], "source": "inferred"}
++    reference = {"path": list(u.path), "variable": u.variable, "about": "leo_loc", "as_of_step": 0, "status": "uncertain",
++                 "hypotheses": [{"value": "office_a", "p": 0.5}, {"value": "office_c", "p": 0.5}],
++                 "unresolved": ["Under the public model, the probability that this belief is correct now is 1.00"],
++                 "evidence_ids": [], "rule_ids": [], "source": "reference"}
++    a, b = _render(inst, inferred), _render(inst, reference)
++    assert a == b
++    for cue in ("cited evidence", "unresolved", "reference", "inferred", "privileged", "excerpt", "correct now",
++                "PM1", "t0:note3", "grounded", "uncertain"):
++        assert cue not in a.lower()
++    assert "confidence in this estimate" in a and "low (several values remain possible)" in a
++    assert "can itself be false or outdated" in a
++    # canonical form: order, zero handling, rounding, duplicate values summed, `about` from the unit definition
++    messy = {**reference, "about": "WRONG", "hypotheses": [{"value": "office_c", "p": 0.3}, {"value": "unknown", "p": 0.001},
++                                                           {"value": "office_a", "p": 0.5}, {"value": "office_c", "p": 0.199}]}
++    assert _render(inst, messy) == a.replace("office_c: 0.50", "office_c: 0.50")  # 0.499 -> 0.50; unknown omitted
++    assert "WRONG" not in _render(inst, messy)
++    hi = _render(inst, {**reference, "hypotheses": [{"value": "office_b", "p": 0.8}, {"value": "office_a", "p": 0.2}]})
++    assert "high (one value has probability at least 0.8)" in hi
++    ab = _render(inst, {**inferred, "status": "abstain"})
++    assert "INFERENCE ABSTAINED" in ab and "confidence in this estimate" not in ab and "office_a: 0.50" in ab
++    # a model-chosen status never changes the rendering; only the distribution does
++    assert _render(inst, {**inferred, "status": "grounded"}) == a
++
++
++def test_r7_prompts_have_no_design_labels():
++    prompts = load_prompts("pilot-v2.2")
++    banned = [r"\bdev-v3\b", r"\b[1-4][abc]\b", r"\bfocal\b", r"\brelayed\b", r"\bstale\b", r"\buninformed\b",
++              r"\bdeparted\b", r"\bdistractor\b", r"\bsuperset\b"] + [rf"\b{v}\b" for v in STRATA.values()]
++    for inst in INSTS:
++        _, h = t0(inst)
++        cfg = inst.scenario.config
++        texts = [policy_messages(prompts, cfg, inst.scenario.brief, h, None, 7)[0][1]["content"]]
++        texts += [unit_messages(prompts, cfg, inst.scenario.brief, h, u, "pilot-v2.2", 7)[0][1]["content"]
++                  for u in focal_units(inst)]
++        for t in texts:
++            assert inst.instance_id not in t and PURPOSE[inst.construction] not in t
++            for b in banned:
++                assert not re.search(b, t), (inst.instance_id, b)
++
++
++def test_v22_prompt_is_v21_plus_one_section():
++    v21 = (ROOT / "prompts/pilot-v2.1/unit_system.txt").read_text(encoding="utf-8").rstrip()
++    v22 = (ROOT / "prompts/pilot-v2.2/unit_system.txt").read_text(encoding="utf-8").rstrip()
++    end = "Respond with JSON only, matching the schema."
++    assert v22.startswith(v21[: -len(end)]) and v22.endswith(end)
++    added = v22[len(v21) - len(end): -len(end)]
++    assert added.strip().startswith("Public model of the task") and "warehouse" in added
++
++
++def test_v22_worked_example_numbers_and_no_dev_v3_values():
++    """S1: the example's arithmetic is exact and it uses no dev-v3 rate or posterior value."""
++    from fractions import Fraction as Fr
++    txt = (ROOT / "prompts/pilot-v2.2/unit_system.txt").read_text(encoding="utf-8")
++    sec = txt[txt.index("Public model of the task"):]
++    p1, p2, r = Fr(3, 4), Fr(1, 4), Fr(35, 100)
++    up = (p1 * r) / (p1 * r + p2 * (1 - r))      # says shelf_2
++    down = (p2 * r) / (p2 * r + p1 * (1 - r))    # says shelf_1
++    flat = (Fr(1, 2) * r) / (Fr(1, 2) * r + Fr(1, 2) * (1 - r))
++    assert round(float(up), 2) == 0.62 and round(float(down), 2) == 0.15 and flat == r
++    for s in ("0.62", "0.15", "0.38", "0.2625", "0.0875", "0.575", "0.425"):
++        assert s in sec
++    for bad in ("0.02", "0.03", " 0.3 ", "0.3,", "0.4 ", "0.4,", "0.05", "0.06", "0.94", "0.95", "0.96", "1/3"):
++        assert bad not in sec, bad
