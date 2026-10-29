@@ -32,8 +32,9 @@ from officeminds.world import World, WorldConfig, legal_actions
 
 from .clients import ChatClient, ChatResult
 from .graph import PerspectiveGraph
-from .unit_schema import (unit_output_schema, unit_output_schema_v2, unit_output_schema_v21, validate_unit_output,
-                          validate_unit_output_v2, validate_unit_output_v21)
+from .unit_schema import (unit_output_schema, unit_output_schema_v2, unit_output_schema_v21, unit_output_schema_v22,
+                          validate_unit_output, validate_unit_output_v2, validate_unit_output_v21,
+                          validate_unit_output_v22)
 from .units import KNOWLEDGE, Unit, content, generate_candidates
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -55,28 +56,33 @@ class Package:
         return ROOT / "prompts" / self.name
 
     def schema(self, domain, variable):
-        f = {"pilot-v1": unit_output_schema, "pilot-v2": unit_output_schema_v2, "pilot-v2.1": unit_output_schema_v21}[self.name]
+        f = {"pilot-v1": unit_output_schema, "pilot-v2": unit_output_schema_v2, "pilot-v2.1": unit_output_schema_v21,
+             "pilot-v2.2": unit_output_schema_v22}[self.name]
         return f(domain, variable)
 
     def validate(self, text, path, variable, domain, ids):
         f = {"pilot-v1": validate_unit_output, "pilot-v2": validate_unit_output_v2,
-             "pilot-v2.1": validate_unit_output_v21}[self.name]
+             "pilot-v2.1": validate_unit_output_v21, "pilot-v2.2": validate_unit_output_v22}[self.name]
         return f(text, path, variable, domain, ids)
 
     def fields_hint(self, u, about, step) -> str:
         head = f'Respond as JSON with fields: path={json.dumps(list(u.path))}, variable="{u.variable}", about="{about}", as_of_step={step}, '
         if self.name == "pilot-v1":
             return head + 'hypotheses=[{"value","p"}], evidence_ids=[...], unresolved=[...].'
-        status = '"grounded"|"uncertain"|"abstain"' if self.name == "pilot-v2.1" else '"attributed"|"insufficient_evidence"'
+        status = ('"grounded"|"uncertain"|"abstain"' if self.name in ("pilot-v2.1", "pilot-v2.2")
+                  else '"attributed"|"insufficient_evidence"')
         return head + (f'status={status}, hypotheses=[{{"value","p","support":[{{"evidence_id","kind","note"}}]}}], '
                        'unresolved=[...].')
 
     @property
     def min_render_revision(self) -> int:
+        if self.name == "pilot-v2.2":
+            return 7  # v2.2 cites the PM<n> public-model IDs rendered from r7
         return 4 if self.name == "pilot-v2.1" else 1  # v2.1 cites the numbered r4 rules
 
 
-PACKAGES = {"pilot-v1": Package("pilot-v1"), "pilot-v2": Package("pilot-v2"), "pilot-v2.1": Package("pilot-v2.1")}
+PACKAGES = {"pilot-v1": Package("pilot-v1"), "pilot-v2": Package("pilot-v2"), "pilot-v2.1": Package("pilot-v2.1"),
+            "pilot-v2.2": Package("pilot-v2.2")}
 ABSTAIN_STATUSES = ("insufficient_evidence", "abstain")  # pilot-v2 / pilot-v2.1 full abstention
 
 
@@ -167,6 +173,18 @@ PEOPLE_RULES_R6 = (  # r6 (dev-v3 block): every clause holds over ALL positive-p
     "they answer.")
 
 
+def numbered_public_model(text: str) -> tuple[str, list[str]]:
+    """r7: give every bullet line of the PUBLIC MODEL paragraph a stable visible ID [PM1], [PM2], ... (in order)."""
+    out, ids = [], []
+    for line in text.splitlines():
+        stripped = line.lstrip()
+        if stripped.startswith("- "):
+            ids.append(f"PM{len(ids) + 1}")
+            line = line[: len(line) - len(stripped)] + f"- [{ids[-1]}] " + stripped[2:]
+        out.append(line)
+    return "\n".join(out), ids
+
+
 def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
     rev = RENDER_REVISION if rev is None else rev
     err = 0.5 * cfg.stakes
@@ -190,7 +208,7 @@ def task_card(cfg: WorldConfig, brief: str, rev: int | None = None) -> str:
     if rev >= 6:
         lines.append(PEOPLE_RULES_R6)
         if cfg.public_model:
-            lines.append(cfg.public_model)
+            lines.append(numbered_public_model(cfg.public_model)[0] if rev >= 7 else cfg.public_model)
     elif rev >= 5:
         lines.append(PEOPLE_RULES_R5)
     elif rev == 4:
@@ -266,13 +284,16 @@ def _excerpts(hist: VisibleHistory, ids: list[str], width: int = 110) -> str:
     return " ".join(lines[i][:width] for i in ids if i in lines)
 
 
-def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = None, rev: int | None = None) -> str:
+def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = None, rev: int | None = None,
+               cfg: WorldConfig | None = None) -> str:
     rev = RENDER_REVISION if rev is None else rev
     if graph is None:
         return "MIND NOTES: (none; this agent does not use separate mind-inference steps)"
     view = graph.policy_view()
     if not view:
         return "MIND NOTES: (none instantiated)"
+    if rev >= 7:
+        return matched_notes_text(view, cfg)
     lines = []
     for r in view:
         out = r["output"]
@@ -306,6 +327,48 @@ def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = Non
     return "MIND NOTES (from separate inference steps; may be wrong or outdated):\n" + "\n".join(lines)
 
 
+INTENT_ORDER = ("cooperative", "obstructive", "unknown")
+
+
+def matched_notes_text(view: list[dict], cfg: WorldConfig) -> str:
+    """r7 matched typed-content template (D-015; repair-block plan RC7-RC9). Every note source renders through the same
+    canonical fields, built only from the unit definition and the hypothesis distribution:
+      - unit label and `about` from the unit definition (describe_unit), never from model output;
+      - values in a fixed order (fact-domain order then "unknown"; or cooperative, obstructive, unknown), each value's
+        mass summed, rounded to 2 dp, values below 0.005 after rounding omitted;
+      - one confidence line derived from the UNROUNDED distribution by one rule (high if one value >= 0.8, else low),
+        worded as the robot's confidence in its estimate, never as the belief being true;
+      - an abstained inferred output shows its distribution and the abstain banner instead of the confidence line;
+      - graph statuses other than fresh (STATUS_TEXT) are shown identically for every source.
+    Never shown for any source: citations, excerpts, unresolved items, source labels, model-chosen status, correctness."""
+    lines = []
+    for r in view:
+        out = r["output"]
+        u = Unit(tuple(r["unit"][2:-1].split("->")), KNOWLEDGE if r["unit"].startswith("K(") else "reliability")
+        _, about = describe_unit(u, cfg)
+        order = (list(cfg.fact_domains[cfg.query_facts[0]]) + ["unknown"]) if u.variable == KNOWLEDGE else list(INTENT_ORDER)
+        mass: dict[str, float] = {}
+        for h in out.get("hypotheses", []):
+            mass[h["value"]] = mass.get(h["value"], 0.0) + float(h["p"])
+        dist = ", ".join(f"{v}: {mass[v]:.2f}" for v in order if v in mass and round(mass[v], 2) >= 0.005)
+        who = u.path[0]
+        what = (f"{who}'s belief" if u.variable == KNOWLEDGE and u.depth == 1 else
+                f"what {who} thinks {u.path[1]} believes" if u.variable == KNOWLEDGE else
+                f"{who}'s intent" if u.depth == 1 else f"{who}'s assessment of {u.path[1]}")
+        line = f"  {u} about {about} (as of step {r['as_of']}): {dist}"
+        if r.get("status") in STATUS_TEXT:
+            line += f"\n    note status: {STATUS_TEXT[r['status']]}"
+        if out.get("status") in ABSTAIN_STATUSES:
+            line += "\n    INFERENCE ABSTAINED: the robot's evidence does not settle this person's state"
+        else:
+            high = max(mass.values(), default=0.0) >= 0.8
+            line += (f"\n    robot's confidence in this estimate of {what}: "
+                     + ("high (one value has probability at least 0.8)" if high else "low (several values remain possible)"))
+        lines.append(line)
+    return ("MIND NOTES (estimates of people's mental states from separate inference steps; they may be wrong, and a "
+            "person's belief can itself be false or outdated):\n" + "\n".join(lines))
+
+
 def describe_unit(u: Unit, cfg: WorldConfig) -> tuple[str, str]:
     fact = cfg.query_facts[0]
     if u.variable == KNOWLEDGE:
@@ -320,7 +383,7 @@ def describe_unit(u: Unit, cfg: WorldConfig) -> tuple[str, str]:
 def policy_messages(prompts, cfg, brief, hist, graph, rev: int | None = None) -> tuple[list[dict], list[str]]:
     led, _ = ledger(hist)
     acts = [str(a) for a in legal_actions(cfg, hist.last)]
-    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev),
+    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev, cfg),
                         "LEGAL ACTIONS NOW: " + ", ".join(acts), 'Respond as JSON: {"action": "<one legal action>"}'])
     return [{"role": "system", "content": prompts["policy_system"]}, {"role": "user", "content": user}], acts
 
@@ -333,6 +396,8 @@ def policy_schema(acts):
 def unit_messages(prompts, cfg, brief, hist, u, package: str = "pilot-v1",
                   rev: int | None = None) -> tuple[list[dict], list[str], set[str]]:
     led, ids = ledger(hist)
+    if (rev if rev is not None else RENDER_REVISION) >= 7 and cfg.public_model:
+        ids = ids + numbered_public_model(cfg.public_model)[1]  # PM<n> IDs are citable (pilot-v2.2)
     desc, about = describe_unit(u, cfg)
     domain = list(cfg.fact_domains[cfg.query_facts[0]])
     user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist),
@@ -343,7 +408,7 @@ def unit_messages(prompts, cfg, brief, hist, u, package: str = "pilot-v1",
 def router_messages(prompts, cfg, brief, hist, graph, cands, remaining, rev: int | None = None):
     led, _ = ledger(hist)
     lines = [f"  {u}: {describe_unit(u, cfg)[0]}" for u in cands]
-    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev),
+    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev, cfg),
                         "CANDIDATE ASPECTS (not yet inferred):\n" + "\n".join(lines),
                         f"REMAINING BUDGET: {remaining} inference call(s).",
                         'Respond as JSON: {"select": [<candidate ids>], "stop": <true if you select none>}'])

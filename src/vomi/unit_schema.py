@@ -185,3 +185,55 @@ def validate_unit_output_v21(text: str, path: tuple[str, ...], variable: str, fa
         obj["evidence_ids"] = sorted({s["evidence_id"] for s in supports if s["evidence_id"] not in RULE_IDS})
         obj["rule_ids"] = sorted({s["evidence_id"] for s in supports if s["evidence_id"] in RULE_IDS})
     return (obj if not errors else None), errors
+
+
+# pilot-v2.2 (repair block, D-015): the task card's PUBLIC MODEL lines carry visible IDs PM1, PM2, ... (render r7).
+# A support item may cite a visible history ID, RULE1..6 (kind public_rule), or a PM<n> that exists in THIS card
+# (kind public_model). Invented or foreign IDs (e.g. "PUBLIC_MODEL", "PM99") are rejected as before.
+SUPPORT_KINDS_V22 = SUPPORT_KINDS_V21 + ("public_model",)
+
+
+def unit_output_schema_v22(fact_domain: list[str], variable: str) -> dict:
+    s = unit_output_schema_v21(fact_domain, variable)
+    s["properties"]["hypotheses"]["items"]["properties"]["support"]["items"]["properties"]["kind"]["enum"] = list(SUPPORT_KINDS_V22)
+    return s
+
+
+def validate_unit_output_v22(text: str, path: tuple[str, ...], variable: str, fact_domain: list[str],
+                             visible_ids: set[str], tol: float = 1e-3) -> tuple[dict | None, list[str]]:
+    """`visible_ids` = ledger IDs plus the PM IDs of this instance's card (pilot.unit_messages at rev >= 7)."""
+    pm_ids = {i for i in visible_ids if i.startswith("PM")}
+    errors = []
+    try:
+        obj = json.loads(text)
+    except json.JSONDecodeError:
+        return None, ["not_json"]
+    if not isinstance(obj, dict):
+        return None, ["not_object"]
+    if FORBIDDEN_KEYS & set(obj):
+        errors.append("out_of_scope_field")
+    if tuple(obj.get("path", ())) != tuple(path) or obj.get("variable") != variable:
+        errors.append("wrong_unit")
+    if obj.get("status") not in STATUSES_V21:
+        errors.append("bad_status")
+    allowed = set(fact_domain) | {"unknown"} if variable == "knowledge" else set(INTENT_VALUES)
+    hyps = obj.get("hypotheses") or []
+    if not hyps or any(h.get("value") not in allowed for h in hyps):
+        errors.append("bad_hypothesis_value")
+    elif abs(sum(float(h.get("p", 0)) for h in hyps) - 1.0) > tol:
+        errors.append("probabilities_not_normalized")
+    supports = [s for h in hyps for s in (h.get("support") or [])]
+    if any(s.get("evidence_id") not in visible_ids | set(RULE_IDS) for s in supports):
+        errors.append("cites_non_visible_evidence")
+    if any((s.get("kind") == "public_rule") != (s.get("evidence_id") in RULE_IDS) for s in supports):
+        errors.append("rule_citation_mismatch")
+    if any((s.get("kind") == "public_model") != (s.get("evidence_id") in pm_ids) for s in supports):
+        errors.append("public_model_citation_mismatch")
+    if obj.get("status") != "abstain" and any(float(h.get("p", 0)) >= SUPPORT_MIN_P and not h.get("support") for h in hyps):
+        errors.append("unsupported_hypothesis")
+    if not errors:
+        cited = {s["evidence_id"] for s in supports}
+        obj["evidence_ids"] = sorted(cited - set(RULE_IDS) - pm_ids)
+        obj["rule_ids"] = sorted(cited & set(RULE_IDS))
+        obj["public_model_ids"] = sorted(cited & pm_ids)
+    return (obj if not errors else None), errors

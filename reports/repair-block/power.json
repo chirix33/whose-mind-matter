@@ -1,0 +1,662 @@
+{
+ "boots": 1000,
+ "cells": {
+  "K12|A|0.0": {
+   "K": 12,
+   "ci_halfwidth": 0.06649117024739581,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.015,
+    "no practical value": 0.3225,
+    "unresolved": 0.6625
+   },
+   "variance": "A"
+  },
+  "K12|A|0.05": {
+   "K": 12,
+   "ci_halfwidth": 0.06465559895833332,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.2075,
+    "no practical value": 0.035,
+    "unresolved": 0.7575
+   },
+   "variance": "A"
+  },
+  "K12|A|0.1": {
+   "K": 12,
+   "ci_halfwidth": 0.0617123318142361,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.765,
+    "no practical value": 0.0,
+    "unresolved": 0.235
+   },
+   "variance": "A"
+  },
+  "K12|B|0.0": {
+   "K": 12,
+   "ci_halfwidth": 0.10059696451822915,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0175,
+    "no practical value": 0.1625,
+    "unresolved": 0.82
+   },
+   "variance": "B"
+  },
+  "K12|B|0.05": {
+   "K": 12,
+   "ci_halfwidth": 0.09754210205078123,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.09,
+    "no practical value": 0.0375,
+    "unresolved": 0.8725
+   },
+   "variance": "B"
+  },
+  "K12|B|0.1": {
+   "K": 12,
+   "ci_halfwidth": 0.09563321126302082,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.3975,
+    "no practical value": 0.0025,
+    "unresolved": 0.6
+   },
+   "variance": "B"
+  },
+  "K16|A|0.0": {
+   "K": 16,
+   "ci_halfwidth": 0.05831149088541664,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0125,
+    "no practical value": 0.4075,
+    "unresolved": 0.58
+   },
+   "variance": "A"
+  },
+  "K16|A|0.05": {
+   "K": 16,
+   "ci_halfwidth": 0.05653265584309894,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.2975,
+    "no practical value": 0.04,
+    "unresolved": 0.6625
+   },
+   "variance": "A"
+  },
+  "K16|A|0.1": {
+   "K": 16,
+   "ci_halfwidth": 0.05450819295247394,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.885,
+    "no practical value": 0.0,
+    "unresolved": 0.115
+   },
+   "variance": "A"
+  },
+  "K16|B|0.0": {
+   "K": 16,
+   "ci_halfwidth": 0.08748699951171873,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0025,
+    "no practical value": 0.1975,
+    "unresolved": 0.8
+   },
+   "variance": "B"
+  },
+  "K16|B|0.05": {
+   "K": 16,
+   "ci_halfwidth": 0.08569443054199218,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.1325,
+    "no practical value": 0.0225,
+    "unresolved": 0.845
+   },
+   "variance": "B"
+  },
+  "K16|B|0.1": {
+   "K": 16,
+   "ci_halfwidth": 0.08357034912109373,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.4925,
+    "no practical value": 0.0,
+    "unresolved": 0.5075
+   },
+   "variance": "B"
+  },
+  "K20|A|0.0": {
+   "K": 20,
+   "ci_halfwidth": 0.05242227050781249,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0075,
+    "no practical value": 0.465,
+    "unresolved": 0.5275
+   },
+   "variance": "A"
+  },
+  "K20|A|0.05": {
+   "K": 20,
+   "ci_halfwidth": 0.05067005696614583,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.32,
+    "no practical value": 0.0275,
+    "unresolved": 0.6525
+   },
+   "variance": "A"
+  },
+  "K20|A|0.1": {
+   "K": 20,
+   "ci_halfwidth": 0.04881535807291666,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.94,
+    "no practical value": 0.0,
+    "unresolved": 0.06
+   },
+   "variance": "A"
+  },
+  "K20|B|0.0": {
+   "K": 20,
+   "ci_halfwidth": 0.07891412109374998,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.005,
+    "no practical value": 0.245,
+    "unresolved": 0.75
+   },
+   "variance": "B"
+  },
+  "K20|B|0.05": {
+   "K": 20,
+   "ci_halfwidth": 0.07668648193359374,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.16,
+    "no practical value": 0.0275,
+    "unresolved": 0.8125
+   },
+   "variance": "B"
+  },
+  "K20|B|0.1": {
+   "K": 20,
+   "ci_halfwidth": 0.07508863525390623,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.5925,
+    "no practical value": 0.0,
+    "unresolved": 0.4075
+   },
+   "variance": "B"
+  },
+  "K24|A|0.0": {
+   "K": 24,
+   "ci_halfwidth": 0.04833641357421874,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.005,
+    "no practical value": 0.5425,
+    "unresolved": 0.4525
+   },
+   "variance": "A"
+  },
+  "K24|A|0.05": {
+   "K": 24,
+   "ci_halfwidth": 0.04653271620008679,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.4625,
+    "no practical value": 0.025,
+    "unresolved": 0.5125
+   },
+   "variance": "A"
+  },
+  "K24|A|0.1": {
+   "K": 24,
+   "ci_halfwidth": 0.04479203965928818,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.9625,
+    "no practical value": 0.0,
+    "unresolved": 0.0375
+   },
+   "variance": "A"
+  },
+  "K24|B|0.0": {
+   "K": 24,
+   "ci_halfwidth": 0.07220894368489582,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.02,
+    "no practical value": 0.265,
+    "unresolved": 0.715
+   },
+   "variance": "B"
+  },
+  "K24|B|0.05": {
+   "K": 24,
+   "ci_halfwidth": 0.07064522908528645,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.21,
+    "no practical value": 0.0275,
+    "unresolved": 0.7625
+   },
+   "variance": "B"
+  },
+  "K24|B|0.1": {
+   "K": 24,
+   "ci_halfwidth": 0.0690469278971354,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.68,
+    "no practical value": 0.0025,
+    "unresolved": 0.3175
+   },
+   "variance": "B"
+  },
+  "K3|A|0.0": {
+   "K": 3,
+   "ci_halfwidth": 0.11071458333333332,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.015,
+    "no practical value": 0.1975,
+    "unresolved": 0.7875
+   },
+   "variance": "A"
+  },
+  "K3|A|0.05": {
+   "K": 3,
+   "ci_halfwidth": 0.10682736545138888,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.075,
+    "no practical value": 0.045,
+    "unresolved": 0.88
+   },
+   "variance": "A"
+  },
+  "K3|A|0.1": {
+   "K": 3,
+   "ci_halfwidth": 0.10360584852430552,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.2375,
+    "no practical value": 0.01,
+    "unresolved": 0.7525
+   },
+   "variance": "A"
+  },
+  "K3|B|0.0": {
+   "K": 3,
+   "ci_halfwidth": 0.16438419596354162,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0075,
+    "no practical value": 0.1525,
+    "unresolved": 0.84
+   },
+   "variance": "B"
+  },
+  "K3|B|0.05": {
+   "K": 3,
+   "ci_halfwidth": 0.16377436523437494,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.035,
+    "no practical value": 0.065,
+    "unresolved": 0.9
+   },
+   "variance": "B"
+  },
+  "K3|B|0.1": {
+   "K": 3,
+   "ci_halfwidth": 0.15375569661458333,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.115,
+    "no practical value": 0.0175,
+    "unresolved": 0.8675
+   },
+   "variance": "B"
+  },
+  "K4|A|0.0": {
+   "K": 4,
+   "ci_halfwidth": 0.10216641438802081,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0225,
+    "no practical value": 0.1975,
+    "unresolved": 0.78
+   },
+   "variance": "A"
+  },
+  "K4|A|0.05": {
+   "K": 4,
+   "ci_halfwidth": 0.1013469807942708,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0825,
+    "no practical value": 0.0525,
+    "unresolved": 0.865
+   },
+   "variance": "A"
+  },
+  "K4|A|0.1": {
+   "K": 4,
+   "ci_halfwidth": 0.0949217854817708,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.295,
+    "no practical value": 0.0025,
+    "unresolved": 0.7025
+   },
+   "variance": "A"
+  },
+  "K4|B|0.0": {
+   "K": 4,
+   "ci_halfwidth": 0.15364226074218748,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0175,
+    "no practical value": 0.1075,
+    "unresolved": 0.875
+   },
+   "variance": "B"
+  },
+  "K4|B|0.05": {
+   "K": 4,
+   "ci_halfwidth": 0.1522401000976562,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.045,
+    "no practical value": 0.0525,
+    "unresolved": 0.9025
+   },
+   "variance": "B"
+  },
+  "K4|B|0.1": {
+   "K": 4,
+   "ci_halfwidth": 0.14619973144531248,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.14,
+    "no practical value": 0.015,
+    "unresolved": 0.845
+   },
+   "variance": "B"
+  },
+  "K5|A|0.0": {
+   "K": 5,
+   "ci_halfwidth": 0.09448634114583332,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.005,
+    "no practical value": 0.2125,
+    "unresolved": 0.7825
+   },
+   "variance": "A"
+  },
+  "K5|A|0.05": {
+   "K": 5,
+   "ci_halfwidth": 0.09135121744791665,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.09,
+    "no practical value": 0.0475,
+    "unresolved": 0.8625
+   },
+   "variance": "A"
+  },
+  "K5|A|0.1": {
+   "K": 5,
+   "ci_halfwidth": 0.08819257812499998,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.365,
+    "no practical value": 0.005,
+    "unresolved": 0.63
+   },
+   "variance": "A"
+  },
+  "K5|B|0.0": {
+   "K": 5,
+   "ci_halfwidth": 0.14211870117187497,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0075,
+    "no practical value": 0.12,
+    "unresolved": 0.8725
+   },
+   "variance": "B"
+  },
+  "K5|B|0.05": {
+   "K": 5,
+   "ci_halfwidth": 0.14056958007812498,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0175,
+    "no practical value": 0.0475,
+    "unresolved": 0.935
+   },
+   "variance": "B"
+  },
+  "K5|B|0.1": {
+   "K": 5,
+   "ci_halfwidth": 0.13605228515624998,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.1475,
+    "no practical value": 0.0125,
+    "unresolved": 0.84
+   },
+   "variance": "B"
+  },
+  "K6|A|0.0": {
+   "K": 6,
+   "ci_halfwidth": 0.08886861436631943,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0125,
+    "no practical value": 0.205,
+    "unresolved": 0.7825
+   },
+   "variance": "A"
+  },
+  "K6|A|0.05": {
+   "K": 6,
+   "ci_halfwidth": 0.0864680013020833,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.12,
+    "no practical value": 0.0525,
+    "unresolved": 0.8275
+   },
+   "variance": "A"
+  },
+  "K6|A|0.1": {
+   "K": 6,
+   "ci_halfwidth": 0.08266498480902776,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.4225,
+    "no practical value": 0.0,
+    "unresolved": 0.5775
+   },
+   "variance": "A"
+  },
+  "K6|B|0.0": {
+   "K": 6,
+   "ci_halfwidth": 0.1358862874348958,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0175,
+    "no practical value": 0.125,
+    "unresolved": 0.8575
+   },
+   "variance": "B"
+  },
+  "K6|B|0.05": {
+   "K": 6,
+   "ci_halfwidth": 0.13144094238281248,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.035,
+    "no practical value": 0.035,
+    "unresolved": 0.93
+   },
+   "variance": "B"
+  },
+  "K6|B|0.1": {
+   "K": 6,
+   "ci_halfwidth": 0.12699126790364582,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.2,
+    "no practical value": 0.005,
+    "unresolved": 0.795
+   },
+   "variance": "B"
+  },
+  "K8|A|0.0": {
+   "K": 8,
+   "ci_halfwidth": 0.07914025065104165,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.005,
+    "no practical value": 0.2675,
+    "unresolved": 0.7275
+   },
+   "variance": "A"
+  },
+  "K8|A|0.05": {
+   "K": 8,
+   "ci_halfwidth": 0.07656893310546874,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.1825,
+    "no practical value": 0.045,
+    "unresolved": 0.7725
+   },
+   "variance": "A"
+  },
+  "K8|A|0.1": {
+   "K": 8,
+   "ci_halfwidth": 0.07328907877604164,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.565,
+    "no practical value": 0.0025,
+    "unresolved": 0.4325
+   },
+   "variance": "A"
+  },
+  "K8|B|0.0": {
+   "K": 8,
+   "ci_halfwidth": 0.11890462646484373,
+   "effect": 0.0,
+   "feasible": true,
+   "probs": {
+    "helps": 0.02,
+    "no practical value": 0.1475,
+    "unresolved": 0.8325
+   },
+   "variance": "B"
+  },
+  "K8|B|0.05": {
+   "K": 8,
+   "ci_halfwidth": 0.11681447143554685,
+   "effect": 0.05,
+   "feasible": true,
+   "probs": {
+    "helps": 0.0625,
+    "no practical value": 0.0375,
+    "unresolved": 0.9
+   },
+   "variance": "B"
+  },
+  "K8|B|0.1": {
+   "K": 8,
+   "ci_halfwidth": 0.11214167480468747,
+   "effect": 0.1,
+   "feasible": true,
+   "probs": {
+    "helps": 0.275,
+    "no practical value": 0.0,
+    "unresolved": 0.725
+   },
+   "variance": "B"
+  }
+ },
+ "chosen_K": 24,
+ "criterion_met": [],
+ "delta": 0.05,
+ "flips": 2000,
+ "label": "PLANNING ONLY (Round B none returns as exploratory input)",
+ "limit_minutes": 240.0,
+ "minutes_per_seed_estimate": 8.0,
+ "rho": 0.5,
+ "sims": 400
+}
