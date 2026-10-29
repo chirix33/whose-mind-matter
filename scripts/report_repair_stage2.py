@@ -30,6 +30,11 @@ BOOTS, FLIPS = 10000, 100000
 def sign_flip_p(d, seed=20261101):
     n = len(d)
     obs = abs(sum(d) / n)
+    if 2 ** n <= 10 ** 6:  # RC3: exact enumeration for small n
+        import itertools
+        hits = sum(abs(sum(x * s for x, s in zip(d, signs)) / n) >= obs - 1e-12
+                   for signs in itertools.product((1, -1), repeat=n))
+        return hits / 2 ** n
     rng = random.Random(seed)
     hits = 0
     for _ in range(FLIPS):
@@ -51,14 +56,36 @@ def strat_ci(d_by_cons, seed=20261102):
 def contrast(vals, a, b, keys):
     """Paired base-scenario differences a - b over `keys` (base scenarios having both)."""
     d_by = defaultdict(list)
+    excluded = []
     for key in keys:
         if a in vals[key] and b in vals[key]:
             d_by[key[1]].append(vals[key][a] - vals[key][b])
+        else:
+            excluded.append({"base": list(key), "missing": [c for c in (a, b) if c not in vals[key]]})
     d = [x for v in d_by.values() for x in v]
     est = statistics.mean(statistics.mean(v) for v in d_by.values()) if d_by else None  # equal construction weight
     lo, hi = strat_ci(d_by) if d_by else (None, None)
     return {"n_base": len(d), "estimate": est, "ci95": [lo, hi], "d_by_construction_mean":
-            {c: statistics.mean(v) for c, v in sorted(d_by.items())}, "_d": d}
+            {c: statistics.mean(v) for c, v in sorted(d_by.items())}, "excluded_base_scenarios": excluded, "_d": d}
+
+
+def depth_diffs(sts, notes):
+    """S7 / RC13(a): 3a and 3c reference K(F->R) vs K(R) rendered blocks; count states differing beyond the unit label
+    and the 'estimate of ...' wording."""
+    import re
+    from run_repair import rendered
+    out = {"states": 0, "differ_beyond_labels": 0, "examples": []}
+    for sid, st in sts.items():
+        if st["inst"].construction not in ("3a", "3c"):
+            continue
+        a, b = rendered(st, "reference", notes)[1], rendered(st, "reference_KR", notes)[1]
+        norm = lambda t: re.sub(r"estimate of [^:]+:", "estimate of X:", re.sub(r"K\([^)]*\)", "K(.)", t))
+        out["states"] += 1
+        if norm(a) != norm(b):
+            out["differ_beyond_labels"] += 1
+            if len(out["examples"]) < 3:
+                out["examples"].append({"state_id": sid, "reference": a, "reference_KR": b})
+    return out
 
 
 def main():
@@ -91,7 +118,11 @@ def main():
             return "no practical value"
         return "unresolved"
 
+    anomaly = inf_ref["ci95"][0] is not None and inf_ref["ci95"][0] > DELTA
+
     def inf_class():
+        if anomaly:  # S5: precedence over "approximates"
+            return "anomaly (inferred above reference)"
         if sig["inferred"] and inf["estimate"] > 0 and inf["estimate"] >= DELTA and inf_ref["ci95"][0] >= -DELTA:
             return "helps and approximates"
         if inf["ci95"][1] < DELTA or inf_ref["ci95"][1] < -DELTA:
@@ -106,8 +137,10 @@ def main():
              ("no practical value", "unresolved"): "§5(3) reconsider method/environment fit",
              ("unresolved", "helps and approximates"): "anomaly; §5(4)",
              ("unresolved", "fails"): "§5(4) uncertainty too large",
-             ("unresolved", "unresolved"): "§5(4) uncertainty too large"}
-    anomaly = inf_ref["ci95"][0] is not None and inf_ref["ci95"][0] > DELTA
+             ("unresolved", "unresolved"): "§5(4) uncertainty too large",
+             ("helps", "anomaly (inferred above reference)"): "mechanism check; no §5(1)",
+             ("no practical value", "anomaly (inferred above reference)"): "mechanism check; no §5(1)",
+             ("unresolved", "anomaly (inferred above reference)"): "mechanism check; no §5(1)"}
     # secondary: per stratum, outcomes, by construction and stakes
     strata = {}
     for s in (1, 2, 3, 4):
@@ -148,7 +181,8 @@ def main():
             r = score_row(st["inst"], u, parsed, dist)
             fid.append({"state_id": sid, "construction": st["inst"].construction, "unit": us, "ok": r["ok"],
                         "category": r["category"], "tv": r["tv_posterior"], "unsupported_mass": r["unsupported_mass"],
-                        "status": r["status"], "prior_copy": r["prior_copy"]})
+                        "status": r["status"], "prior_copy": r["prior_copy"], "distribution": r["distribution"],
+                        "posterior": r["posterior"]})
     fid_by = defaultdict(list)
     for f in fid:
         fid_by[f["construction"]].append(f)
@@ -156,7 +190,13 @@ def main():
                    "mean_tv": statistics.mean(f["tv"] for f in v if f["ok"]) if any(f["ok"] for f in v) else None,
                    "mean_unsupported_mass": statistics.mean(f["unsupported_mass"] for f in v if f["ok"]) if any(f["ok"] for f in v) else None,
                    "abstained": sum(f["status"] == "abstain" for f in v),
-                   "prior_copies": sum(bool(f["prior_copy"]) for f in v)} for c, v in sorted(fid_by.items())}
+                   "categories": {k: sum(str(f["category"]) == k for f in v) for k in sorted({str(f["category"]) for f in v})},
+                   # in 4c the posterior equals the prior, so a prior match there is CORRECT (S6)
+                   ("matches_prior_correct_in_4c" if c == "4c" else "prior_copies"): sum(bool(f["prior_copy"]) for f in v),
+                   **({"over_updates_4c": sum(f["ok"] and f["prior_copy"] is False for f in v)} if c == "4c" else {})}
+               for c, v in sorted(fid_by.items())}
+    (ROOT / "data" / "repair-block").mkdir(parents=True, exist_ok=True)
+    (ROOT / "data" / "repair-block" / "stage2-fidelity-rows.json").write_text(json.dumps(fid, indent=1, default=str))
     # compute (RC14): notes charged to the inferred conditions that show them; decisions per condition
     comp = defaultdict(lambda: defaultdict(float))
     for sid, row in notes["states"].items():
@@ -167,6 +207,11 @@ def main():
                 us not in [str(u) for u in sts[sid]["conds"]["inferred"]] else "inferred"
             for a in call["attempts"]:
                 comp[cond]["note_attempts"] += 1
+                comp[cond]["note_attempts_missing_usage"] += int(a.get("prompt_tokens") is None or a.get("completion_tokens") is None)
+                if a.get("reasoning_tokens") is None:
+                    comp[cond]["note_reasoning_tokens_unavailable_attempts"] += 1
+                else:
+                    comp[cond]["note_reasoning_tokens"] += a["reasoning_tokens"]
                 comp[cond]["note_prompt_tokens"] += a.get("prompt_tokens") or 0
                 comp[cond]["note_completion_tokens"] += a.get("completion_tokens") or 0
                 comp[cond]["note_latency_s"] += a.get("latency_s") or 0
@@ -179,6 +224,10 @@ def main():
         c["decision_completion_tokens"] += d.get("completion_tokens", 0)
         c["decision_latency_s"] += d.get("latency_s", 0)
         c["failed_attempts"] += sum(v.get("attempts_failed", 0) for v in e["usage"].values())
+        if d and d.get("reasoning_tokens_known"):
+            c["decision_reasoning_tokens"] += d.get("reasoning_tokens", 0)
+        else:
+            c["decision_reasoning_tokens_unavailable_episodes"] += 1
         c["fallbacks"] += sum(v.get("fallbacks", 0) for v in e["usage"].values())
     headroom = {c: statistics.mean(qual[sid]["bayes_value_t0"] for sid in sts) - statistics.mean(
         e["return_"] for e in good if e["condition"] == c) for c in ("none", "inferred", "reference")}
@@ -193,7 +242,12 @@ def main():
            "mean_steps": {c: statistics.mean(v) for c, v in steps.items()},
            "by_construction_stakes": {f"{c}|{k}|{s:g}": statistics.mean(v) for (c, k, s), v in sorted(by_cs.items())},
            "depth": depth, "fidelity_by_construction": fid_sum, "compute": {c: dict(v) for c, v in comp.items()},
-           "headroom_bayes_minus_condition": headroom}
+           "headroom_bayes_minus_condition": headroom,
+           "blocked_episodes": [{k: e[k] for k in ("state_id", "condition", "replicate", "blocked")} for e in blocked],
+           "wall_clock": {"notes_stage_s": notes.get("wall_s"), "policy_stage_s": manifest.get("wall_clock_s"),
+                          "concurrency": manifest.get("concurrency"),
+                          "reference_oracle_cpu_s_not_deployable": notes.get("reference_oracle_s")},
+           "depth_render_diffs_3a_3c": depth_diffs(sts, notes)}
     (BLOCK / "stage2-results.json").write_text(json.dumps(res, indent=1, sort_keys=True, default=str) + "\n")
     fmt = lambda c: f"{c['estimate']:+.4f} [{c['ci95'][0]:+.4f}, {c['ci95'][1]:+.4f}] (n={c['n_base']})"
     L = [f"# Stage 2 results — run `{manifest['run_id']}`", "",
@@ -214,6 +268,9 @@ def main():
     for k, v in depth.items():
         L.append(f"- {k}: " + (fmt(v) if "n_base" in v else f"{v['estimate']} {v['ci95']} (n={v['n']})"))
     L += ["", "## Inferred-note fidelity by construction", ""] + [f"- {c}: {v}" for c, v in fid_sum.items()]
+    L += ["", f"Depth render diffs 3a/3c (reference K(F->R) vs K(R)): { {k: v for k, v in res['depth_render_diffs_3a_3c'].items() if k != 'examples'} }",
+          "", f"Blocked episodes: {len(blocked)}; excluded base scenarios (reference−none / inferred−none): "
+          f"{ref['excluded_base_scenarios']} / {inf['excluded_base_scenarios']}", "", f"Wall clock: {res['wall_clock']}"]
     L += ["", "## Compute (all attempts charged)", ""] + [f"- {c}: {dict(v)}" for c, v in res["compute"].items()]
     L += ["", "## By construction × stakes (mean return)", ""] + [f"- {k}: {v:.3f}" for k, v in res["by_construction_stakes"].items()]
     (BLOCK / "stage2-results.md").write_text("\n".join(L) + "\n", encoding="utf-8")

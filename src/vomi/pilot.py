@@ -342,7 +342,7 @@ def matched_notes_text(view: list[dict], cfg: WorldConfig) -> str:
       - graph statuses other than fresh (STATUS_TEXT) are shown identically for every source.
     Never shown for any source: citations, excerpts, unresolved items, source labels, model-chosen status, correctness."""
     lines = []
-    for r in view:
+    for r in sorted(view, key=lambda r: r["unit"]):  # canonical unit order (role order would be a cue; S3)
         out = r["output"]
         u = Unit(tuple(r["unit"][2:-1].split("->")), KNOWLEDGE if r["unit"].startswith("K(") else "reliability")
         _, about = describe_unit(u, cfg)

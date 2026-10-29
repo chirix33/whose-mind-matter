@@ -653,6 +653,33 @@
  "chosen_K": 24,
  "criterion_met": [],
  "delta": 0.05,
+ "extrapolation_S4": {
+  "by_variance": {
+   "A": {
+    "K_needed_helps_at_0.10_P0.8": 12,
+    "K_needed_no_practical_value_P0.8": 46,
+    "MDE_K24_for_P_helps_0.8": 0.07,
+    "P_no_practical_value_under_null_K24": 0.5425,
+    "P_unresolved_under_null_K24": 0.4525,
+    "hours_needed_no_practical_value": 6.1,
+    "se_K24_eff0.1": 0.0229,
+    "se_K24_null": 0.0247
+   },
+   "B": {
+    "K_needed_helps_at_0.10_P0.8": 28,
+    "K_needed_no_practical_value_P0.8": 102,
+    "MDE_K24_for_P_helps_0.8": 0.109,
+    "P_no_practical_value_under_null_K24": 0.265,
+    "P_unresolved_under_null_K24": 0.715,
+    "hours_needed_no_practical_value": 13.6,
+    "se_K24_eff0.1": 0.0352,
+    "se_K24_null": 0.0368
+   }
+  },
+  "method": "normal approximation; SE = simulated 95% half-width / 1.96, scaled by sqrt(24/K)",
+  "z_power_0.8": 0.8416,
+  "z_two_sided_0.025": 2.2414
+ },
  "flips": 2000,
  "label": "PLANNING ONLY (Round B none returns as exploratory input)",
  "limit_minutes": 240.0,

@@ -131,3 +131,19 @@ def test_v22_prompt_is_v21_plus_one_section():
     assert v22.startswith(v21[: -len(end)]) and v22.endswith(end)
     added = v22[len(v21) - len(end): -len(end)]
     assert added.strip().startswith("Public model of the task") and "warehouse" in added
+
+
+def test_v22_worked_example_numbers_and_no_dev_v3_values():
+    """S1: the example's arithmetic is exact and it uses no dev-v3 rate or posterior value."""
+    from fractions import Fraction as Fr
+    txt = (ROOT / "prompts/pilot-v2.2/unit_system.txt").read_text(encoding="utf-8")
+    sec = txt[txt.index("Public model of the task"):]
+    p1, p2, r = Fr(3, 4), Fr(1, 4), Fr(35, 100)
+    up = (p1 * r) / (p1 * r + p2 * (1 - r))      # says shelf_2
+    down = (p2 * r) / (p2 * r + p1 * (1 - r))    # says shelf_1
+    flat = (Fr(1, 2) * r) / (Fr(1, 2) * r + Fr(1, 2) * (1 - r))
+    assert round(float(up), 2) == 0.62 and round(float(down), 2) == 0.15 and flat == r
+    for s in ("0.62", "0.15", "0.38", "0.2625", "0.0875", "0.575", "0.425"):
+        assert s in sec
+    for bad in ("0.02", "0.03", " 0.3 ", "0.3,", "0.4 ", "0.4,", "0.05", "0.06", "0.94", "0.95", "0.96", "1/3"):
+        assert bad not in sec, bad

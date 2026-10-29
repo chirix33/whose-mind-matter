@@ -138,3 +138,30 @@ Gate report: `reviews/plan-opus.md` (PASS WITH REQUIRED CHANGES RC1–RC14). All
 - **RC14 Notes and compute.**
   - The notes-freeze proof (payload and rendered-notes hashes per state × condition, coverage) is committed before any policy call, and the policy stage verifies it.
   - Compute per condition charges every note attempt, including failed and truncated ones and the K(R) note calls, plus every decision call and retry: tokens, latency, calls.
+
+## Entry 1b — Amendment after the Stage 1 prompt/renderer gate (2026-10-28; before ANY pilot-v2.2 model call)
+Gate report: `reviews/stage1-prompt-opus.md` (PASS WITH REQUIRED CHANGES S1–S10). The first run of this gate was lost in a PC restart; this is the re-run. No v2.2 output exists. The prompt changes below are therefore the single pre-output revision, not an RC11 iteration. This entry supersedes the example clause of Entry 1a RC10.
+
+- **S1 Worked example replaced.** The two-clerk example used 4b's hypothesis space, and its no-update case was exactly 4c. The new example uses two shelves with a non-uniform prior (0.75/0.25), one clerk with prior misreport rate 0.35, and a misreporter who names the other shelf:
+  - statement "shelf_2": the posterior misreport is 0.62 (an upward move);
+  - statement "shelf_1": 0.15 (a downward move);
+  - no-update case: with equal shelf priors either statement leaves the prior, 0.35.
+
+  It contains no dev-v3 value and no 1/3 prior. A test recomputes the numbers with `fractions` and checks that the forbidden values are absent.
+- **S2 Conditioning-correct wording.** Public-model probabilities are now described as the probabilities with which the situation was generated, given exactly what each line says they depend on. The note updates only on the history those probabilities do not already take into account. This removes the double-counting invitation in 4c.
+- **S3 Canonical unit order** in the rendered notes is alphabetical by unit label, for every source. Role order marked the informed courier (H) and the low-rate reporter (X).
+- **S4 `power.md`** now reports, by stated extrapolation from the simulated half-widths:
+  - the minimum detectable effect at K = 24: ≈ 0.11 under variance B, ≈ 0.07 under A (floor δ);
+  - the K needed for P(no practical value | Δ = 0) ≥ 0.8: ≈ 102 under B, ≈ 46 under A, i.e. 13.6 h and 6.1 h, beyond the limit;
+  - the K needed for P(helps | Δ = 0.10) ≥ 0.8 under B: ≈ 28;
+  - that under a true null the expected outcome is "unresolved" (P 0.72 under B, 0.45 under A).
+- **S5** The anomaly (inferred − reference CI lower > +δ) takes precedence over "approximates", and maps to "mechanism check; no §5(1)".
+- **S6** Fidelity output now includes category counts per construction and per-note rows (privileged, in `data/repair-block/stage2-fidelity-rows.json`). In 4c a prior match is reported as correct, alongside a separate over-update count.
+- **S7** RC13(a): the byte-level comparison of 3a/3c reference K(F→R) vs K(R) rendered blocks is produced, counting states that differ beyond the unit label and the "estimate of …" wording.
+- **S8** A base scenario's value is the mean over its available episodes. A base scenario missing a condition is excluded only from that contrast. Blocked episodes and excluded base scenarios are listed with reasons.
+- **S9** Missing usage is counted, not turned into 0. Reasoning tokens are reported or marked "unavailable". Notes-stage and policy-stage wall clocks and concurrency are reported, and the reference oracle's CPU time is reported as non-deployable.
+- **S10 Disclosure.** The ×1 and ×4 variants of a base scenario get **independent** inferred-note draws, so the stakes pair differs in both stakes and note draw.
+- **Optional items adopted:**
+  - exact sign-flip enumeration when 2^n ≤ 10^6;
+  - the policy stage requires a clean tree with the notes-freeze proof committed;
+  - a seed block starts only if a full block (about 8 min) still fits in the 4 h limit.

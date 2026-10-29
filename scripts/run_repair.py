@@ -313,6 +313,7 @@ def stage_notes(args):
             row = out["states"].setdefault(sid, {"inferred": {}, "calls": {}})
             row["inferred"][us] = dict(rec.parsed, source="inferred") if rec.ok else None
             row["calls"][us] = asdict(rec)
+    t_ref = time.process_time()
     for st in sts:
         row = out["states"].setdefault(st["state_id"], {"inferred": {}, "calls": {}})
         row["reference"] = {}
@@ -320,6 +321,7 @@ def stage_notes(args):
             u = next(u for c, uu in st["conds"].items() for u in uu if str(u) == us)
             row["reference"][us] = reference_note(st["inst"], u)[0]
         row["rendered_sha256"] = {c: sha(rendered(st, c, out)[1]) for c in st["conds"]}
+    out["reference_oracle_s"] = round(time.process_time() - t_ref, 2)  # includes rendering; non-deployable oracle CPU
     out["ended_at"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
     out["wall_s"] = round(time.monotonic() - t_start, 1)
     DATA.mkdir(parents=True, exist_ok=True)
@@ -364,6 +366,10 @@ def rendered(st, cond, notes):
 
 def stage_policy(args):
     fz = verify()
+    dirty = [x for x in os.popen(f'git -C "{ROOT}" status --porcelain').read().split("\n") if x.strip()]
+    tracked = os.popen(f'git -C "{ROOT}" ls-files reports/repair-block/stage2-notes-freeze.json').read().strip()
+    if dirty or not tracked:
+        raise SystemExit(f"policy needs a clean tree with the notes-freeze proof committed: dirty={dirty} tracked={tracked!r}")
     notes = json.loads(NOTES.read_text())
     proof = json.loads((BLOCK / "stage2-notes-freeze.json").read_text())
     assert proof["notes_file_sha256"] == sha(notes["states"])
@@ -395,8 +401,8 @@ def stage_policy(args):
 
     with (out / "episodes.jsonl").open("w") as f, ThreadPoolExecutor(CONCURRENCY) as pool:
         for k in range(fz["K"]):
-            if time.monotonic() - t_start > budget:
-                break  # overrun rule: only complete seed blocks are run/analyzed
+            if time.monotonic() - t_start + 8 * 60 > budget:
+                break  # overrun rule: start a seed block only if a full block (~8 min) still fits in the 4 h limit
             block = [st for st in sts if st["k"] == k]
             jobs = []
             for r in range(2):

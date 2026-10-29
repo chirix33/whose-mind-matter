@@ -58,3 +58,13 @@ Rule (Entry 1a RC5): smallest feasible K with P(helps | Δ=0.10) ≥ 0.8 and P(n
 | 24 | B | 0.0 | 0.02 | 0.27 | 0.71 | 0.072 |
 | 24 | B | 0.05 | 0.21 | 0.03 | 0.76 | 0.071 |
 | 24 | B | 0.1 | 0.68 | 0.00 | 0.32 | 0.069 |
+
+## Limitations at the chosen K (S4; stated extrapolation from the simulated half-widths)
+
+Method: normal approximation, SE = simulated 95% half-width / 1.96, scaled by sqrt(24/K); "helps" needs Holm p < 0.025 (z = 2.24) at power 0.8 (z = 0.84).
+
+- Variance A: minimum detectable effect at K = 24 ≈ 0.07; P(helps | Δ = 0.10) ≥ 0.8 needs K ≈ 12; P(no practical value | Δ = 0) ≥ 0.8 needs K ≈ 46 (≈ 6.1 h at 8 min per seed, beyond the 4 h limit).
+- Variance B: minimum detectable effect at K = 24 ≈ 0.109; P(helps | Δ = 0.10) ≥ 0.8 needs K ≈ 28; P(no practical value | Δ = 0) ≥ 0.8 needs K ≈ 102 (≈ 13.6 h at 8 min per seed, beyond the 4 h limit).
+
+- **Under a true null, the expected outcome at K = 24 is "unresolved"** (P = 0.71 under B, 0.45 under A); "no practical value" is reached only with P = 0.27 (B) / 0.54 (A).
+- Effects below the minimum detectable effect will most likely read "unresolved". The planning model assumes independent conditions within a scenario (conservative) and uses Round B returns with the old note format as exploratory input.
