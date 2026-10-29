@@ -1,0 +1,4831 @@
+{
+ "checks": {
+  "any_unknown_mass": false,
+  "implication_lines": 80,
+  "only_stale_status_post_ask": true,
+  "states": 64,
+  "t0_duplicate_prompts_identical": true
+ },
+ "implication_table": [
+  {
+   "destination_distribution": {
+    "lab_south": 0.5,
+    "lab_west": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to lab_south with probability 0.50, to lab_west with probability 0.50.",
+   "note_distribution": {
+    "lab_south": 0.5,
+    "lab_west": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261200-dev-v3-2a-stakes1-perm0",
+   "unit": "K(ivan)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_north": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(leo) sends the package to lab_north with probability 1.00.",
+   "note_distribution": {
+    "lab_north": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261200-dev-v3-2a-stakes1-perm0",
+   "unit": "K(leo)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_south": 0.5,
+    "lab_west": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to lab_south with probability 0.50, to lab_west with probability 0.50.",
+   "note_distribution": {
+    "lab_south": 0.5,
+    "lab_west": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261200-dev-v3-2a-stakes4-perm0",
+   "unit": "K(ivan)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_north": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(leo) sends the package to lab_north with probability 1.00.",
+   "note_distribution": {
+    "lab_north": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261200-dev-v3-2a-stakes4-perm0",
+   "unit": "K(leo)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_c": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(dave) sends the package to office_c with probability 1.00.",
+   "note_distribution": {
+    "office_c": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261200-dev-v3-2b-stakes1-perm0",
+   "unit": "K(dave)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_c": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(dave) sends the package to office_c with probability 1.00.",
+   "note_distribution": {
+    "office_c": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261200-dev-v3-2b-stakes4-perm0",
+   "unit": "K(dave)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(carol) sends the package to desk_9 with probability 0.50, to desk_3 with probability 0.50.",
+   "note_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261200-dev-v3-3a-stakes1-perm0",
+   "unit": "K(carol->yara)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(carol) sends the package to desk_9 with probability 0.50, to desk_3 with probability 0.50.",
+   "note_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261200-dev-v3-3a-stakes4-perm0",
+   "unit": "K(carol->yara)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_14": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to desk_14 with probability 1.00.",
+   "note_distribution": {
+    "desk_14": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261200-dev-v3-3b-stakes1-perm0",
+   "unit": "K(ivan->frank)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_14": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to desk_14 with probability 1.00.",
+   "note_distribution": {
+    "desk_14": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261200-dev-v3-3b-stakes4-perm0",
+   "unit": "K(ivan->frank)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_a": 0.5,
+    "office_b": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(tomas) sends the package to office_b with probability 0.50, to office_a with probability 0.50.",
+   "note_distribution": {
+    "office_a": 0.5,
+    "office_b": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261201-dev-v3-2a-stakes1-perm0",
+   "unit": "K(tomas)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_c": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(zane) sends the package to office_c with probability 1.00.",
+   "note_distribution": {
+    "office_c": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261201-dev-v3-2a-stakes1-perm0",
+   "unit": "K(zane)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_a": 0.5,
+    "office_b": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(tomas) sends the package to office_b with probability 0.50, to office_a with probability 0.50.",
+   "note_distribution": {
+    "office_a": 0.5,
+    "office_b": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261201-dev-v3-2a-stakes4-perm0",
+   "unit": "K(tomas)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_c": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(zane) sends the package to office_c with probability 1.00.",
+   "note_distribution": {
+    "office_c": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261201-dev-v3-2a-stakes4-perm0",
+   "unit": "K(zane)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_3": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(bob) sends the package to desk_3 with probability 1.00.",
+   "note_distribution": {
+    "desk_3": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261201-dev-v3-2b-stakes1-perm0",
+   "unit": "K(bob)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_3": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(bob) sends the package to desk_3 with probability 1.00.",
+   "note_distribution": {
+    "desk_3": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261201-dev-v3-2b-stakes4-perm0",
+   "unit": "K(bob)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(sara) sends the package to desk_3 with probability 0.50, to desk_9 with probability 0.50.",
+   "note_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261201-dev-v3-3a-stakes1-perm0",
+   "unit": "K(sara->leo)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(sara) sends the package to desk_3 with probability 0.50, to desk_9 with probability 0.50.",
+   "note_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261201-dev-v3-3a-stakes4-perm0",
+   "unit": "K(sara->leo)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_west": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(nadia) sends the package to lab_west with probability 1.00.",
+   "note_distribution": {
+    "lab_west": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261201-dev-v3-3b-stakes1-perm0",
+   "unit": "K(nadia->vik)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_west": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(nadia) sends the package to lab_west with probability 1.00.",
+   "note_distribution": {
+    "lab_west": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261201-dev-v3-3b-stakes4-perm0",
+   "unit": "K(nadia->vik)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(alice) sends the package to office_a with probability 0.50, to office_c with probability 0.50.",
+   "note_distribution": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261202-dev-v3-2a-stakes1-perm0",
+   "unit": "K(alice)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_b": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(judy) sends the package to office_b with probability 1.00.",
+   "note_distribution": {
+    "office_b": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261202-dev-v3-2a-stakes1-perm0",
+   "unit": "K(judy)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(alice) sends the package to office_a with probability 0.50, to office_c with probability 0.50.",
+   "note_distribution": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261202-dev-v3-2a-stakes4-perm0",
+   "unit": "K(alice)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_b": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(judy) sends the package to office_b with probability 1.00.",
+   "note_distribution": {
+    "office_b": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261202-dev-v3-2a-stakes4-perm0",
+   "unit": "K(judy)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_b": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(wen) sends the package to office_b with probability 1.00.",
+   "note_distribution": {
+    "office_b": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261202-dev-v3-2b-stakes1-perm0",
+   "unit": "K(wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_b": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(wen) sends the package to office_b with probability 1.00.",
+   "note_distribution": {
+    "office_b": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261202-dev-v3-2b-stakes4-perm0",
+   "unit": "K(wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "suite_1": 0.5,
+    "suite_2": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(grace) sends the package to suite_2 with probability 0.50, to suite_1 with probability 0.50.",
+   "note_distribution": {
+    "suite_1": 0.5,
+    "suite_2": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261202-dev-v3-3a-stakes1-perm0",
+   "unit": "K(grace->leo)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "suite_1": 0.5,
+    "suite_2": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(grace) sends the package to suite_2 with probability 0.50, to suite_1 with probability 0.50.",
+   "note_distribution": {
+    "suite_1": 0.5,
+    "suite_2": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261202-dev-v3-3a-stakes4-perm0",
+   "unit": "K(grace->leo)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_9": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to desk_9 with probability 1.00.",
+   "note_distribution": {
+    "desk_9": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261202-dev-v3-3b-stakes1-perm0",
+   "unit": "K(ivan->zane)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_9": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to desk_9 with probability 1.00.",
+   "note_distribution": {
+    "desk_9": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261202-dev-v3-3b-stakes4-perm0",
+   "unit": "K(ivan->zane)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_12": 0.5,
+    "room_19": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(omar) sends the package to room_19 with probability 0.50, to room_12 with probability 0.50.",
+   "note_distribution": {
+    "room_12": 0.5,
+    "room_19": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261203-dev-v3-2a-stakes1-perm0",
+   "unit": "K(omar)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_7": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(wen) sends the package to room_7 with probability 1.00.",
+   "note_distribution": {
+    "room_7": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261203-dev-v3-2a-stakes1-perm0",
+   "unit": "K(wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_12": 0.5,
+    "room_19": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(omar) sends the package to room_19 with probability 0.50, to room_12 with probability 0.50.",
+   "note_distribution": {
+    "room_12": 0.5,
+    "room_19": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261203-dev-v3-2a-stakes4-perm0",
+   "unit": "K(omar)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_7": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(wen) sends the package to room_7 with probability 1.00.",
+   "note_distribution": {
+    "room_7": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261203-dev-v3-2a-stakes4-perm0",
+   "unit": "K(wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_north": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(omar) sends the package to lab_north with probability 1.00.",
+   "note_distribution": {
+    "lab_north": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261203-dev-v3-2b-stakes1-perm0",
+   "unit": "K(omar)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_north": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(omar) sends the package to lab_north with probability 1.00.",
+   "note_distribution": {
+    "lab_north": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261203-dev-v3-2b-stakes4-perm0",
+   "unit": "K(omar)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_14": 0.5,
+    "desk_3": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to desk_3 with probability 0.50, to desk_14 with probability 0.50.",
+   "note_distribution": {
+    "desk_14": 0.5,
+    "desk_3": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261203-dev-v3-3a-stakes1-perm0",
+   "unit": "K(ivan->kim)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_14": 0.5,
+    "desk_3": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to desk_3 with probability 0.50, to desk_14 with probability 0.50.",
+   "note_distribution": {
+    "desk_14": 0.5,
+    "desk_3": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261203-dev-v3-3a-stakes4-perm0",
+   "unit": "K(ivan->kim)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_b": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(tomas) sends the package to office_b with probability 1.00.",
+   "note_distribution": {
+    "office_b": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261203-dev-v3-3b-stakes1-perm0",
+   "unit": "K(tomas->erin)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_b": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(tomas) sends the package to office_b with probability 1.00.",
+   "note_distribution": {
+    "office_b": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261203-dev-v3-3b-stakes4-perm0",
+   "unit": "K(tomas->erin)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_12": 0.5,
+    "room_7": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to room_7 with probability 0.50, to room_12 with probability 0.50.",
+   "note_distribution": {
+    "room_12": 0.5,
+    "room_7": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261204-dev-v3-2a-stakes1-perm0",
+   "unit": "K(ivan)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_19": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(mia) sends the package to room_19 with probability 1.00.",
+   "note_distribution": {
+    "room_19": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261204-dev-v3-2a-stakes1-perm0",
+   "unit": "K(mia)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_12": 0.5,
+    "room_7": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to room_7 with probability 0.50, to room_12 with probability 0.50.",
+   "note_distribution": {
+    "room_12": 0.5,
+    "room_7": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261204-dev-v3-2a-stakes4-perm0",
+   "unit": "K(ivan)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_19": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(mia) sends the package to room_19 with probability 1.00.",
+   "note_distribution": {
+    "room_19": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261204-dev-v3-2a-stakes4-perm0",
+   "unit": "K(mia)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_c": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(judy) sends the package to office_c with probability 1.00.",
+   "note_distribution": {
+    "office_c": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261204-dev-v3-2b-stakes1-perm0",
+   "unit": "K(judy)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_c": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(judy) sends the package to office_c with probability 1.00.",
+   "note_distribution": {
+    "office_c": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261204-dev-v3-2b-stakes4-perm0",
+   "unit": "K(judy)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_north": 0.5,
+    "lab_south": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(zane) sends the package to lab_north with probability 0.50, to lab_south with probability 0.50.",
+   "note_distribution": {
+    "lab_north": 0.5,
+    "lab_south": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261204-dev-v3-3a-stakes1-perm0",
+   "unit": "K(zane->leo)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_north": 0.5,
+    "lab_south": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(zane) sends the package to lab_north with probability 0.50, to lab_south with probability 0.50.",
+   "note_distribution": {
+    "lab_north": 0.5,
+    "lab_south": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261204-dev-v3-3a-stakes4-perm0",
+   "unit": "K(zane->leo)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_a": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to office_a with probability 1.00.",
+   "note_distribution": {
+    "office_a": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261204-dev-v3-3b-stakes1-perm0",
+   "unit": "K(ivan->wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_a": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(ivan) sends the package to office_a with probability 1.00.",
+   "note_distribution": {
+    "office_a": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261204-dev-v3-3b-stakes4-perm0",
+   "unit": "K(ivan->wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "suite_2": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(omar) sends the package to suite_2 with probability 1.00.",
+   "note_distribution": {
+    "suite_2": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261205-dev-v3-2a-stakes1-perm0",
+   "unit": "K(omar)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(wen) sends the package to suite_1 with probability 0.50, to suite_3 with probability 0.50.",
+   "note_distribution": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261205-dev-v3-2a-stakes1-perm0",
+   "unit": "K(wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "suite_2": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(omar) sends the package to suite_2 with probability 1.00.",
+   "note_distribution": {
+    "suite_2": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261205-dev-v3-2a-stakes4-perm0",
+   "unit": "K(omar)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(wen) sends the package to suite_1 with probability 0.50, to suite_3 with probability 0.50.",
+   "note_distribution": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261205-dev-v3-2a-stakes4-perm0",
+   "unit": "K(wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "suite_2": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(wen) sends the package to suite_2 with probability 1.00.",
+   "note_distribution": {
+    "suite_2": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261205-dev-v3-2b-stakes1-perm0",
+   "unit": "K(wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "suite_2": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(wen) sends the package to suite_2 with probability 1.00.",
+   "note_distribution": {
+    "suite_2": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261205-dev-v3-2b-stakes4-perm0",
+   "unit": "K(wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(kim) sends the package to suite_3 with probability 0.50, to suite_1 with probability 0.50.",
+   "note_distribution": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261205-dev-v3-3a-stakes1-perm0",
+   "unit": "K(kim->vik)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(kim) sends the package to suite_3 with probability 0.50, to suite_1 with probability 0.50.",
+   "note_distribution": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261205-dev-v3-3a-stakes4-perm0",
+   "unit": "K(kim->vik)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_c": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(sara) sends the package to office_c with probability 1.00.",
+   "note_distribution": {
+    "office_c": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261205-dev-v3-3b-stakes1-perm0",
+   "unit": "K(sara->leo)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_c": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(sara) sends the package to office_c with probability 1.00.",
+   "note_distribution": {
+    "office_c": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261205-dev-v3-3b-stakes4-perm0",
+   "unit": "K(sara->leo)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_a": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(heidi) sends the package to office_a with probability 1.00.",
+   "note_distribution": {
+    "office_a": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261206-dev-v3-2a-stakes1-perm0",
+   "unit": "K(heidi)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_b": 0.5,
+    "office_c": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(kim) sends the package to office_b with probability 0.50, to office_c with probability 0.50.",
+   "note_distribution": {
+    "office_b": 0.5,
+    "office_c": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261206-dev-v3-2a-stakes1-perm0",
+   "unit": "K(kim)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_a": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(heidi) sends the package to office_a with probability 1.00.",
+   "note_distribution": {
+    "office_a": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261206-dev-v3-2a-stakes4-perm0",
+   "unit": "K(heidi)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "office_b": 0.5,
+    "office_c": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(kim) sends the package to office_b with probability 0.50, to office_c with probability 0.50.",
+   "note_distribution": {
+    "office_b": 0.5,
+    "office_c": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261206-dev-v3-2a-stakes4-perm0",
+   "unit": "K(kim)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_south": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(quinn) sends the package to lab_south with probability 1.00.",
+   "note_distribution": {
+    "lab_south": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261206-dev-v3-2b-stakes1-perm0",
+   "unit": "K(quinn)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_south": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(quinn) sends the package to lab_south with probability 1.00.",
+   "note_distribution": {
+    "lab_south": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261206-dev-v3-2b-stakes4-perm0",
+   "unit": "K(quinn)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_north": 0.5,
+    "lab_south": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(vik) sends the package to lab_north with probability 0.50, to lab_south with probability 0.50.",
+   "note_distribution": {
+    "lab_north": 0.5,
+    "lab_south": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261206-dev-v3-3a-stakes1-perm0",
+   "unit": "K(vik->zane)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_north": 0.5,
+    "lab_south": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(vik) sends the package to lab_north with probability 0.50, to lab_south with probability 0.50.",
+   "note_distribution": {
+    "lab_north": 0.5,
+    "lab_south": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261206-dev-v3-3a-stakes4-perm0",
+   "unit": "K(vik->zane)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_14": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(vik) sends the package to desk_14 with probability 1.00.",
+   "note_distribution": {
+    "desk_14": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261206-dev-v3-3b-stakes1-perm0",
+   "unit": "K(vik->tomas)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_14": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(vik) sends the package to desk_14 with probability 1.00.",
+   "note_distribution": {
+    "desk_14": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261206-dev-v3-3b-stakes4-perm0",
+   "unit": "K(vik->tomas)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_7": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(dave) sends the package to room_7 with probability 1.00.",
+   "note_distribution": {
+    "room_7": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261207-dev-v3-2a-stakes1-perm0",
+   "unit": "K(dave)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_12": 0.5,
+    "room_19": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(zane) sends the package to room_19 with probability 0.50, to room_12 with probability 0.50.",
+   "note_distribution": {
+    "room_12": 0.5,
+    "room_19": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261207-dev-v3-2a-stakes1-perm0",
+   "unit": "K(zane)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_7": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(dave) sends the package to room_7 with probability 1.00.",
+   "note_distribution": {
+    "room_7": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261207-dev-v3-2a-stakes4-perm0",
+   "unit": "K(dave)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_12": 0.5,
+    "room_19": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(zane) sends the package to room_19 with probability 0.50, to room_12 with probability 0.50.",
+   "note_distribution": {
+    "room_12": 0.5,
+    "room_19": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261207-dev-v3-2a-stakes4-perm0",
+   "unit": "K(zane)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_west": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(judy) sends the package to lab_west with probability 1.00.",
+   "note_distribution": {
+    "lab_west": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261207-dev-v3-2b-stakes1-perm0",
+   "unit": "K(judy)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "lab_west": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(judy) sends the package to lab_west with probability 1.00.",
+   "note_distribution": {
+    "lab_west": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261207-dev-v3-2b-stakes4-perm0",
+   "unit": "K(judy)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(zane) sends the package to desk_9 with probability 0.50, to desk_3 with probability 0.50.",
+   "note_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261207-dev-v3-3a-stakes1-perm0",
+   "unit": "K(zane->wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(zane) sends the package to desk_9 with probability 0.50, to desk_3 with probability 0.50.",
+   "note_distribution": {
+    "desk_3": 0.5,
+    "desk_9": 0.5
+   },
+   "p_success_given_give": 1.0,
+   "p_wrong_given_give": 0.0,
+   "state_id": "s20261207-dev-v3-3a-stakes4-perm0",
+   "unit": "K(zane->wen)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_19": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(omar) sends the package to room_19 with probability 1.00.",
+   "note_distribution": {
+    "room_19": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261207-dev-v3-3b-stakes1-perm0",
+   "unit": "K(omar->yara)",
+   "unknown_mass": 0.0
+  },
+  {
+   "destination_distribution": {
+    "room_19": 1.0
+   },
+   "line": "Given this estimate and the stated forwarding rule, give(omar) sends the package to room_19 with probability 1.00.",
+   "note_distribution": {
+    "room_19": 1.0
+   },
+   "p_success_given_give": 0.0,
+   "p_wrong_given_give": 1.0,
+   "state_id": "s20261207-dev-v3-3b-stakes4-perm0",
+   "unit": "K(omar->yara)",
+   "unknown_mass": 0.0
+  }
+ ],
+ "implication_table_sha256": "16bc357519ff7c289243248e8b166d8db274c7e1bbb7e5209ef29288a078c2c4",
+ "implication_template": "Given this estimate and the stated forwarding rule, give(<X>) sends the package to <office> with probability <p>[, to <office> with probability <p> ...].",
+ "states": [
+  {
+   "ask": "ask(ivan,uma_loc)",
+   "ask_subject_role": "H",
+   "bayes_opt_post": [
+    "drop(lab_west)",
+    "give(ivan)"
+   ],
+   "bayes_opt_t0": [
+    "give(ivan)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(ivan)": "178d44d3610fedcd9ff50953828352fb03d6c8cfda5fb231467fc3a127dc6c0a",
+    "K(leo)": "80ea6d2087ad23ed9d4708a0b908344d0752a4e7282afa4445ad8b8633d24161"
+   },
+   "post_ask_statuses": {
+    "K(ivan)": "stale",
+    "K(leo)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "4b86692c9ca90ee5bf6f0ea8bcd361a0322dfe68f840dd0ae773308ed9f8df24",
+    "content|shown": "3ffe8215dfa4dab746428d2c130a5aca58699e86d465a2cdf167ed5e88c3bd50",
+    "impl|omitted": "eb08710fe958363c853d6aba8483769a29699fb3bc6f3377a069cb37e757fad2",
+    "impl|shown": "83a016fdc4904be304416e36194f8dd331196f87211f1c891ae90d2b2ce7e619",
+    "none": "f2de602511e223f3a79d318ceabe369b95f88d2d0626b66ef2a24aba7253194a"
+   },
+   "prompt_sha256_t0": {
+    "content": "8425f7e3456c39e419dd4eb37cd654b028ca0db7a153a6d89a0a014af4e8b06a",
+    "impl": "a3b2086184a1c18831cc172a5f6485ac4e9b82f1269cafb2d455a34f943df49f",
+    "none": "529e3e0242b71fe800ce432b3a32a6761a3153d45b5616245e2d679b60b02b0f"
+   },
+   "seed": 20261200,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(ivan)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ],
+    "K(leo)": [
+     "t1:seen:leo"
+    ]
+   },
+   "state_id": "s20261200-dev-v3-2a-stakes1-perm0",
+   "symbolic": {
+    "K(ivan)": {
+     "posterior_post_ask": {
+      "lab_west": 1.0
+     },
+     "posterior_t0": {
+      "lab_south": 0.5,
+      "lab_west": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    },
+    "K(leo)": {
+     "posterior_post_ask": {
+      "lab_north": 1.0
+     },
+     "posterior_t0": {
+      "lab_north": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(ivan,uma_loc)",
+   "ask_subject_role": "H",
+   "bayes_opt_post": [
+    "drop(lab_west)",
+    "give(ivan)"
+   ],
+   "bayes_opt_t0": [
+    "give(ivan)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(ivan)": "178d44d3610fedcd9ff50953828352fb03d6c8cfda5fb231467fc3a127dc6c0a",
+    "K(leo)": "80ea6d2087ad23ed9d4708a0b908344d0752a4e7282afa4445ad8b8633d24161"
+   },
+   "post_ask_statuses": {
+    "K(ivan)": "stale",
+    "K(leo)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "91e4a03da067dd4ae8588ab7cd5c941d3503c9f759a1ab7438d3a0d6d5cd60a9",
+    "content|shown": "92680a552a5c3af2fd53f93995e1566f370995064a8fe65b31cfed872f19f140",
+    "impl|omitted": "967bf3db146d9ca1866a7f112e3eb129c0841e5d5d1c83062c9029a447a7bd7c",
+    "impl|shown": "60fdda788582aebf096d799b5733dda505efac49251f08a75f44173fd3196979",
+    "none": "b8e453c38e2e893a2a45ca21fcf4a765e166c31e2e0440d833758274c7541e36"
+   },
+   "prompt_sha256_t0": {
+    "content": "a442c59bd182fe27125798ceb3ffcf0997e4ea03b1d5b41156a005577c895897",
+    "impl": "edc29ca62113b13210a59e3c6f27b61bc32739035f292844da077d3d1de5ee64",
+    "none": "0e49f83f7cc33d94b92992949285b20a3772094f8c82d09169eed940d225af82"
+   },
+   "seed": 20261200,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(ivan)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ],
+    "K(leo)": [
+     "t1:seen:leo"
+    ]
+   },
+   "state_id": "s20261200-dev-v3-2a-stakes4-perm0",
+   "symbolic": {
+    "K(ivan)": {
+     "posterior_post_ask": {
+      "lab_west": 1.0
+     },
+     "posterior_t0": {
+      "lab_south": 0.5,
+      "lab_west": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    },
+    "K(leo)": {
+     "posterior_post_ask": {
+      "lab_north": 1.0
+     },
+     "posterior_t0": {
+      "lab_north": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(dave,yara_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(dave)": "16f55e03e63a10bc4954a90ce973a09fd49bdee7c739f756537e27d97e3afd21"
+   },
+   "post_ask_statuses": {
+    "K(dave)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "238fc0132c12747f9a816b33961c793211a737a151f9f3010bd836fecae6d6b4",
+    "content|shown": "82ea3ef5593139cd60b0846521e639ee4847ec69e5ba8f22be7da7ede39809ed",
+    "impl|omitted": "082d12dfcd76a2e22c18a0f026ee191c04b5ffc9d4177a9815a25d5b7c5c04b8",
+    "impl|shown": "d536b4fc10368d054874a0b6bf45a43017f061ffa11da8ea606d356642b15442",
+    "none": "404a9f4cd8408894579075a28505844ac2efe99edb0b86fd752000d06c4ed2c7"
+   },
+   "prompt_sha256_t0": {
+    "content": "9257421794e6fb0d0fb2c03948c2bb67ab891a5873362acb2203bf97d76f7280",
+    "impl": "733c1ee2a528a7f90418c1d0c666726b05ee11620df7e2925dbe1066e0740c15",
+    "none": "385921bdc210d0a445a38804a3abc5c612d28d4530a5431ffd86d9309a9e2f3a"
+   },
+   "seed": 20261200,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(dave)": [
+     "t1:said0:dave",
+     "t1:seen:dave"
+    ]
+   },
+   "state_id": "s20261200-dev-v3-2b-stakes1-perm0",
+   "symbolic": {
+    "K(dave)": {
+     "posterior_post_ask": {
+      "office_c": 1.0
+     },
+     "posterior_t0": {
+      "office_c": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(dave,yara_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(dave)": "16f55e03e63a10bc4954a90ce973a09fd49bdee7c739f756537e27d97e3afd21"
+   },
+   "post_ask_statuses": {
+    "K(dave)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "f09434db3045a82484b1a34b35ac8ddbaee127a89dc251b3959966210b336c7d",
+    "content|shown": "f84fe91b2fae36b786eceb89558b7172ca31bd7258c793007d541f23b4f38820",
+    "impl|omitted": "c35d4b2d1d3e55fbb970eb5985442ee9576773fe86a8e66aaedd37db55a0dc9b",
+    "impl|shown": "7365d9ae2d6e32f174c3644b134f4e073c843ff006ef2113c17ddb6472b7f64c",
+    "none": "543299c77382e320de017cb9ca52221b3d8a7f90eddadb44e2bf3bebcc392df1"
+   },
+   "prompt_sha256_t0": {
+    "content": "0c06077be80539b6eb473e9beceea92efab08822469f539a8cb3dae270476236",
+    "impl": "f0f53edfa7d0d8da4809e7c76debf65a855d3492d0306f19d7c6d1b8e4c22411",
+    "none": "b6d34625891a342122a57c0d11f8e8a66eca217b11e86ae738c50fdf1a20126d"
+   },
+   "seed": 20261200,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(dave)": [
+     "t1:said0:dave",
+     "t1:seen:dave"
+    ]
+   },
+   "state_id": "s20261200-dev-v3-2b-stakes4-perm0",
+   "symbolic": {
+    "K(dave)": {
+     "posterior_post_ask": {
+      "office_c": 1.0
+     },
+     "posterior_t0": {
+      "office_c": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(carol,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(carol)"
+   ],
+   "bayes_opt_t0": [
+    "give(carol)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(carol->yara)": "3dc40f8a63fffd63e258e95c11aad85529062a5681f1d7e2b091674390613182"
+   },
+   "post_ask_statuses": {
+    "K(carol->yara)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "112c9ff5549a8769a0b6e3133481731a87722d802f8872031c381fd2cfdda5b2",
+    "content|shown": "5d6677077ef8dce2431adad08f9d453fbd98c9e899b6be48ae12c5900ac62550",
+    "impl|omitted": "0dcf1c2e9d6db037746a957c950eaca4cd79051f2a8ca384a48e33b8781093b4",
+    "impl|shown": "e1b9c411070b4e85f1e202c6a426183e059ce1836333d2979619e7ec2c46ed97",
+    "none": "18b3004510468d3f2570f242d8e4b08bca81056c105413f3f23af385962b26a5"
+   },
+   "prompt_sha256_t0": {
+    "content": "d0f397ab4579bf6cbc845ac7c8ede536f0a1445be2cd52b18dd68db2f1012d4b",
+    "impl": "131f23e77a561420c2e3831a8409904a9c8398bdfb589e6d25f85e6560ee9cb4",
+    "none": "98c1f38bb126b4d9708349a2b3f40721b9b2edc3c118bc7b31af77ed94b56262"
+   },
+   "seed": 20261200,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(carol->yara)": [
+     "t1:said0:carol",
+     "t1:seen:carol"
+    ]
+   },
+   "state_id": "s20261200-dev-v3-3a-stakes1-perm0",
+   "symbolic": {
+    "K(carol->yara)": {
+     "posterior_post_ask": {
+      "desk_3": 1.0
+     },
+     "posterior_t0": {
+      "desk_3": 0.5,
+      "desk_9": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(carol,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(carol)"
+   ],
+   "bayes_opt_t0": [
+    "give(carol)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(carol->yara)": "3dc40f8a63fffd63e258e95c11aad85529062a5681f1d7e2b091674390613182"
+   },
+   "post_ask_statuses": {
+    "K(carol->yara)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "2ac55c382560914078990a21a6dc1014b513fdaef4c6e83510b13fed4227acc4",
+    "content|shown": "c7fa99653f7e00136a8882a06f32d56b8098a22b48406da6a25d3c48186b4591",
+    "impl|omitted": "4170bb6209bafbb3213517d9dac7d6d8587168fbde7ba21ba365f92dffb408e0",
+    "impl|shown": "91386bd70f62db167f738458ccc5297061445e64dbc6d10c988966c3186ae772",
+    "none": "9964151499f854d5d57637f710bf1dc6fb14c732542950bdc0cf66d8c127e1a1"
+   },
+   "prompt_sha256_t0": {
+    "content": "a5c77a877db8e7157b4de03cbb39c3f70d6ed1827149004c11d0b6f16d51d152",
+    "impl": "515a2c612a8f9b555e2ac62bcfcc922b7f558c877aedc9d8912e5528867cea4d",
+    "none": "36830c3c0370d5499185673f4d9197a4fcf5a96b2d53698ca86cf2d023fa8254"
+   },
+   "seed": 20261200,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(carol->yara)": [
+     "t1:said0:carol",
+     "t1:seen:carol"
+    ]
+   },
+   "state_id": "s20261200-dev-v3-3a-stakes4-perm0",
+   "symbolic": {
+    "K(carol->yara)": {
+     "posterior_post_ask": {
+      "desk_3": 1.0
+     },
+     "posterior_t0": {
+      "desk_3": 0.5,
+      "desk_9": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(ivan,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(ivan,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(ivan->frank)": "d2b48da3ce2a816296dea155986a4d648780b3b62bbb3ecb7b42b0e2bdd0b8ed"
+   },
+   "post_ask_statuses": {
+    "K(ivan->frank)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "5236009dd9b12bd506c6a32bc29c4a3fb0c499e87db8f52474272f194ae73b76",
+    "content|shown": "6be5555cbefb0c6b4e48abb0fd5b6fd41c3728d102c193e2347bd8d99c421f8f",
+    "impl|omitted": "a7703c8c8c0438e1d7facf1ddb62880059c5bf352c2f4e9ad8628ad8e8c37880",
+    "impl|shown": "05c09daf5eaba455326a11b2dfb7fb75e7220a75fcf6b7dc72f9de18cfce6424",
+    "none": "6c319aad200eee35c5fa0f5ff8f6adb7e6babe75906bf2c60e4e2c059ece6482"
+   },
+   "prompt_sha256_t0": {
+    "content": "ed2a3e33828de0e2ea296cc75074745942935bc380e4c52d941dc7e60eecfe1b",
+    "impl": "7de5979dbf3bc941b27cd7151e1b9dcfaa8f1b4767789cdaf8e04a660670773a",
+    "none": "4760325714ff896d2e1195ae0d71acc2ba64e91dd1464a236ab4825c27df201c"
+   },
+   "seed": 20261200,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(ivan->frank)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ]
+   },
+   "state_id": "s20261200-dev-v3-3b-stakes1-perm0",
+   "symbolic": {
+    "K(ivan->frank)": {
+     "posterior_post_ask": {
+      "desk_14": 1.0
+     },
+     "posterior_t0": {
+      "desk_14": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(ivan,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(ivan,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(ivan->frank)": "d2b48da3ce2a816296dea155986a4d648780b3b62bbb3ecb7b42b0e2bdd0b8ed"
+   },
+   "post_ask_statuses": {
+    "K(ivan->frank)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "a34612d43c80ddf4d87bad1f2c6ba05a24bdd537b89a66bc2c07e90ae98624fe",
+    "content|shown": "22e45372a6363f9f894a8c525a1bd099ed2be06043e0ffda32d9332fa9113e6b",
+    "impl|omitted": "02f2b7fcd78283caca6c4dacfb04eb4c784f970b58b533550200daa30358f0d4",
+    "impl|shown": "4a119973a50a67cbe555efd755483073522032b2ab71c4392db223d80a1e6575",
+    "none": "31c8ee6b6e0b70261ffb7785b950165f5dff4f42f32fe677c14357870e9fed60"
+   },
+   "prompt_sha256_t0": {
+    "content": "96858a49590dd960a1693c19c0d863f4cf49e06a1b934d99e6c8ec2bdc3a741b",
+    "impl": "e0b7bfa462bffccf8f3e404b257fee2c362d9e1db763465c001f2709a232d381",
+    "none": "5e1999c9a66d34a27ad2fcbbbe64e526ecf14c72d9d7ee538df8669c518d2800"
+   },
+   "seed": 20261200,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(ivan->frank)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ]
+   },
+   "state_id": "s20261200-dev-v3-3b-stakes4-perm0",
+   "symbolic": {
+    "K(ivan->frank)": {
+     "posterior_post_ask": {
+      "desk_14": 1.0
+     },
+     "posterior_t0": {
+      "desk_14": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(tomas,judy_loc)",
+   "ask_subject_role": "H",
+   "bayes_opt_post": [
+    "drop(office_b)",
+    "give(tomas)"
+   ],
+   "bayes_opt_t0": [
+    "give(tomas)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(tomas)": "ba2ae7201995dd6609325b2a807653df6d76d17aafb451b7e25eca4298bbca41",
+    "K(zane)": "81e490b43f39091de41ab34783968ecba10da44412395c341e5e72d2045f72e2"
+   },
+   "post_ask_statuses": {
+    "K(tomas)": "stale",
+    "K(zane)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "59b9a2ae1fb8a9098db51c1592b11656975d85c93959a7aa3bfe41c77f2b64fb",
+    "content|shown": "2b926532ea2c3967c6cb7b78c76cd65132bde72f14c7746c6b49e76686ec17cd",
+    "impl|omitted": "4c936efb78ee1d49480fd3f5f34e062506ea456a26754de30ace36ce7d1bf869",
+    "impl|shown": "3f42b74ecc0733ece31aaff11525ec22d11b402db85889520c3a82626f20d917",
+    "none": "e08bfe50164b8d766708539a2fbbc8c2e98e2b5cc021fe1225ae5dce551da746"
+   },
+   "prompt_sha256_t0": {
+    "content": "679dcd633c3f9a0612dfc9196ba5b5e26678bab5f42d257f56fd1fcc011bb468",
+    "impl": "34642356b8f1e5628bd1de9c9a5c42afbad7f8cfff326247e126dba5a9f2fd9f",
+    "none": "0de84b9e2a0415ce9bba27c51ffdcd0efffdda539aad5b4a7a82b12a62b6e2ba"
+   },
+   "seed": 20261201,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(tomas)": [
+     "t1:said0:tomas",
+     "t1:seen:tomas"
+    ],
+    "K(zane)": [
+     "t1:seen:zane"
+    ]
+   },
+   "state_id": "s20261201-dev-v3-2a-stakes1-perm0",
+   "symbolic": {
+    "K(tomas)": {
+     "posterior_post_ask": {
+      "office_b": 1.0
+     },
+     "posterior_t0": {
+      "office_a": 0.5,
+      "office_b": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    },
+    "K(zane)": {
+     "posterior_post_ask": {
+      "office_c": 1.0
+     },
+     "posterior_t0": {
+      "office_c": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(tomas,judy_loc)",
+   "ask_subject_role": "H",
+   "bayes_opt_post": [
+    "drop(office_b)",
+    "give(tomas)"
+   ],
+   "bayes_opt_t0": [
+    "give(tomas)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(tomas)": "ba2ae7201995dd6609325b2a807653df6d76d17aafb451b7e25eca4298bbca41",
+    "K(zane)": "81e490b43f39091de41ab34783968ecba10da44412395c341e5e72d2045f72e2"
+   },
+   "post_ask_statuses": {
+    "K(tomas)": "stale",
+    "K(zane)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "b0e25d631028424bcc1a38b9da0700243b5adfa3fae3115ccf5485fa26eee6a8",
+    "content|shown": "a379bfad8403db17ddf69c331651ad1a8a8a57088e9ffe4b3562a0b59855825a",
+    "impl|omitted": "f1ddd511a5d77cb5b36d0001cae104d7d1739ffc231487b654eacf27cebaf56c",
+    "impl|shown": "964cca3eb14080d12db16359fd3aa901e52d29a84fb4ba18214c6ae74f7b4f78",
+    "none": "a31ab97e022a823f3fd9e693ae154fe776712b3ab75680daa300231265a3b85e"
+   },
+   "prompt_sha256_t0": {
+    "content": "0f963577ce19a18f00a56b6d628c7bd0b6ad9d162ff9adaa04563cffae0b0d82",
+    "impl": "8ebf4659d41ebaf5e176e11f6b428ecb82dc8fa50c2fdb581a9961ab9410c4ec",
+    "none": "fd089fc0baa72f15e66cf0ad5db38cced7fb8024278d5a87441ddd79b21a10f2"
+   },
+   "seed": 20261201,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(tomas)": [
+     "t1:said0:tomas",
+     "t1:seen:tomas"
+    ],
+    "K(zane)": [
+     "t1:seen:zane"
+    ]
+   },
+   "state_id": "s20261201-dev-v3-2a-stakes4-perm0",
+   "symbolic": {
+    "K(tomas)": {
+     "posterior_post_ask": {
+      "office_b": 1.0
+     },
+     "posterior_t0": {
+      "office_a": 0.5,
+      "office_b": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    },
+    "K(zane)": {
+     "posterior_post_ask": {
+      "office_c": 1.0
+     },
+     "posterior_t0": {
+      "office_c": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(bob,sara_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(bob)": "d130e9a59d8cf4067bb583e45e2de6e459003420d0a875fb300777ead968f538"
+   },
+   "post_ask_statuses": {
+    "K(bob)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "d83fc11af3414a30b3300222e3bfd632aa1c1ba4bd5eff4541ddb4d1952d26d0",
+    "content|shown": "7a46258aecba0f7682e68e10b2f7b3ece8bc683984c3f936a04b43df8fe6d142",
+    "impl|omitted": "7bde59b3b237714178501bb481d2ec9db25bf999794bef683f70cc1a17dbd725",
+    "impl|shown": "fda61e4805f19e4fd3c468e4859ccdec922ec04c16f612befafdbd37f36a396b",
+    "none": "fed1fd931e27e2f37c0d60cc7f83b93a9661c46eecf1b7ff841020ad3376f4bd"
+   },
+   "prompt_sha256_t0": {
+    "content": "c423535a82a33c2ac42b1c38b9f1f0dc0a9e8fb350b73cf0d2c65fbb92fdaec0",
+    "impl": "347915315c906d077e0c73b081468c2d6f4f4aad61f83d3d8d23acc64dc37c26",
+    "none": "2c7bd1dfd2d020f4637a90a183d94f2a4bea56fbe93dbfbd9329847f33697dce"
+   },
+   "seed": 20261201,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(bob)": [
+     "t1:said0:bob",
+     "t1:seen:bob"
+    ]
+   },
+   "state_id": "s20261201-dev-v3-2b-stakes1-perm0",
+   "symbolic": {
+    "K(bob)": {
+     "posterior_post_ask": {
+      "desk_3": 1.0
+     },
+     "posterior_t0": {
+      "desk_3": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(bob,sara_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(bob)": "d130e9a59d8cf4067bb583e45e2de6e459003420d0a875fb300777ead968f538"
+   },
+   "post_ask_statuses": {
+    "K(bob)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "04a35c859b662aa4d82bc60b86d649946b873ef896a711d50a575efecf148242",
+    "content|shown": "c955b53e009d8f374da66f9df3d4a45209036f37e20bd7e007542a55321f713e",
+    "impl|omitted": "95afaa74630d2ad496396414243094f9e2d61bfaf1022374e01894ed8c092da7",
+    "impl|shown": "b95203808c8652b2bee7afba1ea6291c0a8758169ff61ea727d5fd9e1bb16a41",
+    "none": "bd1e0ae39f6bc494f35f4459f95a9084e942ac28a034b206cdf3a695f667a774"
+   },
+   "prompt_sha256_t0": {
+    "content": "77cf74c8d9d5a41acec981bb84877c8af184d7b4c91a0de8106d5b57a72477cb",
+    "impl": "220ac433ea3c505b49722cd188106f10b4be91b98b076c4bbbeb539aa3cc7840",
+    "none": "b986fe566dba04993863b897d9d6a531a27a9ed60d28375185b326c3061d5e2f"
+   },
+   "seed": 20261201,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(bob)": [
+     "t1:said0:bob",
+     "t1:seen:bob"
+    ]
+   },
+   "state_id": "s20261201-dev-v3-2b-stakes4-perm0",
+   "symbolic": {
+    "K(bob)": {
+     "posterior_post_ask": {
+      "desk_3": 1.0
+     },
+     "posterior_t0": {
+      "desk_3": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(sara,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(sara)"
+   ],
+   "bayes_opt_t0": [
+    "give(sara)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(sara->leo)": "2081781fd8cdd4ac09bd43b88bd983d4b5026aa18f91c6051f818559034f857e"
+   },
+   "post_ask_statuses": {
+    "K(sara->leo)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "a1341476240535abe8ceed91fbe611b6c6a587e3d5f63679f223eebc5728cff4",
+    "content|shown": "acf175a16464fe80ce611aa5cead9def364620f2331f6b440374c4bf10b3b3f1",
+    "impl|omitted": "2696f1c0d8a14caa9a1c35ceb377974e73133e32078e2af994183591fcbd1a05",
+    "impl|shown": "1302d075374922839081b38838810178605d6e82d3f7c1522de219802a0f8676",
+    "none": "c2ae70d2ae8540838badc23b3d5700e2f4d7e7197cd7ac3cfd7ed76968e63f54"
+   },
+   "prompt_sha256_t0": {
+    "content": "d4b10bd63b5ab116f12fc7d30f0cdf0508fca92b2b756952d756cd490063df4a",
+    "impl": "c067277ec0aa9622d72696c91d965047833e9ad5ebaa98ab4736d4364c6ca83b",
+    "none": "e421cc555a1d0fface76197286476828e3d3cbf2cd612e9fd2b12fd62ddc4b59"
+   },
+   "seed": 20261201,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(sara->leo)": [
+     "t1:said0:sara",
+     "t1:seen:sara"
+    ]
+   },
+   "state_id": "s20261201-dev-v3-3a-stakes1-perm0",
+   "symbolic": {
+    "K(sara->leo)": {
+     "posterior_post_ask": {
+      "desk_3": 1.0
+     },
+     "posterior_t0": {
+      "desk_3": 0.5,
+      "desk_9": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(sara,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(sara)"
+   ],
+   "bayes_opt_t0": [
+    "give(sara)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(sara->leo)": "2081781fd8cdd4ac09bd43b88bd983d4b5026aa18f91c6051f818559034f857e"
+   },
+   "post_ask_statuses": {
+    "K(sara->leo)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "f3b1ba9b5252e279c96cff6da8c5cdd81b96416214c776fc19929b3c054a4377",
+    "content|shown": "4a8e202f40ca0f5cb8af4c5957ccf61a5fd102ebc07ac9031d5cfd809b222ef5",
+    "impl|omitted": "f6fde627ab2e8ad2a877e1d2db684073986947964e04af9d1874e7e13c431ce5",
+    "impl|shown": "93722c367fadc250d760aa70ad181a82b52148bed128d2c74bbf2fe53ebdaa41",
+    "none": "28cb8ec4fef910dc601f9edbb4c88ca540956bd048c6fa979e7c20b624b6ae56"
+   },
+   "prompt_sha256_t0": {
+    "content": "e7e01307afde7faec9b4c7737695002567b5ba9ad0f9bb9984e5227b9d597f03",
+    "impl": "8468ce8cf002ec8431e7110f812e52b0e697650bf2d40aee3f4e2c7636f33455",
+    "none": "b51ca6b98d63c92f02c89a07e34953eb881f0c860444430b179704e1c31ad0ad"
+   },
+   "seed": 20261201,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(sara->leo)": [
+     "t1:said0:sara",
+     "t1:seen:sara"
+    ]
+   },
+   "state_id": "s20261201-dev-v3-3a-stakes4-perm0",
+   "symbolic": {
+    "K(sara->leo)": {
+     "posterior_post_ask": {
+      "desk_3": 1.0
+     },
+     "posterior_t0": {
+      "desk_3": 0.5,
+      "desk_9": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(nadia,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(nadia,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(nadia->vik)": "871f07d969f1433bcd3d1619f6ff99684b4043259ec6addd039136f8034b1509"
+   },
+   "post_ask_statuses": {
+    "K(nadia->vik)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "b817f4d369b177f38fba48b4cdf37c706525e83fdd4407eaf728811ed2711717",
+    "content|shown": "953d936e2579975fcf49db995f3b82d41ee0cddd37a2c7b2ef075758f784799d",
+    "impl|omitted": "00a0a1cd34721312793de1690a7750e5d43b1e1380512727946dd9189cafbf83",
+    "impl|shown": "1f5eff52fdcb54d506adb8000d1be68dfb5f45fee484802f5a2652b9091fd73a",
+    "none": "d45796f87713b1c22d7bf249300dbbb87dbf4164752cb19e934f4f187285d25e"
+   },
+   "prompt_sha256_t0": {
+    "content": "1e32e4dc85afabbcbef0fffbf4226fb31e8636cd1012784fcdf0359f8f39eb02",
+    "impl": "3d05da78a7f10cae88d65f49bbbda8be9d90e1a2599492e0f94d6abea9097122",
+    "none": "268dc74c29b405a1157e271a858c7f82e454800c4c01c1d3bb2552af105461ca"
+   },
+   "seed": 20261201,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(nadia->vik)": [
+     "t1:said0:nadia",
+     "t1:seen:nadia"
+    ]
+   },
+   "state_id": "s20261201-dev-v3-3b-stakes1-perm0",
+   "symbolic": {
+    "K(nadia->vik)": {
+     "posterior_post_ask": {
+      "lab_west": 1.0
+     },
+     "posterior_t0": {
+      "lab_west": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(nadia,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(nadia,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(nadia->vik)": "871f07d969f1433bcd3d1619f6ff99684b4043259ec6addd039136f8034b1509"
+   },
+   "post_ask_statuses": {
+    "K(nadia->vik)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "928cb898de774e4bf1805ec196867981e1e1e81114c431a2781b5d60ac9979f5",
+    "content|shown": "1a35ef9a91bff9e8f21816c491fbc532a746bd4b18ff552287902f453efa2689",
+    "impl|omitted": "64529c4f35689d0886c9befe6724c69b8f84394ad3553f783d6a614894395396",
+    "impl|shown": "266e014b5d061da5abb735dbb8eec8958f5a5d7bd545168239e339b890e56080",
+    "none": "0cfb6f5ba3d73a4c180bf6dfe2412e5724ad6552396764369fb5b1bc89a3ba5e"
+   },
+   "prompt_sha256_t0": {
+    "content": "4e3369e29107701dbea0b4ba91459d3600f384f6ef5511e55489b39146812127",
+    "impl": "f1b4a6853050a6a0a5cd7380e298d0d83bd7ce92dfe705efaf11f351f7ad4092",
+    "none": "f5bad98310491e7426902c9fb77a8b2d23db6dbd821bb68e26db8a8bcc367633"
+   },
+   "seed": 20261201,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(nadia->vik)": [
+     "t1:said0:nadia",
+     "t1:seen:nadia"
+    ]
+   },
+   "state_id": "s20261201-dev-v3-3b-stakes4-perm0",
+   "symbolic": {
+    "K(nadia->vik)": {
+     "posterior_post_ask": {
+      "lab_west": 1.0
+     },
+     "posterior_t0": {
+      "lab_west": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(alice,bob_loc)",
+   "ask_subject_role": "H",
+   "bayes_opt_post": [
+    "drop(office_a)",
+    "give(alice)"
+   ],
+   "bayes_opt_t0": [
+    "give(alice)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(alice)": "a1d918e039de666badba4798ff3dc076751442b480d78c9ece17581d992e73ce",
+    "K(judy)": "56dfda0a37db0abedbef56687695f73d4704113aed3504d1bef3aec2320f8704"
+   },
+   "post_ask_statuses": {
+    "K(alice)": "stale",
+    "K(judy)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "e8b764edca29ae74af36e72cd1da898f1313ac256c408d10cc952e4782f1acb5",
+    "content|shown": "2d219c4c1686be340add02fc3a6734faaac07950c4eeedb3f2231d57687cec7d",
+    "impl|omitted": "bbf03755264778eb24f34902e9ae5b8bfdcd1bd724319574b66a78adc772970e",
+    "impl|shown": "cdeafc1c10fd7413a3d6d12397d9c41c9de30239dbdb3e79a3846ab65b7e2985",
+    "none": "9de60f14ce23d3475f8f44d6b56339b1ca2b6849f1f21cc805563ad97839fa2d"
+   },
+   "prompt_sha256_t0": {
+    "content": "0575367b94fc8e447add3d672aa22abd40a4b6382aaa6ad801e66891bbaf827e",
+    "impl": "1ef48fbb710a79df730ee62fcc2f7a8afe88b8c76c00f348ee84b2829476b9d1",
+    "none": "d1ad7c2a81ebf8f492e86dc075782fc229cdca8fe6406bb5faadd845d94816b0"
+   },
+   "seed": 20261202,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(alice)": [
+     "t1:said0:alice",
+     "t1:seen:alice"
+    ],
+    "K(judy)": [
+     "t1:seen:judy"
+    ]
+   },
+   "state_id": "s20261202-dev-v3-2a-stakes1-perm0",
+   "symbolic": {
+    "K(alice)": {
+     "posterior_post_ask": {
+      "office_a": 1.0
+     },
+     "posterior_t0": {
+      "office_a": 0.5,
+      "office_c": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    },
+    "K(judy)": {
+     "posterior_post_ask": {
+      "office_b": 1.0
+     },
+     "posterior_t0": {
+      "office_b": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(alice,bob_loc)",
+   "ask_subject_role": "H",
+   "bayes_opt_post": [
+    "drop(office_a)",
+    "give(alice)"
+   ],
+   "bayes_opt_t0": [
+    "give(alice)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(alice)": "a1d918e039de666badba4798ff3dc076751442b480d78c9ece17581d992e73ce",
+    "K(judy)": "56dfda0a37db0abedbef56687695f73d4704113aed3504d1bef3aec2320f8704"
+   },
+   "post_ask_statuses": {
+    "K(alice)": "stale",
+    "K(judy)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "d5444d83b2278926da09168f288f6e6c6c63ddd6f182dc0d47a7e09a22bbdd7c",
+    "content|shown": "1e9fe281fc7d72b9e02fc48f1264665b4e3928b1c62a72ce4cfa192f896df31d",
+    "impl|omitted": "ec38d0ef12dab05350def3adf00b9dc2fb914685c6f8b1ceec031b963868c045",
+    "impl|shown": "125ca668c02ecb53583471f934595ebc6edd77a4725a904de1ad101352dff334",
+    "none": "e1477d0b86b8d7ef70988fa93ab79c6a82278faebc6ea48a72ae927118451bdc"
+   },
+   "prompt_sha256_t0": {
+    "content": "8c95e91065fb479094688d8d9b24d1f24d420b873400a08f9e6e0576829527cc",
+    "impl": "4bc3887b80b23d1fa194b9eeda1d5a172a2389cc67f1b2bf8f75ae82b37c6574",
+    "none": "a269a6b1336b8012da5e5dcd3a5f92fcfcc07176a84f8a820b66d325e6adb0c0"
+   },
+   "seed": 20261202,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(alice)": [
+     "t1:said0:alice",
+     "t1:seen:alice"
+    ],
+    "K(judy)": [
+     "t1:seen:judy"
+    ]
+   },
+   "state_id": "s20261202-dev-v3-2a-stakes4-perm0",
+   "symbolic": {
+    "K(alice)": {
+     "posterior_post_ask": {
+      "office_a": 1.0
+     },
+     "posterior_t0": {
+      "office_a": 0.5,
+      "office_c": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    },
+    "K(judy)": {
+     "posterior_post_ask": {
+      "office_b": 1.0
+     },
+     "posterior_t0": {
+      "office_b": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(wen,uma_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(wen)": "4ad0e73161456766eb96e058ddee0c766d96643e07728f3816c63d0404acb7c0"
+   },
+   "post_ask_statuses": {
+    "K(wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "e90d40e25753901d8ecfb43e363d94a96a0295b9ec7748148a0cd5cb506118dd",
+    "content|shown": "4ff1e4a52952cd2b95ee5591fe2469f2f29fb7b52bc140d0297d7ea4174ed81b",
+    "impl|omitted": "fbd13c601f1fe60e90a6722095d45d8f61d37827eff681d038b1a3a285b444cb",
+    "impl|shown": "04a6d6695e6ad2b1c0874257b8922b0e1aae94f4082c1f23d8595fe6360f7b06",
+    "none": "05dc9620446f429869309eec2b787aa778875f61f68be334b0c0e75588847caa"
+   },
+   "prompt_sha256_t0": {
+    "content": "b7e7848356a0e6be73808157e835b7d641922f93ade36754cdb8c17ad63f893f",
+    "impl": "9f4d15e4c6e9e57abfbff72f63aff4f5b0643f665132103e47a3808ccbee406d",
+    "none": "008d11c7c82f7f0ccf332a353f5274194d780a4ee3f6eaf7ed283d52c0711740"
+   },
+   "seed": 20261202,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(wen)": [
+     "t1:said0:wen",
+     "t1:seen:wen"
+    ]
+   },
+   "state_id": "s20261202-dev-v3-2b-stakes1-perm0",
+   "symbolic": {
+    "K(wen)": {
+     "posterior_post_ask": {
+      "office_b": 1.0
+     },
+     "posterior_t0": {
+      "office_b": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(wen,uma_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(wen)": "4ad0e73161456766eb96e058ddee0c766d96643e07728f3816c63d0404acb7c0"
+   },
+   "post_ask_statuses": {
+    "K(wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "7a506aed01b12a79ba8c98706c33e2dcdfda5b428305367b233d2046d3e5a8df",
+    "content|shown": "7ce15e17dfe72dd1b1a4d756fdb237563e904fa464b9998e4600342b6521888e",
+    "impl|omitted": "d006b7700471c786a248bf5824df26c07656642dad876833759dd773d42ebfcd",
+    "impl|shown": "ea30efff03530f1f907b77895e57910efe3604298bb9b4b8a5b1265c724ec254",
+    "none": "c319097bcbd987dfb83c6628adfd6e67951ebfd2e40aceef35059ca50d8bbb2c"
+   },
+   "prompt_sha256_t0": {
+    "content": "29d1eef6eb90ae129749ca308e5ffd3d8506a66bd97c8a1febde3d13937a1f17",
+    "impl": "c47572d053147794c62970b887e23cece2ce8d03c0f16d6a8804db55d3896191",
+    "none": "7f1412db0fb437a8449bb924c8cdeac32e8432eed4b55c423cb0ce128087acc6"
+   },
+   "seed": 20261202,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(wen)": [
+     "t1:said0:wen",
+     "t1:seen:wen"
+    ]
+   },
+   "state_id": "s20261202-dev-v3-2b-stakes4-perm0",
+   "symbolic": {
+    "K(wen)": {
+     "posterior_post_ask": {
+      "office_b": 1.0
+     },
+     "posterior_t0": {
+      "office_b": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(grace,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(grace)"
+   ],
+   "bayes_opt_t0": [
+    "give(grace)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(grace->leo)": "045c637d8ab25c5dbb8eb0b17d4b71aec888f54772f991a92466cbda5361f074"
+   },
+   "post_ask_statuses": {
+    "K(grace->leo)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "d29ccec9846c60a865612e6c09bc24af3312feef154ff3d54546f144f186da1e",
+    "content|shown": "cbb39d4783699ecd3c996590f1ee0b095c15b0a42c08dbf3fd7a5f48aa2ae883",
+    "impl|omitted": "5360b16ae8d23330fa36294096c9c64344a37e5eaa93c262324d60dcfd5ad280",
+    "impl|shown": "bf5e64e42235d2f00fe4249e0f258497b13abcca09064e7cb7e736c04fe8c32f",
+    "none": "ace37538092a1fe31f168c3d555eef0272de849fa9209d5c33cd9651d0a60e46"
+   },
+   "prompt_sha256_t0": {
+    "content": "d0feb4c7cb55c2bded9abb2066fa791583138ebd27ae6d209a4d6a5477135578",
+    "impl": "7f45ee6826b7a50b5faf77a86c5fa77dc64a360d894286ec217aeb1ee33ce928",
+    "none": "8d48fe57016015679fa846d08689d6f311af7cb327c34f67dd2612ff13e65bde"
+   },
+   "seed": 20261202,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(grace->leo)": [
+     "t1:said0:grace",
+     "t1:seen:grace"
+    ]
+   },
+   "state_id": "s20261202-dev-v3-3a-stakes1-perm0",
+   "symbolic": {
+    "K(grace->leo)": {
+     "posterior_post_ask": {
+      "suite_2": 1.0
+     },
+     "posterior_t0": {
+      "suite_1": 0.5,
+      "suite_2": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(grace,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(grace)"
+   ],
+   "bayes_opt_t0": [
+    "give(grace)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(grace->leo)": "045c637d8ab25c5dbb8eb0b17d4b71aec888f54772f991a92466cbda5361f074"
+   },
+   "post_ask_statuses": {
+    "K(grace->leo)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "0448c6d627b7e4a136197f24467e9020f634a7f1f974b1fc79c0fd4a41538ef9",
+    "content|shown": "38e343b7acf163da97a66a17366d619f01162ad97607966d62f60fc3f5527c23",
+    "impl|omitted": "be3f046c8dad4ecb79f71e4f69d59a12bd2d4dc4d2e71003de64cb54a5b3e6b1",
+    "impl|shown": "7ca1407178a567d8bfefe2a12c627581c40c8f35c8cd682f52f44c73e49c6ec4",
+    "none": "56e6e44def3c49d37fe96a3c9312d9df955dae9e0f1f05f0166a28742de8437d"
+   },
+   "prompt_sha256_t0": {
+    "content": "4c4b5b6519229e6c72ee6455f77dc456983fdec3c086e6a852dc2944f2fab6f8",
+    "impl": "55b9c3ebdfc830186fd2aa31264d17d162b57f4170ca79de25a6fd4761c45e12",
+    "none": "2ff8af056016d21596bc70114bb70f26b3ba757d5afc644315d04a3a5cff6183"
+   },
+   "seed": 20261202,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(grace->leo)": [
+     "t1:said0:grace",
+     "t1:seen:grace"
+    ]
+   },
+   "state_id": "s20261202-dev-v3-3a-stakes4-perm0",
+   "symbolic": {
+    "K(grace->leo)": {
+     "posterior_post_ask": {
+      "suite_2": 1.0
+     },
+     "posterior_t0": {
+      "suite_1": 0.5,
+      "suite_2": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(ivan,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(ivan,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(ivan->zane)": "a19936ca45f89e426b5ae476bc2129b4dbc085ac95d1c68c7ce89b3aa8deccd8"
+   },
+   "post_ask_statuses": {
+    "K(ivan->zane)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "6c852345bcd482d918e37bdf26db9e830b83c95b99128b1eec2f4366cc58348a",
+    "content|shown": "701be2ac8bd0243a41cf078e6895fef75726fdfe70384f6d4b62006642dbcade",
+    "impl|omitted": "48fb708eb320f70250f0cc9951926009a25e0401e04536c7902a4f9dff4863b6",
+    "impl|shown": "ce5143bc6ca30146df217ed328f35027dbae7ec51384a31882d7eaa44e06c0c4",
+    "none": "d59194ae12eb0d61da5913176923d2e8abb6a670cdf9d99eac49513d3ee5793b"
+   },
+   "prompt_sha256_t0": {
+    "content": "bec0f3598d34a68d20d9e3706cc60c9242c32c0e74c086187fe44932a2aee9bc",
+    "impl": "7ae5509d7990c01011ceb3759b674a4362895e338dd34cc59e96644bcde8ce17",
+    "none": "b303cb09d8df23f4c4a49c6c9aa4d8ffe85017bbf266f6a4720f63d99d20587f"
+   },
+   "seed": 20261202,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(ivan->zane)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ]
+   },
+   "state_id": "s20261202-dev-v3-3b-stakes1-perm0",
+   "symbolic": {
+    "K(ivan->zane)": {
+     "posterior_post_ask": {
+      "desk_9": 1.0
+     },
+     "posterior_t0": {
+      "desk_9": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(ivan,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(ivan,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(ivan->zane)": "a19936ca45f89e426b5ae476bc2129b4dbc085ac95d1c68c7ce89b3aa8deccd8"
+   },
+   "post_ask_statuses": {
+    "K(ivan->zane)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "4a0f9e01e5c0b6aceef21d5e393e51be2a302c43406e5e9900c9ab8ad47994c2",
+    "content|shown": "02ffe6d4df515f0925b03454c66f765552cf4c9005976439de70a6b9e64c6e52",
+    "impl|omitted": "392a8a05ad8108d714085720d878e37dccea7d21e43a6ad9c88bcb3b49f72833",
+    "impl|shown": "cfcdafdb0107416c71a444154823e443b17bb9674bf9860b9f2068307cfeedff",
+    "none": "e8d788051eb59b221b7cfeb6c654b64f921a2ab4a86b97b76c1ebbc287b1482c"
+   },
+   "prompt_sha256_t0": {
+    "content": "baf58b02f26615c99e8eea2f46365bbce1d7a1359ef73cfa4a0e41e872d94042",
+    "impl": "482473ed00c94efc7006f790f390fc980a648fd6ebe9c1e313e6fe73a39d729a",
+    "none": "31840773c978c30768cb450cbaedac2e33a902a0effe5ec6073d7c6f8fa42ca2"
+   },
+   "seed": 20261202,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(ivan->zane)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ]
+   },
+   "state_id": "s20261202-dev-v3-3b-stakes4-perm0",
+   "symbolic": {
+    "K(ivan->zane)": {
+     "posterior_post_ask": {
+      "desk_9": 1.0
+     },
+     "posterior_t0": {
+      "desk_9": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(omar,alice_loc)",
+   "ask_subject_role": "H",
+   "bayes_opt_post": [
+    "drop(room_12)",
+    "give(omar)"
+   ],
+   "bayes_opt_t0": [
+    "give(omar)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(omar)": "f746c5bce2680af1bebec6f050db361631e73a41123c0f6f3668c44c4ac71a27",
+    "K(wen)": "a38ad8e9c6513fe13ff20929f6323d50ed60904b5d2670f02d8ae1f4e7281caa"
+   },
+   "post_ask_statuses": {
+    "K(omar)": "stale",
+    "K(wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "62096d4b2748ca1b7ed92a3d1ab10544df0484e92a9fc4393c41473aba537bcc",
+    "content|shown": "4ed594fd1e871070c99afad82d218c4ae941dca1ae22868a22259b6abf2a006b",
+    "impl|omitted": "95ad8bacb0e17ff5df2a39af74c1a0a64a7905f6774fd88dedb4e41d4d76bb4c",
+    "impl|shown": "dd4965619e23c3a214971726506587cfadcac13144b328f86971eb14a23866c1",
+    "none": "d2e12820eeb898d22adda6a2a26d067be3b8a7c1ad909a81dc458232dbfd7262"
+   },
+   "prompt_sha256_t0": {
+    "content": "d11a789e604761ab547beaea763ecacae6eea96c5263c411817d1ffc195699ee",
+    "impl": "82bbaea16e920df5d6fe82c2d506ac13d2734153f52f163d0c03c685c638e078",
+    "none": "a1ce3c2f496d2598f9e54749cf4d7d9cd409ba4a2c3299c33ff0714e31b6f3f6"
+   },
+   "seed": 20261203,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(omar)": [
+     "t1:said0:omar",
+     "t1:seen:omar"
+    ],
+    "K(wen)": [
+     "t1:seen:wen"
+    ]
+   },
+   "state_id": "s20261203-dev-v3-2a-stakes1-perm0",
+   "symbolic": {
+    "K(omar)": {
+     "posterior_post_ask": {
+      "room_12": 1.0
+     },
+     "posterior_t0": {
+      "room_12": 0.5,
+      "room_19": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    },
+    "K(wen)": {
+     "posterior_post_ask": {
+      "room_7": 1.0
+     },
+     "posterior_t0": {
+      "room_7": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(omar,alice_loc)",
+   "ask_subject_role": "H",
+   "bayes_opt_post": [
+    "drop(room_12)",
+    "give(omar)"
+   ],
+   "bayes_opt_t0": [
+    "give(omar)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(omar)": "f746c5bce2680af1bebec6f050db361631e73a41123c0f6f3668c44c4ac71a27",
+    "K(wen)": "a38ad8e9c6513fe13ff20929f6323d50ed60904b5d2670f02d8ae1f4e7281caa"
+   },
+   "post_ask_statuses": {
+    "K(omar)": "stale",
+    "K(wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "fe4bed6a138aace8ae57281c6ebb945a8de40c69359bd4ec07454219d06f9076",
+    "content|shown": "1e9b05c705ad7f471fef111280a760969ef4b20fc932edbb69388351725bc54f",
+    "impl|omitted": "44d9ab3ae282af9135ab7dbf0038a3dd028736e9391100b3bdfdec61d4724e99",
+    "impl|shown": "830fd69163617f342527670b812cb7dc12f9f6aa882f4a8b0c8e31ddd6052f35",
+    "none": "2765c59408618be0ab26ce0905c2fdf001dcd1ccf574fcc73e2c77eccafa068c"
+   },
+   "prompt_sha256_t0": {
+    "content": "cab147c016639f19f3639adcbb563e95abd7fc3430b6ea1736d2c1e101d93208",
+    "impl": "e78b9af93984566309494701919e96ac21b196b5c992922d47431601b83c6d15",
+    "none": "7b8172e9cff58c5c63dab9a8946525886450a12abf8165aba5849c6206beae63"
+   },
+   "seed": 20261203,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(omar)": [
+     "t1:said0:omar",
+     "t1:seen:omar"
+    ],
+    "K(wen)": [
+     "t1:seen:wen"
+    ]
+   },
+   "state_id": "s20261203-dev-v3-2a-stakes4-perm0",
+   "symbolic": {
+    "K(omar)": {
+     "posterior_post_ask": {
+      "room_12": 1.0
+     },
+     "posterior_t0": {
+      "room_12": 0.5,
+      "room_19": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    },
+    "K(wen)": {
+     "posterior_post_ask": {
+      "room_7": 1.0
+     },
+     "posterior_t0": {
+      "room_7": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(omar,kim_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(omar)": "158b865d6bf5d8f5279f27e7b22325eae299b4ca106e594e698ad31fcc92047e"
+   },
+   "post_ask_statuses": {
+    "K(omar)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "24c9ff7c899921a4b50c8a84567a8a35abdd69d149122623b0cdc48700c5e42a",
+    "content|shown": "b4f5eb023e4ba9f969dd7209ff2440e6a5b9663b58dd6e7a18201971f88ca1c0",
+    "impl|omitted": "4a99708acc94a4693822c51dcf359f67a88b78e9370e49417041301ce5e340f2",
+    "impl|shown": "1943b6afcff7b85b6874dd9035d66f4def10cb8d62a47d50ffd15817365c358f",
+    "none": "17537b3b77659f438f93b61231e674ccb71dd896f0383dfe1062ca69cf186442"
+   },
+   "prompt_sha256_t0": {
+    "content": "041ab9edf1d7fa7ed5a485d9ade803f7b04adc5afea3481658116ded70b7112d",
+    "impl": "3d619a5a99e4b59a5309474f82b6d724119b8a0236ce94e531a1dab0a86dce69",
+    "none": "d499ecf837112e93c94ee46c1bbc4046c8f93817224623b413590a5ccd3c4d34"
+   },
+   "seed": 20261203,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(omar)": [
+     "t1:said0:omar",
+     "t1:seen:omar"
+    ]
+   },
+   "state_id": "s20261203-dev-v3-2b-stakes1-perm0",
+   "symbolic": {
+    "K(omar)": {
+     "posterior_post_ask": {
+      "lab_north": 1.0
+     },
+     "posterior_t0": {
+      "lab_north": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(omar,kim_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(omar)": "158b865d6bf5d8f5279f27e7b22325eae299b4ca106e594e698ad31fcc92047e"
+   },
+   "post_ask_statuses": {
+    "K(omar)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "782b9536ea7d61c93de60e42659e06b305079c921373090c9798176714285bbc",
+    "content|shown": "80938ad5666f8a6cfec46b6924522a2597b2ab57a155539beba40b0d4f8d4f27",
+    "impl|omitted": "1662703756cf048de07bf54ce8075f50ad865b47895e08dbdfebeeaf7fab78ad",
+    "impl|shown": "2393ca7b2db95573ae002586ad2dada4d5a3a5b266f0917c2521444a739cfc71",
+    "none": "f9c38e9ffda965290b7bbb5d7df7fc03c05589d87cc3b3c5eb7cb66059a25f76"
+   },
+   "prompt_sha256_t0": {
+    "content": "d541fc94f4fc2932d2b3f2d3191f56969d1171bcae30185d1676188d17bd08da",
+    "impl": "bdcded75cc5fc6b3c87d519ad8b9d87886ce666c90cb6c43478bf11d63508f2e",
+    "none": "96c1f242a4e9f38670285d11f4027c329ace4827b4fda4bf9b959b8ffa58368b"
+   },
+   "seed": 20261203,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(omar)": [
+     "t1:said0:omar",
+     "t1:seen:omar"
+    ]
+   },
+   "state_id": "s20261203-dev-v3-2b-stakes4-perm0",
+   "symbolic": {
+    "K(omar)": {
+     "posterior_post_ask": {
+      "lab_north": 1.0
+     },
+     "posterior_t0": {
+      "lab_north": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(ivan,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(ivan)"
+   ],
+   "bayes_opt_t0": [
+    "give(ivan)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(ivan->kim)": "84a9f9de6addcbc5a3d3ccfabaee470908e707b0e4a3187c05b46972053a8131"
+   },
+   "post_ask_statuses": {
+    "K(ivan->kim)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "7dc474b589c3da84b87530499808a8fe3eef894258bc903ca64dd17f916cab4c",
+    "content|shown": "74e8a7482883cf3d6728a35cde55ccc1bda568e9124a64c36e8ad3f41333a94f",
+    "impl|omitted": "325dc6abb1fff7b7bf07e4081cc7aa675ee047f672e35214b22ebc96811970ee",
+    "impl|shown": "a97fe7e7d9d94dbd08addf0a529451e1cfacda2d02fd8b2054aec556c4a90faf",
+    "none": "2de0a412247b5530175817af71505ab977b228ddd6ff357b4a62a318cae6945b"
+   },
+   "prompt_sha256_t0": {
+    "content": "37f5ec716a8148297903bf1c08a1f718e8fc899a0f504c1fc071ed641205748a",
+    "impl": "93325f44fcd763b703e859ff1043b93467a37d37516ddf320ae1346ad9fd4037",
+    "none": "32c1e4e8ec205506c4059c094679876950386b56cdff46d2f14aa3b3b8ee18f4"
+   },
+   "seed": 20261203,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(ivan->kim)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ]
+   },
+   "state_id": "s20261203-dev-v3-3a-stakes1-perm0",
+   "symbolic": {
+    "K(ivan->kim)": {
+     "posterior_post_ask": {
+      "desk_3": 1.0
+     },
+     "posterior_t0": {
+      "desk_14": 0.5,
+      "desk_3": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(ivan,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(ivan)"
+   ],
+   "bayes_opt_t0": [
+    "give(ivan)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(ivan->kim)": "84a9f9de6addcbc5a3d3ccfabaee470908e707b0e4a3187c05b46972053a8131"
+   },
+   "post_ask_statuses": {
+    "K(ivan->kim)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "25cb62285e4ba59ffaccb1bae4187fb5dc962bf02cd29ec69b4a35f09daa8d2b",
+    "content|shown": "fab4c187b725f4f36c5661c73893caeed63871ddefa7e8155b199bc3701bfb7e",
+    "impl|omitted": "392be294ed30b11237ed28ac3b14dea9bc11166007e9b422e8a48b1acef64ac6",
+    "impl|shown": "95bf69207bd3a35c3edec18c91f4b314e0079d1754ecd64d7339b534ed392c9d",
+    "none": "5d9102a9672d5c0dc5c3cc1c1678730e461a66347b5a60627c66090776cbd046"
+   },
+   "prompt_sha256_t0": {
+    "content": "0df56ac30fbc588efd1b566c25de9924b1c81794876f9d388fb59d30caf6e982",
+    "impl": "d0e568c9765ef84278ff2d1d371696a65df7d6d23ae42757831345a26bcd8bcd",
+    "none": "15c5363d566a22379b1805298b228e8e3f31e66145da467e953fbef91b718bc1"
+   },
+   "seed": 20261203,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(ivan->kim)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ]
+   },
+   "state_id": "s20261203-dev-v3-3a-stakes4-perm0",
+   "symbolic": {
+    "K(ivan->kim)": {
+     "posterior_post_ask": {
+      "desk_3": 1.0
+     },
+     "posterior_t0": {
+      "desk_14": 0.5,
+      "desk_3": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(tomas,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(tomas,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(tomas->erin)": "3b17a29ca6f0f17c03ce9c5a3a0cf42933ded7ab3448149524d807e9470b55a7"
+   },
+   "post_ask_statuses": {
+    "K(tomas->erin)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "210b7311ea80e0b9f48181203968f82efaebc9b4d3fc1cf56aa5aeac898cdc63",
+    "content|shown": "90b982e221e2c98701d152cb9829c3eaaa0f2afe86d5391a92d81bb8360778e8",
+    "impl|omitted": "a5c0386f45bc687c2fdb426689cf1217ff55f18695ec2b9d286d084ab572d2ed",
+    "impl|shown": "899a61b3e73bab38f8bb7a271f9b15ac0d005baecd975a2420e6753655fd739a",
+    "none": "b613857ce0cf9f2362c2eab7270074a239b4b90d4fd5390ef7cf9f738b33cc18"
+   },
+   "prompt_sha256_t0": {
+    "content": "f042d6c33690fc6d4678c8cc5c5afeaf6c738ac8040ec2ed07b21ce99971d7a7",
+    "impl": "619f465d5dcc7783f8f79c3e170f91583298d67bd99426d07cf52837fff71e91",
+    "none": "ba508f71ae0df1d644203c22a18ed120bcb28161eda36dc30bdf3c11e66440bb"
+   },
+   "seed": 20261203,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(tomas->erin)": [
+     "t1:said0:tomas",
+     "t1:seen:tomas"
+    ]
+   },
+   "state_id": "s20261203-dev-v3-3b-stakes1-perm0",
+   "symbolic": {
+    "K(tomas->erin)": {
+     "posterior_post_ask": {
+      "office_b": 1.0
+     },
+     "posterior_t0": {
+      "office_b": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(tomas,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(tomas,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(tomas->erin)": "3b17a29ca6f0f17c03ce9c5a3a0cf42933ded7ab3448149524d807e9470b55a7"
+   },
+   "post_ask_statuses": {
+    "K(tomas->erin)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "6bac21d4a438d6e880149ca0d8e9100bb86925c0ab368a74ae8d4c66027a41d7",
+    "content|shown": "660ea84662e6b90306e0365e9f29be0c57ade9b4e706292da7a1ad119d1d7e8c",
+    "impl|omitted": "5815954b82725ce206a46a19e867188a418b8f2e5853c8dec0d5fd68408abfd6",
+    "impl|shown": "0afc2b972dcc610615d72062beb2a6740626f3d3aa24ebc5ac8bb0b04d6a02ac",
+    "none": "87732ccad56f367a94bb7d5af927b7b4c69cf6c4a9b3be44afa620007d61dac0"
+   },
+   "prompt_sha256_t0": {
+    "content": "688bfced8309daa90462180d5dda927ec75363702aa462b7f6ebdea429731faa",
+    "impl": "e87fee7db90eeba9eff60661528f9e59faa3ead81f570ab17491d08aed70f621",
+    "none": "801da3175183e7440f0cbd02f1f395fe5845b3c96870206389bc8cf6340ae5a7"
+   },
+   "seed": 20261203,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(tomas->erin)": [
+     "t1:said0:tomas",
+     "t1:seen:tomas"
+    ]
+   },
+   "state_id": "s20261203-dev-v3-3b-stakes4-perm0",
+   "symbolic": {
+    "K(tomas->erin)": {
+     "posterior_post_ask": {
+      "office_b": 1.0
+     },
+     "posterior_t0": {
+      "office_b": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(ivan,wen_loc)",
+   "ask_subject_role": "H",
+   "bayes_opt_post": [
+    "drop(room_12)",
+    "give(ivan)"
+   ],
+   "bayes_opt_t0": [
+    "give(ivan)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(ivan)": "c07a17fa4276b2b581d2ef843e6e93d44b7acb0968d1172564aeb70d9b52c120",
+    "K(mia)": "ce7ce37a581b4c7a2bfdc2b0fb1d90c2f6792e16603e1d95d39ad5a6469d208a"
+   },
+   "post_ask_statuses": {
+    "K(ivan)": "stale",
+    "K(mia)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "87918a3cbd41d9ae638e57f652a10021313c05a022770a9ae428e4dc3da4ce6e",
+    "content|shown": "b4c4ece4940628840e4f089596477692498861363a97033d76493cea5f0f92c1",
+    "impl|omitted": "36fc2ea2b8310a433fce366adf6e22bec7d1654e1d7533bd187a2c554985f290",
+    "impl|shown": "19e7e54a94a0236680c41835b5be9d66f00544ce8b3b6b716fa11a6a4776fa1e",
+    "none": "04968be9a70a2b5d8fea7ebdecfcbae6025576a7c6661229c3f11af2d1af3eae"
+   },
+   "prompt_sha256_t0": {
+    "content": "91af3ac0d6d5598256be8de7d7cf0033a9d6b0e3abf33d236bf18a4627e31e98",
+    "impl": "f562b391079cefee7c71a4964311f4adc88f581cb82961e56000c7d2d7b96843",
+    "none": "8ce1068781ab6c0137afdcccef21771767db47a1d9f7b55b722ae91e33c226f4"
+   },
+   "seed": 20261204,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(ivan)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ],
+    "K(mia)": [
+     "t1:seen:mia"
+    ]
+   },
+   "state_id": "s20261204-dev-v3-2a-stakes1-perm0",
+   "symbolic": {
+    "K(ivan)": {
+     "posterior_post_ask": {
+      "room_12": 1.0
+     },
+     "posterior_t0": {
+      "room_12": 0.5,
+      "room_7": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    },
+    "K(mia)": {
+     "posterior_post_ask": {
+      "room_19": 1.0
+     },
+     "posterior_t0": {
+      "room_19": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(ivan,wen_loc)",
+   "ask_subject_role": "H",
+   "bayes_opt_post": [
+    "drop(room_12)",
+    "give(ivan)"
+   ],
+   "bayes_opt_t0": [
+    "give(ivan)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(ivan)": "c07a17fa4276b2b581d2ef843e6e93d44b7acb0968d1172564aeb70d9b52c120",
+    "K(mia)": "ce7ce37a581b4c7a2bfdc2b0fb1d90c2f6792e16603e1d95d39ad5a6469d208a"
+   },
+   "post_ask_statuses": {
+    "K(ivan)": "stale",
+    "K(mia)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "961eb63151a013e532121495a831f56647da5469419b73367418704703378ced",
+    "content|shown": "2bda5a36d76a3f643e482be7d0696e7dce73ddd077e75173b1909743a1b68289",
+    "impl|omitted": "e082c413a2761715659dec5c0264cc8309f643c3446966555264ffaae3627a58",
+    "impl|shown": "ba7a83e5d25d2e8f82f231a44d9595f4c45bba581ee3d2c19db9d739bf51aaef",
+    "none": "7576cc44879aaf4764621fb7fdd0871aeb98baf26f0df8079371de11868917cb"
+   },
+   "prompt_sha256_t0": {
+    "content": "cb7fe79a4925d9bcaa56bf3f4975f85726d1c969875dc0335a24609a264ab2de",
+    "impl": "967ec5a2405884227d8a6be2a91c5351a70b68b63fabe26c26d2eb7495f72227",
+    "none": "4cb206d6aace564981310a71a1b4e730448af4d7a2aab169a824edfd8a344017"
+   },
+   "seed": 20261204,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(ivan)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ],
+    "K(mia)": [
+     "t1:seen:mia"
+    ]
+   },
+   "state_id": "s20261204-dev-v3-2a-stakes4-perm0",
+   "symbolic": {
+    "K(ivan)": {
+     "posterior_post_ask": {
+      "room_12": 1.0
+     },
+     "posterior_t0": {
+      "room_12": 0.5,
+      "room_7": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    },
+    "K(mia)": {
+     "posterior_post_ask": {
+      "room_19": 1.0
+     },
+     "posterior_t0": {
+      "room_19": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(judy,omar_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(judy)": "bb37104a697a7778586cb03e30323c68229acd89c284f477531c6225177792a2"
+   },
+   "post_ask_statuses": {
+    "K(judy)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "cb6c6cb2108019cec68b206a792933c70991e3489346881a6650f6c297e4c656",
+    "content|shown": "109b63182c6e324431a0e96eaec7f1188db83c39d396ab783e04773357c93d92",
+    "impl|omitted": "32cc6dfa6c5dda32e3a0d94ded050dad97a325cc10c481f475da474f8ebebac8",
+    "impl|shown": "e1b1915023f8d3888ee7e3a9881228b82919c92761812b156d79d35f7c7c0397",
+    "none": "212d11cec2a5b046c8fc606e032cd9aa5823ff50ba396d0e4b137dee30b260bb"
+   },
+   "prompt_sha256_t0": {
+    "content": "706204136558d7c0acfb4e44b9c6fbdb020eb389a1f07a0e9d44f237766127a3",
+    "impl": "5938f665b45ef406f9155f1d48ccd9f8a1d770c8a8353fdfdbab967b08928969",
+    "none": "3d8e5c26e33c79a3248c1bcdb78db7cebb7998ecda6161971d920ef2bfadee7a"
+   },
+   "seed": 20261204,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(judy)": [
+     "t1:said0:judy",
+     "t1:seen:judy"
+    ]
+   },
+   "state_id": "s20261204-dev-v3-2b-stakes1-perm0",
+   "symbolic": {
+    "K(judy)": {
+     "posterior_post_ask": {
+      "office_c": 1.0
+     },
+     "posterior_t0": {
+      "office_c": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(judy,omar_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(judy)": "bb37104a697a7778586cb03e30323c68229acd89c284f477531c6225177792a2"
+   },
+   "post_ask_statuses": {
+    "K(judy)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "cf753c6462664c0c0a85a2b117cea75486ed1810d388950b6b1c326b666f27c8",
+    "content|shown": "5cac3e955185d36444af79a0f6ca067dcdf13eb007f639a1fcda84019e8d1b68",
+    "impl|omitted": "b24d9ee17a75b51a6aa50955d5abbffff8a5a5ac4a0a8a0902e391b315ece0be",
+    "impl|shown": "8ccd4ebc89b954b919e734724cab52c261dfd4e419676e06f84a39839461ff41",
+    "none": "3393fac1e3f590c841ac6775c9133c0ea646da9926e979846729a0979e5d9723"
+   },
+   "prompt_sha256_t0": {
+    "content": "c7fd8bfe04712e1e961384227b1f7213f5cd1771f2af98903e61dd288220f298",
+    "impl": "9aa19f2cb3c8ef697eb45049eefd0887218dd158dd68db1f569d195916baf44a",
+    "none": "f39ca26570d2ab6bf662982e6ceb0d15580f6e1544a2d675fbebdd67f3ef8d98"
+   },
+   "seed": 20261204,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(judy)": [
+     "t1:said0:judy",
+     "t1:seen:judy"
+    ]
+   },
+   "state_id": "s20261204-dev-v3-2b-stakes4-perm0",
+   "symbolic": {
+    "K(judy)": {
+     "posterior_post_ask": {
+      "office_c": 1.0
+     },
+     "posterior_t0": {
+      "office_c": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(zane,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(zane)"
+   ],
+   "bayes_opt_t0": [
+    "give(zane)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(zane->leo)": "5abb18e1a34569d2cf56b5d61c194b38455445f4804ddcd05daf2413eba3266e"
+   },
+   "post_ask_statuses": {
+    "K(zane->leo)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "1b024d0b7a81ab09b7a5580cdf890931069dd9bab64c8edd0eac04b345a03bc5",
+    "content|shown": "7d3012b9392e7f181730396d93be6bf2bad9ac89b10172d6a7ef58657b778d94",
+    "impl|omitted": "00514c47abb06fa332a0493b4ba3cba69f1edf48217c756628ff31bf77c3430f",
+    "impl|shown": "e3c680ffba295fb488fe4714814fd400a6d770434b46c49e6e9e5435f2f16c9f",
+    "none": "c7436ef4118d4b5c663b331b3c1b8a4b766cac1e756d756d377bfb698fd305e7"
+   },
+   "prompt_sha256_t0": {
+    "content": "e20b044b2ee61f7bbe992088578754120438d4faf785110a9eeb61b49ff72ec3",
+    "impl": "9210b42a1fb58ede97472ec2ce32b0835b0a1eeee84cf071a0b142a1043bda0b",
+    "none": "3df643e7d8d32c96feae7ce41102a125d9694f8de9c0ecd17eca796ffd63a9d3"
+   },
+   "seed": 20261204,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(zane->leo)": [
+     "t1:said0:zane",
+     "t1:seen:zane"
+    ]
+   },
+   "state_id": "s20261204-dev-v3-3a-stakes1-perm0",
+   "symbolic": {
+    "K(zane->leo)": {
+     "posterior_post_ask": {
+      "lab_south": 1.0
+     },
+     "posterior_t0": {
+      "lab_north": 0.5,
+      "lab_south": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(zane,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(zane)"
+   ],
+   "bayes_opt_t0": [
+    "give(zane)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(zane->leo)": "5abb18e1a34569d2cf56b5d61c194b38455445f4804ddcd05daf2413eba3266e"
+   },
+   "post_ask_statuses": {
+    "K(zane->leo)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "e8403e260b84524eec724627de3e80d409af05c6e716e1193b2dc8d93d2edf3d",
+    "content|shown": "e8c37f92f2f2cc8942881f346469edfdee16010c7fae30ad10e69571215dea36",
+    "impl|omitted": "c879bd45a60760534fa1329c6a1c895d4ca4b2804c6920fcc7b035cac5972e85",
+    "impl|shown": "fe5c2ae47f18488542bccf4988cbbda8462b06e40a27123b770a84d00b503170",
+    "none": "d72101fe29c944cae03a152d848853d5797367bced029f7a23f613f2a2e3ee20"
+   },
+   "prompt_sha256_t0": {
+    "content": "708529b809bb26afcaf5aae22b9b989bfd012eccdcc2b5318cbdde3a97960b55",
+    "impl": "abc6e341f387961d74c095925f1b0570bfb6a6247834dfb2631e7fdcb001bea6",
+    "none": "d520fd7778084892a3d8f09b64b9ad19b519b4faa30b50330655768b0a3d0401"
+   },
+   "seed": 20261204,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(zane->leo)": [
+     "t1:said0:zane",
+     "t1:seen:zane"
+    ]
+   },
+   "state_id": "s20261204-dev-v3-3a-stakes4-perm0",
+   "symbolic": {
+    "K(zane->leo)": {
+     "posterior_post_ask": {
+      "lab_south": 1.0
+     },
+     "posterior_t0": {
+      "lab_north": 0.5,
+      "lab_south": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(ivan,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(ivan,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(ivan->wen)": "e4d274602d09548e8119da74fef7eeca2782410fb8964b644d3e0d04f73b05df"
+   },
+   "post_ask_statuses": {
+    "K(ivan->wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "6b0c6e423bff69e97d0a7e7fec39f9adb3ac5250a5e880b9919c4025ed026eee",
+    "content|shown": "b5285caf9f8d2620609a0fa74551370d175f7308fc6148a1b21e31792a82ae26",
+    "impl|omitted": "56ca56e1812a84d89509bd3c7a91d2234ff08b0c3968bd297bd95e0353114e85",
+    "impl|shown": "6e413232f00bd7b2f3c91d51c82fde3e9cf0f9c40dccfe8a844d0e7c591605ef",
+    "none": "64624117cb7466c310f24041934a1f67ea6191f5c8e9f525c4efefa28e1e4934"
+   },
+   "prompt_sha256_t0": {
+    "content": "eabff8ee2e1c69738d11ed699fc6b50d7867e1dae3a3cf2141f5020effb2599b",
+    "impl": "236f4997a04795349ac03054cccc518c1d5122d98e1adc761345a424ae036e8d",
+    "none": "90466239aec1482807e5db6a3aa7a8e7bea466323b69cdfff12baa61a70f8edb"
+   },
+   "seed": 20261204,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(ivan->wen)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ]
+   },
+   "state_id": "s20261204-dev-v3-3b-stakes1-perm0",
+   "symbolic": {
+    "K(ivan->wen)": {
+     "posterior_post_ask": {
+      "office_a": 1.0
+     },
+     "posterior_t0": {
+      "office_a": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(ivan,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(ivan,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(ivan->wen)": "e4d274602d09548e8119da74fef7eeca2782410fb8964b644d3e0d04f73b05df"
+   },
+   "post_ask_statuses": {
+    "K(ivan->wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "1da0486e688dfd8fa9d05071b3154f740ba372dabc4c94ef21e8e841c1ebf946",
+    "content|shown": "771ec9c86a5a2e922740a51ea8008c50f82e73e35ff562dc2ad395da116253e5",
+    "impl|omitted": "91ae31144f686546b418f1286d78c49108526c96a7e1d607e76207deb4808c46",
+    "impl|shown": "db7482dcb26c85c01fe60bd4395aa0a94b1fbf1e046e48d9393166be611a8fd1",
+    "none": "605efa99964d148a35f42307135f9fa7f7d61b3dbd6294ebf3238704d3701b0b"
+   },
+   "prompt_sha256_t0": {
+    "content": "29201597a931c52bbd20ca7e12d79374aaa79270fdddf4b562ea8651256e24b8",
+    "impl": "bbd10d54597556ba8afaf42198572b0f4a4896a93cc7a03ae69d95d75b5d1606",
+    "none": "970858c4e38d3c4ecef35b845cbcd0cfd9b9f6d3534fd73ee45e93c869e68ae5"
+   },
+   "seed": 20261204,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(ivan->wen)": [
+     "t1:said0:ivan",
+     "t1:seen:ivan"
+    ]
+   },
+   "state_id": "s20261204-dev-v3-3b-stakes4-perm0",
+   "symbolic": {
+    "K(ivan->wen)": {
+     "posterior_post_ask": {
+      "office_a": 1.0
+     },
+     "posterior_t0": {
+      "office_a": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(omar,ivan_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "give(wen)"
+   ],
+   "bayes_opt_t0": [
+    "give(wen)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(omar)": "40b9544030e4dc33404e4aa6c259b50edf7c84a8c6a109d1e2ce60050ba7c1cb",
+    "K(wen)": "04e42a8866a34003524946960e3a2a7307f64a3d19ae59eb8ad069fed0575b5b"
+   },
+   "post_ask_statuses": {
+    "K(omar)": "stale",
+    "K(wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "2001117ba0b0bbfbe778fa972608f80ab4d91e02e88e59d10b7c4acf0be87379",
+    "content|shown": "20e4bae0a9a94ae8a632e5612c241736bd00bc2577345393cbc7aa7e35bb75a2",
+    "impl|omitted": "5b021247e3386e9db8c440114e6e25ce02f548332adf08fc0378bd92b0433fa5",
+    "impl|shown": "28a7df2f1fdb4f51e9328e9e77678c10d2240e9629a6521eaa74a78f286429e9",
+    "none": "36443339e496faf289028fe7b17838d6669945a0e3dfc13cbd0d0c08db0926b6"
+   },
+   "prompt_sha256_t0": {
+    "content": "4feb6c88694fe9d4a6badb26b462e5162f301d0d98fc2022d180ac06fc6cd62d",
+    "impl": "693a8c4084b018c1b982088b63f7e6210b22966422282a43c2c4e5f3210ae0e8",
+    "none": "c4bf578469ddcd02252c3eaf6251288fb0bb42513e0f51e3f80b824b60317a8b"
+   },
+   "seed": 20261205,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(omar)": [
+     "t1:said0:omar",
+     "t1:seen:omar"
+    ],
+    "K(wen)": [
+     "t1:seen:wen"
+    ]
+   },
+   "state_id": "s20261205-dev-v3-2a-stakes1-perm0",
+   "symbolic": {
+    "K(omar)": {
+     "posterior_post_ask": {
+      "suite_2": 1.0
+     },
+     "posterior_t0": {
+      "suite_2": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    },
+    "K(wen)": {
+     "posterior_post_ask": {
+      "suite_1": 0.5,
+      "suite_3": 0.5
+     },
+     "posterior_t0": {
+      "suite_1": 0.5,
+      "suite_3": 0.5
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(omar,ivan_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "give(wen)"
+   ],
+   "bayes_opt_t0": [
+    "give(wen)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(omar)": "40b9544030e4dc33404e4aa6c259b50edf7c84a8c6a109d1e2ce60050ba7c1cb",
+    "K(wen)": "04e42a8866a34003524946960e3a2a7307f64a3d19ae59eb8ad069fed0575b5b"
+   },
+   "post_ask_statuses": {
+    "K(omar)": "stale",
+    "K(wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "ea7995f9bd36e7934daf08c5d38b0c3b10d6ae7022d80f4084cca01fb5180a59",
+    "content|shown": "f7070c62eae47758e072a7a1a156dae016ecffbf983be96d57e1d6ce08c7b676",
+    "impl|omitted": "9a4e3dd6a44facdd05be6deac16f5e29bb11eaf900790cf362fe40711656ed18",
+    "impl|shown": "3d8c52df9700cec8457e024b76cbc9ed97cf03966a8a98c8333c290d3ece1ce1",
+    "none": "3d4fd48df3ae22033ae65a3efc60319b0b2557d0d1a1e334a00099a5004ca4e5"
+   },
+   "prompt_sha256_t0": {
+    "content": "479fc77e22a4841927c0d1aa51db546d6cf1e16da2e6fbb5b358922402c545f7",
+    "impl": "cf29d3e3e9305355d47ff55314ae8ed6616c2c7c94c780c1380c19d959701072",
+    "none": "97671a6de14a6a4385706e9b68b7f9da11a6872bdef5ca4cb15981bc24febf65"
+   },
+   "seed": 20261205,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(omar)": [
+     "t1:said0:omar",
+     "t1:seen:omar"
+    ],
+    "K(wen)": [
+     "t1:seen:wen"
+    ]
+   },
+   "state_id": "s20261205-dev-v3-2a-stakes4-perm0",
+   "symbolic": {
+    "K(omar)": {
+     "posterior_post_ask": {
+      "suite_2": 1.0
+     },
+     "posterior_t0": {
+      "suite_2": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    },
+    "K(wen)": {
+     "posterior_post_ask": {
+      "suite_1": 0.5,
+      "suite_3": 0.5
+     },
+     "posterior_t0": {
+      "suite_1": 0.5,
+      "suite_3": 0.5
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(wen,yara_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(wen)": "93032e031399ef9060ea58f55ccd1c5d5d542fba982da5746996bed5170629fa"
+   },
+   "post_ask_statuses": {
+    "K(wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "fe41b86740aa91f4a1c38b65e8dffd40b47a7045c36ec879dfa9fae53edc5ae4",
+    "content|shown": "8bb5f3fb4a338e498676f9824d69a74db0f3e539f71cd963b43b85fe6ba252fa",
+    "impl|omitted": "1a3728ad2797fed3b970d4e4426b8344b35d5dc5920e04291083ce20988ef318",
+    "impl|shown": "823e663fb173b85a0599e4f98e700c9f7b6471a61ca25706515fb05ca1379334",
+    "none": "fb2c92b7cfb5fe9bac4633cef11fe20dd0b5802f9bbff06fc444f76d08696fee"
+   },
+   "prompt_sha256_t0": {
+    "content": "d8d9a5322bca358e176a0cf5cc7eff2e7ddc54c74f3c751b8c7c1295b5213075",
+    "impl": "391a7471a6584d7eea323b982db288dd6605304bcd96b5c8dc77a1d3016fd1c2",
+    "none": "900d6d306950efd8bb368a078db9043f59b7b9752d8921784633adc9de38a78f"
+   },
+   "seed": 20261205,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(wen)": [
+     "t1:said0:wen",
+     "t1:seen:wen"
+    ]
+   },
+   "state_id": "s20261205-dev-v3-2b-stakes1-perm0",
+   "symbolic": {
+    "K(wen)": {
+     "posterior_post_ask": {
+      "suite_2": 1.0
+     },
+     "posterior_t0": {
+      "suite_2": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(wen,yara_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(wen)": "93032e031399ef9060ea58f55ccd1c5d5d542fba982da5746996bed5170629fa"
+   },
+   "post_ask_statuses": {
+    "K(wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "716d67bb11d4ee23b9326a46f32602f1e8fe48001aeec0ff2bfb00c4aceac4c5",
+    "content|shown": "014bd037d3dd561d906a9e3046cf06494639c569c5cf3ce9627606d0dc14ec04",
+    "impl|omitted": "a9a8e64c3e76d6f5f9aa8ba4c9f8dc93b779d37b6ef90aa202d128808d738227",
+    "impl|shown": "102ca65447917c0743cb5437180dbd6540f7e9d32c025d7b15d7fbe24198802c",
+    "none": "3d56ae179d6c9e334a5f5307d2d7a64a9e68c657fcc434a916c40967145d1e4f"
+   },
+   "prompt_sha256_t0": {
+    "content": "38fe8b8c89ee99a11a3234492f95d7a4300aa29630f5bff49d3c083ef4cd971c",
+    "impl": "392fe47edc361f5c1b2238f17163c69563fed82ccfe02eb478f124810ea2af11",
+    "none": "bbfd6efa7cf9a365e8bca656bbecd28fe929945ff7eb700fa9b662659c25356f"
+   },
+   "seed": 20261205,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(wen)": [
+     "t1:said0:wen",
+     "t1:seen:wen"
+    ]
+   },
+   "state_id": "s20261205-dev-v3-2b-stakes4-perm0",
+   "symbolic": {
+    "K(wen)": {
+     "posterior_post_ask": {
+      "suite_2": 1.0
+     },
+     "posterior_t0": {
+      "suite_2": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(kim,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(kim)"
+   ],
+   "bayes_opt_t0": [
+    "give(kim)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(kim->vik)": "d777e20ac5b94915b5cc9fe3d29d26db6554788f23060a1c1c4aabd64296710a"
+   },
+   "post_ask_statuses": {
+    "K(kim->vik)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "01249cef283a0817f4af2a7b5aa71714391c13501642f609cda96619cbb98c28",
+    "content|shown": "9fbf5ffa0cc54c6c38a717ccfcbdf8c0126d142bd146c0e13b0f84bab73b7eff",
+    "impl|omitted": "baa491687970ce2ac1c9f0136deb0a1480246c03a21e8c8ba639eae91c5757dd",
+    "impl|shown": "3b2fe61857cfedd8434066524b074d9ac4ef4856edfb1496c7f397955f07e57d",
+    "none": "011f585b31122f716a985458a73e1dffcc69685ca050324188172d7f573ab0c9"
+   },
+   "prompt_sha256_t0": {
+    "content": "f54183267df746e77ade1ff93e2bfb351924729314e574d12996e46257e1d982",
+    "impl": "1b0fd6b032a8611133003805b00cab835775e98c567df3892492bdf9c9f268a6",
+    "none": "0904e719f3ba043558b99f76baf5c56061acb83218c46aa722154d73280ebd10"
+   },
+   "seed": 20261205,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(kim->vik)": [
+     "t1:said0:kim",
+     "t1:seen:kim"
+    ]
+   },
+   "state_id": "s20261205-dev-v3-3a-stakes1-perm0",
+   "symbolic": {
+    "K(kim->vik)": {
+     "posterior_post_ask": {
+      "suite_1": 1.0
+     },
+     "posterior_t0": {
+      "suite_1": 0.5,
+      "suite_3": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(kim,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(kim)"
+   ],
+   "bayes_opt_t0": [
+    "give(kim)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(kim->vik)": "d777e20ac5b94915b5cc9fe3d29d26db6554788f23060a1c1c4aabd64296710a"
+   },
+   "post_ask_statuses": {
+    "K(kim->vik)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "da611f9a63b18fae6401c51a6867f3eb2a8845d3535b372abe4ffe9c7a95065c",
+    "content|shown": "1ecd6f90052e6dd441336a1bedad6c686eb59117cf70810091a5e5abe49265b4",
+    "impl|omitted": "4a6b7208bb58dc9273d04bfb01c2b3fca772eb065f010d456b41785e7529c739",
+    "impl|shown": "019b5c1609cbbc335f036b75121651b34ac88ffe192b2b6cc784fe48a209796e",
+    "none": "7d02d6ed961f888079365df772a05091b18733b2c7cff60e03d3fe10327e993f"
+   },
+   "prompt_sha256_t0": {
+    "content": "22f13b2b0e768040c6679b504ef3822dbcda3350de6cea6ee83bc55a77efb2de",
+    "impl": "b22d61792e78bf14b3928db2991ff08499ed735e807a63b26fd14e7cf343c57b",
+    "none": "ecf57fe9a8e3de6b148213e6b7f53445d1bb95666775edc67c6d6d796aec624a"
+   },
+   "seed": 20261205,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(kim->vik)": [
+     "t1:said0:kim",
+     "t1:seen:kim"
+    ]
+   },
+   "state_id": "s20261205-dev-v3-3a-stakes4-perm0",
+   "symbolic": {
+    "K(kim->vik)": {
+     "posterior_post_ask": {
+      "suite_1": 1.0
+     },
+     "posterior_t0": {
+      "suite_1": 0.5,
+      "suite_3": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(sara,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(sara,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(sara->leo)": "9ea91ec83fea68ed727634c9626e26433a7d91e99f05b3556bb62f0bc70beb87"
+   },
+   "post_ask_statuses": {
+    "K(sara->leo)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "7b7e916f553fefdbb838685fce850f85a29831d3a992d8df71bc6c5541c25a53",
+    "content|shown": "311e384089dac336045abbd4267635604e6ab24d5a16269c0d056c83e0ab0edc",
+    "impl|omitted": "1606c125a62df32c06021ffccac845b4d3d482ba95b53d93befd953dcbf97fd8",
+    "impl|shown": "d33cbef8384f2f2de047628227947a65eb56dc9fa07e3dab7fa5aa3990f3918a",
+    "none": "823a2c63384d4154ccbf1368cbe182ca2a515224f5f01f23d4156c517c0a49e3"
+   },
+   "prompt_sha256_t0": {
+    "content": "48f46347c44bee0425b9ce682cfb1df80b150272eb43fa17dbebebe19998f5ba",
+    "impl": "a399aee1f98978754b86afd4e2e6d4f587649c2300bbf73871ad1f6dba647061",
+    "none": "f6e14c1a2d37d5583881bc246349c392411dd48925bbfaa59eb4cfe1f4cb5e28"
+   },
+   "seed": 20261205,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(sara->leo)": [
+     "t1:said0:sara",
+     "t1:seen:sara"
+    ]
+   },
+   "state_id": "s20261205-dev-v3-3b-stakes1-perm0",
+   "symbolic": {
+    "K(sara->leo)": {
+     "posterior_post_ask": {
+      "office_c": 1.0
+     },
+     "posterior_t0": {
+      "office_c": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(sara,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(sara,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(sara->leo)": "9ea91ec83fea68ed727634c9626e26433a7d91e99f05b3556bb62f0bc70beb87"
+   },
+   "post_ask_statuses": {
+    "K(sara->leo)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "0fa819335f25eb5d74d03e06300aec68e786ed4323008b49a0f9a2b0f1e6be43",
+    "content|shown": "f1ee2ccfc0e132e7617fa16a1c80c2b680aeb9140fc1d00801ca00a2ddbcf575",
+    "impl|omitted": "6e01dc15c10262a958e4f62bcca0af8d5d77acdf2879bac44d57f735a78a91be",
+    "impl|shown": "726dfdbb61b2a4f095f9a8c4ee1c47a72dfafc9de3f8500fe67f5e6f0d28a31f",
+    "none": "2ff53261d560ab69b32b8a6665d9b02db64f1cabb0383650c1a228d670059a02"
+   },
+   "prompt_sha256_t0": {
+    "content": "640f89f3cd7d5b2ab20dc7af811db9e1b71b95441000800fbc914683457e6f5a",
+    "impl": "06fcff759a84c15c6cc97c200e58eae2f458c4084ad0e0099689464e15647ea5",
+    "none": "89fd4b3595b0ff4899b9421e76459b2453c4a68d2febec7edf9ce28047e65ba5"
+   },
+   "seed": 20261205,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(sara->leo)": [
+     "t1:said0:sara",
+     "t1:seen:sara"
+    ]
+   },
+   "state_id": "s20261205-dev-v3-3b-stakes4-perm0",
+   "symbolic": {
+    "K(sara->leo)": {
+     "posterior_post_ask": {
+      "office_c": 1.0
+     },
+     "posterior_t0": {
+      "office_c": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(heidi,sara_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "give(kim)"
+   ],
+   "bayes_opt_t0": [
+    "give(kim)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(heidi)": "d10570013ee601bb40f34d3795e9150bda60ba45b9350439bd932f69dda5bb79",
+    "K(kim)": "4434168eb8839249ee2856ae87c0ac8201c7ef15f1c10033739f58a96852afd7"
+   },
+   "post_ask_statuses": {
+    "K(heidi)": "stale",
+    "K(kim)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "5b548888035d999f9bdf2abd5d8cd42e2ca764ce743294d6a7efe65903175793",
+    "content|shown": "8848d2f9ea26421b3d336f38cf67cc50d64c4cb8812567fdea6059461e4e1ab6",
+    "impl|omitted": "74160f50c7144a7e5acb00947dadce1f307a6d286f64d32d07361b84ac868c4f",
+    "impl|shown": "6d055bae710eeb67b4f97f557468c48eee2790fe3fef7fe2520e07e27670c1f2",
+    "none": "8787283b9d051009cd98e107c5f13501f74b6dff3b59330c41ffe9eaa51634d3"
+   },
+   "prompt_sha256_t0": {
+    "content": "b6bd3e123bedf710f5d29c8376345ce3fdc0324b3119c070d15ec7c864f8d1e6",
+    "impl": "6992d4b43a1e8aedb4e102b6480a59a6c718387644f252417aac888a539e2cd1",
+    "none": "dc2261ec72f6e01c7d4349852f6cf123201b8ec51422c365446b306b5bb609d3"
+   },
+   "seed": 20261206,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(heidi)": [
+     "t1:said0:heidi",
+     "t1:seen:heidi"
+    ],
+    "K(kim)": [
+     "t1:seen:kim"
+    ]
+   },
+   "state_id": "s20261206-dev-v3-2a-stakes1-perm0",
+   "symbolic": {
+    "K(heidi)": {
+     "posterior_post_ask": {
+      "office_a": 1.0
+     },
+     "posterior_t0": {
+      "office_a": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    },
+    "K(kim)": {
+     "posterior_post_ask": {
+      "office_b": 0.5,
+      "office_c": 0.5
+     },
+     "posterior_t0": {
+      "office_b": 0.5,
+      "office_c": 0.5
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(heidi,sara_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "give(kim)"
+   ],
+   "bayes_opt_t0": [
+    "give(kim)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(heidi)": "d10570013ee601bb40f34d3795e9150bda60ba45b9350439bd932f69dda5bb79",
+    "K(kim)": "4434168eb8839249ee2856ae87c0ac8201c7ef15f1c10033739f58a96852afd7"
+   },
+   "post_ask_statuses": {
+    "K(heidi)": "stale",
+    "K(kim)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "736af62dfb9ae97b394d66a3e24f1100039fbb659bc04a0d7361ff52da1aa0d3",
+    "content|shown": "9e5b7ebe265485647ed6218ede61cdc6fd5b298cad450bf9db5b7583c340c197",
+    "impl|omitted": "1701ec12d2a2d12a0accd164980c131fcf88b64071ec1d356816c04b3c809abf",
+    "impl|shown": "0b00c95fdcd868758dbd45cea9289b78208b9ff0f2a964f35add72d9ce9c73c8",
+    "none": "e7eb5e5df94c4de8945365c123e3c8636d522fcaf7c14d5017b42f34322efafd"
+   },
+   "prompt_sha256_t0": {
+    "content": "61fb38eb8c9929292b11e8b44755ac8dc79fdda437f217206122beb33489256d",
+    "impl": "c8332fbb79804dc9685f597a9c70653388f34e8879f57cf3f73f1b534b644a33",
+    "none": "1af39148c4752d4c94212fad337836b867b84bbe7233f8b5a34cb1ef60278a06"
+   },
+   "seed": 20261206,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(heidi)": [
+     "t1:said0:heidi",
+     "t1:seen:heidi"
+    ],
+    "K(kim)": [
+     "t1:seen:kim"
+    ]
+   },
+   "state_id": "s20261206-dev-v3-2a-stakes4-perm0",
+   "symbolic": {
+    "K(heidi)": {
+     "posterior_post_ask": {
+      "office_a": 1.0
+     },
+     "posterior_t0": {
+      "office_a": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    },
+    "K(kim)": {
+     "posterior_post_ask": {
+      "office_b": 0.5,
+      "office_c": 0.5
+     },
+     "posterior_t0": {
+      "office_b": 0.5,
+      "office_c": 0.5
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(quinn,dave_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(quinn)": "a1492a597b484b76c7ee9d9d5f48964832466738fdf5675b1d03a7cf876e1397"
+   },
+   "post_ask_statuses": {
+    "K(quinn)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "7f719495b3e117e7e176827d3fdef9878bc2bb668b157083192d47f6bd3a4a3f",
+    "content|shown": "e20c28d60d68a91c9de1d48ac16548694a102d036bbed01c24d0430f64daf507",
+    "impl|omitted": "52c7475e2b0851b542d5011d59b0e108650f4b9bca804490ff3e44f0c692528e",
+    "impl|shown": "bfd773c3ccbea2699e7836df26d2b5b49913b0cc5f427b81e02cbdbd7115ad94",
+    "none": "c47347ac9250e2518a63b10872bb656c35fb9b664b140f243b6937e13ffec085"
+   },
+   "prompt_sha256_t0": {
+    "content": "60b68dbc7babc04355b3fe5622deb38caeaefd8640d675e23889a205a7683cef",
+    "impl": "d5d5710f5e521b0f492d6a10c83d8bf58b0f541584fdc426ad9a60b685b4feef",
+    "none": "e72805a89b53e124c6288aa2ceee554b854a04e2ae0e4f397155aa9beb66bcb7"
+   },
+   "seed": 20261206,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(quinn)": [
+     "t1:said0:quinn",
+     "t1:seen:quinn"
+    ]
+   },
+   "state_id": "s20261206-dev-v3-2b-stakes1-perm0",
+   "symbolic": {
+    "K(quinn)": {
+     "posterior_post_ask": {
+      "lab_south": 1.0
+     },
+     "posterior_t0": {
+      "lab_south": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(quinn,dave_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(quinn)": "a1492a597b484b76c7ee9d9d5f48964832466738fdf5675b1d03a7cf876e1397"
+   },
+   "post_ask_statuses": {
+    "K(quinn)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "612fa601057b52fff04f4f6b4be5bb1658907b6dc945bc384ca43ab299064618",
+    "content|shown": "ef3f3da38f6b478dd15a0fcd845341e461316f042f8a5405edf17aa3d9b21c76",
+    "impl|omitted": "bd5e7506fb5a0c4d658b67d41942240b9d8d62784cff8ee4f057f221d3d506bd",
+    "impl|shown": "40abc06004e26b2fee95bcc125a984e181fc17d143f395fcf6c9af6d28383071",
+    "none": "9d92022dd629b55105bd14a334a0c2ad1c95f4887a8e3a9af5ca0d4df1fd9aea"
+   },
+   "prompt_sha256_t0": {
+    "content": "23f37bda4c09a03ff8ff87e3999d6258989f2b27bb4ecd2b3fa2512b5fec5de9",
+    "impl": "91e43c2fbf5207cd55faa2cc9faefda2b897eab0d55797d0cc5cc0b89e13b721",
+    "none": "2618ccf450c6f6f9dd4bea7c16cb0c45af7fb18462aab4012d7aef2e0f396713"
+   },
+   "seed": 20261206,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(quinn)": [
+     "t1:said0:quinn",
+     "t1:seen:quinn"
+    ]
+   },
+   "state_id": "s20261206-dev-v3-2b-stakes4-perm0",
+   "symbolic": {
+    "K(quinn)": {
+     "posterior_post_ask": {
+      "lab_south": 1.0
+     },
+     "posterior_t0": {
+      "lab_south": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(vik,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(vik)"
+   ],
+   "bayes_opt_t0": [
+    "give(vik)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(vik->zane)": "10011d4119d260e5e101d30b4bff4fa799dc6d1a332d1196b32f9a6658c475e1"
+   },
+   "post_ask_statuses": {
+    "K(vik->zane)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "f031bb0645e09f311107c90805a3949e10b931bae3c4563bb1ddfe9dbf98e5a2",
+    "content|shown": "7a2c0b191a8dd72da65a72a9958d1ad7a5a9f8f4ce0a74ba1fcce6dfd536b898",
+    "impl|omitted": "e3de9b78f02bcd72e8e2fe01aa4afefde84cef35883a3ff7eece36b9fcacff15",
+    "impl|shown": "e14da0a7ce857de2b3ae4314646243fe87ab7d93d014da5d042f04b84dfca5eb",
+    "none": "43cc655040a960b44531e59a63dfd09ada062d80ce1e51ed70a3e879fc742a7d"
+   },
+   "prompt_sha256_t0": {
+    "content": "7417bc9d11433ae229939a7f73e9917d3e9c182749dbbe7e44d959dfd5ce280d",
+    "impl": "b0307259bbb7477b2a8dad1873f8419d5a38429b29c4f2eb292ffdc406600533",
+    "none": "dc14a0a5b052228637d1975e990901bbdb7147f1b7266e66b244d1e342acd7c8"
+   },
+   "seed": 20261206,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(vik->zane)": [
+     "t1:said0:vik",
+     "t1:seen:vik"
+    ]
+   },
+   "state_id": "s20261206-dev-v3-3a-stakes1-perm0",
+   "symbolic": {
+    "K(vik->zane)": {
+     "posterior_post_ask": {
+      "lab_south": 1.0
+     },
+     "posterior_t0": {
+      "lab_north": 0.5,
+      "lab_south": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(vik,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(vik)"
+   ],
+   "bayes_opt_t0": [
+    "give(vik)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(vik->zane)": "10011d4119d260e5e101d30b4bff4fa799dc6d1a332d1196b32f9a6658c475e1"
+   },
+   "post_ask_statuses": {
+    "K(vik->zane)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "25c428323b47557ae564fdfb4aba599b7cf448f3181526a9f16db707dcf596b7",
+    "content|shown": "fdb01d6d847c4271ecdf7ad4d4affd0e6f6007650f24c2bf7bbce201e54701c3",
+    "impl|omitted": "19ec7a50a824706461ccae301c12d67e8b4d99bd62f98e00b7807a0e5b4a58f7",
+    "impl|shown": "0c9177076835d8325e40b19fd7a7351602c63d21369c5d608f45c5fe2d28a35d",
+    "none": "85a37613a2baf3f73a0f12077c1dfea04866a22ca3891f977b8b5611a1958195"
+   },
+   "prompt_sha256_t0": {
+    "content": "039174c15472c041c03034ee5dff7d91af61533c00308e61a9aa7c2efea07e7d",
+    "impl": "416b6a60836e388a1092602a3bd14c5df493d4a2259f574fa2e9f9322b87217f",
+    "none": "53e524c9231c7163cae152cb339ee0972860336f59afa5340dbd0d5ad95ed389"
+   },
+   "seed": 20261206,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(vik->zane)": [
+     "t1:said0:vik",
+     "t1:seen:vik"
+    ]
+   },
+   "state_id": "s20261206-dev-v3-3a-stakes4-perm0",
+   "symbolic": {
+    "K(vik->zane)": {
+     "posterior_post_ask": {
+      "lab_south": 1.0
+     },
+     "posterior_t0": {
+      "lab_north": 0.5,
+      "lab_south": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(vik,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(vik,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(vik->tomas)": "401a9b7eee51775a6c0c90e4ddd91a5d0b734b35a0e0f2645402f367cda4bac8"
+   },
+   "post_ask_statuses": {
+    "K(vik->tomas)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "5bb35db5c986ab15378abb50f20e39d26a27c630ac20dc4b8d7792a0235a6192",
+    "content|shown": "3c5ee4ac1cdcf1e9980bdfac5593210b33ddac1e78dd8d8ee8864618116d7a70",
+    "impl|omitted": "5048fcb8c7b9c47f0fe21fa81caccf8ad781e39025968a40856a5d99b8091a1e",
+    "impl|shown": "83d36e39c4e730fc23fa48d7cc8e10e553675f9751571897b655f67d95a21462",
+    "none": "d22724311bd69f9c3ded3ec6860144d6afd870c6c109137cd587e53a948f7831"
+   },
+   "prompt_sha256_t0": {
+    "content": "d641d980079f5e82d2dfe64ae953d184e736935db168b20a85cebd664a4c640c",
+    "impl": "3da359716375c8795748ec6181b726ac66c0d20130acc44e3d5f3ff0653842ee",
+    "none": "fa216618d6f53700d05bdab6b60b406f1a9727a48b85f1190a3773c35043c4d4"
+   },
+   "seed": 20261206,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(vik->tomas)": [
+     "t1:said0:vik",
+     "t1:seen:vik"
+    ]
+   },
+   "state_id": "s20261206-dev-v3-3b-stakes1-perm0",
+   "symbolic": {
+    "K(vik->tomas)": {
+     "posterior_post_ask": {
+      "desk_14": 1.0
+     },
+     "posterior_t0": {
+      "desk_14": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(vik,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(vik,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(vik->tomas)": "401a9b7eee51775a6c0c90e4ddd91a5d0b734b35a0e0f2645402f367cda4bac8"
+   },
+   "post_ask_statuses": {
+    "K(vik->tomas)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "c3e07c48104a58e1866f1d7944bda20576ffcea294aebcc0123077bc4eeb7d50",
+    "content|shown": "84c702650e51660c70f636872b65e8dd31025a8e2017b7571225354d8f255ec6",
+    "impl|omitted": "c34ef3f756b84cd1279d0e718a14bf4f6218e0465f83326e5c4b13d2198ccac6",
+    "impl|shown": "38bde9d18b3b37b037cd6272a2eb88ee843bd884aa41006c2bef8a3951c4f692",
+    "none": "16ec1a24722fa3bc46919755aecfbce98c31c49852fbb3844d44f9bb0797e3b1"
+   },
+   "prompt_sha256_t0": {
+    "content": "d0f255b417e180f541c4b2a1b3e08e8d7f85cadc3fc21cdb7689356f74cc2e3a",
+    "impl": "46028d631ddae1474bb4c05c330569c79ec46e27341d334e4bc5954ff71dbe0a",
+    "none": "0fa3c2c29836579a0c193acbfa60f2a37331e1116fc41affadca5a3017e85e5e"
+   },
+   "seed": 20261206,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(vik->tomas)": [
+     "t1:said0:vik",
+     "t1:seen:vik"
+    ]
+   },
+   "state_id": "s20261206-dev-v3-3b-stakes4-perm0",
+   "symbolic": {
+    "K(vik->tomas)": {
+     "posterior_post_ask": {
+      "desk_14": 1.0
+     },
+     "posterior_t0": {
+      "desk_14": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(dave,wen_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "give(zane)"
+   ],
+   "bayes_opt_t0": [
+    "give(zane)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(dave)": "4dd0ee471d07bff34a23ecb2c98db5f406ade0107f8f86605dc1beeabbe10e2f",
+    "K(zane)": "32cf5fa18bca5eba91e57055f4d2241ec1756e99cdb0cbd2811dd5db3ec7ca2e"
+   },
+   "post_ask_statuses": {
+    "K(dave)": "stale",
+    "K(zane)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "a7b71c0e732ded5a1deb6da68071d846486fcb7faccc2ee7e7bfd10d4039cf0d",
+    "content|shown": "a0e347dc537298900d0c5c0cb7ebb4f394a3832311cfe5aea0d6cff524c422d8",
+    "impl|omitted": "21272fa314c2c60e1b4de204ee41b11f4a8dc3ea2fe913d03b8c9ffe7a01975c",
+    "impl|shown": "4b461ff2ffc049cf75d4789c4b2ce30661f66e4491be2471e5b22dbd22e19bba",
+    "none": "7324d95490f2524cc80edbfd7240bd5f3ba8be09deaed1043a2a26f220b0434e"
+   },
+   "prompt_sha256_t0": {
+    "content": "7e1a20539c36e4dc953428d58416be047d4f88e52a3dd5c365e0908df536a7d4",
+    "impl": "ce22d5020785ed20c2a72c15126d03ea7ea724eec02795aec4ebc4b37eee4b87",
+    "none": "8145f9d16b75580e09812ced9ab33597f5b89210eb1f182aa6bd5bc3c3cc4897"
+   },
+   "seed": 20261207,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(dave)": [
+     "t1:said0:dave",
+     "t1:seen:dave"
+    ],
+    "K(zane)": [
+     "t1:seen:zane"
+    ]
+   },
+   "state_id": "s20261207-dev-v3-2a-stakes1-perm0",
+   "symbolic": {
+    "K(dave)": {
+     "posterior_post_ask": {
+      "room_7": 1.0
+     },
+     "posterior_t0": {
+      "room_7": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    },
+    "K(zane)": {
+     "posterior_post_ask": {
+      "room_12": 0.5,
+      "room_19": 0.5
+     },
+     "posterior_t0": {
+      "room_12": 0.5,
+      "room_19": 0.5
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(dave,wen_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "give(zane)"
+   ],
+   "bayes_opt_t0": [
+    "give(zane)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "2a",
+   "note_sha256": {
+    "K(dave)": "4dd0ee471d07bff34a23ecb2c98db5f406ade0107f8f86605dc1beeabbe10e2f",
+    "K(zane)": "32cf5fa18bca5eba91e57055f4d2241ec1756e99cdb0cbd2811dd5db3ec7ca2e"
+   },
+   "post_ask_statuses": {
+    "K(dave)": "stale",
+    "K(zane)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "22477d4bbca6df52897c3c95f4a3fd7f8fcd434518f120467e604cf0c426d4f4",
+    "content|shown": "01629a9926147e3ef28feb2a43e4bfc9f6bbb2a88fd97887af83ad5f460838b2",
+    "impl|omitted": "c9a9bd71d26933caef49755e58c3eca2d30a4833f76aadc51bce0a2edf83ba27",
+    "impl|shown": "77e7b9970f7b2e598a0b7b1045b0fd057a64208786ae353faa6d779fa9edef7b",
+    "none": "05fb850975393099c11c464dfdc4e1973ae888417edca3566a2f217243b14f63"
+   },
+   "prompt_sha256_t0": {
+    "content": "d85100dbb42b86ef6232bd31c601c2f7b2ea7954e6fde7f5e1b61c4383dd5a6f",
+    "impl": "1999f949920b2acabef3881e03efc2d64151d2f7ba76f5c8a62ca0dcddf74143",
+    "none": "f5ebdf6ae266f0f9051fe6a0ca2cbaf45743ef4c638d67fb3a221bea0337008b"
+   },
+   "seed": 20261207,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(dave)": [
+     "t1:said0:dave",
+     "t1:seen:dave"
+    ],
+    "K(zane)": [
+     "t1:seen:zane"
+    ]
+   },
+   "state_id": "s20261207-dev-v3-2a-stakes4-perm0",
+   "symbolic": {
+    "K(dave)": {
+     "posterior_post_ask": {
+      "room_7": 1.0
+     },
+     "posterior_t0": {
+      "room_7": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    },
+    "K(zane)": {
+     "posterior_post_ask": {
+      "room_12": 0.5,
+      "room_19": 0.5
+     },
+     "posterior_t0": {
+      "room_12": 0.5,
+      "room_19": 0.5
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(judy,sara_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(judy)": "b2243e0fab535f4e010ab22b232c70cc9f08650fb848775bcdb465ba144f4dbb"
+   },
+   "post_ask_statuses": {
+    "K(judy)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "f81d1f0e50bad7d1385de79ce2485e1b474422992e7ad3b868330ececf5b6cc2",
+    "content|shown": "73a26d169a0ee127f76694ecd1e4722a259119931d847a83aa4f8a1f1e94a57d",
+    "impl|omitted": "33185e381b028c5f04dc47826ff62d5386f174f0aab961ea3143837f3fe82d47",
+    "impl|shown": "d8b7b6ac32887f2cef9aae1eca85f3659585a2ab1750cebed65b99c99d4933cc",
+    "none": "c9eff99af9ff4c39da4088231ea565622e71eca3f4a3f20cc92c6b7c6e0346c4"
+   },
+   "prompt_sha256_t0": {
+    "content": "41ee0fc7b4cb70e145d9bed978f3ece1ca42419ee3068471924cb4a3613cd0df",
+    "impl": "7c517890d8a42612159a78f028fcf9df2719e75a90feb200afaa8ad949181bb6",
+    "none": "264bdebb0089eab177999baeb7b217377647af1a1724e3e5bce672b0cf066e00"
+   },
+   "seed": 20261207,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(judy)": [
+     "t1:said0:judy",
+     "t1:seen:judy"
+    ]
+   },
+   "state_id": "s20261207-dev-v3-2b-stakes1-perm0",
+   "symbolic": {
+    "K(judy)": {
+     "posterior_post_ask": {
+      "lab_west": 1.0
+     },
+     "posterior_t0": {
+      "lab_west": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(judy,sara_loc)",
+   "ask_subject_role": "N",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.7999999999999998,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "2b",
+   "note_sha256": {
+    "K(judy)": "b2243e0fab535f4e010ab22b232c70cc9f08650fb848775bcdb465ba144f4dbb"
+   },
+   "post_ask_statuses": {
+    "K(judy)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "215c7401f74a5e6383398c9e3a6b8c3e2d651d08b986325d3f0cab426f7c0383",
+    "content|shown": "811485a63c03cf70b839e57fb17c5690c61808f01362f1b2452f47902994085c",
+    "impl|omitted": "14c41bca1703db45900f59d8b143165bacb18c92f8ca8c19a9ccbe8f4dd42768",
+    "impl|shown": "614d19c78a9e27ebb46b88e89eb18005baf13be38758ff175417dd8fa41048d1",
+    "none": "8d456213aa9ed69dd5a0d2f440b9c8685241d257228b0426c21a50d83eac61f1"
+   },
+   "prompt_sha256_t0": {
+    "content": "75ad9734bb0f77772c68fc46148d747ac5c8af1c05746adc0fcf4fed159580ea",
+    "impl": "2bd4ead39017ef504f2936bb6800a6314f3a60abfae26e60171f3d3220cadf06",
+    "none": "059d734e7ebc8ac5a7111fc5734ec023f26bef9ddfbcd9e20f25c80c87b26067"
+   },
+   "seed": 20261207,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(judy)": [
+     "t1:said0:judy",
+     "t1:seen:judy"
+    ]
+   },
+   "state_id": "s20261207-dev-v3-2b-stakes4-perm0",
+   "symbolic": {
+    "K(judy)": {
+     "posterior_post_ask": {
+      "lab_west": 1.0
+     },
+     "posterior_t0": {
+      "lab_west": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(zane,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(zane)"
+   ],
+   "bayes_opt_t0": [
+    "give(zane)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(zane->wen)": "64a3bb3ae546e4978caa7db59276995b9686a92ca8d45d5926f4375bca0a5022"
+   },
+   "post_ask_statuses": {
+    "K(zane->wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "5a06b3660ecac4ce794c55ab6fbd47b42310f4c0ce4b98743d6e65fec1e18b9a",
+    "content|shown": "861e942c295178a32a7e4e7a178a5e24ae0304632c16825f9277e1340f34afcc",
+    "impl|omitted": "44979d718f6e675c40ebe0917d0379d490acd3e090e1d17175ffc27e04f0f26f",
+    "impl|shown": "8734f96be3fd1dfdcd67f8bb4d2f83cbe4700d41da5fd7bfa0862a08335093b1",
+    "none": "2863cce24b49cbf4995dd98bd601dadec0e798a15b9618a202b03a91ceb0c4df"
+   },
+   "prompt_sha256_t0": {
+    "content": "e1cf56929f0195cd2a0876ab54995deb10968d30c878d6fd81c0c384559abbcc",
+    "impl": "1d3f601c2c9a09721186ec941f3e65e6e0603bcd72b0d18b39025477ec45854a",
+    "none": "590a487e327a10443a97651390fdc3588d6656bc5bf2c3838d2978304750e14c"
+   },
+   "seed": 20261207,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(zane->wen)": [
+     "t1:said0:zane",
+     "t1:seen:zane"
+    ]
+   },
+   "state_id": "s20261207-dev-v3-3a-stakes1-perm0",
+   "symbolic": {
+    "K(zane->wen)": {
+     "posterior_post_ask": {
+      "desk_3": 1.0
+     },
+     "posterior_t0": {
+      "desk_3": 0.5,
+      "desk_9": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(zane,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "give(zane)"
+   ],
+   "bayes_opt_t0": [
+    "give(zane)"
+   ],
+   "bayes_v_post": 0.95,
+   "bayes_v_t0": 0.95,
+   "construction": "3a",
+   "note_sha256": {
+    "K(zane->wen)": "64a3bb3ae546e4978caa7db59276995b9686a92ca8d45d5926f4375bca0a5022"
+   },
+   "post_ask_statuses": {
+    "K(zane->wen)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "5b0b860cd8bce01d5744aa6603e6251a72cf258304963df6ccbdac1ab6dfdfb4",
+    "content|shown": "2aff095130badee4b464c3524a2a458daf22b9fa9343362c832e8fdc2684fdf2",
+    "impl|omitted": "b506de9f5524c5860cd7197bc370af749d88a6258d64068392a1ec8b30659982",
+    "impl|shown": "cf31315625a13d20e1d00167b3e96f31847309e40d43f7f9950f819f4400a695",
+    "none": "73ab0b83f984f47de2133a221d4ff8c124e845dd47740285426d7a18fa1db7b3"
+   },
+   "prompt_sha256_t0": {
+    "content": "5c78b611d003ed09236bbe45173f4fd75fae542d9d805a9ea4fa10a01ebcbed6",
+    "impl": "00ed08246059c168e01cc63d41dc7e7fa797125f67447a0bbc2e3501e33c3dc6",
+    "none": "8102771cbb6acc9b2147787ffd81dcdf733307dfd0d78e7a55b27552e358ed68"
+   },
+   "seed": 20261207,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(zane->wen)": [
+     "t1:said0:zane",
+     "t1:seen:zane"
+    ]
+   },
+   "state_id": "s20261207-dev-v3-3a-stakes4-perm0",
+   "symbolic": {
+    "K(zane->wen)": {
+     "posterior_post_ask": {
+      "desk_3": 1.0
+     },
+     "posterior_t0": {
+      "desk_3": 0.5,
+      "desk_9": 0.5
+     },
+     "posterior_unchanged": false,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(omar,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(omar,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(omar->yara)": "8934ec89c2e99ca696a2e69de01af1c33945bf3f414e6dffd5cabd427518d8ba"
+   },
+   "post_ask_statuses": {
+    "K(omar->yara)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "a890450d68ce3ccda638e359f84a5c5a74afbd0c02559966b94e0ba9ae74b3ab",
+    "content|shown": "9f77be6cd2486542521791be9d3c444903057672dfe5f62f462d5b53a8af450f",
+    "impl|omitted": "ff73a0ad65607abbfb8c0b5c4dbc7c7f16e9072004ac91cb2045fbb4e730af66",
+    "impl|shown": "dc322c779309fe0f1eab4ae8bbe322abfa7c596b865cfc725bdc1a75afeba008",
+    "none": "73f13cc68e6527e1074b8402b15434e648311c985adfb16052a06b0c508f6144"
+   },
+   "prompt_sha256_t0": {
+    "content": "4c1af9cbf20a6aef49a7645ea7eb47290942eafdf91fb5da03b74a1ba04b71b5",
+    "impl": "03947cc6cfd53684d29bf14e92f76016b7b58d087e92bd518608ddc3dae78448",
+    "none": "74c4ecbb1f8d40743fbee609e7daae09f72f75f03a5fd47813816181fa8eb694"
+   },
+   "seed": 20261207,
+   "stakes": 1.0,
+   "stale_triggers": {
+    "K(omar->yara)": [
+     "t1:said0:omar",
+     "t1:seen:omar"
+    ]
+   },
+   "state_id": "s20261207-dev-v3-3b-stakes1-perm0",
+   "symbolic": {
+    "K(omar->yara)": {
+     "posterior_post_ask": {
+      "room_19": 1.0
+     },
+     "posterior_t0": {
+      "room_19": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  },
+  {
+   "ask": "ask(omar,meeting_room)",
+   "ask_subject_role": "F",
+   "bayes_opt_post": [
+    "move(hall)"
+   ],
+   "bayes_opt_t0": [
+    "ask(omar,meeting_room)",
+    "move(hall)"
+   ],
+   "bayes_v_post": 0.8499999999999999,
+   "bayes_v_t0": 0.7999999999999998,
+   "construction": "3b",
+   "note_sha256": {
+    "K(omar->yara)": "8934ec89c2e99ca696a2e69de01af1c33945bf3f414e6dffd5cabd427518d8ba"
+   },
+   "post_ask_statuses": {
+    "K(omar->yara)": "stale"
+   },
+   "prompt_sha256_post": {
+    "content|omitted": "d306006a9d010f5fd1682052e6417b09a76e7830c69697b896deba5ef9ba01e4",
+    "content|shown": "42b7fe00efe3c5f26cfe48b3bff6c6959878eb417d6eb126be8e1b7d0045eb3a",
+    "impl|omitted": "2a982f5a649cb5a1808dc13421642504eeb9d26f49fb81d31e75bce15d1a25c4",
+    "impl|shown": "a910336a12501a64515b7b5f2b91f66af3b66e5e817244d59df1b44df9fae60d",
+    "none": "82f6e2097fd23244008c7db069cf3ffdad418cae27530ac027e74c4b005937c2"
+   },
+   "prompt_sha256_t0": {
+    "content": "a1c39e221bf881d908afb0d7d38705ae3bd4e2db0e1d00bcbaf20e93665c16ff",
+    "impl": "bfbfd652c424acc8abf6ecc8ea97aa6d55d265f15b56e56dec7c8cecb1978d5b",
+    "none": "c53b84c51a07b5f4c3429cae85cb8e36a443aa01867f9da7a95b29858f875246"
+   },
+   "seed": 20261207,
+   "stakes": 4.0,
+   "stale_triggers": {
+    "K(omar->yara)": [
+     "t1:said0:omar",
+     "t1:seen:omar"
+    ]
+   },
+   "state_id": "s20261207-dev-v3-3b-stakes4-perm0",
+   "symbolic": {
+    "K(omar->yara)": {
+     "posterior_post_ask": {
+      "room_19": 1.0
+     },
+     "posterior_t0": {
+      "room_19": 1.0
+     },
+     "posterior_unchanged": true,
+     "true_content_unchanged": true
+    }
+   }
+  }
+ ]
+}

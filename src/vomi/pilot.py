@@ -285,7 +285,7 @@ def _excerpts(hist: VisibleHistory, ids: list[str], width: int = 110) -> str:
 
 
 def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = None, rev: int | None = None,
-               cfg: WorldConfig | None = None) -> str:
+               cfg: WorldConfig | None = None, render: dict | None = None) -> str:
     rev = RENDER_REVISION if rev is None else rev
     if graph is None:
         return "MIND NOTES: (none; this agent does not use separate mind-inference steps)"
@@ -293,7 +293,7 @@ def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = Non
     if not view:
         return "MIND NOTES: (none instantiated)"
     if rev >= 7:
-        return matched_notes_text(view, cfg)
+        return matched_notes_text(view, cfg, **(render or {}))
     lines = []
     for r in view:
         out = r["output"]
@@ -330,7 +330,24 @@ def notes_text(graph: PerspectiveGraph | None, hist: VisibleHistory | None = Non
 INTENT_ORDER = ("cooperative", "obstructive", "unknown")
 
 
-def matched_notes_text(view: list[dict], cfg: WorldConfig) -> str:
+def implication_line(u: Unit, mass: dict[str, float], cfg: WorldConfig) -> str | None:
+    """Integration block (D-016) action-consequence mapping: computed ONLY from the note's own value distribution and the
+    declared public handoff route of the unit's subject (K(j) for an own-belief courier; K(F->R) for F). Returns None
+    when the unit is not that courier's routing unit. No hidden destination, truth label, optimal action or advice."""
+    route = cfg.handoff_routes.get(u.path[0])
+    if route is None or u.variable != KNOWLEDGE:
+        return None
+    other, _fact = route
+    if (other == "" and u.depth != 1) or (other != "" and tuple(u.path) != (u.path[0], other)):
+        return None
+    assert mass.get("unknown", 0.0) < 0.005, "implication undefined for 'unknown' mass (none expected in the probe)"
+    order = list(cfg.fact_domains[cfg.query_facts[0]])
+    parts = [f"to {v} with probability {mass[v]:.2f}" for v in order if v in mass and round(mass[v], 2) >= 0.005]
+    return (f"Given this estimate and the stated forwarding rule, give({u.path[0]}) sends the package "
+            + ", ".join(parts) + ".")
+
+
+def matched_notes_text(view: list[dict], cfg: WorldConfig, implication: bool = False, show_stale: bool = True) -> str:
     """r7 matched typed-content template (D-015; repair-block plan RC7-RC9). Every note source renders through the same
     canonical fields, built only from the unit definition and the hypothesis distribution:
       - unit label and `about` from the unit definition (describe_unit), never from model output;
@@ -356,7 +373,7 @@ def matched_notes_text(view: list[dict], cfg: WorldConfig) -> str:
                 f"what {who} thinks {u.path[1]} believes" if u.variable == KNOWLEDGE else
                 f"{who}'s intent" if u.depth == 1 else f"{who}'s assessment of {u.path[1]}")
         line = f"  {u} about {about} (as of step {r['as_of']}): {dist}"
-        if r.get("status") in STATUS_TEXT:
+        if r.get("status") in STATUS_TEXT and (show_stale or r["status"] != "stale"):
             line += f"\n    note status: {STATUS_TEXT[r['status']]}"
         if out.get("status") in ABSTAIN_STATUSES:
             line += "\n    INFERENCE ABSTAINED: the robot's evidence does not settle this person's state"
@@ -364,6 +381,10 @@ def matched_notes_text(view: list[dict], cfg: WorldConfig) -> str:
             high = max(mass.values(), default=0.0) >= 0.8
             line += (f"\n    robot's confidence in this estimate of {what}: "
                      + ("high (one value has probability at least 0.8)" if high else "low (several values remain possible)"))
+        if implication:
+            imp = implication_line(u, mass, cfg)
+            if imp:
+                line += "\n    " + imp
         lines.append(line)
     return ("MIND NOTES (estimates of people's mental states from separate inference steps; they may be wrong, and a "
             "person's belief can itself be false or outdated):\n" + "\n".join(lines))
@@ -380,10 +401,11 @@ def describe_unit(u: Unit, cfg: WorldConfig) -> tuple[str, str]:
     return f"reliability path {u.path[0]} -> {u.path[1]}: how {u.path[0]} assesses {u.path[1]}", u.path[1]
 
 
-def policy_messages(prompts, cfg, brief, hist, graph, rev: int | None = None) -> tuple[list[dict], list[str]]:
+def policy_messages(prompts, cfg, brief, hist, graph, rev: int | None = None,
+                    render: dict | None = None) -> tuple[list[dict], list[str]]:
     led, _ = ledger(hist)
     acts = [str(a) for a in legal_actions(cfg, hist.last)]
-    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev, cfg),
+    user = "\n\n".join([task_card(cfg, brief, rev), led, physical_summary(hist), notes_text(graph, hist, rev, cfg, render),
                         "LEGAL ACTIONS NOW: " + ", ".join(acts), 'Respond as JSON: {"action": "<one legal action>"}'])
     return [{"role": "system", "content": prompts["policy_system"]}, {"role": "user", "content": user}], acts
 
