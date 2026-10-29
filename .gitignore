@@ -34,3 +34,6 @@ reports/autonomous-block/*.zip
 
 # dev-v3 block source archive (regenerable from git)
 reports/dev-v3-block/*.zip
+
+# repair block source archive (regenerable from git)
+reports/repair-block/*.zip

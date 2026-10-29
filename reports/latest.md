@@ -1,4 +1,11 @@
-# Milestone report — Stage 2 pilot, the autonomous research block, and the dev-v3 qualification block (2026-10-28)
+# Milestone report — Stage 2 pilot, the autonomous block, the dev-v3 block, and the repair-and-validation block (2026-10-29)
+
+> **Latest: repair-and-validation block complete (D-015).** See **[reports/repair-block/FINAL_REVIEW.md](repair-block/FINAL_REVIEW.md)** (recommendation first).
+> - **Stage 1:** the one package revision, pilot-v2.2 (citable public-model IDs, a prior-vs-posterior section, a matched note renderer), then a regression check, a precision simulation (K = 24), symbolic qualification of 576 fresh states, and a freeze.
+> - **Stage 2:** 288 fresh base scenarios, 4,032 local episodes. Reference − none −0.024 [−0.074, +0.028] reads "no practical value"; inferred − none −0.043 [−0.098, +0.013] reads "fails". The pre-declared outcome is **§5(3), reconsider the method/environment fit**.
+> - Headroom against the exact Bayes actor is about 0.50, but the policy does not turn correct notes into correct actions (3b: a correct note increases the wrong handoff). The proposed 2×2 integration diagnostic needs research review. No paid calls.
+>
+> **Earlier: the dev-v3 block and the autonomous block** (below).
 
 > **Latest: dev-v3 qualification block complete (D-014).** See **[reports/dev-v3-block/FINAL_REVIEW.md](dev-v3-block/FINAL_REVIEW.md)** (recommendation first).
 > - **Round A** (symbolic): a new dev-v3 generator, 12 groups × 4 variants. It has a visible prologue and a declared public model that the reference uses in full. r6 rules are tested over every world, Q-values are exact and ask-aware, and the evidence-resolution check is non-vacuous. It was frozen before any LLM call.
