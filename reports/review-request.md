@@ -1,18 +1,13 @@
-# Review request: 2026-10-30 (hybrid feasibility block, D-019)
+# Review request: 2026-10-30 (D-020 audit of the hybrid block)
 
-**Read first:** `reports/hybrid-block/FINAL_REVIEW.md`. CPU detail is in `reports/hybrid-block/cpu-gate.md`, and the frozen rules in `reports/hybrid-block/fallback-protocol.md`.
+**Read first:** `reports/hybrid-block/audit/AUDIT.md`. Evidence is in the same directory and listed in `HASHES.sha256`. The source is `source-ef77ad6.zip`.
 
-## Outcome in brief
-- **Common foundation:** sound.
-- **Hybrid:** not established in this regime. Selection economics fails because every relational computation is effectively free.
-- **Fallback:** the pre-declared decision is not to continue.
-  - The exact-checker gate gains +0.261 over direct and beats generic verification by +0.131 at 0.76× the tokens.
-  - It beats ask-first by +0.294 in return but uses 1.26× its tokens, so criterion (b) fails.
-- **Caveat:** a CPU Bayes planner with no LLM reaches 0.885 in expectation.
+## Findings
+- **Input contract.** The deployed checker and the Bayes reference received the per-instance generator `Scenario`: the disclosed prior plus a builder carrying the construction ID and role→name mapping. That is not literally what the LLM saw.
+- **Equivalence test.** Compile a public model from the LLM's own card: every generator pattern with a byte-identical task card, mixed uniformly. It gives identical p, location, verdicts, t0 values and actions (380/380 checks, 192/192 states). The visible history always pins a single pattern.
+  - So the metadata was redundant for these templates. The checker still depends on hand-compiled template engineering and does not read text.
+- **Bayes planner.** Realized deterministic return on the same 192 hidden draws: 0.872 (expectation 0.885). This is a CPU evaluation added in the audit.
 
 ## Decisions requested
-1. **Accept or modify the block outcome.** Hybrid not established; fallback not continued under the frozen criterion. Or rule that criterion (b)'s token cap should not bind when the return gain is this large. That would be a post-hoc change, so it is flagged as such.
-2. **Freeze or redirect.**
-   - Freeze the line and consolidate the negative and positive findings (FINAL_REVIEW §6); or
-   - authorize scoping (not running) a regime change in which perspective relations are not machine-compilable (natural-language Tier 2 role-play with private information), testing a targeted model-based relational check against generic verification and ask-first under the frozen gate.
-3. **If you redirect:** resource scope. Local only, or an API allowance. The ledger is USD 3.924 of 5.
+1. Accept the audit, and the corrected description of the checker ("hand-compiled model of the task-card templates, output-equivalent to the card"), as closing D-019/D-020.
+2. Next step. Freeze and consolidate this line, or specify, as a separate project-extension proposal, how to establish evidence of a genuine perspective-reconstruction bottleneck before any new environment. No experiment is proposed or started here.

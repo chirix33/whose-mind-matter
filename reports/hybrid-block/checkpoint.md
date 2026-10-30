@@ -19,3 +19,5 @@ Resume point after a restart: read this file first.
 - Smoke 23:35:46–23:36:01.
 - Pilot 23:36:43 to 00:01:46; server stopped at about 00:02 (total about 27 min of serving).
 - Stop the server with `pkill -f "vllm serve"` in WSL.
+
+**D-020 (2026-10-30):** audit and export delivered in `audit/` (`AUDIT.md`, `HASHES.sha256`). No model calls. vLLM stopped.

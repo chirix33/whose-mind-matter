@@ -27,3 +27,12 @@
 7. **Wording correction for 3c:** "consistent with sampling variability; no check fired in the cited failing checker episodes."
 
 Services stay stopped.
+
+## Outcome (2026-10-30; awaiting research review)
+
+Delivered `reports/hybrid-block/audit/AUDIT.md` with an exported evidence bundle (`HASHES.sha256`).
+- **Input contract:** the checker and the Bayes reference received the per-instance generator Scenario object (construction ID, role mapping).
+- **Equivalence:** a model compiled from the LLM's own task card gives identical outputs (380/380 checks; 192/192 t0 values and actions), and the history always pins one pattern. This relies on hand-compiled templates (task-specific engineering).
+- **Planner:** realized deterministic return on the same hidden draws is 0.872 (expectation 0.885). This is a CPU evaluation, not a pilot condition.
+- **Wording:** the 3c sentence is corrected.
+- **Ledger:** unchanged at USD 3.924.

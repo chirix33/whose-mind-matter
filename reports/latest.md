@@ -1,6 +1,12 @@
 # Milestone report — through the hybrid feasibility block (2026-10-30)
 
-> **Latest: hybrid feasibility block complete (D-019).** See **[reports/hybrid-block/FINAL_REVIEW.md](hybrid-block/FINAL_REVIEW.md)**.
+> **Latest: D-020 input-contract audit and evidence export.** See **[reports/hybrid-block/audit/AUDIT.md](hybrid-block/audit/AUDIT.md)**.
+> - The deployed checker and the Bayes reference received the per-instance generator Scenario (construction ID, role mapping), not only the LLM's card and history. This was not stated before.
+> - A model compiled from the LLM's own task card gives identical outputs in 380/380 pilot checks and 192/192 t0 values. The checker is output-equivalent to a hand-compiled template model, not inference from text.
+> - The Bayes planner's realized return on the same draws is 0.872 (CPU evaluation).
+> - Exports: per-episode CSV (1,536 rows), interventions CSV (909 rows, with `eval_` fields separated), 6 representative traces, source zip and diff, run manifests, hashes. No model calls; ledger unchanged.
+>
+> **Earlier: hybrid feasibility block complete (D-019).** See **[reports/hybrid-block/FINAL_REVIEW.md](hybrid-block/FINAL_REVIEW.md)**.
 > - **Common relational foundation (CPU): sound.**
 >   - The provenance/referent engine matches an independent enumeration in 1,008/1,008 checks across every hidden world, with 0 information-boundary violations.
 >   - Matched-marginal contrasts are reproduced (2d: joint 1 vs 0 where marginals are identical).
