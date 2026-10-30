@@ -1,0 +1,146 @@
+{
+ "data": "reports\\repair-block\\evidence\\episodes-stage2.csv",
+ "seeds": 24,
+ "cells": 24,
+ "always_reference_minus_none": -0.024,
+ "in_sample_selector_minus_none": 0.0441,
+ "in_sample_ci95": [
+  0.0364,
+  0.0962
+ ],
+ "crossfit_selector_minus_none": -0.0012,
+ "crossfit_ci95": [
+  -0.0051,
+  0.0694
+ ],
+ "in_sample_choice": {
+  "1a-x1": "reference",
+  "1a-x4": "reference",
+  "1b-x1": "reference",
+  "1b-x4": "reference",
+  "1c-x1": "none",
+  "1c-x4": "none",
+  "2a-x1": "none",
+  "2a-x4": "reference",
+  "2b-x1": "none",
+  "2b-x4": "reference",
+  "2c-x1": "reference",
+  "2c-x4": "none",
+  "3a-x1": "reference_KR",
+  "3a-x4": "reference_KR",
+  "3b-x1": "none",
+  "3b-x4": "none",
+  "3c-x1": "reference_KR",
+  "3c-x4": "reference_KR",
+  "4a-x1": "reference",
+  "4a-x4": "reference",
+  "4b-x1": "none",
+  "4b-x4": "none",
+  "4c-x1": "reference",
+  "4c-x4": "none"
+ },
+ "per_cell_mean_return": {
+  "1a-x1": {
+   "none": 0.8719,
+   "reference": 0.8979
+  },
+  "1a-x4": {
+   "none": 0.8771,
+   "reference": 0.8802
+  },
+  "1b-x1": {
+   "none": 0.199,
+   "reference": 0.2063
+  },
+  "1b-x4": {
+   "none": -0.5979,
+   "reference": -0.55
+  },
+  "1c-x1": {
+   "none": 0.8802,
+   "reference": 0.8552
+  },
+  "1c-x4": {
+   "none": 0.8865,
+   "reference": 0.8688
+  },
+  "2a-x1": {
+   "none": 0.8813,
+   "reference": 0.6854
+  },
+  "2a-x4": {
+   "none": 0.6854,
+   "reference": 0.751
+  },
+  "2b-x1": {
+   "none": -0.05,
+   "reference": -0.1313
+  },
+  "2b-x4": {
+   "none": -0.825,
+   "reference": -0.6448
+  },
+  "2c-x1": {
+   "none": -0.025,
+   "reference": 0.0021
+  },
+  "2c-x4": {
+   "none": -0.6542,
+   "reference": -0.9146
+  },
+  "3a-x1": {
+   "none": 0.725,
+   "reference": 0.8094,
+   "reference_KR": 0.8333
+  },
+  "3a-x4": {
+   "none": 0.8042,
+   "reference": 0.7917,
+   "reference_KR": 0.8333
+  },
+  "3b-x1": {
+   "none": 0.2354,
+   "reference": -0.1667,
+   "reference_KR": -0.1937
+  },
+  "3b-x4": {
+   "none": -0.6469,
+   "reference": -1.0073,
+   "reference_KR": -0.7438
+  },
+  "3c-x1": {
+   "none": 0.7479,
+   "reference": 0.7719,
+   "reference_KR": 0.85
+  },
+  "3c-x4": {
+   "none": 0.5781,
+   "reference": 0.7875,
+   "reference_KR": 0.8427
+  },
+  "4a-x1": {
+   "none": 0.7875,
+   "reference": 0.8094
+  },
+  "4a-x4": {
+   "none": 0.6562,
+   "reference": 0.7885
+  },
+  "4b-x1": {
+   "none": 0.5948,
+   "reference": 0.5885
+  },
+  "4b-x4": {
+   "none": 0.4156,
+   "reference": 0.4031
+  },
+  "4c-x1": {
+   "none": 0.5594,
+   "reference": 0.601
+  },
+  "4c-x4": {
+   "none": 0.55,
+   "reference": 0.4781
+  }
+ }
+}

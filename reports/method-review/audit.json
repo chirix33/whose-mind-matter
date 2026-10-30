@@ -1,0 +1,4290 @@
+{
+ "commit": "5603137",
+ "dirty": true,
+ "seed": 20261029,
+ "constructions": [
+  "2a",
+  "2b",
+  "2c",
+  "3a",
+  "3b",
+  "3c"
+ ],
+ "checks": {
+  "unit_equals_destination_all": true,
+  "kr_equals_location_all": true,
+  "person_categorical_all": true,
+  "typed_default_holds_equals_give_success_all": true,
+  "bayes_eps1_all_J_equal_Vstar": true
+ },
+ "records": [
+  {
+   "instance_id": "dev-v3-2a-stakes1-perm0",
+   "construction": "2a",
+   "stakes": 1.0,
+   "roles": {
+    "D": "judy",
+    "H": "yara",
+    "N": "ravi",
+    "R": "leo"
+   },
+   "consistent_worlds": 2,
+   "bayes_v_t0": 0.95,
+   "bayes_optimal_first": [
+    "give(yara)"
+   ],
+   "q_t0": {
+    "ask(judy,leo_loc)": 0.9,
+    "ask(ravi,leo_loc)": 0.9,
+    "ask(yara,leo_loc)": 0.9,
+    "drop(office_a)": 0.2,
+    "drop(office_b)": -0.55,
+    "drop(office_c)": 0.2,
+    "give(ravi)": -0.55,
+    "give(yara)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "recipient_location_marginal": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "couriers": [
+    {
+     "courier": "ravi",
+     "routing_unit": "K(ravi)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "office_b": 1.0
+     },
+     "destination_marginal": {
+      "office_b": 1.0
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 1.0,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 0,
+     "typed_p_default_holds": 0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      0.0
+     ],
+     "marginals_determine_success": true,
+     "independence_reading": 0.0,
+     "q_give": -0.55
+    },
+    {
+     "courier": "yara",
+     "routing_unit": "K(yara)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "office_a": 0.5,
+      "office_c": 0.5
+     },
+     "destination_marginal": {
+      "office_a": 0.5,
+      "office_c": 0.5
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 0.5,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 1.0,
+     "typed_p_default_holds": 1.0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      1.0
+     ],
+     "marginals_determine_success": false,
+     "independence_reading": 0.5,
+     "q_give": 0.95
+    }
+   ],
+   "K(R)_content_marginal": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(leo)",
+    "K(ravi)",
+    "K(yara)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.95,
+      "{K(leo)}": 0.95,
+      "{K(ravi)}": 0.95,
+      "{K(yara)}": 0.95,
+      "{K(leo),K(ravi)}": 0.95,
+      "{K(leo),K(yara)}": 0.95,
+      "{K(ravi),K(yara)}": 0.95,
+      "{K(leo),K(ravi),K(yara)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(leo),K(ravi))": 0.0,
+      "I(K(leo),K(yara))": 0.0,
+      "I(K(ravi),K(yara))": 0.0
+     },
+     "first_action_empty": [
+      "give(yara)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": 0.95,
+      "{K(leo)}": 0.95,
+      "{K(ravi)}": 0.95,
+      "{K(yara)}": 0.95,
+      "{K(leo),K(ravi)}": 0.95,
+      "{K(leo),K(yara)}": 0.95,
+      "{K(ravi),K(yara)}": 0.95,
+      "{K(leo),K(ravi),K(yara)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(leo),K(ravi))": 0.0,
+      "I(K(leo),K(yara))": 0.0,
+      "I(K(ravi),K(yara))": 0.0
+     },
+     "first_action_empty": [
+      "give(yara)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.95,
+      "{K(leo)}": 0.95,
+      "{K(ravi)}": 0.95,
+      "{K(yara)}": 0.95,
+      "{K(leo),K(ravi)}": 0.95,
+      "{K(leo),K(yara)}": 0.95,
+      "{K(ravi),K(yara)}": 0.95,
+      "{K(leo),K(ravi),K(yara)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(leo),K(ravi))": 0.0,
+      "I(K(leo),K(yara))": 0.0,
+      "I(K(ravi),K(yara))": 0.0
+     },
+     "first_action_empty": [
+      "give(yara)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 36,
+    "actor_patterns": [
+     "2a:0",
+     "2a:1",
+     "2c:0",
+     "2c:1"
+    ],
+    "J": {
+     "{}": 0.7,
+     "{K(leo)}": 0.9,
+     "{K(ravi)}": 0.75,
+     "{K(yara)}": 0.8,
+     "{K(leo),K(ravi)}": 0.95,
+     "{K(leo),K(yara)}": 0.9,
+     "{K(ravi),K(yara)}": 0.75,
+     "{K(leo),K(ravi),K(yara)}": 0.95
+    },
+    "first_actions": {
+     "{}": {
+      "ask(ravi,leo_loc)": 1.0
+     },
+     "{K(leo)}": {
+      "ask(ravi,leo_loc)": 1.0
+     },
+     "{K(ravi)}": {
+      "move(hall)": 1.0
+     },
+     "{K(yara)}": {
+      "move(hall)": 1.0
+     },
+     "{K(leo),K(ravi)}": {
+      "give(yara)": 1.0
+     },
+     "{K(leo),K(yara)}": {
+      "ask(ravi,leo_loc)": 1.0
+     },
+     "{K(ravi),K(yara)}": {
+      "move(hall)": 1.0
+     },
+     "{K(leo),K(ravi),K(yara)}": {
+      "give(yara)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(leo)}": 0.0,
+     "{K(ravi)}": 0.0,
+     "{K(yara)}": 0.0,
+     "{K(leo),K(ravi)}": 0.0,
+     "{K(leo),K(yara)}": 1.1102230246251565e-16,
+     "{K(ravi),K(yara)}": 0.0,
+     "{K(leo),K(ravi),K(yara)}": 0.0
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.7
+      }
+     ],
+     "{K(leo)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "give(yara)->success"
+       ],
+       "return": 0.9
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "give(yara)->success"
+       ],
+       "return": 0.9
+      }
+     ],
+     "{K(ravi)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.75
+      }
+     ],
+     "{K(yara)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_a)",
+        "move(hall)",
+        "move(office_c)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_a)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(leo),K(ravi)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "give(yara)->success"
+       ],
+       "return": 0.95
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "give(yara)->success"
+       ],
+       "return": 0.95
+      }
+     ],
+     "{K(leo),K(yara)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "give(yara)->success"
+       ],
+       "return": 0.9
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "give(yara)->success"
+       ],
+       "return": 0.9
+      }
+     ],
+     "{K(ravi),K(yara)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.75
+      }
+     ],
+     "{K(leo),K(ravi),K(yara)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "give(yara)->success"
+       ],
+       "return": 0.95
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "give(yara)->success"
+       ],
+       "return": 0.95
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(leo),K(ravi))": -0.0,
+     "I(K(leo),K(yara))": -0.1,
+     "I(K(ravi),K(yara))": -0.1
+    }
+   }
+  },
+  {
+   "instance_id": "dev-v3-2a-stakes4-perm0",
+   "construction": "2a",
+   "stakes": 4.0,
+   "roles": {
+    "D": "judy",
+    "H": "yara",
+    "N": "ravi",
+    "R": "leo"
+   },
+   "consistent_worlds": 2,
+   "bayes_v_t0": 0.95,
+   "bayes_optimal_first": [
+    "give(yara)"
+   ],
+   "q_t0": {
+    "ask(judy,leo_loc)": 0.9,
+    "ask(ravi,leo_loc)": 0.9,
+    "ask(yara,leo_loc)": 0.9,
+    "drop(office_a)": -0.55,
+    "drop(office_b)": -2.05,
+    "drop(office_c)": -0.55,
+    "give(ravi)": -2.05,
+    "give(yara)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "recipient_location_marginal": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "couriers": [
+    {
+     "courier": "ravi",
+     "routing_unit": "K(ravi)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "office_b": 1.0
+     },
+     "destination_marginal": {
+      "office_b": 1.0
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 1.0,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 0,
+     "typed_p_default_holds": 0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      0.0
+     ],
+     "marginals_determine_success": true,
+     "independence_reading": 0.0,
+     "q_give": -2.05
+    },
+    {
+     "courier": "yara",
+     "routing_unit": "K(yara)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "office_a": 0.5,
+      "office_c": 0.5
+     },
+     "destination_marginal": {
+      "office_a": 0.5,
+      "office_c": 0.5
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 0.5,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 1.0,
+     "typed_p_default_holds": 1.0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      1.0
+     ],
+     "marginals_determine_success": false,
+     "independence_reading": 0.5,
+     "q_give": 0.95
+    }
+   ],
+   "K(R)_content_marginal": {
+    "office_a": 0.5,
+    "office_c": 0.5
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(leo)",
+    "K(ravi)",
+    "K(yara)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.95,
+      "{K(leo)}": 0.95,
+      "{K(ravi)}": 0.95,
+      "{K(yara)}": 0.95,
+      "{K(leo),K(ravi)}": 0.95,
+      "{K(leo),K(yara)}": 0.95,
+      "{K(ravi),K(yara)}": 0.95,
+      "{K(leo),K(ravi),K(yara)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(leo),K(ravi))": 0.0,
+      "I(K(leo),K(yara))": 0.0,
+      "I(K(ravi),K(yara))": 0.0
+     },
+     "first_action_empty": [
+      "give(yara)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": 0.95,
+      "{K(leo)}": 0.95,
+      "{K(ravi)}": 0.95,
+      "{K(yara)}": 0.95,
+      "{K(leo),K(ravi)}": 0.95,
+      "{K(leo),K(yara)}": 0.95,
+      "{K(ravi),K(yara)}": 0.95,
+      "{K(leo),K(ravi),K(yara)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(leo),K(ravi))": 0.0,
+      "I(K(leo),K(yara))": 0.0,
+      "I(K(ravi),K(yara))": 0.0
+     },
+     "first_action_empty": [
+      "give(yara)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.95,
+      "{K(leo)}": 0.95,
+      "{K(ravi)}": 0.95,
+      "{K(yara)}": 0.95,
+      "{K(leo),K(ravi)}": 0.95,
+      "{K(leo),K(yara)}": 0.95,
+      "{K(ravi),K(yara)}": 0.95,
+      "{K(leo),K(ravi),K(yara)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(leo),K(ravi))": 0.0,
+      "I(K(leo),K(yara))": 0.0,
+      "I(K(ravi),K(yara))": 0.0
+     },
+     "first_action_empty": [
+      "give(yara)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 36,
+    "actor_patterns": [
+     "2a:0",
+     "2a:1",
+     "2c:0",
+     "2c:1"
+    ],
+    "J": {
+     "{}": 0.7,
+     "{K(leo)}": 0.9,
+     "{K(ravi)}": 0.75,
+     "{K(yara)}": 0.8,
+     "{K(leo),K(ravi)}": 0.95,
+     "{K(leo),K(yara)}": 0.9,
+     "{K(ravi),K(yara)}": 0.75,
+     "{K(leo),K(ravi),K(yara)}": 0.95
+    },
+    "first_actions": {
+     "{}": {
+      "ask(ravi,leo_loc)": 1.0
+     },
+     "{K(leo)}": {
+      "ask(ravi,leo_loc)": 1.0
+     },
+     "{K(ravi)}": {
+      "move(hall)": 1.0
+     },
+     "{K(yara)}": {
+      "move(hall)": 1.0
+     },
+     "{K(leo),K(ravi)}": {
+      "give(yara)": 1.0
+     },
+     "{K(leo),K(yara)}": {
+      "ask(ravi,leo_loc)": 1.0
+     },
+     "{K(ravi),K(yara)}": {
+      "move(hall)": 1.0
+     },
+     "{K(leo),K(ravi),K(yara)}": {
+      "give(yara)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(leo)}": 0.0,
+     "{K(ravi)}": 0.0,
+     "{K(yara)}": 0.0,
+     "{K(leo),K(ravi)}": 0.0,
+     "{K(leo),K(yara)}": 1.1102230246251565e-16,
+     "{K(ravi),K(yara)}": 0.0,
+     "{K(leo),K(ravi),K(yara)}": 0.0
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.7
+      }
+     ],
+     "{K(leo)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "give(yara)->success"
+       ],
+       "return": 0.9
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "give(yara)->success"
+       ],
+       "return": 0.9
+      }
+     ],
+     "{K(ravi)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.75
+      }
+     ],
+     "{K(yara)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_a)",
+        "move(hall)",
+        "move(office_c)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_a)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(leo),K(ravi)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "give(yara)->success"
+       ],
+       "return": 0.95
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "give(yara)->success"
+       ],
+       "return": 0.95
+      }
+     ],
+     "{K(leo),K(yara)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "give(yara)->success"
+       ],
+       "return": 0.9
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(ravi,leo_loc)",
+        "give(yara)->success"
+       ],
+       "return": 0.9
+      }
+     ],
+     "{K(ravi),K(yara)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "move(hall)",
+        "move(lobby)",
+        "give(yara)->success"
+       ],
+       "return": 0.75
+      }
+     ],
+     "{K(leo),K(ravi),K(yara)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "give(yara)->success"
+       ],
+       "return": 0.95
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "give(yara)->success"
+       ],
+       "return": 0.95
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(leo),K(ravi))": -0.0,
+     "I(K(leo),K(yara))": -0.1,
+     "I(K(ravi),K(yara))": -0.1
+    }
+   }
+  },
+  {
+   "instance_id": "dev-v3-2b-stakes1-perm0",
+   "construction": "2b",
+   "stakes": 1.0,
+   "roles": {
+    "H": "nadia",
+    "N": "bob",
+    "R": "frank"
+   },
+   "consistent_worlds": 2,
+   "bayes_v_t0": 0.8,
+   "bayes_optimal_first": [
+    "move(hall)"
+   ],
+   "q_t0": {
+    "ask(bob,frank_loc)": 0.75,
+    "drop(lab_north)": 0.2,
+    "drop(lab_south)": -0.55,
+    "drop(lab_west)": 0.2,
+    "give(bob)": -0.55,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "recipient_location_marginal": {
+    "lab_north": 0.5,
+    "lab_west": 0.5
+   },
+   "couriers": [
+    {
+     "courier": "bob",
+     "routing_unit": "K(bob)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "lab_south": 1.0
+     },
+     "destination_marginal": {
+      "lab_south": 1.0
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 1.0,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 0,
+     "typed_p_default_holds": 0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      0.0
+     ],
+     "marginals_determine_success": true,
+     "independence_reading": 0.0,
+     "q_give": -0.55
+    },
+    {
+     "courier": "nadia",
+     "routing_unit": "K(nadia)",
+     "present_at_t0": false,
+     "routing_unit_marginal": {
+      "lab_north": 0.5,
+      "lab_west": 0.5
+     },
+     "destination_marginal": {
+      "lab_north": 0.5,
+      "lab_west": 0.5
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 0.5,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 1.0,
+     "typed_p_default_holds": 1.0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      1.0
+     ],
+     "marginals_determine_success": false,
+     "independence_reading": 0.5,
+     "q_give": null
+    }
+   ],
+   "K(R)_content_marginal": {
+    "lab_north": 0.5,
+    "lab_west": 0.5
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(bob)",
+    "K(frank)",
+    "K(nadia)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(frank)}": 0.8,
+      "{K(nadia)}": 0.8,
+      "{K(bob),K(frank)}": 0.8,
+      "{K(bob),K(nadia)}": 0.8,
+      "{K(frank),K(nadia)}": 0.8,
+      "{K(bob),K(frank),K(nadia)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(frank))": 0.0,
+      "I(K(bob),K(nadia))": 0.0,
+      "I(K(frank),K(nadia))": 0.0
+     },
+     "first_action_empty": [
+      "move(hall)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(frank)}": 0.8,
+      "{K(nadia)}": 0.8,
+      "{K(bob),K(frank)}": 0.8,
+      "{K(bob),K(nadia)}": 0.8,
+      "{K(frank),K(nadia)}": 0.8,
+      "{K(bob),K(frank),K(nadia)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(frank))": 0.0,
+      "I(K(bob),K(nadia))": 0.0,
+      "I(K(frank),K(nadia))": 0.0
+     },
+     "first_action_empty": [
+      "move(hall)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(frank)}": 0.8,
+      "{K(nadia)}": 0.8,
+      "{K(bob),K(frank)}": 0.8,
+      "{K(bob),K(nadia)}": 0.8,
+      "{K(frank),K(nadia)}": 0.8,
+      "{K(bob),K(frank),K(nadia)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(frank))": 0.0,
+      "I(K(bob),K(nadia))": 0.0,
+      "I(K(frank),K(nadia))": 0.0
+     },
+     "first_action_empty": [
+      "move(hall)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 6,
+    "actor_patterns": [
+     "2b:0"
+    ],
+    "J": {
+     "{}": 0.75,
+     "{K(bob)}": 0.8,
+     "{K(frank)}": 0.75,
+     "{K(nadia)}": 0.75,
+     "{K(bob),K(frank)}": 0.8,
+     "{K(bob),K(nadia)}": 0.8,
+     "{K(frank),K(nadia)}": 0.75,
+     "{K(bob),K(frank),K(nadia)}": 0.8
+    },
+    "first_actions": {
+     "{}": {
+      "ask(bob,frank_loc)": 1.0
+     },
+     "{K(bob)}": {
+      "move(hall)": 1.0
+     },
+     "{K(frank)}": {
+      "ask(bob,frank_loc)": 1.0
+     },
+     "{K(nadia)}": {
+      "ask(bob,frank_loc)": 1.0
+     },
+     "{K(bob),K(frank)}": {
+      "move(hall)": 1.0
+     },
+     "{K(bob),K(nadia)}": {
+      "move(hall)": 1.0
+     },
+     "{K(frank),K(nadia)}": {
+      "ask(bob,frank_loc)": 1.0
+     },
+     "{K(bob),K(frank),K(nadia)}": {
+      "move(hall)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(bob)}": 0.0,
+     "{K(frank)}": 0.0,
+     "{K(nadia)}": 0.0,
+     "{K(bob),K(frank)}": 0.0,
+     "{K(bob),K(nadia)}": 0.0,
+     "{K(frank),K(nadia)}": 0.0,
+     "{K(bob),K(frank),K(nadia)}": 0.0
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(bob)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(frank)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(nadia)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(bob),K(frank)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(bob),K(nadia)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(frank),K(nadia)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(bob),K(frank),K(nadia)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(bob),K(frank))": 0.0,
+     "I(K(bob),K(nadia))": 0.0,
+     "I(K(frank),K(nadia))": 0.0
+    }
+   }
+  },
+  {
+   "instance_id": "dev-v3-2b-stakes4-perm0",
+   "construction": "2b",
+   "stakes": 4.0,
+   "roles": {
+    "H": "nadia",
+    "N": "bob",
+    "R": "frank"
+   },
+   "consistent_worlds": 2,
+   "bayes_v_t0": 0.8,
+   "bayes_optimal_first": [
+    "move(hall)"
+   ],
+   "q_t0": {
+    "ask(bob,frank_loc)": 0.75,
+    "drop(lab_north)": -0.55,
+    "drop(lab_south)": -2.05,
+    "drop(lab_west)": -0.55,
+    "give(bob)": -2.05,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "recipient_location_marginal": {
+    "lab_north": 0.5,
+    "lab_west": 0.5
+   },
+   "couriers": [
+    {
+     "courier": "bob",
+     "routing_unit": "K(bob)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "lab_south": 1.0
+     },
+     "destination_marginal": {
+      "lab_south": 1.0
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 1.0,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 0,
+     "typed_p_default_holds": 0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      0.0
+     ],
+     "marginals_determine_success": true,
+     "independence_reading": 0.0,
+     "q_give": -2.05
+    },
+    {
+     "courier": "nadia",
+     "routing_unit": "K(nadia)",
+     "present_at_t0": false,
+     "routing_unit_marginal": {
+      "lab_north": 0.5,
+      "lab_west": 0.5
+     },
+     "destination_marginal": {
+      "lab_north": 0.5,
+      "lab_west": 0.5
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 0.5,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 1.0,
+     "typed_p_default_holds": 1.0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      1.0
+     ],
+     "marginals_determine_success": false,
+     "independence_reading": 0.5,
+     "q_give": null
+    }
+   ],
+   "K(R)_content_marginal": {
+    "lab_north": 0.5,
+    "lab_west": 0.5
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(bob)",
+    "K(frank)",
+    "K(nadia)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(frank)}": 0.8,
+      "{K(nadia)}": 0.8,
+      "{K(bob),K(frank)}": 0.8,
+      "{K(bob),K(nadia)}": 0.8,
+      "{K(frank),K(nadia)}": 0.8,
+      "{K(bob),K(frank),K(nadia)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(frank))": 0.0,
+      "I(K(bob),K(nadia))": 0.0,
+      "I(K(frank),K(nadia))": 0.0
+     },
+     "first_action_empty": [
+      "move(hall)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(frank)}": 0.8,
+      "{K(nadia)}": 0.8,
+      "{K(bob),K(frank)}": 0.8,
+      "{K(bob),K(nadia)}": 0.8,
+      "{K(frank),K(nadia)}": 0.8,
+      "{K(bob),K(frank),K(nadia)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(frank))": 0.0,
+      "I(K(bob),K(nadia))": 0.0,
+      "I(K(frank),K(nadia))": 0.0
+     },
+     "first_action_empty": [
+      "move(hall)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(frank)}": 0.8,
+      "{K(nadia)}": 0.8,
+      "{K(bob),K(frank)}": 0.8,
+      "{K(bob),K(nadia)}": 0.8,
+      "{K(frank),K(nadia)}": 0.8,
+      "{K(bob),K(frank),K(nadia)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(frank))": 0.0,
+      "I(K(bob),K(nadia))": 0.0,
+      "I(K(frank),K(nadia))": 0.0
+     },
+     "first_action_empty": [
+      "move(hall)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 6,
+    "actor_patterns": [
+     "2b:0"
+    ],
+    "J": {
+     "{}": 0.75,
+     "{K(bob)}": 0.8,
+     "{K(frank)}": 0.75,
+     "{K(nadia)}": 0.75,
+     "{K(bob),K(frank)}": 0.8,
+     "{K(bob),K(nadia)}": 0.8,
+     "{K(frank),K(nadia)}": 0.75,
+     "{K(bob),K(frank),K(nadia)}": 0.8
+    },
+    "first_actions": {
+     "{}": {
+      "ask(bob,frank_loc)": 1.0
+     },
+     "{K(bob)}": {
+      "move(hall)": 1.0
+     },
+     "{K(frank)}": {
+      "ask(bob,frank_loc)": 1.0
+     },
+     "{K(nadia)}": {
+      "ask(bob,frank_loc)": 1.0
+     },
+     "{K(bob),K(frank)}": {
+      "move(hall)": 1.0
+     },
+     "{K(bob),K(nadia)}": {
+      "move(hall)": 1.0
+     },
+     "{K(frank),K(nadia)}": {
+      "ask(bob,frank_loc)": 1.0
+     },
+     "{K(bob),K(frank),K(nadia)}": {
+      "move(hall)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(bob)}": 0.0,
+     "{K(frank)}": 0.0,
+     "{K(nadia)}": 0.0,
+     "{K(bob),K(frank)}": 0.0,
+     "{K(bob),K(nadia)}": 0.0,
+     "{K(frank),K(nadia)}": 0.0,
+     "{K(bob),K(frank),K(nadia)}": 0.0
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(bob)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(frank)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(nadia)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(bob),K(frank)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(bob),K(nadia)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(frank),K(nadia)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(bob,frank_loc)",
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(bob),K(frank),K(nadia)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "move(hall)",
+        "move(lab_west)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(lab_north)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(bob),K(frank))": 0.0,
+     "I(K(bob),K(nadia))": 0.0,
+     "I(K(frank),K(nadia))": 0.0
+    }
+   }
+  },
+  {
+   "instance_id": "dev-v3-2c-stakes1-perm0",
+   "construction": "2c",
+   "stakes": 1.0,
+   "roles": {
+    "H": "ivan",
+    "N": "dave",
+    "P": "frank",
+    "R": "judy"
+   },
+   "consistent_worlds": 4,
+   "bayes_v_t0": 0.95,
+   "bayes_optimal_first": [
+    "give(dave)"
+   ],
+   "q_t0": {
+    "ask(dave,judy_loc)": 0.9,
+    "ask(frank,judy_loc)": 0.9,
+    "ask(ivan,judy_loc)": 0.9,
+    "drop(desk_14)": -0.175,
+    "drop(desk_3)": 0.2,
+    "drop(desk_9)": -0.175,
+    "give(dave)": 0.95,
+    "give(ivan)": -0.55,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "recipient_location_marginal": {
+    "desk_14": 0.25,
+    "desk_3": 0.5,
+    "desk_9": 0.25
+   },
+   "couriers": [
+    {
+     "courier": "dave",
+     "routing_unit": "K(dave)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "desk_14": 0.25,
+      "desk_3": 0.5,
+      "desk_9": 0.25
+     },
+     "destination_marginal": {
+      "desk_14": 0.25,
+      "desk_3": 0.5,
+      "desk_9": 0.25
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 0.5,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 1.0,
+     "typed_p_default_holds": 1.0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      1.0
+     ],
+     "marginals_determine_success": false,
+     "independence_reading": 0.375,
+     "q_give": 0.95
+    },
+    {
+     "courier": "ivan",
+     "routing_unit": "K(ivan)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "desk_14": 0.5,
+      "desk_9": 0.5
+     },
+     "destination_marginal": {
+      "desk_14": 0.5,
+      "desk_9": 0.5
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 0.5,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 0,
+     "typed_p_default_holds": 0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      0.5
+     ],
+     "marginals_determine_success": false,
+     "independence_reading": 0.25,
+     "q_give": -0.55
+    }
+   ],
+   "K(R)_content_marginal": {
+    "desk_14": 0.25,
+    "desk_3": 0.5,
+    "desk_9": 0.25
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(dave)",
+    "K(ivan)",
+    "K(judy)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.95,
+      "{K(dave)}": 0.95,
+      "{K(ivan)}": 0.95,
+      "{K(judy)}": 0.95,
+      "{K(dave),K(ivan)}": 0.95,
+      "{K(dave),K(judy)}": 0.95,
+      "{K(ivan),K(judy)}": 0.95,
+      "{K(dave),K(ivan),K(judy)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(dave),K(ivan))": 0.0,
+      "I(K(dave),K(judy))": 0.0,
+      "I(K(ivan),K(judy))": 0.0
+     },
+     "first_action_empty": [
+      "give(dave)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": 0.2,
+      "{K(dave)}": 0.95,
+      "{K(ivan)}": 0.2,
+      "{K(judy)}": 0.95,
+      "{K(dave),K(ivan)}": 0.95,
+      "{K(dave),K(judy)}": 0.95,
+      "{K(ivan),K(judy)}": 0.95,
+      "{K(dave),K(ivan),K(judy)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.75,
+     "interactions": {
+      "I(K(dave),K(ivan))": 0.0,
+      "I(K(dave),K(judy))": -0.75,
+      "I(K(ivan),K(judy))": 0.0
+     },
+     "first_action_empty": [
+      "drop(desk_3)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.95,
+      "{K(dave)}": 0.95,
+      "{K(ivan)}": 0.95,
+      "{K(judy)}": 0.95,
+      "{K(dave),K(ivan)}": 0.95,
+      "{K(dave),K(judy)}": 0.95,
+      "{K(ivan),K(judy)}": 0.95,
+      "{K(dave),K(ivan),K(judy)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(dave),K(ivan))": 0.0,
+      "I(K(dave),K(judy))": 0.0,
+      "I(K(ivan),K(judy))": 0.0
+     },
+     "first_action_empty": [
+      "give(dave)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 36,
+    "actor_patterns": [
+     "2a:0",
+     "2a:1",
+     "2c:0",
+     "2c:1"
+    ],
+    "J": {
+     "{}": 0.8,
+     "{K(dave)}": 0.775,
+     "{K(ivan)}": 0.725,
+     "{K(judy)}": 0.775,
+     "{K(dave),K(ivan)}": 0.725,
+     "{K(dave),K(judy)}": 0.775,
+     "{K(ivan),K(judy)}": 0.775,
+     "{K(dave),K(ivan),K(judy)}": 0.825
+    },
+    "first_actions": {
+     "{}": {
+      "ask(dave,judy_loc)": 1.0
+     },
+     "{K(dave)}": {
+      "move(hall)": 1.0
+     },
+     "{K(ivan)}": {
+      "move(hall)": 1.0
+     },
+     "{K(judy)}": {
+      "move(hall)": 1.0
+     },
+     "{K(dave),K(ivan)}": {
+      "move(hall)": 1.0
+     },
+     "{K(dave),K(judy)}": {
+      "move(hall)": 1.0
+     },
+     "{K(ivan),K(judy)}": {
+      "move(hall)": 1.0
+     },
+     "{K(dave),K(ivan),K(judy)}": {
+      "ask(dave,judy_loc)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(dave)}": 0.0,
+     "{K(ivan)}": 0.0,
+     "{K(judy)}": 0.0,
+     "{K(dave),K(ivan)}": 1.1102230246251565e-16,
+     "{K(dave),K(judy)}": 8.548717289613705e-15,
+     "{K(ivan),K(judy)}": 1.1102230246251565e-16,
+     "{K(dave),K(ivan),K(judy)}": 0.00012508756129303578
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(dave)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      }
+     ],
+     "{K(ivan)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      }
+     ],
+     "{K(judy)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      }
+     ],
+     "{K(dave),K(ivan)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      }
+     ],
+     "{K(dave),K(judy)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      }
+     ],
+     "{K(ivan),K(judy)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      }
+     ],
+     "{K(dave),K(ivan),K(judy)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "drop(desk_3)->success"
+       ],
+       "return": 0.9
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "drop(desk_3)->success"
+       ],
+       "return": 0.9
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(dave),K(ivan))": 0.025,
+     "I(K(dave),K(judy))": 0.025,
+     "I(K(ivan),K(judy))": 0.075
+    }
+   }
+  },
+  {
+   "instance_id": "dev-v3-2c-stakes4-perm0",
+   "construction": "2c",
+   "stakes": 4.0,
+   "roles": {
+    "H": "ivan",
+    "N": "dave",
+    "P": "frank",
+    "R": "judy"
+   },
+   "consistent_worlds": 4,
+   "bayes_v_t0": 0.95,
+   "bayes_optimal_first": [
+    "give(dave)"
+   ],
+   "q_t0": {
+    "ask(dave,judy_loc)": 0.9,
+    "ask(frank,judy_loc)": 0.9,
+    "ask(ivan,judy_loc)": 0.9,
+    "drop(desk_14)": -1.3,
+    "drop(desk_3)": -0.55,
+    "drop(desk_9)": -1.3,
+    "give(dave)": 0.95,
+    "give(ivan)": -2.05,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "recipient_location_marginal": {
+    "desk_14": 0.25,
+    "desk_3": 0.5,
+    "desk_9": 0.25
+   },
+   "couriers": [
+    {
+     "courier": "dave",
+     "routing_unit": "K(dave)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "desk_14": 0.25,
+      "desk_3": 0.5,
+      "desk_9": 0.25
+     },
+     "destination_marginal": {
+      "desk_14": 0.25,
+      "desk_3": 0.5,
+      "desk_9": 0.25
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 0.5,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 1.0,
+     "typed_p_default_holds": 1.0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      1.0
+     ],
+     "marginals_determine_success": false,
+     "independence_reading": 0.375,
+     "q_give": 0.95
+    },
+    {
+     "courier": "ivan",
+     "routing_unit": "K(ivan)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "desk_14": 0.5,
+      "desk_9": 0.5
+     },
+     "destination_marginal": {
+      "desk_14": 0.5,
+      "desk_9": 0.5
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 0.5,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 0,
+     "typed_p_default_holds": 0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      0.5
+     ],
+     "marginals_determine_success": false,
+     "independence_reading": 0.25,
+     "q_give": -2.05
+    }
+   ],
+   "K(R)_content_marginal": {
+    "desk_14": 0.25,
+    "desk_3": 0.5,
+    "desk_9": 0.25
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(dave)",
+    "K(ivan)",
+    "K(judy)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.95,
+      "{K(dave)}": 0.95,
+      "{K(ivan)}": 0.95,
+      "{K(judy)}": 0.95,
+      "{K(dave),K(ivan)}": 0.95,
+      "{K(dave),K(judy)}": 0.95,
+      "{K(ivan),K(judy)}": 0.95,
+      "{K(dave),K(ivan),K(judy)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(dave),K(ivan))": 0.0,
+      "I(K(dave),K(judy))": 0.0,
+      "I(K(ivan),K(judy))": 0.0
+     },
+     "first_action_empty": [
+      "give(dave)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": -0.55,
+      "{K(dave)}": 0.95,
+      "{K(ivan)}": -0.55,
+      "{K(judy)}": 0.95,
+      "{K(dave),K(ivan)}": 0.95,
+      "{K(dave),K(judy)}": 0.95,
+      "{K(ivan),K(judy)}": 0.95,
+      "{K(dave),K(ivan),K(judy)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 1.5,
+     "interactions": {
+      "I(K(dave),K(ivan))": 0.0,
+      "I(K(dave),K(judy))": -1.5,
+      "I(K(ivan),K(judy))": 0.0
+     },
+     "first_action_empty": [
+      "drop(desk_3)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.95,
+      "{K(dave)}": 0.95,
+      "{K(ivan)}": 0.95,
+      "{K(judy)}": 0.95,
+      "{K(dave),K(ivan)}": 0.95,
+      "{K(dave),K(judy)}": 0.95,
+      "{K(ivan),K(judy)}": 0.95,
+      "{K(dave),K(ivan),K(judy)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(dave),K(ivan))": 0.0,
+      "I(K(dave),K(judy))": 0.0,
+      "I(K(ivan),K(judy))": 0.0
+     },
+     "first_action_empty": [
+      "give(dave)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 36,
+    "actor_patterns": [
+     "2a:0",
+     "2a:1",
+     "2c:0",
+     "2c:1"
+    ],
+    "J": {
+     "{}": 0.8,
+     "{K(dave)}": 0.775,
+     "{K(ivan)}": 0.725,
+     "{K(judy)}": 0.775,
+     "{K(dave),K(ivan)}": 0.725,
+     "{K(dave),K(judy)}": 0.775,
+     "{K(ivan),K(judy)}": 0.775,
+     "{K(dave),K(ivan),K(judy)}": 0.825
+    },
+    "first_actions": {
+     "{}": {
+      "ask(dave,judy_loc)": 1.0
+     },
+     "{K(dave)}": {
+      "move(hall)": 1.0
+     },
+     "{K(ivan)}": {
+      "move(hall)": 1.0
+     },
+     "{K(judy)}": {
+      "move(hall)": 1.0
+     },
+     "{K(dave),K(ivan)}": {
+      "move(hall)": 1.0
+     },
+     "{K(dave),K(judy)}": {
+      "move(hall)": 1.0
+     },
+     "{K(ivan),K(judy)}": {
+      "move(hall)": 1.0
+     },
+     "{K(dave),K(ivan),K(judy)}": {
+      "ask(dave,judy_loc)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(dave)}": 0.0,
+     "{K(ivan)}": 0.0,
+     "{K(judy)}": 0.0,
+     "{K(dave),K(ivan)}": 1.1102230246251565e-16,
+     "{K(dave),K(judy)}": 8.548717289613705e-15,
+     "{K(ivan),K(judy)}": 1.1102230246251565e-16,
+     "{K(dave),K(ivan),K(judy)}": 0.00012508756129303578
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(dave)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      }
+     ],
+     "{K(ivan)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      }
+     ],
+     "{K(judy)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      }
+     ],
+     "{K(dave),K(ivan)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      }
+     ],
+     "{K(dave),K(judy)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      }
+     ],
+     "{K(ivan),K(judy)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "move(hall)",
+        "move(desk_3)",
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.65
+      }
+     ],
+     "{K(dave),K(ivan),K(judy)}": [
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "drop(desk_3)->success"
+       ],
+       "return": 0.9
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_14)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "drop(desk_3)->success"
+       ],
+       "return": 0.9
+      },
+      {
+       "p": 0.25,
+       "actions": [
+        "ask(dave,judy_loc)",
+        "move(hall)",
+        "move(desk_14)",
+        "move(hall)",
+        "move(desk_9)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(dave),K(ivan))": 0.025,
+     "I(K(dave),K(judy))": 0.025,
+     "I(K(ivan),K(judy))": 0.075
+    }
+   }
+  },
+  {
+   "instance_id": "dev-v3-3a-stakes1-perm0",
+   "construction": "3a",
+   "stakes": 1.0,
+   "roles": {
+    "A": "vik",
+    "F": "heidi",
+    "R": "uma"
+   },
+   "consistent_worlds": 2,
+   "bayes_v_t0": 0.95,
+   "bayes_optimal_first": [
+    "give(heidi)"
+   ],
+   "q_t0": {
+    "ask(heidi,meeting_room)": 0.9,
+    "give(heidi)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "recipient_location_marginal": {
+    "room_12": 0.5,
+    "room_7": 0.5
+   },
+   "couriers": [
+    {
+     "courier": "heidi",
+     "routing_unit": "K(heidi->uma)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "room_12": 0.5,
+      "room_7": 0.5
+     },
+     "destination_marginal": {
+      "room_12": 0.5,
+      "room_7": 0.5
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 0.5,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 1.0,
+     "typed_p_default_holds": 1.0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      1.0
+     ],
+     "marginals_determine_success": false,
+     "independence_reading": 0.5,
+     "q_give": 0.95
+    }
+   ],
+   "K(R)_content_marginal": {
+    "room_12": 0.5,
+    "room_7": 0.5
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(heidi->uma)",
+    "K(uma)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.95,
+      "{K(heidi->uma)}": 0.95,
+      "{K(uma)}": 0.95,
+      "{K(heidi->uma),K(uma)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(heidi->uma),K(uma))": 0.0
+     },
+     "first_action_empty": [
+      "give(heidi)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": 0.95,
+      "{K(heidi->uma)}": 0.95,
+      "{K(uma)}": 0.95,
+      "{K(heidi->uma),K(uma)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(heidi->uma),K(uma))": 0.0
+     },
+     "first_action_empty": [
+      "give(heidi)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.95,
+      "{K(heidi->uma)}": 0.95,
+      "{K(uma)}": 0.95,
+      "{K(heidi->uma),K(uma)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(heidi->uma),K(uma))": 0.0
+     },
+     "first_action_empty": [
+      "give(heidi)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 18,
+    "actor_patterns": [
+     "3a:0",
+     "3b:0",
+     "3c:0"
+    ],
+    "J": {
+     "{}": 0.8,
+     "{K(heidi->uma)}": 0.8,
+     "{K(uma)}": 0.8,
+     "{K(heidi->uma),K(uma)}": 0.8
+    },
+    "first_actions": {
+     "{}": {
+      "ask(heidi,meeting_room)": 1.0
+     },
+     "{K(heidi->uma)}": {
+      "move(hall)": 1.0
+     },
+     "{K(uma)}": {
+      "ask(heidi,meeting_room)": 1.0
+     },
+     "{K(heidi->uma),K(uma)}": {
+      "ask(heidi,meeting_room)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(heidi->uma)}": 5.551115123125783e-17,
+     "{K(uma)}": 5.551115123125783e-17,
+     "{K(heidi->uma),K(uma)}": 0.0
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_7)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_12)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(heidi->uma)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(room_12)",
+        "move(hall)",
+        "move(room_7)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(room_12)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(uma)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_7)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_12)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(heidi->uma),K(uma)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_7)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_12)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(heidi->uma),K(uma))": 0.0
+    }
+   }
+  },
+  {
+   "instance_id": "dev-v3-3a-stakes4-perm0",
+   "construction": "3a",
+   "stakes": 4.0,
+   "roles": {
+    "A": "vik",
+    "F": "heidi",
+    "R": "uma"
+   },
+   "consistent_worlds": 2,
+   "bayes_v_t0": 0.95,
+   "bayes_optimal_first": [
+    "give(heidi)"
+   ],
+   "q_t0": {
+    "ask(heidi,meeting_room)": 0.9,
+    "give(heidi)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "recipient_location_marginal": {
+    "room_12": 0.5,
+    "room_7": 0.5
+   },
+   "couriers": [
+    {
+     "courier": "heidi",
+     "routing_unit": "K(heidi->uma)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "room_12": 0.5,
+      "room_7": 0.5
+     },
+     "destination_marginal": {
+      "room_12": 0.5,
+      "room_7": 0.5
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 0.5,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 1.0,
+     "typed_p_default_holds": 1.0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      1.0
+     ],
+     "marginals_determine_success": false,
+     "independence_reading": 0.5,
+     "q_give": 0.95
+    }
+   ],
+   "K(R)_content_marginal": {
+    "room_12": 0.5,
+    "room_7": 0.5
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(heidi->uma)",
+    "K(uma)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.95,
+      "{K(heidi->uma)}": 0.95,
+      "{K(uma)}": 0.95,
+      "{K(heidi->uma),K(uma)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(heidi->uma),K(uma))": 0.0
+     },
+     "first_action_empty": [
+      "give(heidi)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": 0.95,
+      "{K(heidi->uma)}": 0.95,
+      "{K(uma)}": 0.95,
+      "{K(heidi->uma),K(uma)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(heidi->uma),K(uma))": 0.0
+     },
+     "first_action_empty": [
+      "give(heidi)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.95,
+      "{K(heidi->uma)}": 0.95,
+      "{K(uma)}": 0.95,
+      "{K(heidi->uma),K(uma)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(heidi->uma),K(uma))": 0.0
+     },
+     "first_action_empty": [
+      "give(heidi)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 18,
+    "actor_patterns": [
+     "3a:0",
+     "3b:0",
+     "3c:0"
+    ],
+    "J": {
+     "{}": 0.8,
+     "{K(heidi->uma)}": 0.8,
+     "{K(uma)}": 0.8,
+     "{K(heidi->uma),K(uma)}": 0.8
+    },
+    "first_actions": {
+     "{}": {
+      "ask(heidi,meeting_room)": 1.0
+     },
+     "{K(heidi->uma)}": {
+      "move(hall)": 1.0
+     },
+     "{K(uma)}": {
+      "ask(heidi,meeting_room)": 1.0
+     },
+     "{K(heidi->uma),K(uma)}": {
+      "ask(heidi,meeting_room)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(heidi->uma)}": 5.551115123125783e-17,
+     "{K(uma)}": 5.551115123125783e-17,
+     "{K(heidi->uma),K(uma)}": 0.0
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_7)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_12)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(heidi->uma)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(room_12)",
+        "move(hall)",
+        "move(room_7)",
+        "deliver()->success"
+       ],
+       "return": 0.75
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(room_12)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(uma)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_7)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_12)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(heidi->uma),K(uma)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_7)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(heidi,meeting_room)",
+        "move(hall)",
+        "move(room_12)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(heidi->uma),K(uma))": 0.0
+    }
+   }
+  },
+  {
+   "instance_id": "dev-v3-3b-stakes1-perm0",
+   "construction": "3b",
+   "stakes": 1.0,
+   "roles": {
+    "A": "carol",
+    "F": "tomas",
+    "P": "ivan",
+    "R": "bob"
+   },
+   "consistent_worlds": 2,
+   "bayes_v_t0": 0.8,
+   "bayes_optimal_first": [
+    "ask(tomas,meeting_room)",
+    "move(hall)"
+   ],
+   "q_t0": {
+    "ask(ivan,meeting_room)": 0.75,
+    "ask(tomas,meeting_room)": 0.8,
+    "give(tomas)": -0.55,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "recipient_location_marginal": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "couriers": [
+    {
+     "courier": "tomas",
+     "routing_unit": "K(tomas->bob)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "suite_2": 1.0
+     },
+     "destination_marginal": {
+      "suite_2": 1.0
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 1.0,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 0,
+     "typed_p_default_holds": 0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      0.0
+     ],
+     "marginals_determine_success": true,
+     "independence_reading": 0.0,
+     "q_give": -0.55
+    }
+   ],
+   "K(R)_content_marginal": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(bob)",
+    "K(tomas->bob)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(tomas->bob)}": 0.8,
+      "{K(bob),K(tomas->bob)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(tomas->bob))": 0.0
+     },
+     "first_action_empty": [
+      "ask(tomas,meeting_room)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(tomas->bob)}": 0.8,
+      "{K(bob),K(tomas->bob)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(tomas->bob))": 0.0
+     },
+     "first_action_empty": [
+      "ask(tomas,meeting_room)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(tomas->bob)}": 0.8,
+      "{K(bob),K(tomas->bob)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(tomas->bob))": 0.0
+     },
+     "first_action_empty": [
+      "ask(tomas,meeting_room)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 18,
+    "actor_patterns": [
+     "3a:0",
+     "3b:0",
+     "3c:0"
+    ],
+    "J": {
+     "{}": 0.8,
+     "{K(bob)}": 0.8,
+     "{K(tomas->bob)}": 0.75,
+     "{K(bob),K(tomas->bob)}": 0.8
+    },
+    "first_actions": {
+     "{}": {
+      "ask(tomas,meeting_room)": 1.0
+     },
+     "{K(bob)}": {
+      "ask(tomas,meeting_room)": 1.0
+     },
+     "{K(tomas->bob)}": {
+      "ask(tomas,meeting_room)": 1.0
+     },
+     "{K(bob),K(tomas->bob)}": {
+      "ask(tomas,meeting_room)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(bob)}": 5.551115123125783e-17,
+     "{K(tomas->bob)}": 1.1102230246251565e-16,
+     "{K(bob),K(tomas->bob)}": 0.0
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_1)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_3)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(bob)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_1)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_3)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(tomas->bob)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_1)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_2)",
+        "move(hall)",
+        "move(suite_3)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      }
+     ],
+     "{K(bob),K(tomas->bob)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_1)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_3)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(bob),K(tomas->bob))": 0.05
+    }
+   }
+  },
+  {
+   "instance_id": "dev-v3-3b-stakes4-perm0",
+   "construction": "3b",
+   "stakes": 4.0,
+   "roles": {
+    "A": "carol",
+    "F": "tomas",
+    "P": "ivan",
+    "R": "bob"
+   },
+   "consistent_worlds": 2,
+   "bayes_v_t0": 0.8,
+   "bayes_optimal_first": [
+    "ask(tomas,meeting_room)",
+    "move(hall)"
+   ],
+   "q_t0": {
+    "ask(ivan,meeting_room)": 0.75,
+    "ask(tomas,meeting_room)": 0.8,
+    "give(tomas)": -2.05,
+    "move(hall)": 0.8,
+    "wait()": 0.75
+   },
+   "recipient_location_marginal": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "couriers": [
+    {
+     "courier": "tomas",
+     "routing_unit": "K(tomas->bob)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "suite_2": 1.0
+     },
+     "destination_marginal": {
+      "suite_2": 1.0
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 1.0,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 0,
+     "typed_p_default_holds": 0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      0.0,
+      0.0
+     ],
+     "marginals_determine_success": true,
+     "independence_reading": 0.0,
+     "q_give": -2.05
+    }
+   ],
+   "K(R)_content_marginal": {
+    "suite_1": 0.5,
+    "suite_3": 0.5
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(bob)",
+    "K(tomas->bob)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(tomas->bob)}": 0.8,
+      "{K(bob),K(tomas->bob)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(tomas->bob))": 0.0
+     },
+     "first_action_empty": [
+      "ask(tomas,meeting_room)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(tomas->bob)}": 0.8,
+      "{K(bob),K(tomas->bob)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(tomas->bob))": 0.0
+     },
+     "first_action_empty": [
+      "ask(tomas,meeting_room)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.8,
+      "{K(bob)}": 0.8,
+      "{K(tomas->bob)}": 0.8,
+      "{K(bob),K(tomas->bob)}": 0.8
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(bob),K(tomas->bob))": 0.0
+     },
+     "first_action_empty": [
+      "ask(tomas,meeting_room)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 18,
+    "actor_patterns": [
+     "3a:0",
+     "3b:0",
+     "3c:0"
+    ],
+    "J": {
+     "{}": 0.8,
+     "{K(bob)}": 0.8,
+     "{K(tomas->bob)}": 0.75,
+     "{K(bob),K(tomas->bob)}": 0.8
+    },
+    "first_actions": {
+     "{}": {
+      "ask(tomas,meeting_room)": 1.0
+     },
+     "{K(bob)}": {
+      "ask(tomas,meeting_room)": 1.0
+     },
+     "{K(tomas->bob)}": {
+      "ask(tomas,meeting_room)": 1.0
+     },
+     "{K(bob),K(tomas->bob)}": {
+      "ask(tomas,meeting_room)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(bob)}": 5.551115123125783e-17,
+     "{K(tomas->bob)}": 1.1102230246251565e-16,
+     "{K(bob),K(tomas->bob)}": 0.0
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_1)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_3)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(bob)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_1)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_3)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ],
+     "{K(tomas->bob)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_1)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_2)",
+        "move(hall)",
+        "move(suite_3)",
+        "deliver()->success"
+       ],
+       "return": 0.7
+      }
+     ],
+     "{K(bob),K(tomas->bob)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_1)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(tomas,meeting_room)",
+        "move(hall)",
+        "move(suite_3)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(bob),K(tomas->bob))": 0.05
+    }
+   }
+  },
+  {
+   "instance_id": "dev-v3-3c-stakes1-perm0",
+   "construction": "3c",
+   "stakes": 1.0,
+   "roles": {
+    "A": "grace",
+    "D": "heidi",
+    "F": "nadia",
+    "R": "frank"
+   },
+   "consistent_worlds": 2,
+   "bayes_v_t0": 0.95,
+   "bayes_optimal_first": [
+    "give(nadia)"
+   ],
+   "q_t0": {
+    "ask(heidi,meeting_room)": 0.9,
+    "ask(nadia,meeting_room)": 0.9,
+    "give(nadia)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "recipient_location_marginal": {
+    "office_b": 1.0
+   },
+   "couriers": [
+    {
+     "courier": "nadia",
+     "routing_unit": "K(nadia->frank)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "office_b": 1.0
+     },
+     "destination_marginal": {
+      "office_b": 1.0
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 1.0,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 1.0,
+     "typed_p_default_holds": 1.0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      1.0,
+      1.0
+     ],
+     "marginals_determine_success": true,
+     "independence_reading": 1.0,
+     "q_give": 0.95
+    }
+   ],
+   "K(R)_content_marginal": {
+    "office_b": 1.0
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(frank)",
+    "K(nadia->frank)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.95,
+      "{K(frank)}": 0.95,
+      "{K(nadia->frank)}": 0.95,
+      "{K(frank),K(nadia->frank)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(frank),K(nadia->frank))": 0.0
+     },
+     "first_action_empty": [
+      "give(nadia)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": 0.95,
+      "{K(frank)}": 0.95,
+      "{K(nadia->frank)}": 0.95,
+      "{K(frank),K(nadia->frank)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(frank),K(nadia->frank))": 0.0
+     },
+     "first_action_empty": [
+      "give(nadia)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.95,
+      "{K(frank)}": 0.95,
+      "{K(nadia->frank)}": 0.95,
+      "{K(frank),K(nadia->frank)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(frank),K(nadia->frank))": 0.0
+     },
+     "first_action_empty": [
+      "give(nadia)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 18,
+    "actor_patterns": [
+     "3a:0",
+     "3b:0",
+     "3c:0"
+    ],
+    "J": {
+     "{}": 0.7,
+     "{K(frank)}": 0.85,
+     "{K(nadia->frank)}": 0.75,
+     "{K(frank),K(nadia->frank)}": 0.95
+    },
+    "first_actions": {
+     "{}": {
+      "ask(nadia,meeting_room)": 1.0
+     },
+     "{K(frank)}": {
+      "move(hall)": 1.0
+     },
+     "{K(nadia->frank)}": {
+      "ask(nadia,meeting_room)": 1.0
+     },
+     "{K(frank),K(nadia->frank)}": {
+      "give(nadia)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(frank)}": 1.1102230246251565e-16,
+     "{K(nadia->frank)}": 1.1102230246251565e-16,
+     "{K(frank),K(nadia->frank)}": 0.0
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(nadia,meeting_room)",
+        "move(hall)",
+        "move(office_c)",
+        "move(hall)",
+        "move(lobby)",
+        "give(nadia)->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(nadia,meeting_room)",
+        "move(hall)",
+        "move(office_a)",
+        "move(hall)",
+        "move(lobby)",
+        "give(nadia)->success"
+       ],
+       "return": 0.7
+      }
+     ],
+     "{K(frank)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(nadia->frank)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(nadia,meeting_room)",
+        "move(hall)",
+        "move(office_b)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(nadia,meeting_room)",
+        "move(hall)",
+        "move(office_a)",
+        "move(hall)",
+        "move(lobby)",
+        "give(nadia)->success"
+       ],
+       "return": 0.7
+      }
+     ],
+     "{K(frank),K(nadia->frank)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "give(nadia)->success"
+       ],
+       "return": 0.95
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "give(nadia)->success"
+       ],
+       "return": 0.95
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(frank),K(nadia->frank))": 0.05
+    }
+   }
+  },
+  {
+   "instance_id": "dev-v3-3c-stakes4-perm0",
+   "construction": "3c",
+   "stakes": 4.0,
+   "roles": {
+    "A": "grace",
+    "D": "heidi",
+    "F": "nadia",
+    "R": "frank"
+   },
+   "consistent_worlds": 2,
+   "bayes_v_t0": 0.95,
+   "bayes_optimal_first": [
+    "give(nadia)"
+   ],
+   "q_t0": {
+    "ask(heidi,meeting_room)": 0.9,
+    "ask(nadia,meeting_room)": 0.9,
+    "give(nadia)": 0.95,
+    "move(hall)": 0.85,
+    "wait()": 0.9
+   },
+   "recipient_location_marginal": {
+    "office_b": 1.0
+   },
+   "couriers": [
+    {
+     "courier": "nadia",
+     "routing_unit": "K(nadia->frank)",
+     "present_at_t0": true,
+     "routing_unit_marginal": {
+      "office_b": 1.0
+     },
+     "destination_marginal": {
+      "office_b": 1.0
+     },
+     "unit_equals_destination": true,
+     "robot_destination_confidence": 1.0,
+     "person_holds_categorical_value_everywhere": true,
+     "p_success_true_joint": 1.0,
+     "typed_p_default_holds": 1.0,
+     "default_holds_equals_success": true,
+     "frechet_from_marginals": [
+      1.0,
+      1.0
+     ],
+     "marginals_determine_success": true,
+     "independence_reading": 1.0,
+     "q_give": 0.95
+    }
+   ],
+   "K(R)_content_marginal": {
+    "office_b": 1.0
+   },
+   "K(R)_equals_location_everywhere": true,
+   "units": [
+    "K(frank)",
+    "K(nadia->frank)"
+   ],
+   "unit_values": {
+    "bayes_full_history_eps1": {
+     "J": {
+      "{}": 0.95,
+      "{K(frank)}": 0.95,
+      "{K(nadia->frank)}": 0.95,
+      "{K(frank),K(nadia->frank)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(frank),K(nadia->frank))": 0.0
+     },
+     "first_action_empty": [
+      "give(nadia)"
+     ]
+    },
+    "grounded_typed_face_value": {
+     "J": {
+      "{}": 0.95,
+      "{K(frank)}": 0.95,
+      "{K(nadia->frank)}": 0.95,
+      "{K(frank),K(nadia->frank)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(frank),K(nadia->frank))": 0.0
+     },
+     "first_action_empty": [
+      "give(nadia)"
+     ]
+    },
+    "grounded_typed_hedged": {
+     "J": {
+      "{}": 0.95,
+      "{K(frank)}": 0.95,
+      "{K(nadia->frank)}": 0.95,
+      "{K(frank),K(nadia->frank)}": 0.95
+     },
+     "max_abs_J_minus_Vstar": 0.0,
+     "interactions": {
+      "I(K(frank),K(nadia->frank))": 0.0
+     },
+     "first_action_empty": [
+      "give(nadia)"
+     ]
+    }
+   },
+   "bounded_context_actor": {
+    "actor_model_worlds": 18,
+    "actor_patterns": [
+     "3a:0",
+     "3b:0",
+     "3c:0"
+    ],
+    "J": {
+     "{}": 0.7,
+     "{K(frank)}": 0.85,
+     "{K(nadia->frank)}": 0.75,
+     "{K(frank),K(nadia->frank)}": 0.95
+    },
+    "first_actions": {
+     "{}": {
+      "ask(nadia,meeting_room)": 1.0
+     },
+     "{K(frank)}": {
+      "move(hall)": 1.0
+     },
+     "{K(nadia->frank)}": {
+      "ask(nadia,meeting_room)": 1.0
+     },
+     "{K(frank),K(nadia->frank)}": {
+      "give(nadia)": 1.0
+     }
+    },
+    "projection_residual": {
+     "{}": 0.0,
+     "{K(frank)}": 1.1102230246251565e-16,
+     "{K(nadia->frank)}": 1.1102230246251565e-16,
+     "{K(frank),K(nadia->frank)}": 0.0
+    },
+    "failures": {},
+    "traces": {
+     "{}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(nadia,meeting_room)",
+        "move(hall)",
+        "move(office_c)",
+        "move(hall)",
+        "move(lobby)",
+        "give(nadia)->success"
+       ],
+       "return": 0.7
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(nadia,meeting_room)",
+        "move(hall)",
+        "move(office_a)",
+        "move(hall)",
+        "move(lobby)",
+        "give(nadia)->success"
+       ],
+       "return": 0.7
+      }
+     ],
+     "{K(frank)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "move(hall)",
+        "move(office_b)",
+        "deliver()->success"
+       ],
+       "return": 0.85
+      }
+     ],
+     "{K(nadia->frank)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(nadia,meeting_room)",
+        "move(hall)",
+        "move(office_b)",
+        "deliver()->success"
+       ],
+       "return": 0.8
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "ask(nadia,meeting_room)",
+        "move(hall)",
+        "move(office_a)",
+        "move(hall)",
+        "move(lobby)",
+        "give(nadia)->success"
+       ],
+       "return": 0.7
+      }
+     ],
+     "{K(frank),K(nadia->frank)}": [
+      {
+       "p": 0.5,
+       "actions": [
+        "give(nadia)->success"
+       ],
+       "return": 0.95
+      },
+      {
+       "p": 0.5,
+       "actions": [
+        "give(nadia)->success"
+       ],
+       "return": 0.95
+      }
+     ]
+    },
+    "interactions": {
+     "I(K(frank),K(nadia->frank))": 0.05
+    }
+   }
+  }
+ ],
+ "prompt_composition": [
+  {
+   "instance_id": "dev-v3-2a-stakes1-perm0",
+   "chars": {
+    "policy_system": 656,
+    "task_card_incl_public_model": 4188,
+    "history_ledger": 750,
+    "physical_summary": 164,
+    "reference_notes_content_only": 478,
+    "reference_notes_with_implication": 753
+   },
+   "history_ledger_text": "HISTORY (robot's own observations):\n  [t0:note0] leo announces to everyone present: \"leo_loc = office_b\" (others present: ravi, yara)\n  [t0:note1] leo leaves the lobby (others present: ravi, yara)\n  [t0:note2] leo arrives in the lobby (others present: ravi, yara)\n  [t0:note3] leo talks quietly to yara; only yara can hear it, and the robot cannot hear what is said (others present: ravi)\n  [t0:note4] leo leaves the lobby (others present: ravi, yara)\n  [t0:note5] judy arrives in the lobby (others present: ravi, yara)\n  [t0:note6] judy says: \"I just got here.\" (others present: ravi, yara)\n  [t0:seen:judy] judy is in the lobby with the robot\n  [t0:seen:ravi] ravi is in the lobby with the robot\n  [t0:seen:yara] yara is in the lobby with the robot",
+   "notes_text": "MIND NOTES (estimates of people's mental states from separate inference steps; they may be wrong, and a person's belief can itself be false or outdated):\n  K(ravi) about leo_loc (as of step 0): office_b: 1.00\n    robot's confidence in this estimate of ravi's belief: high (one value has probability at least 0.8)\n    Given this estimate and the stated forwarding rule, give(ravi) sends the package to office_b with probability 1.00.\n  K(yara) about leo_loc (as of step 0): office_c: 0.50, office_a: 0.50\n    robot's confidence in this estimate of yara's belief: low (several values remain possible)\n    Given this estimate and the stated forwarding rule, give(yara) sends the package to office_c with probability 0.50, to office_a with probability 0.50."
+  },
+  {
+   "instance_id": "dev-v3-2b-stakes1-perm0",
+   "chars": {
+    "policy_system": 656,
+    "task_card_incl_public_model": 4183,
+    "history_ledger": 591,
+    "physical_summary": 138,
+    "reference_notes_content_only": 484,
+    "reference_notes_with_implication": 761
+   },
+   "history_ledger_text": "HISTORY (robot's own observations):\n  [t0:note0] frank announces to everyone present: \"frank_loc = lab_south\" (others present: bob, nadia)\n  [t0:note1] frank leaves the lobby (others present: bob, nadia)\n  [t0:note2] frank arrives in the lobby (others present: bob, nadia)\n  [t0:note3] frank talks quietly to nadia; only nadia can hear it, and the robot cannot hear what is said (others present: bob)\n  [t0:note4] frank leaves the lobby (others present: bob, nadia)\n  [t0:note5] nadia leaves the lobby and the building (others present: bob)\n  [t0:seen:bob] bob is in the lobby with the robot",
+   "notes_text": "MIND NOTES (estimates of people's mental states from separate inference steps; they may be wrong, and a person's belief can itself be false or outdated):\n  K(bob) about frank_loc (as of step 0): lab_south: 1.00\n    robot's confidence in this estimate of bob's belief: high (one value has probability at least 0.8)\n    Given this estimate and the stated forwarding rule, give(bob) sends the package to lab_south with probability 1.00.\n  K(nadia) about frank_loc (as of step 0): lab_west: 0.50, lab_north: 0.50\n    robot's confidence in this estimate of nadia's belief: low (several values remain possible)\n    Given this estimate and the stated forwarding rule, give(nadia) sends the package to lab_west with probability 0.50, to lab_north with probability 0.50."
+  },
+  {
+   "instance_id": "dev-v3-2c-stakes1-perm0",
+   "chars": {
+    "policy_system": 656,
+    "task_card_incl_public_model": 4224,
+    "history_ledger": 930,
+    "physical_summary": 166,
+    "reference_notes_content_only": 495,
+    "reference_notes_with_implication": 832
+   },
+   "history_ledger_text": "HISTORY (robot's own observations):\n  [t0:note0] judy announces to everyone present: \"judy_loc = desk_3\" (others present: dave, frank, ivan)\n  [t0:note1] judy leaves the lobby (others present: dave, frank, ivan)\n  [t0:note2] judy arrives in the lobby (others present: dave, frank, ivan)\n  [t0:note3] judy talks quietly to ivan; only ivan can hear it, and the robot cannot hear what is said (others present: dave, frank)\n  [t0:note4] judy leaves the lobby (others present: dave, frank, ivan)\n  [t0:note5] judy arrives in the lobby (others present: dave, frank, ivan)\n  [t0:note6] judy talks quietly to dave; only dave can hear it, and the robot cannot hear what is said (others present: frank, ivan)\n  [t0:note7] judy leaves the lobby (others present: dave, frank, ivan)\n  [t0:seen:dave] dave is in the lobby with the robot\n  [t0:seen:frank] frank is in the lobby with the robot\n  [t0:seen:ivan] ivan is in the lobby with the robot",
+   "notes_text": "MIND NOTES (estimates of people's mental states from separate inference steps; they may be wrong, and a person's belief can itself be false or outdated):\n  K(dave) about judy_loc (as of step 0): desk_3: 0.50, desk_9: 0.25, desk_14: 0.25\n    robot's confidence in this estimate of dave's belief: low (several values remain possible)\n    Given this estimate and the stated forwarding rule, give(dave) sends the package to desk_3 with probability 0.50, to desk_9 with probability 0.25, to desk_14 with probability 0.25.\n  K(ivan) about judy_loc (as of step 0): desk_9: 0.50, desk_14: 0.50\n    robot's confidence in this estimate of ivan's belief: low (several values remain possible)\n    Given this estimate and the stated forwarding rule, give(ivan) sends the package to desk_9 with probability 0.50, to desk_14 with probability 0.50."
+  },
+  {
+   "instance_id": "dev-v3-3a-stakes1-perm0",
+   "chars": {
+    "policy_system": 656,
+    "task_card_incl_public_model": 4303,
+    "history_ledger": 657,
+    "physical_summary": 142,
+    "reference_notes_content_only": 344,
+    "reference_notes_with_implication": 497
+   },
+   "history_ledger_text": "HISTORY (robot's own observations):\n  [t0:note0] vik announces to everyone present: \"meeting_room = room_19\" (others present: heidi, uma)\n  [t0:note1] uma says: \"meeting_room = room_19\" (others present: heidi, vik)\n  [t0:note2] vik talks quietly to heidi; only heidi can hear it, and the robot cannot hear what is said (others present: uma)\n  [t0:note3] heidi talks quietly to uma; only uma can hear it, and the robot cannot hear what is said (others present: vik)\n  [t0:note4] vik leaves the lobby and the building (others present: heidi, uma)\n  [t0:note5] uma leaves the lobby (others present: heidi)\n  [t0:seen:heidi] heidi is in the lobby with the robot",
+   "notes_text": "MIND NOTES (estimates of people's mental states from separate inference steps; they may be wrong, and a person's belief can itself be false or outdated):\n  K(heidi->uma) about meeting_room (as of step 0): room_7: 0.50, room_12: 0.50\n    robot's confidence in this estimate of what heidi thinks uma believes: low (several values remain possible)\n    Given this estimate and the stated forwarding rule, give(heidi) sends the package to room_7 with probability 0.50, to room_12 with probability 0.50."
+  },
+  {
+   "instance_id": "dev-v3-3b-stakes1-perm0",
+   "chars": {
+    "policy_system": 656,
+    "task_card_incl_public_model": 4327,
+    "history_ledger": 756,
+    "physical_summary": 154,
+    "reference_notes_content_only": 339,
+    "reference_notes_with_implication": 459
+   },
+   "history_ledger_text": "HISTORY (robot's own observations):\n  [t0:note0] carol announces to everyone present: \"meeting_room = suite_2\" (others present: bob, ivan, tomas)\n  [t0:note1] bob says: \"meeting_room = suite_2\" (others present: carol, ivan, tomas)\n  [t0:note2] carol talks quietly to tomas; only tomas can hear it, and the robot cannot hear what is said (others present: bob, ivan)\n  [t0:note3] carol talks quietly to bob; only bob can hear it, and the robot cannot hear what is said (others present: ivan, tomas)\n  [t0:note4] carol leaves the lobby and the building (others present: bob, ivan, tomas)\n  [t0:note5] bob leaves the lobby (others present: ivan, tomas)\n  [t0:seen:ivan] ivan is in the lobby with the robot\n  [t0:seen:tomas] tomas is in the lobby with the robot",
+   "notes_text": "MIND NOTES (estimates of people's mental states from separate inference steps; they may be wrong, and a person's belief can itself be false or outdated):\n  K(tomas->bob) about meeting_room (as of step 0): suite_2: 1.00\n    robot's confidence in this estimate of what tomas thinks bob believes: high (one value has probability at least 0.8)\n    Given this estimate and the stated forwarding rule, give(tomas) sends the package to suite_2 with probability 1.00."
+  },
+  {
+   "instance_id": "dev-v3-3c-stakes1-perm0",
+   "chars": {
+    "policy_system": 656,
+    "task_card_incl_public_model": 4454,
+    "history_ledger": 740,
+    "physical_summary": 156,
+    "reference_notes_content_only": 344,
+    "reference_notes_with_implication": 465
+   },
+   "history_ledger_text": "HISTORY (robot's own observations):\n  [t0:note0] grace announces to everyone present: \"meeting_room = office_b\" (others present: frank, nadia)\n  [t0:note1] frank says: \"meeting_room = office_b\" (others present: grace, nadia)\n  [t0:note2] grace talks quietly to nadia; only nadia can hear it, and the robot cannot hear what is said (others present: frank)\n  [t0:note3] grace leaves the lobby and the building (others present: frank, nadia)\n  [t0:note4] frank leaves the lobby (others present: nadia)\n  [t0:note5] heidi arrives in the lobby (others present: nadia)\n  [t0:note6] heidi says: \"I just got here.\" (others present: nadia)\n  [t0:seen:heidi] heidi is in the lobby with the robot\n  [t0:seen:nadia] nadia is in the lobby with the robot",
+   "notes_text": "MIND NOTES (estimates of people's mental states from separate inference steps; they may be wrong, and a person's belief can itself be false or outdated):\n  K(nadia->frank) about meeting_room (as of step 0): office_b: 1.00\n    robot's confidence in this estimate of what nadia thinks frank believes: high (one value has probability at least 0.8)\n    Given this estimate and the stated forwarding rule, give(nadia) sends the package to office_b with probability 1.00."
+  }
+ ],
+ "repair_compute": {
+  "none": {
+   "episodes": 1152.0,
+   "decision_calls_per_episode": 3.1,
+   "decision_prompt_tokens_per_episode": 4614.9,
+   "decision_completion_tokens_per_episode": 615.5,
+   "decision_reasoning_tokens_per_episode": 545.7,
+   "decision_prompt_tokens_per_call": 1465.4,
+   "decision_completion_tokens_per_call": 195.4
+  },
+  "reference": {
+   "episodes": 1152.0,
+   "decision_calls_per_episode": 3.1,
+   "decision_prompt_tokens_per_episode": 4903.2,
+   "decision_completion_tokens_per_episode": 608.8,
+   "decision_reasoning_tokens_per_episode": 538.7,
+   "decision_prompt_tokens_per_call": 1560.4,
+   "decision_completion_tokens_per_call": 193.7
+  },
+  "inferred": {
+   "episodes": 1152.0,
+   "decision_calls_per_episode": 3.1,
+   "decision_prompt_tokens_per_episode": 4764.1,
+   "decision_completion_tokens_per_episode": 601.7,
+   "decision_reasoning_tokens_per_episode": 533.3,
+   "decision_prompt_tokens_per_call": 1556.9,
+   "decision_completion_tokens_per_call": 196.6,
+   "note_attempts": 883.0,
+   "note_prompt_tokens_per_attempt": 2742.9,
+   "note_completion_tokens_per_attempt": 540.7,
+   "note_reasoning_tokens_per_attempt": 351.0
+  }
+ },
+ "seconds": 13.66
+}
