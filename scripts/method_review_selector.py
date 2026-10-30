@@ -1,0 +1,120 @@
+"""Method review (D-017): allocation headroom in EXISTING repair-block episodes. No model calls.
+
+    python scripts/method_review_selector.py    # writes reports/method-review/selector-headroom.{json,md}
+
+Question: with correct notes at ZERO instantiation cost (the reference arm), how much return could a per-cell
+selector gain over no notes if it knew, for each (construction, stakes) cell, which allocation is best?
+Options per cell: none (empty allocation), reference (the construction's focal unit), and in stratum 3 also
+reference_KR (K(R) instead of K(F->R)). Estimand: equal-weight mean over the 24 cells, as in the repair block.
+
+- in-sample selector: chooses and evaluates on the same seeds (optimistic: winner's curse);
+- cross-fitted selector: chooses on a random half of the 24 seeds, evaluates on the other half (200 splits);
+- CI: percentile bootstrap over seeds (the independent base-scenario unit), 1,000 resamples x 40 splits.
+Data: reports/repair-block/evidence/episodes-stage2.csv (seeds 20261100-23, inspected development data).
+This is an upper-bound-style diagnostic for the full-history local actor with free correct notes; it is not an
+allocation result, and a selector that knows the construction is not deployable.
+"""
+
+from __future__ import annotations
+
+import csv
+import json
+import random
+import statistics
+from collections import defaultdict
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+CSV = ROOT / "reports/repair-block/evidence/episodes-stage2.csv"
+OUT = ROOT / "reports/method-review"
+OPTIONS = ("none", "reference", "reference_KR")
+
+
+def load():
+    acc = defaultdict(list)  # (cell, option, seed) -> returns
+    for r in csv.DictReader(CSV.open(encoding="utf-8")):
+        if r["condition"] not in OPTIONS:
+            continue
+        sid = r["state_id"]
+        cons = sid.split("-dev-v3-")[1].split("-")[0]
+        stakes = "x4" if "stakes4" in sid else "x1"
+        acc[((cons, stakes), r["condition"], r["seed"])].append(float(r["return"]))
+    table = defaultdict(dict)  # cell -> option -> seed -> mean return
+    for (cell, opt, seed), v in acc.items():
+        table[cell].setdefault(opt, {})[seed] = statistics.fmean(v)
+    return table
+
+
+def cell_mean(table, cell, opt, seeds):
+    d = table[cell][opt]
+    return statistics.fmean(d[s] for s in seeds)
+
+
+def selector_gain(table, choose_seeds, eval_seeds):
+    gains, always_ref = [], []
+    for cell in sorted(table):
+        best = max(table[cell], key=lambda o: (cell_mean(table, cell, o, choose_seeds), o == "none"))
+        base = cell_mean(table, cell, "none", eval_seeds)
+        gains.append(cell_mean(table, cell, best, eval_seeds) - base)
+        always_ref.append(cell_mean(table, cell, "reference", eval_seeds) - base)
+    return statistics.fmean(gains), statistics.fmean(always_ref)
+
+
+def crossfit(table, seeds, rng, splits):
+    out = []
+    for _ in range(splits):
+        s = list(seeds)
+        rng.shuffle(s)
+        a, b = s[: len(s) // 2], s[len(s) // 2:]
+        out.append((selector_gain(table, a, b)[0] + selector_gain(table, b, a)[0]) / 2)
+    return statistics.fmean(out)
+
+
+def main():
+    table = load()
+    seeds = sorted(next(iter(table.values()))["none"])
+    rng = random.Random(20261029)
+    insample, always_ref = selector_gain(table, seeds, seeds)
+    cf = crossfit(table, seeds, rng, 200)
+    boot_in, boot_cf = [], []
+    for _ in range(1000):
+        bs = [rng.choice(seeds) for _ in seeds]
+        boot_in.append(selector_gain(table, bs, bs)[0])
+        # cross-fit within the resample: split distinct positions, allowing duplicated seeds
+        out = []
+        for _ in range(40):
+            idx = list(range(len(bs)))
+            rng.shuffle(idx)
+            a, b = [bs[i] for i in idx[:12]], [bs[i] for i in idx[12:]]
+            out.append((selector_gain(table, a, b)[0] + selector_gain(table, b, a)[0]) / 2)
+        boot_cf.append(statistics.fmean(out))
+    q = lambda xs: [round(sorted(xs)[int(0.025 * len(xs))], 4), round(sorted(xs)[int(0.975 * len(xs)) - 1], 4)]
+    per_cell = {f"{c}-{s}": {o: round(cell_mean(table, (c, s), o, seeds), 4) for o in sorted(table[(c, s)])}
+                for c, s in sorted(table)}
+    chosen = {k: max(v, key=lambda o: (v[o], o == "none")) for k, v in per_cell.items()}
+    res = {"data": str(CSV.relative_to(ROOT)), "seeds": len(seeds), "cells": len(table),
+           "always_reference_minus_none": round(always_ref, 4),
+           "in_sample_selector_minus_none": round(insample, 4), "in_sample_ci95": q(boot_in),
+           "crossfit_selector_minus_none": round(cf, 4), "crossfit_ci95": q(boot_cf),
+           "in_sample_choice": chosen, "per_cell_mean_return": per_cell}
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "selector-headroom.json").write_bytes((json.dumps(res, indent=1) + "\n").encode("utf-8"))
+    L = ["# Allocation headroom with free correct notes (existing repair-block episodes; development data)", "",
+         "Generated by `scripts/method_review_selector.py`. Full-history local gpt-oss-20b policy; reference notes at "
+         "zero instantiation cost; per-cell choice among none / reference / reference_KR (stratum 3). "
+         f"{len(seeds)} seeds x {len(table)} cells. CIs: bootstrap over seeds.", "",
+         "| quantity (return, minus none) | estimate | 95% CI |", "|---|---|---|",
+         f"| always reference (repair primary contrast, recomputed) | {res['always_reference_minus_none']:+.4f} | — |",
+         f"| in-sample per-cell selector (optimistic) | {res['in_sample_selector_minus_none']:+.4f} | "
+         f"[{res['in_sample_ci95'][0]:+.4f}, {res['in_sample_ci95'][1]:+.4f}] |",
+         f"| cross-fitted per-cell selector | {res['crossfit_selector_minus_none']:+.4f} | "
+         f"[{res['crossfit_ci95'][0]:+.4f}, {res['crossfit_ci95'][1]:+.4f}] |", "",
+         "| cell | " + " | ".join(OPTIONS) + " | in-sample choice |", "|---|---|---|---|---|"]
+    for k, v in per_cell.items():
+        L.append(f"| {k} | " + " | ".join(f"{v[o]:.3f}" if o in v else "—" for o in OPTIONS) + f" | {chosen[k]} |")
+    (OUT / "selector-headroom.md").write_bytes(("\n".join(L) + "\n").encode("utf-8"))
+    print(json.dumps({k: v for k, v in res.items() if k not in ("per_cell_mean_return", "in_sample_choice")}))
+
+
+if __name__ == "__main__":
+    main()

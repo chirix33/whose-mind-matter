@@ -1,6 +1,15 @@
-# Milestone report — through the integration diagnostic (2026-10-29)
+# Milestone report — through the method review (2026-10-29)
 
-> **Latest: integration diagnostic complete (D-016).** See **[reports/integration-block/FINAL_REVIEW.md](integration-block/FINAL_REVIEW.md)**.
+> **Latest: method review delivered (D-017).** See **[reports/method-review/METHOD_REVIEW.md](method-review/METHOD_REVIEW.md)**. It is a proposal; nothing was launched.
+> - CPU-only. No LLM calls, paid calls or new seeds.
+> - Commands run: `python scripts/method_review_audit.py` (12 s) and `python scripts/method_review_selector.py`.
+> - **Bayes over the full history:** every note value and interaction is exactly 0, checked on 36 rows.
+> - **Existing symbolic bounded actor:** zero in 5 of 6 constructions; the remaining one, 2c, reflects a default artifact.
+> - **Free correct notes for the local actor:** an oracle per-cell choice gains +0.044 in-sample and −0.001 cross-fitted. One unit costs about +63% of a no-note episode.
+> - **Relationship audit:** give's outcome depends on the joint of the routing unit and K(R), and the notes expose only marginals. Robot confidence is anti-aligned with success. The pair determines 3b, not 3a.
+> - **Recommendation:** stop optimizing this implementation. An optional, bounded closure test of the 3b pair (local, USD 0) has a pre-declared stop rule. Versioned redesigns are listed but not proposed.
+>
+> **Earlier: integration diagnostic complete (D-016).** See **[reports/integration-block/FINAL_REVIEW.md](integration-block/FINAL_REVIEW.md)**.
 > - 1,536 single-decision probes on fresh seeds (3b and 2b, with positive controls 3a and 2a) and a 16-call API check (USD 0.055).
 > - Neither the action-consequence line nor omitting the stale label helped. The line harmed at t0 in 3b (descriptive); omission harmed as a caution signal; the post-ask implication effect is unresolved.
 > - The API policy was optimal on 8/8 contexts with and without notes (a ceiling result).
