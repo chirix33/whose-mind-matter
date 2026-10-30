@@ -1,0 +1,52 @@
+{
+  "run_id": "hybrid-fallback-20261029-233643-d93b61",
+  "kind": "hybrid-fallback",
+  "git_commit": "b42589d2b899237f74cb167e65991ed1acb2ead1",
+  "git_dirty": false,
+  "config": {
+    "stage": "pilot",
+    "freeze_sha256": "1df8549a24ffd88076c235cd211fb2843d17dc54de961a6a536ae2f6dd489414",
+    "decoding": {
+      "temperature": 1.0,
+      "max_tokens": 1024,
+      "reasoning_effort": "low"
+    },
+    "draws": 2,
+    "concurrency": 8,
+    "limit_s": 7200,
+    "seeds": [
+      20261400,
+      20261401,
+      20261402,
+      20261403,
+      20261404,
+      20261405,
+      20261406,
+      20261407
+    ]
+  },
+  "config_hash": "45a51ddb81ed0c93",
+  "python": "3.12.3",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "started_at": "2026-10-30T04:36:43.086540+00:00",
+  "gpu_at_start": [
+    {
+      "name": "NVIDIA GeForce RTX 5090",
+      "driver": "610.60",
+      "memory_total_mib": 32607,
+      "memory_used_mib": 30335
+    }
+  ],
+  "wall_clock_s": 1503.2110460489998,
+  "completed_seed_blocks": [
+    20261400,
+    20261401,
+    20261402,
+    20261403,
+    20261404,
+    20261405,
+    20261406,
+    20261407
+  ],
+  "ended_at": "2026-10-30T05:01:46.332917+00:00"
+}

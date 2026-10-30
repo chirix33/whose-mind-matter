@@ -105,7 +105,7 @@ The only costly step outside this regime, compiling an unseen public-model templ
 - **The generic LLM check is indiscriminate.** It vetoes about as many correct as wrong social handoffs (41 vs 37).
 - **Stakes:** at ×1, checker_gate scores 0.542 vs direct 0.416. At ×4 it scores 0.585 vs 0.190: the gate's value grows with the error cost.
 - **By construction:** the gain is concentrated where the audit predicted, in 1b, 2b, 2c and 3b. For example 3b moves from −0.366 to +0.698 and 2c from −0.439 to +0.381.
-  - The 3c drop (0.733 → 0.528) is policy-draw variance: no check fired in any failing 3c checker episode.
+  - The 3c drop (0.733 → 0.528) is consistent with sampling variability; no check fired in the cited failing checker episodes (wording corrected under D-020).
   - Per-construction cells have n = 32 and are descriptive only.
 
 ## 5. Remaining uncertainty and limitations
@@ -157,3 +157,12 @@ Source:
 - `prompts/hybrid-v1/check_system.txt`, `tests/test_hybrid.py`.
 
 Commits: foundation `6d0579e`, freeze `b42589d`, results (this commit). Raw episodes live outside Git at the run path above, identified by the hashes listed.
+
+## 8. Post-review corrections (D-020, 2026-10-30)
+
+See `audit/AUDIT.md`.
+- **Input contract.** The checker and the Bayes reference received the per-instance generator `Scenario` object, including the construction ID and role→name mapping, not only the LLM's card and history.
+  - A card-compiled public model (every generator pattern whose task card is byte-identical to the LLM's) gives identical outputs: 380/380 pilot checks and 192/192 t0 values and actions.
+  - The checker is therefore output-equivalent to a hand-compiled model of the LLM's own card. It relies on task-specific template engineering; it is not inference from text.
+- **Bayes planner.** The realized deterministic rollout on the same 192 hidden draws is 0.872, alongside the 0.885 expectation. This is a CPU evaluation added in the audit, not a pilot condition.
+- **Classification.** The fallback's failed classification stands. The +0.294 for 1.26× tokens against ask-first is retained as a positive operating-point finding. It is neither a pass nor evidence of no efficiency value.

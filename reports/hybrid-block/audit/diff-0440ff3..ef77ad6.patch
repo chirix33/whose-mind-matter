@@ -1,0 +1,2557 @@
+diff --git a/prompts/hybrid-v1/check_system.txt b/prompts/hybrid-v1/check_system.txt
+new file mode 100644
+index 0000000..1652ea5
+--- /dev/null
++++ b/prompts/hybrid-v1/check_system.txt
+@@ -0,0 +1,5 @@
++You check a proposed action of an office delivery robot before it is executed. The action would end the task: it either delivers the package successfully or sends it to the wrong place.
++
++You receive the public task description (layout, rules, rewards and the public model of how the situation was generated), the robot's own history of actions and observations, a summary of what the robot has physically observed, and the proposed action.
++
++Estimate, from this information only: the probability that the proposed action results in a successful delivery, and, for each office, the probability that the recipient is in that office now. Respond with JSON only, matching the schema.
+diff --git a/scripts/hybrid_bayes_reference.py b/scripts/hybrid_bayes_reference.py
+new file mode 100644
+index 0000000..5aa85df
+--- /dev/null
++++ b/scripts/hybrid_bayes_reference.py
+@@ -0,0 +1,37 @@
++"""Hybrid block (D-019): descriptive reference for the fallback pilot states (CPU, no model).
++
++The public-model Bayes planner is DEPLOYABLE in this regime: it uses only the disclosed public model and the robot-visible
++history. Its exact expected return at t0 (expectimax over the posterior) is computed for the 192 pilot states.
++
++    python3 scripts/hybrid_bayes_reference.py
++"""
++import json
++import statistics
++import sys
++import time
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++sys.path.insert(0, str(ROOT / "scripts"))
++
++from officeminds.episode import VisibleHistory  # noqa: E402
++from vomi.oracle import ExactOracle  # noqa: E402
++import run_hybrid_fallback as RF  # noqa: E402
++
++rows = []
++t = time.perf_counter()
++for st in RF.states():
++    inst = st["inst"]
++    h = VisibleHistory(inst.scenario.brief, [(None, inst.scenario.build(inst.hidden).reset())])
++    o = ExactOracle(inst.scenario, h)
++    rows.append({"state_id": st["state_id"], "construction": inst.construction, "stakes": inst.variant.stakes,
++                 "v_bayes_t0": o.value(o.belief, h.last)})
++cpu = time.perf_counter() - t
++out = {"states": len(rows), "mean_v_bayes_t0": round(statistics.mean(r["v_bayes_t0"] for r in rows), 4),
++       "by_stakes": {f"x{s:g}": round(statistics.mean(r["v_bayes_t0"] for r in rows if r["stakes"] == s), 4) for s in (1.0, 4.0)},
++       "by_construction": {c: round(statistics.mean(r["v_bayes_t0"] for r in rows if r["construction"] == c), 4)
++                           for c in sorted({r["construction"] for r in rows})},
++       "cpu_s_total": round(cpu, 2), "note": "expected return of the exact public-model expectimax policy; not a rollout"}
++(ROOT / "reports" / "hybrid-block" / "bayes-reference.json").write_bytes(json.dumps(out, indent=1).encode())
++print(json.dumps(out, indent=1))
+diff --git a/scripts/hybrid_cpu_gate.py b/scripts/hybrid_cpu_gate.py
+new file mode 100644
+index 0000000..8c77e47
+--- /dev/null
++++ b/scripts/hybrid_cpu_gate.py
+@@ -0,0 +1,337 @@
++"""Hybrid block (D-019) CPU gate: qualification, information boundary, joint-vs-marginal contrasts, cheap-compiler costs,
++decision-value structure, and the branch decision. CPU only; no model calls.
++
++    python3 scripts/hybrid_cpu_gate.py        # writes reports/hybrid-block/cpu-gate.{json,md}
++"""
++
++from __future__ import annotations
++
++import json
++import re
++import statistics
++import sys
++import time
++from fractions import Fraction
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++
++from officeminds import devgen3 as G  # noqa: E402
++from officeminds import hybridfam as F  # noqa: E402
++from officeminds.episode import VisibleHistory  # noqa: E402
++from officeminds.world import Action  # noqa: E402
++from vomi.oracle import ExactOracle  # noqa: E402
++from vomi.relational import (ProvenanceIndex, RelationCache, ReferentEngine, SPECS, j_commit,  # noqa: E402
++                             search_value, term_label)
++
++OUT = ROOT / "reports" / "hybrid-block"
++QUAL_SEEDS = range(20261500, 20261504)  # qualification seeds (public draws only; every hidden world is enumerated)
++SCRIPTS = {"seq": [[], ["wait()"], ["wait()", "wait()"], ["move(hall)"], ["move(hall)", "move(lobby)"]]}
++
++
++def act(s: str) -> Action:
++    m = re.match(r"(\w+)\((\w*)(?:,(\w+))?\)", s)
++    return Action(m[1], m[2] or "", m[3] or "")
++
++
++def history(sc, params, acts):
++    w = sc.build(params)
++    h = VisibleHistory(sc.brief, [(None, w.reset())])
++    for a in acts:
++        h.steps.append((act(a), w.step(act(a))))
++    return w, h
++
++
++def enum_route_p(o: ExactOracle, courier: str, cfg) -> float:
++    """Independent calculation (public-model world enumeration): P(courier's route == recipient's room | h)."""
++    other, fact = cfg.handoff_routes[courier]
++    tot = 0.0
++    for w, x in o.belief:
++        m = x.minds[courier]
++        d = m.beliefs.get(fact, "unknown") if not other else m.nested.get((other, fact), "unknown")
++        tot += w * (d == x.people_rooms[cfg.recipient])
++    return tot
++
++
++def enum_loc(o: ExactOracle, cfg) -> dict:
++    out = {}
++    for w, x in o.belief:
++        r = x.people_rooms[cfg.recipient]
++        out[r] = out.get(r, 0.0) + w
++    return out
++
++
++def obs_key(h) -> str:
++    return json.dumps(h.to_agent_dict(), sort_keys=True)
++
++
++def timed(fn, reps=200):
++    ts = []
++    for _ in range(reps):
++        t = time.perf_counter()
++        fn()
++        ts.append(time.perf_counter() - t)
++    return statistics.median(ts) * 1e6  # microseconds
++
++
++# ----------------------------------------------------------------------------- interface decision values
++def options(eng: ReferentEngine, cfg, h, known: set, exact: bool):
++    """Interface option values using only the computations in `known` ("L" = recipient-location marginal, courier
++    names = relations). exact=True returns the true expected value of every option under the full posterior."""
++    o = h.last
++    room, remaining = o.room, cfg.horizon - o.t
++    loc_t = eng.pm.recipient_loc(eng)
++    loc = {k: float(v) for k, v in eng.dist(loc_t).items()}
++    uniform = {x: 1 / len(cfg.offices) for x in cfg.offices}
++    use_loc = exact or "L" in known
++    opts = {"search": search_value(loc if use_loc else uniform, room, remaining, tuple(cfg.offices))}
++    if exact:  # the declared search policy's true value is its value under the exact location posterior
++        opts["search"] = search_value(loc, room, remaining, tuple(cfg.offices))
++    if cfg.recipient in o.people_present:
++        opts["deliver()"] = -0.05 + 1.0
++    for c in cfg.handoff_routes:
++        if c in o.people_present and (exact or c in known):
++            opts[f"give({c})"] = j_commit(float(eng.p_equal(eng.route(c), loc_t)), cfg.stakes)
++    if cfg.chute_room == room and use_loc:
++        for x in cfg.offices:
++            opts[f"drop({x})"] = j_commit(loc.get(x, 0.0), cfg.stakes)
++    return opts
++
++
++def choose(opts: dict) -> str:
++    best = max(opts.values())
++    return "search" if opts["search"] >= best - 1e-12 else max(opts, key=lambda k: (opts[k], k))
++
++
++def voc_table(eng, cfg, h):
++    """Exact decision value of each candidate computation for the shared interface, for two defaults:
++    safe   - without a computation the interface cannot value that commitment, so it is not considered;
++    commit - a proposed give(c) executes unless rel(c) is computed (the value of a check that can veto)."""
++    exact = options(eng, cfg, h, set(), exact=True)
++    base_known = set()
++    cands = ["L"] + [c for c in cfg.handoff_routes if c in h.last.people_present]
++    v0 = exact[choose(options(eng, cfg, h, base_known, False))]
++    rows = {}
++    for q in cands:
++        v1 = exact[choose(options(eng, cfg, h, {q}, False))]
++        rows[q] = {"safe_default_gain": round(v1 - v0, 6)}
++        if q != "L":
++            j = exact[f"give({q})"]
++            alt = max(v for k, v in exact.items() if k != f"give({q})")
++            rows[q]["commit_default_gain"] = round(max(0.0, alt - j), 6)
++    vL = exact[choose(options(eng, cfg, h, {"L"}, False))]
++    for q in cands[1:]:  # conditional marginal value of a relation once the location marginal is known
++        rows[q]["safe_gain_given_L"] = round(exact[choose(options(eng, cfg, h, {"L", q}, False))] - vL, 6)
++    allk = set(cands)
++    rows["all"] = {"safe_default_gain": round(exact[choose(options(eng, cfg, h, allk, False))] - v0, 6)}
++    return rows, {k: round(v, 6) for k, v in exact.items()}
++
++
++# ----------------------------------------------------------------------------- main checks
++def qualification():
++    checks, mismatches, rows = 0, [], []
++    boundary = {"history_equivalence_pairs": 0, "history_equivalence_violations": 0}
++    for seed in QUAL_SEEDS:
++        for case in F.cases(seed):
++            sc, cfg_c = case.scenario, case.scenario.config
++            for acts in SCRIPTS.get(case.construction, [[]]):
++                by_hist = {}
++                for params, _w in sc.prior:  # EVERY positive-prior hidden world, not one draw
++                    try:
++                        _, h = history(sc, params, acts)
++                    except Exception:
++                        continue
++                    by_hist.setdefault(obs_key(h), (h, []))[1].append(params)
++                for key, (h, plist) in by_hist.items():
++                    o = ExactOracle(sc, h)
++                    eng = ReferentEngine(SPECS[case.construction](cfg_c), ProvenanceIndex.build(h))
++                    # boundary: every world with this visible history yields the identical engine output
++                    out0 = None
++                    for params in plist:
++                        _, h2 = history(sc, params, acts)
++                        e2 = ReferentEngine(SPECS[case.construction](cfg_c), ProvenanceIndex.build(h2))
++                        sig = tuple((c, str(e2.p_equal(e2.route(c), e2.pm.recipient_loc(e2)))) for c in cfg_c.handoff_routes)
++                        boundary["history_equivalence_pairs"] += 1
++                        if out0 is None:
++                            out0 = sig
++                        elif sig != out0:
++                            boundary["history_equivalence_violations"] += 1
++                    loc_e = {k: float(v) for k, v in eng.dist(eng.pm.recipient_loc(eng)).items()}
++                    loc_r = enum_loc(o, cfg_c)
++                    checks += 1
++                    if any(abs(loc_e.get(k, 0) - loc_r.get(k, 0)) > 1e-9 for k in set(loc_e) | set(loc_r)):
++                        mismatches.append({"case": case.case_id, "acts": acts, "what": "loc", "engine": loc_e, "enum": loc_r})
++                    for c in cfg_c.handoff_routes:
++                        rt, lt = eng.route(c), eng.pm.recipient_loc(eng)
++                        pj, pr = float(eng.p_equal(rt, lt)), enum_route_p(o, c, cfg_c)
++                        checks += 1
++                        if abs(pj - pr) > 1e-9:
++                            mismatches.append({"case": case.case_id, "acts": acts, "courier": c, "engine": pj, "enum": pr})
++                        if seed == QUAL_SEEDS[0] and case.stakes == 1.0:
++                            lo, hi = eng.frechet(rt, lt)
++                            rows.append({"construction": case.construction, "acts": acts, "courier": c,
++                                         "route": term_label(rt), "recipient_loc": term_label(lt),
++                                         "route_marginal": {k: str(v) for k, v in eng.dist(rt).items()},
++                                         "loc_marginal": {k: str(v) for k, v in eng.dist(lt).items()},
++                                         "p_joint": str(eng.p_equal(rt, lt)),
++                                         "p_product": str(eng.p_equal_product(rt, lt)),
++                                         "frechet": [str(lo), str(hi)], "hidden": dict(plist[0]),
++                                         "provenance": list(eng.provenance(c, cfg_c.handoff_routes[c][1],
++                                                                           cfg_c.handoff_routes[c][0]))})
++    return checks, mismatches, rows, boundary
++
++
++def static_boundary_scan():
++    src = (ROOT / "src" / "vomi" / "relational.py").read_text(encoding="utf-8")
++    code = "\n".join(l for l in src.splitlines() if not l.strip().startswith("#"))
++    code = re.sub(r'"""[\s\S]*?"""', "", code)
++    banned = [r"\.minds\b", r"people_rooms", r"\.hidden\b", r"\bWorld\(", r"ExactOracle", r"\boracle\b", r"PersonMind",
++              r"\.facts\b", r"timed_events", r"\bw(?:orld)?\.log\b", r"\bprivileged\b"]
++    return {b: len(re.findall(b, code)) for b in banned}
++
++
++def contrasts():
++    """Representation necessity and evidence/consequence separation on fixed draws."""
++    out = {}
++    seed = QUAL_SEEDS[0]
++    cs = {(c.construction, c.stakes): c for c in F.cases(seed)}
++    for (con, st), case in sorted(cs.items()):
++        if con == "seq":
++            continue
++        sc, cfg = case.scenario, case.scenario.config
++        _, h = history(sc, case.hidden, [])
++        eng = ReferentEngine(SPECS[con](cfg), ProvenanceIndex.build(h))
++        o = ExactOracle(sc, h)
++        lt = eng.pm.recipient_loc(eng)
++        row = {"bayes_action": str(o.best_action(o.belief, h.last))}
++        for c in cfg.handoff_routes:
++            if c not in h.last.people_present:
++                continue
++            rt = eng.route(c)
++            pj, pp = float(eng.p_equal(rt, lt)), float(eng.p_equal_product(rt, lt))
++            loc = {k: float(v) for k, v in eng.dist(lt).items()}
++            v_alt = search_value(loc, "lobby", cfg.horizon, tuple(cfg.offices))
++            row[c] = {"p_joint": round(pj, 4), "p_product": round(pp, 4), "J_joint": round(j_commit(pj, st), 4),
++                      "J_product": round(j_commit(pp, st), 4), "V_alt": round(v_alt, 4),
++                      "gate_joint": "allow" if j_commit(pj, st) >= v_alt else "veto",
++                      "gate_product": "allow" if j_commit(pp, st) >= v_alt else "veto"}
++        out[f"{con}-x{st:g}"] = row
++    # evidence-only vs person-state updates
++    case = cs[("2d", 1.0)]
++    sc, cfg = case.scenario, case.scenario.config
++    H, N = case.names["H"], case.names["N"]
++    _, h0 = history(sc, case.hidden, [])
++    e0 = ReferentEngine(SPECS["2d"](cfg), ProvenanceIndex.build(h0))
++    _, h1 = history(sc, case.hidden, [f"ask({H},{cfg.query_facts[0]})"])
++    e1 = ReferentEngine(SPECS["2d"](cfg), ProvenanceIndex.build(h1))
++    lt0, lt1 = e0.pm.recipient_loc(e0), e1.pm.recipient_loc(e1)
++    out["evidence_only_update"] = {
++        "event": f"robot asks {H} (answer heard)",
++        "H_term_before": term_label(e0.route(H)), "H_term_after": term_label(e1.route(H)),
++        "H_route_marginal_before": {k: str(v) for k, v in e0.dist(e0.route(H)).items()},
++        "H_route_marginal_after": {k: str(v) for k, v in e1.dist(e1.route(H)).items()},
++        "p_rel_N_before": str(e0.p_equal(e0.route(N), lt0)), "p_rel_N_after": str(e1.p_equal(e1.route(N), lt1)),
++        "p_rel_H_before": str(e0.p_equal(e0.route(H), lt0)), "p_rel_H_after": str(e1.p_equal(e1.route(H), lt1)),
++        "recipient_marginal_after": {k: str(v) for k, v in e1.dist(lt1).items()}}
++    # person-state change (seq, return observed) vs reuse (seq, no return) vs unobserved interval
++    seqs = {}
++    for case in [c for c in F.cases(seed) if c.construction == "seq" and c.stakes == 1.0]:
++        sc, cfg = case.scenario, case.scenario.config
++        for ret in ("yes", "no"):
++            params = tuple((k, ret if k == "ret" else v) for k, v in case.hidden)
++            for label, acts in (("watch", ["wait()", "wait()"]), ("away_t1", ["move(hall)", "move(lobby)"])):
++                cache = RelationCache()
++                ops = []
++                for k in range(len(acts) + 1):
++                    _, h = history(sc, params, acts[:k])
++                    eng = ReferentEngine(SPECS["seq"](cfg), ProvenanceIndex.build(h))
++                    for c in sorted(cfg.handoff_routes):
++                        rec, op = cache.get(c, eng)
++                        fresh = eng.p_equal(eng.route(c), eng.pm.recipient_loc(eng))
++                        ops.append({"t": k, "courier": c, "op": op, "p": str(rec.p), "route": rec.route_term,
++                                    "loc": rec.loc_term, "reused_equals_fresh": rec.p == fresh})
++                o = ExactOracle(sc, h)
++                seqs[f"ret={ret}/{label}"] = {"ops": ops, "bayes_action_t2": str(o.best_action(o.belief, h.last)),
++                                              "present_t2": list(h.last.people_present)}
++    out["reuse_refresh"] = seqs
++    return out
++
++
++def voc_structure():
++    rows = []
++    seed = QUAL_SEEDS[0]
++    for case in F.cases(seed):
++        sc, cfg = case.scenario, case.scenario.config
++        for acts in ([["wait()", "wait()"], ["move(hall)", "move(lobby)"]] if case.construction == "seq" else [[]]):
++            for params in ([tuple((k, r if k == "ret" else v) for k, v in case.hidden) for r in ("yes", "no")]
++                           if case.construction == "seq" else [case.hidden]):
++                _, h = history(sc, params, acts)
++                eng = ReferentEngine(SPECS[case.construction](cfg), ProvenanceIndex.build(h))
++                table, exact = voc_table(eng, cfg, h)
++                rows.append({"construction": case.construction, "stakes": case.stakes, "acts": acts,
++                             "hidden": dict(params), "present": list(h.last.people_present), "voc": table,
++                             "exact_option_values": exact})
++    return rows
++
++
++def costs():
++    seed = QUAL_SEEDS[0]
++    out = {}
++    for case in F.cases(seed):
++        if case.stakes != 1.0:
++            continue
++        sc, cfg = case.scenario, case.scenario.config
++        _, h = history(sc, case.hidden, [])
++        spec = SPECS[case.construction]
++        couriers = list(cfg.handoff_routes)
++
++        def one():
++            e = ReferentEngine(spec(cfg), ProvenanceIndex.build(h))
++            e.p_equal(e.route(couriers[0]), e.pm.recipient_loc(e))
++
++        def dense():
++            e = ReferentEngine(spec(cfg), ProvenanceIndex.build(h))
++            lt = e.pm.recipient_loc(e)
++            e.dist(lt)
++            for c in couriers:
++                e.p_equal(e.route(c), lt)
++
++        def enum():
++            o = ExactOracle(sc, h)
++            for c in couriers:
++                enum_route_p(o, c, cfg)
++
++        out[case.construction] = {"index_us": round(timed(lambda: ProvenanceIndex.build(h)), 1),
++                                  "one_relation_us": round(timed(one), 1), "dense_all_us": round(timed(dense), 1),
++                                  "world_enumeration_us": round(timed(enum, 50), 1), "n_worlds": len(sc.prior)}
++    # the fallback's deployed checker on the 12 dev-v3 constructions (public-model enumeration at t0)
++    dev = {}
++    for inst in G.generate(20261500):
++        if inst.variant.permuted or inst.variant.stakes != 1.0:
++            continue
++        w = inst.scenario.build(inst.hidden)
++        h = VisibleHistory(inst.scenario.brief, [(None, w.reset())])
++        dev[inst.construction] = {"world_enumeration_us": round(timed(lambda: ExactOracle(inst.scenario, h), 30), 1),
++                                  "n_worlds": len(inst.scenario.prior)}
++    return out, dev
++
++
++def main():
++    OUT.mkdir(parents=True, exist_ok=True)
++    t0 = time.monotonic()
++    checks, mism, rows, boundary = qualification()
++    scan = static_boundary_scan()
++    con = contrasts()
++    voc = voc_structure()
++    cost, devcost = costs()
++    res = {"qualification": {"checks": checks, "mismatches": mism, "rows_seed0": rows, "seeds": list(QUAL_SEEDS)},
++           "boundary": {**boundary, "static_scan_relational_py": scan}, "contrasts": con, "voc": voc,
++           "costs_family_us": cost, "costs_devv3_checker_us": devcost, "wall_s": round(time.monotonic() - t0, 1)}
++    (OUT / "cpu-gate.json").write_bytes(json.dumps(res, indent=1, default=str).encode("utf-8"))
++    print(json.dumps({"checks": checks, "mismatches": len(mism), "boundary": boundary, "scan": scan,
++                      "wall_s": res["wall_s"]}, indent=1))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/hybrid_export_bundle.py b/scripts/hybrid_export_bundle.py
+new file mode 100644
+index 0000000..acae726
+--- /dev/null
++++ b/scripts/hybrid_export_bundle.py
+@@ -0,0 +1,180 @@
++"""D-020 evidence export from EXISTING hybrid-block artifacts (no model calls, no new runs).
++
++    python3 scripts/hybrid_export_bundle.py RUN_DIR     # writes reports/hybrid-block/audit/{episodes.csv, interventions.csv,
++                                                         #   traces/*.json, episodes-agent.jsonl.gz, episodes-privileged.jsonl}
++
++Column convention: fields prefixed `eval_` are EVALUATOR-ONLY (computed by replaying the hidden draw or by the exact
++reference); they were never inputs to any deployed condition. All other fields are what the deployed condition saw or did.
++"""
++
++from __future__ import annotations
++
++import csv
++import gzip
++import io
++import json
++import re
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++sys.path.insert(0, str(ROOT / "scripts"))
++
++from officeminds.world import Action  # noqa: E402
++import run_hybrid_fallback as RF  # noqa: E402
++
++OUT = ROOT / "reports" / "hybrid-block" / "audit"
++
++
++def parse(s):
++    m = re.match(r"(\w+)\((\w*)(?:,(\w+))?\)", s)
++    return Action(m[1], m[2] or "", m[3] or "")
++
++
++def klass(con, a):
++    return "social_belief" if a.kind == "give" else ("testimony_reliability" if con in ("4b", "4c") else "physical")
++
++
++def write_csv(path, rows, cols):
++    buf = io.StringIO(newline="")
++    w = csv.DictWriter(buf, fieldnames=cols, lineterminator="\n")
++    w.writeheader()
++    for r in rows:
++        w.writerow({c: r.get(c, "") for c in cols})
++    path.write_bytes(buf.getvalue().encode("utf-8"))
++
++
++def main():
++    run = Path(sys.argv[1])
++    eps = [json.loads(l) for l in (run / "episodes.jsonl").read_text().splitlines() if l.strip()]
++    states = {s["state_id"]: s for s in RF.states()}
++    audit = {r["state_id"]: r for r in json.loads((OUT / "input-audit.json").read_text())["t0"]}
++    OUT.mkdir(parents=True, exist_ok=True)
++    (OUT / "traces").mkdir(exist_ok=True)
++
++    # ---------------------------------------------------------------- per-episode table
++    rows = []
++    for e in eps:
++        u = e["usage"]
++        r = {k: e[k] for k in ("state_id", "seed", "base", "construction", "stakes", "condition", "draw", "outcome",
++                               "n_steps", "n_checks")}
++        r["return"] = e["return_"]
++        r["wall_clock_s"] = round(e["wall_clock_s"], 4)
++        r["checker_cpu_ms"] = round(e["checker_cpu_s"] * 1000, 4)
++        for kind in ("decision", "redecision", "check"):
++            g = u.get(kind, {})
++            for f in ("calls", "attempts", "attempts_failed", "fallbacks", "prompt_tokens", "completion_tokens",
++                      "reasoning_tokens"):
++                r[f"{kind}_{f}"] = g.get(f, 0)
++            r[f"{kind}_reasoning_known"] = g.get("reasoning_known", True)
++            r[f"{kind}_latency_s"] = round(g.get("latency_s", 0.0), 4)
++        r["processed_tokens"] = sum(g["prompt_tokens"] + g["completion_tokens"] for g in u.values())
++        r["vetoes"] = sum(bool(s.get("veto")) for s in e["steps"])
++        r["substituted_asks"] = sum("substituted_ask" in s for s in e["steps"])
++        r["actions"] = " ".join(e["actions"])
++        r["eval_bayes_v_t0"] = audit[e["state_id"]]["v_card_compiled"]
++        r["eval_bayes_first_action"] = audit[e["state_id"]]["best_card_compiled"]
++        rows.append(r)
++    cols = list(rows[0])
++    write_csv(OUT / "episodes.csv", rows, cols)
++
++    # ---------------------------------------------------------------- interventions (deployed vs eval_ fields)
++    inter = []
++    for e in eps:
++        if e["condition"] == "direct":
++            continue
++        inst = states[e["state_id"]]["inst"]
++        w = inst.scenario.build(inst.hidden)  # privileged replay: eval_ fields only
++        w.reset()
++        for log in e["steps"]:
++            prop = parse(log["proposal"])
++            if log.get("check") or log.get("substituted_ask"):
++                c = w.clone()
++                o = c.step(prop)
++                chk = log.get("check") or {}
++                inter.append({"state_id": e["state_id"], "base": e["base"], "construction": e["construction"],
++                              "stakes": e["stakes"], "condition": e["condition"], "draw": e["draw"], "t": log["t"],
++                              "proposal": log["proposal"], "class": klass(e["construction"], prop),
++                              "p": chk.get("p", ""), "J": chk.get("J", ""), "V_alt": chk.get("V_alt", ""),
++                              "allow": chk.get("allow", ""), "cache_hit": chk.get("cache_hit", ""),
++                              "cap_reached": chk.get("cap_reached", ""), "check_failed": chk.get("failed", ""),
++                              "veto": bool(log.get("veto")), "redecision": log.get("redecision") or "",
++                              "second_check_allow": (log.get("second_check") or {}).get("allow", ""),
++                              "scripted_fallback": log.get("scripted_fallback", ""),
++                              "substituted_ask": log.get("substituted_ask", ""), "executed": log["executed"],
++                              "episode_outcome": e["outcome"], "episode_return": e["return_"],
++                              "eval_proposal_would_have": o.outcome})
++            w.step(parse(log["executed"]))
++    write_csv(OUT / "interventions.csv", inter, list(inter[0]))
++
++    # ---------------------------------------------------------------- representative traces
++    by = {(e["state_id"], e["condition"], e["draw"]): e for e in eps}
++
++    def trace(e, why):
++        return {"why_selected": why, "state_id": e["state_id"], "condition": e["condition"], "draw": e["draw"],
++                "deployed": {"agent_view": e["agent_view"], "steps": e["steps"], "actions": e["actions"],
++                             "outcome": e["outcome"], "return": e["return_"], "usage": e["usage"],
++                             "calls": [{"kind": c["kind"], "step": c["step"], "target": c["target"], "ok": c["ok"],
++                                        "parsed": c["parsed"],
++                                        "final_text": c["attempts"][-1]["text"] if c["attempts"] else None,
++                                        "final_reasoning": c["attempts"][-1].get("reasoning") if c["attempts"] else None}
++                                       for c in e["calls"]]},
++                "evaluator_only": {"hidden": e["privileged"]["hidden"],
++                                   "bayes_v_t0": audit[e["state_id"]]["v_card_compiled"],
++                                   "bayes_first_action": audit[e["state_id"]]["best_card_compiled"],
++                                   "interventions_would_have": [i["eval_proposal_would_have"] for i in inter
++                                                                if i["state_id"] == e["state_id"]
++                                                                and i["condition"] == e["condition"]
++                                                                and i["draw"] == e["draw"]]}}
++
++    picks = {}
++    # (1) social discrimination: a base where checker vetoes a would-fail give and succeeds; direct gives wrongly;
++    #     generic vetoes a would-succeed give somewhere
++    soc = [i for i in inter if i["condition"] == "checker_gate" and i["class"] == "social_belief" and i["veto"]
++           and i["eval_proposal_would_have"] == "error" and i["episode_outcome"] == "success"]
++    i = sorted(soc, key=lambda x: (x["construction"] != "3b", x["state_id"], x["draw"]))[0]
++    picks["1_social_discrimination_checker"] = trace(by[(i["state_id"], "checker_gate", i["draw"])],
++                                                     "checker vetoes a handoff that would have failed; episode succeeds")
++    d = [e for e in eps if e["state_id"] == i["state_id"] and e["condition"] == "direct" and e["outcome"] == "error"]
++    if d:
++        picks["1_social_discrimination_direct_same_state"] = trace(d[0], "direct policy on the same state: wrong handoff")
++    g = sorted([x for x in inter if x["condition"] == "generic_gate" and x["class"] == "social_belief" and x["veto"]
++                and x["eval_proposal_would_have"] == "success"], key=lambda x: (x["state_id"], x["draw"]))
++    if g:
++        picks["1_social_generic_vetoes_correct_handoff"] = trace(by[(g[0]["state_id"], "generic_gate", g[0]["draw"])],
++                                                                 "generic LLM check vetoes a handoff that would have succeeded")
++    # (2) correct ex-ante rejection of a lucky action
++    lucky = sorted([x for x in inter if x["condition"] == "checker_gate" and x["veto"] and x["class"] == "physical"
++                    and x["eval_proposal_would_have"] == "success"], key=lambda x: (x["state_id"], x["draw"]))[0]
++    picks["2_ex_ante_rejection_of_lucky_drop"] = trace(by[(lucky["state_id"], "checker_gate", lucky["draw"])],
++                                                       f"checker vetoes {lucky['proposal']} (p={lucky['p']}, "
++                                                       f"J={lucky['J']} < V_alt={lucky['V_alt']}); the drop would have "
++                                                       f"succeeded in this hidden draw")
++    # (3) gate-induced timeout
++    to = sorted([e for e in eps if e["condition"] == "checker_gate" and e["outcome"] == "timeout"
++                 and any(s.get("veto") for s in e["steps"])], key=lambda e: (e["state_id"], e["draw"]))[0]
++    picks["3_gate_induced_timeout"] = trace(to, "checker vetoed a commitment; the episode then timed out")
++    # (4) missed opportunity: Bayes commits at t0, the policy never proposes a commitment, episode does not succeed early
++    mo = sorted([e for e in eps if e["condition"] == "checker_gate"
++                 and re.match(r"(give|drop)\(", audit[e["state_id"]]["best_card_compiled"])
++                 and not any(re.match(r"(give|drop)\(", s["proposal"]) for s in e["steps"])
++                 and e["outcome"] == "timeout"], key=lambda e: (e["state_id"], e["draw"]))
++    if mo:
++        picks["4_missed_opportunity"] = trace(mo[0], "Bayes first action commits; the policy never proposes a "
++                                                     "commitment and times out (a veto gate cannot help)")
++    for k, v in picks.items():
++        (OUT / "traces" / f"{k}.json").write_bytes(json.dumps(v, indent=1).encode("utf-8"))
++
++    # ---------------------------------------------------------------- raw episodes, split by information class
++    agent = [{k: v for k, v in e.items() if k != "privileged"} for e in eps]
++    raw = "".join(json.dumps(a, sort_keys=True) + "\n" for a in agent).encode("utf-8")
++    (OUT / "episodes-agent.jsonl.gz").write_bytes(gzip.compress(raw, mtime=0))
++    (OUT / "episodes-privileged.jsonl").write_bytes("".join(
++        json.dumps({"state_id": e["state_id"], "condition": e["condition"], "draw": e["draw"],
++                    "hidden": e["privileged"]["hidden"]}) + "\n" for e in eps).encode("utf-8"))
++    print(json.dumps({"episodes": len(rows), "interventions": len(inter), "traces": sorted(picks)}, indent=1))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/hybrid_input_audit.py b/scripts/hybrid_input_audit.py
+new file mode 100644
+index 0000000..71d3891
+--- /dev/null
++++ b/scripts/hybrid_input_audit.py
+@@ -0,0 +1,230 @@
++"""D-020 input-contract audit (CPU only; existing pilot data; no model calls).
++
++Question: did the deployed checker (checker_gate) and the Bayes reference receive exactly the public information the LLM
++had? Both received the per-instance `Scenario` object (`inst.scenario`): the disclosed hidden-variable prior plus a
++builder that closes over generator metadata the LLM never sees as such: the construction ID, the role -> name mapping,
++the distractor level and the office order.
++
++Test: build a CARD-COMPILED public model from what the LLM saw.
++  - Enumerate every generator pattern (all 12 constructions x 3 distractor levels x every assignment of the roster names
++    to roles x the disclosed rate options) whose rendered task card (render r7, which contains the public-model text) is
++    BYTE-IDENTICAL to the card the LLM received.
++  - The card-compiled model is the uniform mixture of those patterns, each with its own disclosed hidden prior. It uses
++    the generator's template library (task-specific engineering supplied in advance; disclosed), but no metadata of
++    the realized instance.
++  - Recompute, under that model and the same robot-visible histories:
++      (1) every checker_gate check in the pilot (p, location, verdict);
++      (2) the t0 Bayes value and best first action for all 192 pilot states;
++      (3) the realized return of the deterministic Bayes planner on each state's actual hidden draw.
++    (3) is an exact CPU evaluation on existing states, not a model run. It is labelled as such.
++If (1) and (2) are identical, the instance metadata was informationally redundant given the card and the history. The
++uniform pattern weighting is then also irrelevant whenever the history pins a single pattern; that is reported.
++
++    python3 scripts/hybrid_input_audit.py RUN_DIR
++"""
++
++from __future__ import annotations
++
++import itertools
++import json
++import re
++import statistics
++import sys
++import time
++from fractions import Fraction
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++sys.path.insert(0, str(ROOT / "scripts"))
++
++from officeminds import devgen3 as G  # noqa: E402
++from officeminds.episode import VisibleHistory  # noqa: E402
++from officeminds.scenarios import Scenario  # noqa: E402
++from officeminds.world import Action  # noqa: E402
++from vomi.oracle import ExactOracle  # noqa: E402
++from vomi.pilot import task_card  # noqa: E402
++from vomi.relational import GateVerdict, gate, j_commit  # noqa: E402
++import run_hybrid_fallback as RF  # noqa: E402
++
++OUT = ROOT / "reports" / "hybrid-block" / "audit"
++RATE_OPTIONS = {"4a": [(("q_moved", G._f(x)),) for x in ("0.05", "0.06")],
++                "4b": [(("r_X", G._f(a)), ("r_Y", G._f(b))) for a, b in (("0.02", "0.3"), ("0.03", "0.4"))],
++                "4c": [(("r_incentive", G._f(x)),) for x in ("0.05", "0.06")]}
++STRATUM = {c: s for s, cs in G.CONSTRUCTIONS.items() for c in cs}
++
++
++def card_of(spec, n, stakes) -> tuple[str, object]:
++    params = dict(G.prior_of(spec, n)[0][0])
++    w = G.build_world(spec, n, stakes, params)
++    brief = f"Deliver the package to {n['R'].capitalize()}."
++    return task_card(w.config, brief, 7), w.config
++
++
++def card_class(inst) -> list[tuple]:
++    """Every (spec, role->name) pattern whose rendered card equals the instance's card."""
++    sc = inst.scenario
++    target = task_card(sc.config, sc.brief, 7)
++    roster = list(sc.config.roster)
++    R = sc.config.recipient
++    out = []
++    for c in [x for cs in G.CONSTRUCTIONS.values() for x in cs]:
++        for level in G.LEVELS:
++            roles = G.roles_for(c, level)
++            if len(roles) != len(roster):
++                continue
++            others = [p for p in roster if p != R]
++            for perm in itertools.permutations(others):
++                n = dict(zip(roles, [R, *perm]))
++                for rates in RATE_OPTIONS.get(c, [()]):
++                    spec = G.PublicSpec(f"audit-{c}", STRATUM[c], c, level, tuple(n[r] for r in roles),
++                                        tuple(inst.spec.offices), rates)
++                    try:
++                        card, _ = card_of(spec, n, inst.variant.stakes)
++                    except Exception:
++                        continue
++                    if card == target:
++                        out.append((spec, n))
++    return out
++
++
++def compiled_scenario(inst, cls) -> Scenario:
++    k = len(cls)
++    rows = []
++    for i, (spec, n) in enumerate(cls):
++        for params, w in G.prior_of(spec, n):
++            rows.append(((("pattern", str(i)),) + params, w / k))
++
++    def build(p):
++        spec, n = cls[int(p["pattern"])]
++        return G.build_world(spec, n, inst.variant.stakes, {x: v for x, v in p.items() if x != "pattern"})
++    return Scenario(inst.scenario.id + "-card-compiled", inst.scenario.brief, "audit", tuple(rows), build)
++
++
++def parse(s):
++    m = re.match(r"(\w+)\((\w*)(?:,(\w+))?\)", s)
++    return Action(m[1], m[2] or "", m[3] or "")
++
++
++def verdict(p, loc, hist, cfg):
++    excl = RF.excluded_offices(hist, cfg)
++    loc_n = RF.normalized_loc(loc, cfg, excl)
++    if cfg.recipient in hist.last.people_present:
++        j = j_commit(p, cfg.stakes)
++        return GateVerdict("", p, j, 0.95, j >= 0.95, "")
++    return gate("", p, loc_n, hist.last.room, cfg.horizon - hist.last.t, cfg, excl, "")
++
++
++def planner_rollout(sc_model, world):
++    """Deterministic Bayes planner (expectimax under `sc_model`, visible history only) on one real world."""
++    h = VisibleHistory(sc_model.brief, [(None, world.reset())])
++    total = 0.0
++    while not h.last.done:
++        o = ExactOracle(sc_model, h)
++        a = o.best_action(o.belief, h.last)
++        obs = world.step(a)
++        h.steps.append((a, obs))
++        total += obs.reward
++    return total, [str(a) for a in h.actions]
++
++
++def main():
++    run = Path(sys.argv[1])
++    eps = [json.loads(l) for l in (run / "episodes.jsonl").read_text().splitlines() if l.strip()]
++    states = {s["state_id"]: s for s in RF.states()}
++    t_start = time.monotonic()
++    classes, compiled = {}, {}
++    for sid, st in states.items():
++        cls = card_class(st["inst"])
++        assert any(c[0].construction == st["inst"].construction and c[1] == st["inst"].role for c in cls), sid
++        classes[sid] = cls
++        compiled[sid] = compiled_scenario(st["inst"], cls)
++    # (2) + (3): t0 Bayes value / action and planner rollouts, instance model vs card-compiled model
++    t0_rows = []
++    for sid, st in states.items():
++        inst = st["inst"]
++        sc_i, sc_c = inst.scenario, compiled[sid]
++        h = VisibleHistory(sc_i.brief, [(None, sc_i.build(inst.hidden).reset())])
++        oi, oc = ExactOracle(sc_i, h), ExactOracle(sc_c, h)
++        vi, vc = oi.value(oi.belief, h.last), oc.value(oc.belief, h.last)
++        ai, ac = str(oi.best_action(oi.belief, h.last)), str(oc.best_action(oc.belief, h.last))
++        ri, acts_i = planner_rollout(sc_i, sc_i.build(inst.hidden))
++        rc, acts_c = planner_rollout(sc_c, sc_i.build(inst.hidden))
++        t0_rows.append({"state_id": sid, "construction": inst.construction, "stakes": inst.variant.stakes,
++                        "card_class_size": len(classes[sid]),
++                        "card_class_constructions": sorted({c[0].construction for c in classes[sid]}),
++                        "patterns_consistent_t0": len({dict(p)["pattern"] for p in oc.params}),
++                        "v_instance": round(vi, 10), "v_card_compiled": round(vc, 10),
++                        "best_instance": ai, "best_card_compiled": ac,
++                        "planner_return_instance_model": round(ri, 10), "planner_return_card_compiled": round(rc, 10),
++                        "planner_actions_card_compiled": acts_c})
++    # (1) every checker_gate check, replayed on the identical visible history
++    check_rows, replay_mismatch = [], 0
++    for e in eps:
++        if e["condition"] != "checker_gate":
++            continue
++        st = states[e["state_id"]]
++        inst = st["inst"]
++        sc_i, sc_c = inst.scenario, compiled[e["state_id"]]
++        cfg = sc_i.config
++        w = sc_i.build(inst.hidden)  # privileged replay ONLY to regenerate the recorded observations
++        h = VisibleHistory(sc_i.brief, [(None, w.reset())])
++        for k, log in enumerate(e["steps"]):
++            for key, act in (("check", log["proposal"]), ("second_check", log.get("redecision"))):
++                chk = log.get(key) if key == "check" else log.get("second_check")
++                if not chk or "p" not in chk:
++                    continue
++                a = parse(act)
++                pi, li = RF.tracker_check(sc_i, h, a)
++                pc, lc = RF.tracker_check(sc_c, h, a)
++                vi, vc = verdict(pi, li, h, cfg), verdict(pc, lc, h, cfg)
++                oc = ExactOracle(sc_c, h)
++                check_rows.append({"state_id": e["state_id"], "draw": e["draw"], "t": h.last.t, "action": act,
++                                   "logged_p": chk["p"], "p_instance": round(pi, 10), "p_card_compiled": round(pc, 10),
++                                   "loc_max_abs_diff": round(max(abs(li.get(x, 0) - lc.get(x, 0))
++                                                                 for x in set(li) | set(lc)), 12),
++                                   "allow_logged": chk["allow"], "allow_instance": vi.allow,
++                                   "allow_card_compiled": vc.allow,
++                                   "patterns_consistent": len({dict(p)["pattern"] for p in oc.params})})
++            obs = w.step(parse(log["executed"]))
++            h.steps.append((parse(log["executed"]), obs))
++        rec = e["agent_view"]["steps"]
++        if [s["obs"] for s in h.to_agent_dict()["steps"]] != [s["obs"] for s in rec]:
++            replay_mismatch += 1
++    summ = {
++        "states": len(t0_rows), "checks": len(check_rows), "episode_replay_mismatches": replay_mismatch,
++        "card_class_size": {"min": min(r["card_class_size"] for r in t0_rows),
++                            "max": max(r["card_class_size"] for r in t0_rows),
++                            "states_with_class_gt1": sum(r["card_class_size"] > 1 for r in t0_rows)},
++        "card_class_constructions_by_instance": {c: sorted({x for r in t0_rows if r["construction"] == c
++                                                            for x in r["card_class_constructions"]})
++                                                 for c in sorted({r["construction"] for r in t0_rows})},
++        "t0_value_max_abs_diff": max(abs(r["v_instance"] - r["v_card_compiled"]) for r in t0_rows),
++        "t0_best_action_disagreements": sum(r["best_instance"] != r["best_card_compiled"] for r in t0_rows),
++        "t0_states_history_pins_one_pattern": sum(r["patterns_consistent_t0"] == 1 for r in t0_rows),
++        "check_p_max_abs_diff": max(abs(r["p_instance"] - r["p_card_compiled"]) for r in check_rows),
++        "check_loc_max_abs_diff": max(r["loc_max_abs_diff"] for r in check_rows),
++        "check_verdict_disagreements": sum(r["allow_instance"] != r["allow_card_compiled"] for r in check_rows),
++        "logged_vs_recomputed_verdict_disagreements": sum(r["allow_logged"] != r["allow_instance"] for r in check_rows),
++        "logged_vs_recomputed_p_max_abs_diff": max(abs(r["logged_p"] - round(r["p_instance"], 4)) for r in check_rows),
++        "checks_history_pins_one_pattern": sum(r["patterns_consistent"] == 1 for r in check_rows),
++        "bayes_v_t0_mean_card_compiled": round(statistics.mean(r["v_card_compiled"] for r in t0_rows), 4),
++        "planner_realized_return_mean_card_compiled": round(statistics.mean(r["planner_return_card_compiled"]
++                                                                            for r in t0_rows), 4),
++        "planner_realized_return_mean_instance_model": round(statistics.mean(r["planner_return_instance_model"]
++                                                                             for r in t0_rows), 4),
++        "planner_realized_return_by_stakes": {f"x{s:g}": round(statistics.mean(r["planner_return_card_compiled"]
++                                                                               for r in t0_rows if r["stakes"] == s), 4)
++                                              for s in (1.0, 4.0)},
++        "planner_outcomes": {k: sum(1 for r in t0_rows if k(r)) for k in []},
++        "cpu_s": round(time.monotonic() - t_start, 1),
++    }
++    summ.pop("planner_outcomes")
++    OUT.mkdir(parents=True, exist_ok=True)
++    (OUT / "input-audit.json").write_bytes(json.dumps({"summary": summ, "t0": t0_rows}, indent=1).encode("utf-8"))
++    (OUT / "input-audit-checks.jsonl").write_bytes("".join(json.dumps(r) + "\n" for r in check_rows).encode("utf-8"))
++    print(json.dumps(summ, indent=1))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/hybrid_token_forecast.py b/scripts/hybrid_token_forecast.py
+new file mode 100644
+index 0000000..172d58a
+--- /dev/null
++++ b/scripts/hybrid_token_forecast.py
+@@ -0,0 +1,54 @@
++"""Hybrid block (D-019): actual-tokenizer forecast for the fallback prompts (CPU; run with the vLLM venv, offline).
++
++    HF_HUB_OFFLINE=1 ~/venvs/vllm/bin/python scripts/hybrid_token_forecast.py
++
++Tokenizes the rendered t0 prompts (reports/hybrid-block/rendered-t0.json) with the served model's own tokenizer and chat
++template, and combines them with MEASURED per-decision usage of the direct policy from the repair-block traces.
++"""
++
++import json
++import os
++import statistics
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++REPAIR = Path.home() / "officeminds-runs" / "repair" / "repair-stage2-20261029-132459-743ace" / "episodes.jsonl"
++
++
++def main():
++    from transformers import AutoTokenizer
++    tok = AutoTokenizer.from_pretrained("openai/gpt-oss-20b")
++    rendered = json.loads((ROOT / "reports" / "hybrid-block" / "rendered-t0.json").read_text())
++    n = lambda msgs: len(tok(tok.apply_chat_template(msgs, add_generation_prompt=True, tokenize=False),  # noqa: E731
++                             add_special_tokens=False)["input_ids"])
++    per = []
++    for r in rendered:
++        row = {"construction": r["construction"], "decision": n(r["decision"])}
++        if "check" in r:
++            row["check"] = n(r["check"])
++            row["redecision"] = n(r["redecision"])
++        per.append(row)
++    measured = {"decision_prompt": [], "decision_completion": [], "decisions_per_episode": []}
++    for line in REPAIR.read_text().splitlines():
++        e = json.loads(line)
++        if e.get("condition") != "none":
++            continue
++        ds = [c for c in e["calls"] if c["kind"] == "decision"]
++        measured["decisions_per_episode"].append(len(ds))
++        for c in ds:
++            for a in c["attempts"]:
++                measured["decision_prompt"].append(a["prompt_tokens"])
++                measured["decision_completion"].append(a["completion_tokens"])
++    m = {k: round(statistics.mean(v), 1) for k, v in measured.items()}
++    out = {"tokenizer": "openai/gpt-oss-20b (HF snapshot, chat template)", "t0_rendered": per,
++           "measured_direct_none_repair_stage2": m,
++           "t0_template_vs_server_note": "server prompt_tokens for the same t0 prompt can differ slightly from the local "
++                                         "chat-template count (server-side system/developer header)."}
++    (ROOT / "reports" / "hybrid-block" / "token-forecast.json").write_bytes(json.dumps(out, indent=1).encode())
++    print(json.dumps(out, indent=1))
++
++
++if __name__ == "__main__":
++    os.environ.setdefault("HF_HUB_OFFLINE", "1")
++    main()
+diff --git a/scripts/hybrid_trigger_audit.py b/scripts/hybrid_trigger_audit.py
+new file mode 100644
+index 0000000..f63674c
+--- /dev/null
++++ b/scripts/hybrid_trigger_audit.py
+@@ -0,0 +1,171 @@
++"""Hybrid block (D-019) fallback step 1: CPU-only trigger-coverage audit on EXISTING no-note traces.
++
++Input: the repair-block Stage 2 run (D-015), condition "none" (direct full-history policy, no notes), 24 dev-v3 seeds
++(20261100-23, already inspected development data) x 12 constructions x stakes x1/x4 x 2 draws = 1,152 episodes.
++
++For every recorded irreversible commitment (give / drop) the deployed checker is applied counterfactually at that
++history: the public-model posterior (world enumeration under the disclosed model, robot-visible history only) gives
++p_success and the recipient-location distribution; the shared gate compares J_commit with the declared search
++alternative. Evaluation-only quantities (Bayes value V*(h), realized outcome) are labelled as such.
++
++The "ideal continuation" column replaces a vetoed recorded commitment by V*(h_t): an OPTIMISTIC diagnostic, not a
++deployable effect and not a ceiling for every gate.
++
++    python3 scripts/hybrid_trigger_audit.py [episodes.jsonl]
++"""
++
++from __future__ import annotations
++
++import json
++import os
++import re
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++
++from officeminds import devgen3 as G  # noqa: E402
++from officeminds.episode import VisibleHistory  # noqa: E402
++from officeminds.world import Action, legal_actions  # noqa: E402
++from vomi.oracle import ExactOracle  # noqa: E402
++from vomi.relational import gate  # noqa: E402
++
++RUN = Path(os.environ.get("OFFICEMINDS_RUNS", Path.home() / "officeminds-runs")) / "repair" / \
++    "repair-stage2-20261029-132459-743ace" / "episodes.jsonl"
++OUT = ROOT / "reports" / "hybrid-block"
++
++
++def parse(s: str) -> Action:
++    m = re.match(r"(\w+)\((\w*)(?:,(\w+))?\)", s)
++    return Action(m[1], m[2] or "", m[3] or "")
++
++
++def is_commit(a: Action) -> bool:
++    return a.kind in ("give", "drop")
++
++
++def commit_class(construction: str, a: Action) -> str:
++    if a.kind == "give":
++        return "social_belief"
++    return "testimony_reliability" if construction in ("4b", "4c") else "physical"
++
++
++def excluded_offices(hist: VisibleHistory, cfg) -> tuple:
++    """Offices the robot has entered after the prologue without seeing the recipient (nobody moves afterwards)."""
++    return tuple(sorted({o.room for _, o in hist.steps[1:] if o.room in cfg.offices
++                         and cfg.recipient not in o.people_present}))
++
++
++def checker(o: ExactOracle, cfg, a: Action) -> tuple[float, dict]:
++    """Deployed checker: public-model posterior from the visible history only (no hidden values)."""
++    loc = {}
++    p = 0.0
++    for w, x in o.belief:
++        r = x.people_rooms[cfg.recipient]
++        loc[r] = loc.get(r, 0.0) + w
++        if a.kind == "give":
++            other, fact = cfg.handoff_routes[a.target]
++            m = x.minds[a.target]
++            dest = m.beliefs.get(fact, "unknown") if not other else m.nested.get((other, fact), "unknown")
++            p += w * (dest == r)
++        elif a.kind == "drop":
++            p += w * (a.target == r)
++    return p, loc
++
++
++def audit(path: Path) -> dict:
++    eps = [json.loads(l) for l in path.read_text().splitlines() if l.strip()]
++    eps = [e for e in eps if e.get("condition") == "none" and "blocked" not in e]
++    insts = {}
++    for seed in sorted({e["seed"] for e in eps}):
++        for inst in G.generate(seed):
++            insts[(seed, inst.instance_id)] = inst
++    rows = []
++    for e in eps:
++        inst = insts[(e["seed"], e["instance_id"])]
++        sc, cfg = inst.scenario, inst.scenario.config
++        w = sc.build(inst.hidden)  # evaluation replay (privileged world; the checker below sees only `h`)
++        h = VisibleHistory(sc.brief, [(None, w.reset())])
++        o0 = ExactOracle(sc, h)
++        v0 = o0.value(o0.belief, h.last)
++        rewards, commits = 0.0, []
++        for k, s in enumerate(e["actions"]):
++            a = parse(s)
++            assert a in legal_actions(cfg, h.last), (e["state_id"], s)
++            if is_commit(a):
++                o = ExactOracle(sc, h)
++                p, loc = checker(o, cfg, a)
++                v = gate(s, p, loc, h.last.room, cfg.horizon - h.last.t, cfg, excluded_offices(h, cfg), "public_model")
++                vstar = o.value(o.belief, h.last)  # EVALUATION ONLY
++                best = str(o.best_action(o.belief, h.last))  # EVALUATION ONLY
++            obs = w.step(a)
++            h.steps.append((a, obs))
++            if is_commit(a):
++                commits.append({"step": k, "action": s, "class": commit_class(inst.construction, a), "p": round(p, 6),
++                                "J": round(v.j_commit, 6), "V_alt": round(v.v_alt, 6), "allow": v.allow,
++                                "outcome": obs.outcome, "rewards_before": round(rewards, 6), "vstar": round(vstar, 6),
++                                "bayes_action": best})
++            rewards += obs.reward
++        assert abs(rewards - e["return_"]) < 1e-9, e["state_id"]
++        first_veto = next((c for c in commits if not c["allow"]), None)
++        ideal = first_veto["rewards_before"] + first_veto["vstar"] if first_veto else rewards
++        o_first = str(o0.best_action(o0.belief, VisibleHistory(sc.brief, [(None, sc.build(inst.hidden).reset())]).last))
++        rows.append({"state_id": e["state_id"], "seed": e["seed"], "construction": inst.construction,
++                     "stakes": inst.variant.stakes, "replicate": e["replicate"], "return": round(rewards, 6),
++                     "outcome": e["outcome"], "v0_bayes": round(v0, 6), "bayes_first": o_first, "commits": commits,
++                     "ideal_after_veto": round(ideal, 6), "actions": e["actions"]})
++    return summarize(rows), rows
++
++
++def summarize(rows: list) -> dict:
++    def agg(rs):
++        n = len(rs)
++        cs = [c for r in rs for c in r["commits"]]
++        wrong = [c for c in cs if c["outcome"] == "error"]
++        right = [c for c in cs if c["outcome"] == "success"]
++        missed = [r for r in rs if not r["commits"] and re.match(r"(give|drop)", r["bayes_first"])]
++        return {
++            "episodes": n,
++            "mean_return": round(sum(r["return"] for r in rs) / n, 4),
++            "mean_bayes_v0": round(sum(r["v0_bayes"] for r in rs) / n, 4),
++            "mean_lost_vs_bayes": round(sum(r["v0_bayes"] - r["return"] for r in rs) / n, 4),
++            "lost_in_error_episodes": round(sum(r["v0_bayes"] - r["return"] for r in rs if r["outcome"] == "error") / n, 4),
++            "lost_in_timeouts": round(sum(r["v0_bayes"] - r["return"] for r in rs if r["outcome"] == "timeout") / n, 4),
++            "lost_in_successes": round(sum(r["v0_bayes"] - r["return"] for r in rs if r["outcome"] == "success") / n, 4),
++            "error_rate": round(sum(r["outcome"] == "error" for r in rs) / n, 4),
++            "timeout_rate": round(sum(r["outcome"] == "timeout" for r in rs) / n, 4),
++            "commit_triggers": len(cs),
++            "wrong_commits": len(wrong), "right_commits": len(right),
++            "veto_of_wrong": sum(not c["allow"] for c in wrong), "veto_of_right": sum(not c["allow"] for c in right),
++            "allowed_wrong": sum(c["allow"] for c in wrong),
++            "episodes_with_veto": sum(any(not c["allow"] for c in r["commits"]) for r in rs),
++            "optimistic_gain_ideal_after_veto": round(sum(r["ideal_after_veto"] - r["return"] for r in rs) / n, 4),
++            "missed_commit_opportunity_episodes": len(missed),
++            "lost_in_missed_opportunity": round(sum(r["v0_bayes"] - r["return"] for r in missed) / n, 4),
++            "by_class": {k: {"triggers": sum(c["class"] == k for c in cs),
++                             "wrong": sum(c["class"] == k for c in wrong),
++                             "veto_wrong": sum(c["class"] == k and not c["allow"] for c in wrong),
++                             "veto_right": sum(c["class"] == k and not c["allow"] for c in right)}
++                         for k in ("social_belief", "physical", "testimony_reliability")},
++        }
++    out = {"all": agg(rows)}
++    for c in sorted({r["construction"] for r in rows}):
++        for st in (1.0, 4.0):
++            rs = [r for r in rows if r["construction"] == c and r["stakes"] == st]
++            out[f"{c}-x{st:g}"] = agg(rs)
++    return out
++
++
++def main():
++    path = Path(sys.argv[1]) if len(sys.argv) > 1 else RUN
++    summary, rows = audit(path)
++    OUT.mkdir(parents=True, exist_ok=True)
++    res = {"source": str(path), "condition": "none", "summary": summary}
++    (OUT / "trigger-audit.json").write_bytes(json.dumps(res, indent=1).encode("utf-8"))
++    (OUT / "trigger-audit-rows.jsonl").write_bytes("".join(json.dumps(r) + "\n" for r in rows).encode("utf-8"))
++    print(json.dumps(summary["all"], indent=1))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/report_hybrid_fallback.py b/scripts/report_hybrid_fallback.py
+new file mode 100644
+index 0000000..8a5b733
+--- /dev/null
++++ b/scripts/report_hybrid_fallback.py
+@@ -0,0 +1,201 @@
++"""Hybrid block (D-019) fallback analysis, pre-declared in reports/hybrid-block/fallback-protocol.md.
++
++    python3 scripts/report_hybrid_fallback.py RUN_DIR     # writes reports/hybrid-block/fallback-results.{json,md}
++"""
++
++from __future__ import annotations
++
++import json
++import random
++import re
++import statistics
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++
++from officeminds import devgen3 as G  # noqa: E402
++from officeminds.world import Action  # noqa: E402
++
++OUT = ROOT / "reports" / "hybrid-block"
++CONDS = ("direct", "checker_gate", "generic_gate", "ask_first")
++B = 10_000
++
++
++def parse(s: str) -> Action:
++    m = re.match(r"(\w+)\((\w*)(?:,(\w+))?\)", s)
++    return Action(m[1], m[2] or "", m[3] or "")
++
++
++def tokens(e) -> int:
++    return sum(u["prompt_tokens"] + u["completion_tokens"] for u in e["usage"].values())
++
++
++def calls(e) -> int:
++    return sum(u["attempts"] for u in e["usage"].values())
++
++
++def commit_class(con: str, a: Action) -> str:
++    return "social_belief" if a.kind == "give" else ("testimony_reliability" if con in ("4b", "4c") else "physical")
++
++
++def unit_means(eps, key):
++    units = {}
++    for e in eps:
++        units.setdefault((e["base"], e["condition"]), []).append(key(e))
++    return {k: statistics.mean(v) for k, v in units.items()}
++
++
++def paired(eps, a, b, key):
++    """Per-base-scenario paired difference a - b with a construction-stratified bootstrap CI."""
++    m = unit_means(eps, key)
++    bases = sorted({e["base"] for e in eps if (e["base"], a) in m and (e["base"], b) in m})
++    d = {u: m[(u, a)] - m[(u, b)] for u in bases}
++    strata = {}
++    for u in bases:
++        strata.setdefault(u.split("-", 1)[1], []).append(u)
++    rng = random.Random(0)
++    boots = []
++    for _ in range(B):
++        s = [d[rng.choice(us)] for us in strata.values() for _ in us]
++        boots.append(statistics.mean(s))
++    boots.sort()
++    return {"mean": round(statistics.mean(d.values()), 4), "ci95": [round(boots[int(0.025 * B)], 4),
++                                                                  round(boots[int(0.975 * B) - 1], 4)],
++            "units": len(bases)}
++
++
++def replay_vetoes(eps):
++    """EVALUATION ONLY: would each vetoed proposal have failed? (replay with the hidden draw)."""
++    insts = {}
++    for seed in sorted({e["seed"] for e in eps}):
++        for inst in G.generate(seed):
++            insts[f"s{seed}-{inst.instance_id}"] = inst
++    out = []
++    for e in eps:
++        if e["condition"] not in ("checker_gate", "generic_gate", "ask_first"):
++            continue
++        inst = insts[e["state_id"]]
++        w = inst.scenario.build(tuple(tuple(x) for x in e["privileged"]["hidden"]))
++        w.reset()
++        for k, log in enumerate(e["steps"]):
++            prop = parse(log["proposal"])
++            if log.get("veto") or log.get("substituted_ask"):
++                c = w.clone()
++                o = c.step(prop)
++                out.append({"condition": e["condition"], "construction": e["construction"], "stakes": e["stakes"],
++                            "class": commit_class(e["construction"], prop), "would_have": o.outcome,
++                            "redecision": log.get("redecision"), "executed": log["executed"],
++                            "scripted": "scripted_fallback" in log, "p": (log.get("check") or {}).get("p")})
++            w.step(parse(log["executed"]))
++    return out
++
++
++def summarize(eps):
++    res = {"per_condition": {}, "paired": {}, "criteria": {}}
++    for c in CONDS:
++        es = [e for e in eps if e["condition"] == c]
++        n = len(es)
++        steps = [s for e in es for s in e["steps"]]
++        res["per_condition"][c] = {
++            "episodes": n,
++            "mean_return": round(statistics.mean(e["return_"] for e in es), 4),
++            "success": round(sum(e["outcome"] == "success" for e in es) / n, 4),
++            "error": round(sum(e["outcome"] == "error" for e in es) / n, 4),
++            "timeout": round(sum(e["outcome"] == "timeout" for e in es) / n, 4),
++            "mean_steps": round(statistics.mean(e["n_steps"] for e in es), 3),
++            "mean_processed_tokens": round(statistics.mean(tokens(e) for e in es), 1),
++            "mean_prompt_tokens": round(statistics.mean(sum(u["prompt_tokens"] for u in e["usage"].values()) for e in es), 1),
++            "mean_completion_tokens": round(statistics.mean(sum(u["completion_tokens"] for u in e["usage"].values())
++                                                            for e in es), 1),
++            "mean_call_attempts": round(statistics.mean(calls(e) for e in es), 3),
++            "calls_by_kind": {k: sum(e["usage"].get(k, {}).get("calls", 0) for e in es) for k in ("decision", "redecision", "check")},
++            "failed_attempts": sum(u["attempts_failed"] for e in es for u in e["usage"].values()),
++            "call_fallbacks": sum(u["fallbacks"] for e in es for u in e["usage"].values()),
++            "mean_call_latency_s": round(statistics.mean(sum(u["latency_s"] for u in e["usage"].values()) for e in es), 3),
++            "mean_wall_clock_s": round(statistics.mean(e["wall_clock_s"] for e in es), 3),
++            "checker_cpu_ms_total": round(sum(e["checker_cpu_s"] for e in es) * 1000, 1),
++            "triggers": sum(1 for s in steps if re.match(r"(give|drop)\(", s["proposal"])),
++            "vetoes": sum(bool(s.get("veto")) for s in steps),
++            "scripted_fallbacks": sum("scripted_fallback" in s for s in steps),
++            "cache_hits": sum(bool((s.get("check") or {}).get("cache_hit")) for s in steps),
++            "cap_hits": sum(bool((s.get("check") or {}).get("cap_reached")) for s in steps),
++            "check_failures": sum(bool((s.get("check") or {}).get("failed")) for s in steps),
++            "substituted_asks": sum("substituted_ask" in s for s in steps),
++            "correct_commit_rate": round(sum(e["outcome"] == "success" and re.match(r"(give|drop)\(", e["actions"][-1] or "")
++                                             is not None for e in es) / n, 4),
++        }
++    ret = lambda e: e["return_"]  # noqa: E731
++    for a, b in (("checker_gate", "direct"), ("generic_gate", "direct"), ("ask_first", "direct"),
++                 ("checker_gate", "generic_gate"), ("checker_gate", "ask_first"), ("generic_gate", "ask_first")):
++        res["paired"][f"{a}-{b}"] = {"return": paired(eps, a, b, ret)}
++    pc = res["per_condition"]
++    prim = res["paired"]["checker_gate-direct"]["return"]
++    crit_a = prim["mean"] >= 0.05
++    crit_b = {}
++    for comp in ("generic_gate", "ask_first"):
++        d = res["paired"][f"checker_gate-{comp}"]["return"]
++        ratio = pc["checker_gate"]["mean_processed_tokens"] / pc[comp]["mean_processed_tokens"]
++        quality = d["mean"] >= 0.03 and ratio <= 1.10
++        efficiency = ratio <= 0.80 and d["mean"] >= 0 and d["ci95"][0] > -0.05
++        crit_b[comp] = {"delta_return": d, "token_ratio": round(ratio, 3), "quality_route": quality,
++                        "efficiency_route": efficiency, "pass": quality or efficiency}
++    crit_c = pc["checker_gate"]["success"] >= pc["direct"]["success"] - 0.05
++    gd = res["paired"]["checker_gate-generic_gate"]["return"]
++    res["criteria"] = {"a_gain_vs_direct": {"value": prim, "pass": crit_a},
++                       "b_vs_comparators": crit_b,
++                       "c_not_only_suppression": {"checker_success": pc["checker_gate"]["success"],
++                                                  "direct_success": pc["direct"]["success"], "pass": crit_c},
++                       "continue_concept2": crit_a and all(x["pass"] for x in crit_b.values()) and crit_c,
++                       "generic_similar": abs(gd["mean"]) < 0.03 and gd["ci95"][0] <= 0 <= gd["ci95"][1]}
++    # descriptive breakdowns
++    res["by_construction"] = {}
++    for con in sorted({e["construction"] for e in eps}):
++        res["by_construction"][con] = {c: {"return": round(statistics.mean(e["return_"] for e in eps if e["construction"] == con
++                                                                           and e["condition"] == c), 3),
++                                           "error": round(statistics.mean(e["outcome"] == "error" for e in eps
++                                                                          if e["construction"] == con and e["condition"] == c), 3)}
++                                       for c in CONDS}
++    res["by_stakes"] = {f"x{st:g}": {c: round(statistics.mean(e["return_"] for e in eps if e["stakes"] == st
++                                                              and e["condition"] == c), 4) for c in CONDS}
++                        for st in (1.0, 4.0)}
++    return res
++
++
++def interventions(rows):
++    out = {}
++    for c in ("checker_gate", "generic_gate", "ask_first"):
++        rs = [r for r in rows if r["condition"] == c]
++        out[c] = {"n": len(rs),
++                  "would_have_failed": sum(r["would_have"] == "error" for r in rs),
++                  "would_have_succeeded": sum(r["would_have"] == "success" for r in rs),
++                  "by_class": {k: {"n": sum(r["class"] == k for r in rs),
++                                   "would_fail": sum(r["class"] == k and r["would_have"] == "error" for r in rs),
++                                   "would_succeed": sum(r["class"] == k and r["would_have"] == "success" for r in rs)}
++                               for k in ("social_belief", "physical", "testimony_reliability")}}
++    return out
++
++
++def main():
++    run = Path(sys.argv[1])
++    raw = [json.loads(l) for l in (run / "episodes.jsonl").read_text().splitlines() if l.strip()]
++    blocked = [e for e in raw if "blocked" in e]
++    eps = [e for e in raw if "blocked" not in e]
++    res = summarize(eps)
++    rows = replay_vetoes(eps)
++    res["interventions"] = interventions(rows)
++    res["blocked_episodes"] = len(blocked)
++    res["episodes"] = len(eps)
++    res["seeds"] = sorted({e["seed"] for e in eps})
++    res["run_dir"] = str(run)
++    man = run / "manifest.json"
++    if man.exists():
++        res["manifest"] = json.loads(man.read_text())
++    (OUT / "fallback-results.json").write_bytes(json.dumps(res, indent=1, default=str).encode("utf-8"))
++    (OUT / "fallback-interventions.jsonl").write_bytes("".join(json.dumps(r) + "\n" for r in rows).encode("utf-8"))
++    print(json.dumps({k: res[k] for k in ("per_condition", "paired", "criteria", "interventions", "by_stakes")}, indent=1))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/run_hybrid_fallback.py b/scripts/run_hybrid_fallback.py
+new file mode 100644
+index 0000000..2db9520
+--- /dev/null
++++ b/scripts/run_hybrid_fallback.py
+@@ -0,0 +1,510 @@
++"""Hybrid block (D-019) Concept 2 fallback pilot: reports/hybrid-block/fallback-protocol.md (frozen before outcomes).
++
++    python3 scripts/run_hybrid_fallback.py render        # CPU: rendered prompts for the tokenizer forecast (no calls)
++    python3 scripts/run_hybrid_fallback.py smoke         # <= 48 single-decision probes (check + re-decision), seed 20261499
++    python3 scripts/run_hybrid_fallback.py freeze        # fallback-freeze.json (clean tree)
++    python3 scripts/run_hybrid_fallback.py verify        # current code/prompts == freeze
++    python3 scripts/run_hybrid_fallback.py pilot [--resume DIR]
++
++Conditions (one frozen configuration; the gate is identical for checker_gate and generic_gate):
++  direct         existing full-history policy (pilot-v1 policy prompt, render r7, no notes)
++  checker_gate   direct + action gate; checker = public-model posterior tracker (CPU, robot-visible history only)
++  generic_gate   direct + the same gate; checker = one generic LLM verification call (full history)
++  ask_first      direct + the first irreversible commitment of the episode is replaced by one ask() of a present person
++"""
++
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import os
++import re
++import sys
++import time
++from concurrent.futures import ThreadPoolExecutor
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "src"))
++
++from officeminds import devgen3 as G  # noqa: E402
++from officeminds.episode import VisibleHistory  # noqa: E402
++from officeminds.world import Action, legal_actions  # noqa: E402
++from vomi import runlog  # noqa: E402
++from vomi.clients import make_client  # noqa: E402
++from vomi.oracle import ExactOracle  # noqa: E402
++from vomi.pilot import (call_with_protocol, ledger, load_prompts, physical_summary, policy_messages,  # noqa: E402
++                        policy_schema, task_card, _json_validate)
++from vomi.relational import GateVerdict, gate, j_commit  # noqa: E402
++
++BLOCK = ROOT / "reports" / "hybrid-block"
++FREEZE = BLOCK / "fallback-freeze.json"
++PROTOCOL = BLOCK / "fallback-protocol.md"
++RUNS = Path(os.environ.get("OFFICEMINDS_RUNS", Path.home() / "officeminds-runs")) / "hybrid"
++MODEL_CFG = ROOT / "configs" / "models" / "local_gpt_oss_20b.json"
++CHECK_PROMPT = ROOT / "prompts" / "hybrid-v1" / "check_system.txt"
++PACKAGE, REV = "pilot-v1", 7  # policy prompt package (policy_system is shared by all packages) and render revision
++SEEDS = tuple(range(20261400, 20261408))  # fresh, preselected; never used before this block
++SMOKE_SEED = 20261499
++CONDS = ("direct", "checker_gate", "generic_gate", "ask_first")
++DRAWS = 2
++CONCURRENCY = 8
++MAX_CHECKS_PER_EPISODE = 4  # counted checks (cache hits are free and not counted)
++FALLBACK_ACTION = "wait()"
++CODE_FILES = ("scripts/run_hybrid_fallback.py", "src/vomi/relational.py", "src/vomi/pilot.py", "src/vomi/clients.py",
++              "src/officeminds/devgen3.py", "src/officeminds/world.py", "src/vomi/oracle.py",
++              "prompts/pilot-v1/policy_system.txt", "prompts/hybrid-v1/check_system.txt",
++              "reports/hybrid-block/fallback-protocol.md")
++
++
++def sha_bytes(b: bytes) -> str:
++    return hashlib.sha256(b).hexdigest()
++
++
++def decoding() -> dict:
++    d = dict(json.loads(MODEL_CFG.read_text())["decoding"])
++    return {**d, "temperature": 1.0, "max_tokens": 1024}
++
++
++class LengthGuard:
++    def __init__(self, inner):
++        self.inner, self.model = inner, getattr(inner, "model", "?")
++
++    def chat(self, messages, **params):
++        r = self.inner.chat(messages, **params)
++        if (r.finish_reason == "length" or str(r.finish_reason or "").startswith("incomplete")) and not r.error:
++            r.error = "truncated: finish_reason=length"
++        return r
++
++
++def parse(s: str) -> Action:
++    m = re.match(r"(\w+)\((\w*)(?:,(\w+))?\)", s)
++    return Action(m[1], m[2] or "", m[3] or "")
++
++
++def is_commit(a: Action) -> bool:
++    return a.kind in ("give", "drop")
++
++
++def states(seeds=SEEDS):
++    out = []
++    for seed in seeds:
++        for inst in G.generate(seed):
++            if inst.variant.permuted:
++                continue
++            out.append({"state_id": f"s{seed}-{inst.instance_id}", "seed": seed, "inst": inst,
++                        "base": f"s{seed}-{inst.construction}"})
++    return out
++
++
++# ----------------------------------------------------------------------------- robot-visible helpers
++def excluded_offices(hist: VisibleHistory, cfg) -> tuple:
++    """Offices the robot entered after the prologue without seeing the recipient (the public model: nobody moves)."""
++    return tuple(sorted({o.room for _, o in hist.steps[1:] if o.room in cfg.offices
++                         and cfg.recipient not in o.people_present}))
++
++
++def evidence_signature(hist: VisibleHistory, cfg) -> str:
++    """Cache key for a check's ESTIMATES (p, location): everything heard or seen that can change them. The gate itself
++    is recomputed at every use from the current room and remaining steps."""
++    heard = [(list(o.utterances), [n[2] for n in o.notices]) for _, o in hist.steps]
++    return sha_bytes(json.dumps([heard, excluded_offices(hist, cfg),
++                                 cfg.recipient in hist.last.people_present]).encode())
++
++
++def tracker_check(public_scenario, hist: VisibleHistory, a: Action) -> tuple[float, dict]:
++    """Deployed targeted checker: the public-model posterior given the robot-visible history ONLY (the disclosed finite
++    hidden-variable model, enumerated). Inputs: the public scenario (prior + public generative rules) and `hist`."""
++    cfg = public_scenario.config
++    o = ExactOracle(public_scenario, hist)
++    loc, p = {}, 0.0
++    for w, x in o.belief:
++        r = x.people_rooms[cfg.recipient]
++        loc[r] = loc.get(r, 0.0) + w
++        if a.kind == "give":
++            other, fact = cfg.handoff_routes[a.target]
++            m = x.minds[a.target]
++            dest = m.beliefs.get(fact, "unknown") if not other else m.nested.get((other, fact), "unknown")
++            p += w * (dest == r)
++        else:
++            p += w * (a.target == r)
++    return p, loc
++
++
++def check_messages(prompts, cfg, brief, hist, a: Action):
++    led, _ = ledger(hist)
++    offices = list(cfg.offices)
++    user = "\n\n".join([task_card(cfg, brief, REV), led, physical_summary(hist), f"PROPOSED ACTION: {a}",
++                        'Respond as JSON: {"p_success": <probability 0-1>, "recipient_location": {'
++                        + ", ".join(f'"{o}": <probability>' for o in offices) + "}}"])
++    schema = {"type": "object", "properties": {
++        "p_success": {"type": "number", "minimum": 0, "maximum": 1},
++        "recipient_location": {"type": "object", "properties": {o: {"type": "number", "minimum": 0, "maximum": 1}
++                                                                for o in offices},
++                               "required": offices, "additionalProperties": False}},
++        "required": ["p_success", "recipient_location"], "additionalProperties": False}
++    return [{"role": "system", "content": prompts["check_system"]}, {"role": "user", "content": user}], schema
++
++
++def validate_check(offices):
++    def v(text):
++        try:
++            obj = json.loads(text)
++        except json.JSONDecodeError:
++            return None, ["not_json"]
++        try:
++            p = float(obj["p_success"])
++            loc = {o: float(obj["recipient_location"][o]) for o in offices}
++        except (KeyError, TypeError, ValueError):
++            return None, ["schema_violation"]
++        if not 0 <= p <= 1 or any(not 0 <= x <= 1 for x in loc.values()):
++            return None, ["out_of_range"]
++        return {"p_success": p, "recipient_location": loc}, []
++    return v
++
++
++def veto_line(v) -> str:
++    return (f"ACTION CHECK: {v.action} was blocked by the robot's action check (estimated success probability {v.p:.2f}; "
++            f"its expected value {v.j_commit:.2f} is below {v.v_alt:.2f}, the estimated value of searching for the "
++            f"recipient in person). Choose a different action.")
++
++
++def decision_messages(prompts, cfg, brief, hist, acts: list[str], veto=None):
++    msgs, _ = policy_messages(prompts, cfg, brief, hist, None, REV)
++    user = msgs[1]["content"]
++    head, _legal = user.rsplit("\n\nLEGAL ACTIONS NOW: ", 1)
++    extra = (veto_line(veto) + "\n\n") if veto is not None else ""
++    user = head + "\n\n" + extra + "LEGAL ACTIONS NOW: " + ", ".join(acts) + '\n\nRespond as JSON: {"action": "<one legal action>"}'
++    return [msgs[0], {"role": "user", "content": user}]
++
++
++def search_step(hist, cfg, loc: dict, excluded) -> Action:
++    """Declared scripted fallback: next step of the in-person search (deliver on sight; most probable office first)."""
++    o = hist.last
++    if cfg.recipient in o.people_present:
++        return Action("deliver")
++    cand = [x for x in cfg.offices if x not in excluded and x != o.room] or [x for x in cfg.offices if x != o.room]
++    target = sorted(cand, key=lambda x: (-loc.get(x, 0.0), cfg.offices.index(x)))[0]
++    if o.room == "hall":
++        return Action("move", target)
++    return Action("move", "hall")
++
++
++def normalized_loc(loc: dict, cfg, excluded) -> dict:
++    keep = {o: max(0.0, float(loc.get(o, 0.0))) for o in cfg.offices if o not in excluded}
++    tot = sum(keep.values())
++    return {o: v / tot for o, v in keep.items()} if tot > 0 else {o: 1 / len(keep) for o in keep} if keep else {}
++
++
++# ----------------------------------------------------------------------------- episode
++def run_episode(client, st: dict, cond: str, draw: int) -> dict:
++    inst = st["inst"]
++    sc, cfg = inst.scenario, inst.scenario.config  # sc = PUBLIC model (prior + rules); inst.hidden is never read below
++    world = sc.build(inst.hidden)  # the environment (privileged; only world.step observations reach the agent)
++    hist = VisibleHistory(sc.brief, [(None, world.reset())])
++    prompts = {**load_prompts(PACKAGE), "check_system": CHECK_PROMPT.read_text(encoding="utf-8")}
++    dec = decoding()
++    calls, steps = [], []
++    cache: dict = {}
++    n_checks, ask_used, cpu_s = 0, False, 0.0
++    start = time.monotonic()
++
++    def decide(acts, veto=None, kind="decision"):
++        msgs = decision_messages(prompts, cfg, sc.brief, hist, acts, veto)
++        rec = call_with_protocol(client, kind, hist.last.t, "policy", msgs, policy_schema(acts),
++                                 lambda txt, acts=acts: (lambda o, e: (o, e) if o is None or o["action"] in acts
++                                                         else (None, ["illegal_action"]))(*_json_validate(("action",))(txt)),
++                                 dec)
++        calls.append(rec)
++        return rec
++
++    def check(a: Action, log: dict):
++        """Returns (GateVerdict, normalized location) or None (unchecked: cap reached or check failed)."""
++        nonlocal n_checks, cpu_s
++        excl = excluded_offices(hist, cfg)
++        key = (str(a), evidence_signature(hist, cfg))
++        info = {}
++        if key in cache:
++            est = cache[key]
++            info["cache_hit"] = True
++        elif n_checks >= MAX_CHECKS_PER_EPISODE:
++            log["check"] = {"cap_reached": True}
++            return None
++        else:
++            n_checks += 1
++            if cond == "checker_gate":
++                t = time.perf_counter()
++                est = tracker_check(sc, hist, a)
++                cpu_s += time.perf_counter() - t
++            else:
++                msgs, schema = check_messages(prompts, cfg, sc.brief, hist, a)
++                rec = call_with_protocol(client, "check", hist.last.t, str(a), msgs, schema,
++                                         validate_check(list(cfg.offices)), dec)
++                calls.append(rec)
++                est = (rec.parsed["p_success"], rec.parsed["recipient_location"]) if rec.ok else None
++            cache[key] = est
++        if est is None:
++            log["check"] = {**info, "failed": True}
++            return None
++        p, loc = est
++        loc_n = normalized_loc(loc, cfg, excl)
++        if cfg.recipient in hist.last.people_present:  # deliver() is available now: the alternative is certain
++            j = j_commit(p, cfg.stakes)
++            v = GateVerdict(str(a), p, j, 0.95, j >= 0.95, cond)
++        else:
++            v = gate(str(a), p, loc_n, hist.last.room, cfg.horizon - hist.last.t, cfg, excl, cond)
++        log["check"] = {**info, "p": round(p, 4), "J": round(v.j_commit, 4), "V_alt": round(v.v_alt, 4), "allow": v.allow}
++        return v, loc_n
++
++    while not hist.last.done:
++        acts = [str(a) for a in legal_actions(cfg, hist.last)]
++        rec = decide(acts)
++        proposal = rec.parsed["action"] if rec.ok else FALLBACK_ACTION
++        log = {"t": hist.last.t, "proposal": proposal, "policy_ok": rec.ok}
++        a = parse(proposal)
++        if cond == "ask_first" and is_commit(a) and not ask_used:
++            asked = {x.target for x in hist.actions if x.kind == "ask"}
++            present = list(hist.last.people_present)
++            pref = [a.target] if a.kind == "give" and a.target in present else []
++            cands = [p for p in pref + sorted(present) if p not in asked]
++            if cands:
++                a = Action("ask", cands[0], cfg.query_facts[0])
++                ask_used = True
++                log["substituted_ask"] = str(a)
++        elif cond in ("checker_gate", "generic_gate") and is_commit(a):
++            res = check(a, log)
++            if res is not None and not res[0].allow:
++                v, loc_n = res
++                log["veto"] = True
++                acts2 = [x for x in acts if x != str(a)]
++                rec2 = decide(acts2, veto=v, kind="redecision")
++                log["redecision"] = rec2.parsed["action"] if rec2.ok else None
++                if not rec2.ok:
++                    a = search_step(hist, cfg, loc_n, excluded_offices(hist, cfg))
++                    log["scripted_fallback"] = str(a)
++                else:
++                    a2 = parse(rec2.parsed["action"])
++                    if is_commit(a2):
++                        log2 = {}
++                        res2 = check(a2, log2)
++                        log["second_check"] = log2.get("check")
++                        if res2 is not None and not res2[0].allow:
++                            a2 = search_step(hist, cfg, res2[1], excluded_offices(hist, cfg))
++                            log["scripted_fallback"] = str(a2)
++                    a = a2
++        assert a in legal_actions(cfg, hist.last), (st["state_id"], cond, str(a))
++        obs = world.step(a)
++        hist.steps.append((a, obs))
++        log["executed"] = str(a)
++        steps.append(log)
++    wall = time.monotonic() - start
++    usage = {}
++    for r in calls:
++        u = r.usage()
++        g = usage.setdefault(r.kind, {"calls": 0, "attempts": 0, "attempts_failed": 0, "fallbacks": 0, "prompt_tokens": 0,
++                                      "completion_tokens": 0, "reasoning_tokens": 0, "reasoning_known": True,
++                                      "latency_s": 0.0})
++        g["calls"] += 1
++        g["attempts"] += u["calls"]
++        g["attempts_failed"] += sum(bool(x["validation_errors"]) for x in r.attempts)
++        g["fallbacks"] += int(not r.ok)
++        g["prompt_tokens"] += u["prompt_tokens"]
++        g["completion_tokens"] += u["completion_tokens"]
++        if u["reasoning_tokens"] is None:
++            g["reasoning_known"] = False
++        else:
++            g["reasoning_tokens"] += u["reasoning_tokens"]
++        g["latency_s"] += u["latency_s"]
++    return {"state_id": st["state_id"], "seed": st["seed"], "base": st["base"], "construction": inst.construction,
++            "stakes": inst.variant.stakes, "condition": cond, "draw": draw,
++            "actions": [str(a) for a in hist.actions], "steps": steps, "return_": round(sum(o.reward for _, o in hist.steps), 10),
++            "outcome": hist.last.outcome, "n_steps": len(hist.actions), "n_checks": n_checks, "checker_cpu_s": cpu_s,
++            "wall_clock_s": wall, "usage": usage, "agent_view": hist.to_agent_dict(),
++            "calls": [{"kind": r.kind, "step": r.step, "target": r.target, "ok": r.ok, "parsed": r.parsed,
++                       "attempts": r.attempts} for r in calls],
++            "privileged": {"hidden": [list(x) for x in inst.hidden]}}
++
++
++# ----------------------------------------------------------------------------- stages
++def stage_render(args):
++    """Rendered prompts at t0 for the tokenizer forecast (no model calls)."""
++    prompts = {**load_prompts(PACKAGE), "check_system": CHECK_PROMPT.read_text(encoding="utf-8")}
++    out = []
++    for st in states((SMOKE_SEED,)):
++        inst = st["inst"]
++        if inst.variant.stakes != 1.0:
++            continue
++        sc, cfg = inst.scenario, inst.scenario.config
++        h = VisibleHistory(sc.brief, [(None, sc.build(inst.hidden).reset())])
++        acts = [str(a) for a in legal_actions(cfg, h.last)]
++        commit = next((parse(x) for x in acts if parse(x).kind in ("give", "drop")), None)
++        rec = {"construction": inst.construction, "decision": decision_messages(prompts, cfg, sc.brief, h, acts)}
++        if commit is not None:
++            v = GateVerdict(str(commit), 0.5, 0.2, 0.8, False, "render")
++            rec["redecision"] = decision_messages(prompts, cfg, sc.brief, h, [x for x in acts if x != str(commit)], v)
++            rec["check"] = check_messages(prompts, cfg, sc.brief, h, commit)[0]
++        out.append(rec)
++    BLOCK.mkdir(parents=True, exist_ok=True)
++    (BLOCK / "rendered-t0.json").write_bytes(json.dumps(out, indent=1).encode("utf-8"))
++    print("rendered", len(out))
++
++
++def stage_smoke(args):
++    """Interface smoke probes (<= 48 of the 96 allowed): one generic check and one re-decision per t0 state of the smoke
++    seed, both stakes. Every output is kept; nothing is tuned on them."""
++    client = LengthGuard(make_client(json.loads(MODEL_CFG.read_text())))
++    prompts = {**load_prompts(PACKAGE), "check_system": CHECK_PROMPT.read_text(encoding="utf-8")}
++    jobs = []
++    for st in states((SMOKE_SEED,)):
++        inst = st["inst"]
++        sc, cfg = inst.scenario, inst.scenario.config
++        h = VisibleHistory(sc.brief, [(None, sc.build(inst.hidden).reset())])
++        acts = [str(a) for a in legal_actions(cfg, h.last)]
++        commit = next((parse(x) for x in acts if parse(x).kind in ("give", "drop")), None)
++        if commit is None:
++            continue
++        p, loc = tracker_check(sc, h, commit)
++        v = gate(str(commit), p, loc, h.last.room, cfg.horizon, cfg, (), "checker_gate")
++        jobs.append(("check", st, h, commit, None))
++        jobs.append(("redecision", st, h, commit, v))
++    jobs = jobs[:48]
++
++    def run(job):
++        kind, st, h, commit, v = job
++        cfg, sc = st["inst"].scenario.config, st["inst"].scenario
++        if kind == "check":
++            msgs, schema = check_messages(prompts, cfg, sc.brief, h, commit)
++            rec = call_with_protocol(client, "check", 0, str(commit), msgs, schema, validate_check(list(cfg.offices)),
++                                     decoding())
++        else:
++            acts = [str(a) for a in legal_actions(cfg, h.last) if str(a) != str(commit)]
++            msgs = decision_messages(prompts, cfg, sc.brief, h, acts, v)
++            rec = call_with_protocol(client, "redecision", 0, "policy", msgs, policy_schema(acts),
++                                     _json_validate(("action",)), decoding())
++        return {"kind": kind, "state_id": st["state_id"], "commit": str(commit), "ok": rec.ok, "parsed": rec.parsed,
++                "attempts": rec.attempts}
++
++    t0 = time.monotonic()
++    with ThreadPoolExecutor(CONCURRENCY) as pool:
++        res = list(pool.map(run, jobs))
++    wall = time.monotonic() - t0
++    summ = {"probes": len(res), "ok": sum(r["ok"] for r in res),
++            "attempts": sum(len(r["attempts"]) for r in res), "wall_s": round(wall, 1),
++            "by_kind": {k: {"n": sum(r["kind"] == k for r in res), "ok": sum(r["ok"] and r["kind"] == k for r in res)}
++                        for k in ("check", "redecision")}}
++    (BLOCK / "smoke.jsonl").write_bytes("".join(json.dumps(r) + "\n" for r in res).encode("utf-8"))
++    (BLOCK / "smoke-summary.json").write_bytes(json.dumps(summ, indent=1).encode("utf-8"))
++    print(json.dumps(summ, indent=1))
++
++
++def code_hashes() -> dict:
++    return {f: sha_bytes((ROOT / f).read_bytes()) for f in CODE_FILES}
++
++
++def stage_freeze(args):
++    dirty = [x for x in os.popen(f'git -C "{ROOT}" status --porcelain').read().split("\n") if x.strip()]
++    if dirty:
++        raise SystemExit(f"freeze needs a clean tree: {dirty}")
++    fz = {"block": "D-019 fallback", "git_commit": os.popen(f'git -C "{ROOT}" rev-parse HEAD').read().strip(),
++          "code_sha256": code_hashes(), "seeds": list(SEEDS), "conditions": list(CONDS), "draws": DRAWS,
++          "decoding": decoding(), "package": PACKAGE, "render_revision": REV, "concurrency": CONCURRENCY,
++          "max_checks_per_episode": MAX_CHECKS_PER_EPISODE, "fallback_action": FALLBACK_ACTION,
++          "model": json.loads(MODEL_CFG.read_text())["hf_snapshot"],
++          "episodes_planned": len(states()) * len(CONDS) * DRAWS,
++          "state_ids_sha256": sha_bytes(json.dumps([s["state_id"] for s in states()]).encode())}
++    FREEZE.write_bytes(json.dumps(fz, indent=1).encode("utf-8"))
++    print(json.dumps(fz, indent=1))
++
++
++def verify(_args=None) -> dict:
++    fz = json.loads(FREEZE.read_text())
++    now = code_hashes()
++    bad = {f: (fz["code_sha256"].get(f), h) for f, h in now.items() if fz["code_sha256"].get(f) != h}
++    if bad:
++        raise SystemExit(f"code differs from freeze: {bad}")
++    assert fz["state_ids_sha256"] == sha_bytes(json.dumps([s["state_id"] for s in states()]).encode())
++    print("verify ok", fz["git_commit"])
++    return fz
++
++
++def stage_pilot(args):
++    fz = verify()
++    dirty = [x for x in os.popen(f'git -C "{ROOT}" status --porcelain --untracked-files=no').read().split("\n") if x.strip()]
++    tracked = os.popen(f'git -C "{ROOT}" ls-files reports/hybrid-block/fallback-freeze.json').read().strip()
++    if dirty or not tracked:
++        raise SystemExit(f"pilot needs a clean tree with the freeze committed: dirty={dirty} tracked={tracked!r}")
++    sts = states()
++    per_block = len([s for s in sts if s["seed"] == SEEDS[0]]) * len(CONDS) * DRAWS
++    meta = {"stage": "pilot", "freeze_sha256": sha_bytes(FREEZE.read_bytes()), "decoding": decoding(), "draws": DRAWS,
++            "concurrency": CONCURRENCY, "limit_s": 7200, "seeds": list(SEEDS)}
++    kept, prior_wall, done = [], 0.0, []
++    if args.resume:
++        out = Path(args.resume)
++        manifest = json.loads((out / "manifest-start.json").read_text())
++        prev = [json.loads(l) for l in (out / "episodes.jsonl").read_text().splitlines() if l.strip()]
++        aborted = []
++        for seed in sorted({e["seed"] for e in prev}):
++            es = [e for e in prev if e["seed"] == seed]
++            (kept if len(es) == per_block else aborted).extend(es)
++            if len(es) == per_block:
++                done.append(seed)
++        with (out / "aborted-episodes.jsonl").open("a") as af:
++            af.write("".join(json.dumps(e) + "\n" for e in aborted))
++        prior_wall = float(json.loads((out / "progress.json").read_text())["wall_s"]) if (out / "progress.json").exists() else 0.0
++        manifest.setdefault("resumes", []).append({"at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "kept_blocks": done,
++                                                   "aborted_episodes": len(aborted)})
++        (out / "episodes.jsonl").write_text("".join(json.dumps(e) + "\n" for e in kept))
++    else:
++        manifest = runlog.new_manifest("hybrid-fallback", meta)
++        out = RUNS / manifest["run_id"]
++        out.mkdir(parents=True, exist_ok=True)
++        (out / "manifest-start.json").write_text(json.dumps(manifest, indent=1, default=str))
++    print("run dir", out, flush=True)
++    client = LengthGuard(make_client(json.loads(MODEL_CFG.read_text())))
++    t_start = time.monotonic() - prior_wall
++
++    def job(item):
++        n, (st, cond, r) = item
++        try:
++            res = run_episode(client, st, cond, r)
++        except Exception as e:  # recorded, never silently retried
++            return {"state_id": st["state_id"], "seed": st["seed"], "condition": cond, "draw": r, "dispatch_index": n,
++                    "blocked": f"error: {type(e).__name__}: {e}"}
++        return {**res, "dispatch_index": n}
++
++    with (out / "episodes.jsonl").open("a") as f, ThreadPoolExecutor(CONCURRENCY) as pool:
++        for seed in SEEDS:
++            if seed in done:
++                continue
++            if time.monotonic() - t_start + 15 * 60 > 7200:
++                print("serving-time limit: not starting seed block", seed, flush=True)
++                break
++            block = [s for s in sts if s["seed"] == seed]
++            jobs = []
++            for r in range(DRAWS):
++                for i, st in enumerate(block):
++                    for j in range(len(CONDS)):
++                        jobs.append((st, CONDS[(i + r + j) % len(CONDS)], r))
++            for res in pool.map(job, [(len(done) * 10000 + n, x) for n, x in enumerate(jobs)]):
++                f.write(json.dumps(res, default=str) + "\n")
++                f.flush()
++            done.append(seed)
++            (out / "progress.json").write_text(json.dumps({"completed_seed_blocks": done,
++                                                           "wall_s": round(time.monotonic() - t_start, 1)}))
++            print("seed block done", seed, round(time.monotonic() - t_start), "s", flush=True)
++    runlog.finish(manifest, out, wall_clock_s=time.monotonic() - t_start, completed_seed_blocks=done)
++    print("out", out, "blocks", len(done))
++
++
++def main():
++    ap = argparse.ArgumentParser()
++    ap.add_argument("stage", choices=("render", "smoke", "freeze", "verify", "pilot"))
++    ap.add_argument("--resume")
++    args = ap.parse_args()
++    {"render": stage_render, "smoke": stage_smoke, "freeze": stage_freeze, "verify": verify,
++     "pilot": stage_pilot}[args.stage](args)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/src/officeminds/hybridfam.py b/src/officeminds/hybridfam.py
+new file mode 100644
+index 0000000..fd420b6
+--- /dev/null
++++ b/src/officeminds/hybridfam.py
+@@ -0,0 +1,142 @@
++"""Hybrid block (D-019) qualification families: minimally changed dev-v3 constructions, CPU qualification only.
++
++DEVELOPMENT DATA ONLY. These cases use the dev-v3 event semantics (world.Event, devgen3._Script notices, rules r6). The
++only changes are the hidden-variable supports and the event orders listed per construction. Nothing here is shown to an
++LLM in this block. Purpose (privileged documentation):
++
++  F1 certain_wrong   3b  F's route is certain (R's public statement) but R was updated quietly: give(F) always fails
++                     3c  correct-handoff control: same certain route, R not updated: give(F) always succeeds
++                     3a  aligned control: F told R; route and R's office both uncertain but equal
++  F2 uncertain_aligned
++                     2d  two couriers with IDENTICAL destination marginals (uniform over the two non-announced offices)
++                         and identical recipient marginal; H heard the first move, N the second: N always right, H always wrong
++                     2e  uncertain shared provenance: H heard R's plan, R keeps it with probability 3/4; N only heard the
++                         announcement (certain, never right)
++  F3 stop            stop_visible    2e prologue, then R comes back to the lobby: deliver() is certain; relations idle
++                     stop_announced  2e prologue, then R announces the final office to everyone: drop() is certain
++  F4 reuse_refresh   seq  N heard R's move then stepped out; N returns at step 2. With probability 1/2, R comes back at
++                          step 1, tells H the next office quietly and moves there (seen only from the lobby).
++"""
++
++from __future__ import annotations
++
++import random
++from dataclasses import dataclass
++from fractions import Fraction
++
++from .devgen3 import NAME_POOL, OFFICE_POOL, PublicSpec, _others, _Script, build_world
++from .scenarios import Scenario, grid
++from .world import PersonMind, World, WorldConfig
++
++HORIZON = 8
++FAMILIES = {"F1_certain_wrong": ("3b", "3c", "3a"), "F2_uncertain_aligned": ("2d", "2e"),
++            "F3_stop": ("stop_visible", "stop_announced"), "F4_reuse_refresh": ("seq",)}
++ROLES = {"3a": ("R", "A", "F"), "3b": ("R", "A", "F"), "3c": ("R", "A", "F"), "2d": ("R", "H", "N"),
++         "2e": ("R", "H", "N"), "stop_visible": ("R", "H", "N"), "stop_announced": ("R", "H", "N"),
++         "seq": ("R", "H", "N", "D")}
++HALF = (("0", Fraction(1, 2)), ("1", Fraction(1, 2)))
++KEEP = Fraction(3, 4)
++
++
++@dataclass(frozen=True)
++class FamilyCase:
++    case_id: str
++    family: str
++    construction: str
++    seed: int
++    names: dict
++    offices: tuple
++    stakes: float
++    scenario: Scenario  # public prior (disclosed) + builder
++    hidden: tuple  # PRIVILEGED: one draw for this case
++
++
++def _domains(c: str, offices) -> dict:
++    a = {o: Fraction(1, 3) for o in offices}
++    if c.startswith("3") or c == "2d":
++        return {"a": a, "m1": dict(HALF)}
++    if c in ("2e", "stop_visible", "stop_announced"):
++        return {"a": a, "m1": dict(HALF), "kept": {"yes": KEEP, "no": 1 - KEEP}}
++    if c == "seq":
++        return {"a": a, "m1": dict(HALF), "m2": dict(HALF), "ret": {"yes": Fraction(1, 2), "no": Fraction(1, 2)}}
++    raise ValueError(c)
++
++
++def _third(offices, x, y):
++    return next(o for o in offices if o not in (x, y))
++
++
++def build(c: str, n: dict, offices, stakes: float, p: dict) -> World:
++    if c.startswith("3"):
++        spec = PublicSpec(f"hyb-{c}", 3, c, "none", tuple(n[r] for r in ROLES[c]), tuple(offices))
++        return build_world(spec, n, stakes, p)
++    R, H, N = n["R"], n["H"], n["N"]
++    lf, a = f"{R}_loc", p["a"]
++    s = _Script()
++    people = [n[r] for r in ROLES[c]]
++    rooms = {x: "lobby" for x in people}
++    timed = []
++    s.announce(R, lf, a)
++    s.leave(R, a)
++    s.self_sees(R, lf, a)
++    m1 = _others(offices, a)[int(p["m1"])]
++    s.arrive(R)
++    if c == "seq":
++        s.quiet(R, N, lf, m1)
++        s.leave(R, m1)
++        s.self_sees(R, lf, m1)
++        s._add("enter", "outside", N, visible=("leave", f"{N} leaves the lobby"))
++        if p["ret"] == "yes":  # step 1: R returns, tells H quietly, moves on (visible only from the lobby)
++            m2 = _others(offices, m1)[int(p["m2"])]
++            s._add("enter", "lobby", R, visible=("arrive", f"{R} arrives in the lobby"), t=1)
++            s._add("tell", "lobby", R, lf, m2, present=(R, H), t=1,
++                   visible=("quiet", f"{R} talks quietly to {H}; only {H} can hear it, and the robot cannot hear what is said"))
++            s._add("enter", m2, R, visible=("leave", f"{R} leaves the lobby"), t=1)
++            s._add("witness", m2, R, lf, m2, present=(R,), t=1)
++        s._add("say", "lobby", n["D"], visible=("remark", f'{n["D"]} says: "Morning."'), t=1)  # irrelevant event, both draws
++        s._add("enter", "lobby", N, visible=("arrive", f"{N} arrives in the lobby"), t=2)
++    elif c == "2d":
++        s.quiet(R, H, lf, m1)
++        s.leave(R, m1)
++        s.self_sees(R, lf, m1)
++        m2 = _third(offices, a, m1)
++        s.arrive(R)
++        s.quiet(R, N, lf, m2)
++        s.leave(R, m2)
++        s.self_sees(R, lf, m2)
++    else:  # 2e and the stop cases share the 2e prologue
++        final = m1 if p["kept"] == "yes" else _third(offices, a, m1)
++        s.quiet(R, H, lf, m1)
++        s.leave(R, final)
++        s.self_sees(R, lf, final)
++        if c == "stop_visible":
++            s.arrive(R)
++        elif c == "stop_announced":
++            s.arrive(R)
++            s.announce(R, lf, final)
++            s.leave(R, final)
++    events = tuple(s.events)
++    cfg = WorldConfig(adjacency={"lobby": ("hall",), "hall": ("lobby", *offices), **{x: ("hall",) for x in offices}},
++                      offices=tuple(offices), chute_room="lobby", recipient=R, roster=tuple(sorted(people)),
++                      query_facts=(lf,), fact_domains={lf: tuple(offices)},
++                      handoff_routes={H: ("", lf), N: ("", lf)}, stakes=stakes, horizon=HORIZON)
++    return World(cfg, "lobby", rooms, {x: PersonMind() for x in people}, (), events, {})
++
++
++def cases(seed: int, stakes_levels=(1.0, 4.0)) -> list[FamilyCase]:
++    out = []
++    for fam, cons in FAMILIES.items():
++        for c in cons:
++            rng = random.Random(f"{seed}:hybrid-fam:public:{c}")
++            names = dict(zip(ROLES[c], rng.sample(NAME_POOL, len(ROLES[c]))))
++            offices = list(OFFICE_POOL[rng.randrange(len(OFFICE_POOL))])
++            rng.shuffle(offices)
++            prior = grid({k: {v: float(w) for v, w in d.items()} for k, d in _domains(c, offices).items()})
++            hrng = random.Random(f"{seed}:hybrid-fam:hidden:{c}")
++            params, weights = zip(*prior)
++            hidden = hrng.choices(params, weights=weights, k=1)[0]
++            for st in stakes_levels:
++                sc = Scenario(f"hyb-{c}-s{seed}-x{st:g}", f"Deliver the package to {names['R'].capitalize()}.",
++                              fam, prior, lambda prm, c=c, n=names, o=tuple(offices), st=st: build(c, n, o, st, prm))
++                out.append(FamilyCase(sc.id, fam, c, seed, names, tuple(offices), st, sc, hidden))
++    return out
+diff --git a/src/vomi/relational.py b/src/vomi/relational.py
+new file mode 100644
+index 0000000..5c6d461
+--- /dev/null
++++ b/src/vomi/relational.py
+@@ -0,0 +1,497 @@
++"""Hybrid block (D-019): provenance index, referent-based joint relation engine, relation cache, decision interface.
++
++Information boundary. Every function here reads only:
++  - the robot-visible history (VisibleHistory: its observations, dev-v3 notices, answers and its own actions), and
++  - the public task structure: WorldConfig (layout, roster, handoff routes, stakes, horizon) and a structured
++    public model (PublicModelSpec), the disclosed task-card model in machine-readable form.
++It never reads a World, a PersonMind, hidden parameters, evaluator values or generator metadata.
++
++Representation (CONCEPT.md R1/R2, with the review's corrections):
++  - a person's belief about a fact is a TERM: const(v) (heard publicly), latent(name) (a value the robot did not hear,
++    e.g. the content of a quiet conversation), expr(...) (a public-model function of latents), or unknown (no belief);
++    every term carries the visible event IDs it came from (provenance);
++  - latent variables have the public model's (possibly conditional) prior; shared referents are SHARED latents, so
++    joint relations are exact by enumeration, never a product of marginals; the product is computed only as a contrast;
++  - observed answers are EVIDENCE constraints: they change the robot's estimate, never a person's term;
++  - an inconsistent constraint is reported (zero mass), never forced into a confident equality.
++"""
++
++from __future__ import annotations
++
++import itertools
++import re
++from dataclasses import dataclass, field
++from fractions import Fraction
++
++from officeminds.episode import VisibleHistory
++from officeminds.world import WorldConfig
++
++UNKNOWN = "unknown"
++_ANN = re.compile(r'^(\w+) announces to everyone present: "(\w+) = (\w+)"$')
++_STAT = re.compile(r'^(\w+) says: "(\w+) = (\w+)"$')
++_QUIET = re.compile(r"^(\w+) talks quietly to (\w+);")
++_LEAVE = re.compile(r"^(\w+) leaves the lobby( and the building)?$")
++_ARRIVE = re.compile(r"^(\w+) arrives in the lobby$")
++_ANSWER = re.compile(r"^(\w+) = (\w+)$")
++
++
++# ----------------------------------------------------------------------------- provenance index
++@dataclass(frozen=True)
++class VEvent:
++    id: str  # the ledger's citable evidence ID (t{t}:note{i} / t{t}:said{i})
++    t: int
++    kind: str  # announce | quiet | statement | remark | leave | arrive | answer
++    actor: str
++    listener: str = ""
++    fact: str = ""
++    value: str = ""  # "" when the robot did not hear it (quiet)
++    hearers: frozenset = frozenset()  # people (not the robot) who heard the content
++    witnesses: frozenset = frozenset()  # people who saw it happen (incl. hearers)
++    building: bool = False
++
++    @property
++    def changes_person_state(self) -> bool:
++        return self.kind in ("announce", "quiet")  # answers/statements only update listeners' views of the speaker
++
++
++@dataclass
++class ProvenanceIndex:
++    events: list[VEvent] = field(default_factory=list)
++    robot_rooms: list[str] = field(default_factory=list)  # robot room at each observation t
++    present: list[tuple] = field(default_factory=list)  # people present at each observation t
++    positions: dict = field(default_factory=dict)  # last visible position per person: lobby | away | gone
++
++    @classmethod
++    def build(cls, hist: VisibleHistory) -> "ProvenanceIndex":
++        idx = cls()
++        for _, o in hist.steps:
++            idx.add_observation(o)
++        return idx
++
++    def add_observation(self, o) -> None:
++        self.robot_rooms.append(o.room)
++        self.present.append(tuple(o.people_present))
++        for i, (kind, actor, line, others) in enumerate(o.notices):
++            eid = f"t{o.t}:note{i}"
++            seen = frozenset(others) | {actor}
++            if kind == "announce" and (m := _ANN.match(line)):
++                self.events.append(VEvent(eid, o.t, kind, actor, "", m[2], m[3], seen, seen))
++            elif kind == "statement" and (m := _STAT.match(line)):
++                self.events.append(VEvent(eid, o.t, kind, actor, "", m[2], m[3], seen, seen))
++            elif kind == "quiet" and (m := _QUIET.match(line)):
++                self.events.append(VEvent(eid, o.t, kind, actor, m[2], "", "", frozenset({actor, m[2]}),
++                                          seen | {m[2]}))
++            elif kind == "leave" and (m := _LEAVE.match(line)):
++                self.events.append(VEvent(eid, o.t, kind, actor, witnesses=seen, building=bool(m[2])))
++                self.positions[actor] = "gone" if m[2] else "away"
++            elif kind == "arrive" and _ARRIVE.match(line):
++                self.events.append(VEvent(eid, o.t, kind, actor, witnesses=seen))
++                self.positions[actor] = "lobby"
++            elif kind == "remark":
++                self.events.append(VEvent(eid, o.t, kind, actor, witnesses=seen))
++            else:
++                raise ValueError(f"unparsed notice: {kind!r} {line!r}")
++        for i, (speaker, text) in enumerate(o.utterances):
++            m = _ANSWER.match(text)
++            hearers = frozenset(o.people_present)
++            self.events.append(VEvent(f"t{o.t}:said{i}", o.t, "answer", speaker, "", m[1] if m else "",
++                                      m[2] if m else UNKNOWN, hearers, hearers))
++        for p in o.people_present:
++            self.positions[p] = "lobby" if o.room == "lobby" else o.room
++
++    def watched_lobby_at(self, t: int) -> bool:
++        return t < len(self.robot_rooms) and self.robot_rooms[t] == "lobby"
++
++
++# ----------------------------------------------------------------------------- terms
++Term = tuple  # ("const", v) | ("latent", name) | ("expr", label, fn, deps) | ("unknown",)
++CONST = lambda v: ("const", v)  # noqa: E731
++LATENT = lambda n: ("latent", n)  # noqa: E731
++UNK = ("unknown",)
++
++
++def term_value(term: Term, assign: dict) -> str:
++    k = term[0]
++    if k == "const":
++        return term[1]
++    if k == "latent":
++        return assign[term[1]]
++    if k == "expr":
++        return term[2](assign)
++    return UNKNOWN
++
++
++def term_label(term: Term) -> str:
++    return {"const": lambda t: t[1], "latent": lambda t: f"<{t[1]}>", "expr": lambda t: t[1],
++            "unknown": lambda t: "unknown"}[term[0]](term)
++
++
++# ----------------------------------------------------------------------------- structured public models
++def _uniform(vals) -> list:
++    vals = list(vals)
++    return [(v, Fraction(1, len(vals))) for v in vals]
++
++
++class PublicModelSpec:
++    """Structured form of a construction's disclosed public model (hand-compiled once per template; see cpu-gate).
++    Subclasses define: query fact, which latent each quiet conversation carries, the ordered latent prior, and the
++    recipient's location term."""
++    family = "base"
++
++    def __init__(self, cfg: WorldConfig):
++        self.cfg = cfg
++        self.R = cfg.recipient
++        self.fact = cfg.query_facts[0]
++        self.offices = tuple(cfg.offices)
++
++    def quiet_fact(self, ev: VEvent) -> str:
++        return self.fact
++
++    def quiet_latent(self, k: int, ev: VEvent) -> str:
++        return f"Q{k}"
++
++    def latents(self, eng) -> list:
++        raise NotImplementedError
++
++    def recipient_loc(self, eng) -> Term:
++        raise NotImplementedError
++
++    def adjust(self, eng) -> None:
++        """Hook for possible unobserved events allowed by the public model."""
++
++    def constraints(self, eng) -> list:
++        return []
++
++    def may_change_unobserved(self, idx: ProvenanceIndex, t_from: int, t_to: int) -> bool:
++        return False
++
++
++class Meeting3(PublicModelSpec):
++    """dev-v3 3a/3b/3c: A announced meeting office a, changed it to b (uniform over the two others) and told it only in
++    the quiet conversations shown; every quiet conversation by A or F tells the CURRENT office (one shared latent b);
++    R goes to where R believes the meeting is; F routes by what F thinks R believes."""
++    family = "meeting3"
++
++    def quiet_latent(self, k, ev):
++        return "b"
++
++    def latents(self, eng):
++        a = eng.announced(self.fact)
++        return [("b", lambda s, a=a: _uniform(o for o in self.offices if o != a))]
++
++    def recipient_loc(self, eng):
++        return eng.belief(self.R, self.fact)
++
++
++class Moves2(PublicModelSpec):
++    """2d: R announced a; each quiet conversation by R tells the office R is about to go to; the first move is uniform
++    over the two offices other than a; the second goes to the remaining office (neither a nor the first)."""
++    family = "moves2"
++
++    def latents(self, eng):
++        a = eng.announced(self.fact)
++        out = [("Q1", lambda s, a=a: _uniform(o for o in self.offices if o != a))]
++        if eng.n_quiet >= 2:
++            out.append(("Q2", lambda s, a=a: [(next(o for o in self.offices if o not in (a, s["Q1"])), Fraction(1))]))
++        return out
++
++    def recipient_loc(self, eng):
++        if self.R in eng.idx.present[-1]:
++            return CONST(eng.idx.robot_rooms[-1])
++        return LATENT(f"Q{eng.n_quiet}") if eng.n_quiet else CONST(eng.announced(self.fact))
++
++
++class Plan2e(PublicModelSpec):
++    """2e / stop cases: R's quiet conversation tells the addressee R's planned office (uniform over the two offices other
++    than a); R keeps the plan with probability 3/4, otherwise goes to the remaining office. stop_visible: R is back in
++    the lobby; stop_announced: R then announced the final office to everyone and went there."""
++    family = "plan2e"
++
++    def latents(self, eng):
++        a = eng.announced(self.fact)
++        return [("Q1", lambda s, a=a: _uniform(o for o in self.offices if o != a)),
++                ("kept", lambda s: [("yes", Fraction(3, 4)), ("no", Fraction(1, 4))])]
++
++    def _final(self, eng):
++        a = eng.announced(self.fact)
++        return ("expr", "final(Q1,kept)",
++                lambda s, a=a: s["Q1"] if s["kept"] == "yes" else next(o for o in self.offices if o not in (a, s["Q1"])),
++                ("Q1", "kept"))
++
++    def recipient_loc(self, eng):
++        if self.R in eng.idx.present[-1]:
++            return CONST(eng.idx.robot_rooms[-1])
++        anns = [e for e in eng.idx.events if e.kind == "announce" and e.actor == self.R]
++        if len(anns) >= 2:
++            return CONST(anns[-1].value)
++        return self._final(eng)
++
++    def constraints(self, eng):
++        anns = [e for e in eng.idx.events if e.kind == "announce" and e.actor == self.R]
++        return [(self._final(eng), anns[-1].value, anns[-1].id)] if len(anns) >= 2 else []
++
++
++class Seq4(PublicModelSpec):
++    """F4 seq: R announced a, told N quietly its next office Q1 (uniform over the two others) and moved there; N stepped
++    out and returns at step 2. With probability 1/2, at step 1 R comes back to the lobby, tells H quietly its next office
++    Q2 (uniform over the two offices other than Q1) and moves there; this is visible only from the lobby."""
++    family = "seq4"
++    RETURN_STEP = 1
++
++    def latents(self, eng):
++        a = eng.announced(self.fact)
++        out = [("Q1", lambda s, a=a: _uniform(o for o in self.offices if o != a))]
++        if eng.n_quiet >= 2 or not self._observed(eng):
++            out.append(("Q2", lambda s: _uniform(o for o in self.offices if o != s["Q1"])))
++        if not self._observed(eng):
++            out.append(("ret", lambda s: [("yes", Fraction(1, 2)), ("no", Fraction(1, 2))]))
++        return out
++
++    def _observed(self, eng) -> bool:
++        return len(eng.idx.robot_rooms) <= self.RETURN_STEP or eng.idx.watched_lobby_at(self.RETURN_STEP)
++
++    def adjust(self, eng):
++        if self._observed(eng) or len(eng.idx.robot_rooms) <= self.RETURN_STEP:
++            return
++        H = next(p for p in self.cfg.handoff_routes if p != self._n(eng))
++        before = eng.beliefs.get((H, self.fact), (UNK, ()))
++        eng.beliefs[(H, self.fact)] = (("expr", f"ret?<Q2>:{term_label(before[0])}",
++                                        lambda s, b=before[0]: s["Q2"] if s["ret"] == "yes" else term_value(b, s),
++                                        ("ret", "Q2")), before[1] + ("unobserved:t1",))
++
++    def _n(self, eng):
++        q = next(e for e in eng.idx.events if e.kind == "quiet")
++        return q.listener
++
++    def recipient_loc(self, eng):
++        if self.R in eng.idx.present[-1]:
++            return CONST(eng.idx.robot_rooms[-1])
++        if not self._observed(eng):
++            return ("expr", "ret?<Q2>:<Q1>", lambda s: s["Q2"] if s["ret"] == "yes" else s["Q1"], ("ret", "Q1", "Q2"))
++        return LATENT(f"Q{eng.n_quiet}")
++
++    def may_change_unobserved(self, idx, t_from, t_to):
++        return any(t_from < t <= t_to and t == self.RETURN_STEP and not idx.watched_lobby_at(t)
++                   for t in range(t_from + 1, t_to + 1))
++
++
++SPECS = {"3a": Meeting3, "3b": Meeting3, "3c": Meeting3, "2d": Moves2, "2e": Plan2e, "stop_visible": Plan2e,
++         "stop_announced": Plan2e, "seq": Seq4}
++
++
++# ----------------------------------------------------------------------------- referent engine
++class ReferentEngine:
++    """Compiles the index under r6 belief rules into terms; answers joint queries by exact enumeration of latents."""
++
++    def __init__(self, pm: PublicModelSpec, idx: ProvenanceIndex):
++        self.pm, self.idx, self.cfg = pm, idx, pm.cfg
++        self.beliefs: dict = {}  # (person, fact) -> (term, provenance ids)
++        self.nested: dict = {}  # (person, other, fact) -> (term, provenance ids)
++        self.evidence: list = []  # (term, observed value, evidence id): robot-estimate updates only
++        self.n_quiet = 0
++        for ev in idx.events:
++            self._apply(ev)
++        pm.adjust(self)
++        self._joint = None
++
++    # -- compilation (r6 rules 1, 3, 5)
++    def _apply(self, ev: VEvent) -> None:
++        if ev.kind == "announce":
++            for p in ev.hearers:
++                self.beliefs[(p, ev.fact)] = (CONST(ev.value), (ev.id,))
++                if p != ev.actor:
++                    self.nested[(p, ev.actor, ev.fact)] = (CONST(ev.value), (ev.id,))
++                    self.nested[(ev.actor, p, ev.fact)] = (CONST(ev.value), (ev.id,))
++        elif ev.kind == "quiet":
++            self.n_quiet += 1
++            f = self.pm.quiet_fact(ev)
++            t = LATENT(self.pm.quiet_latent(self.n_quiet, ev))
++            for p in (ev.actor, ev.listener):
++                self.beliefs[(p, f)] = (t, (ev.id,))
++            self.nested[(ev.listener, ev.actor, f)] = (t, (ev.id,))
++            self.nested[(ev.actor, ev.listener, f)] = (t, (ev.id,))
++        elif ev.kind in ("statement", "answer"):
++            for p in ev.hearers - {ev.actor}:
++                self.nested[(p, ev.actor, ev.fact)] = (CONST(ev.value), (ev.id,))
++            if ev.kind == "answer" and ev.fact:  # cooperative public model: the answer reports the speaker's own belief
++                self.evidence.append((self.belief(ev.actor, ev.fact), ev.value, ev.id))
++            elif ev.kind == "answer":
++                self.evidence.append(("unknown-answer", ev.actor, ev.id))
++
++    def announced(self, fact: str) -> str:
++        """The FIRST public announcement of `fact` (the public models' reference value a)."""
++        anns = [e for e in self.idx.events if e.kind == "announce" and e.fact == fact]
++        return anns[0].value if anns else ""
++
++    def belief(self, p: str, fact: str) -> Term:
++        return self.beliefs.get((p, fact), (UNK, ()))[0]
++
++    def nested_belief(self, p: str, other: str, fact: str) -> Term:
++        return self.nested.get((p, other, fact), (UNK, ()))[0]
++
++    def provenance(self, p: str, fact: str, other: str = "") -> tuple:
++        rec = self.nested.get((p, other, fact)) if other else self.beliefs.get((p, fact))
++        return rec[1] if rec else ()
++
++    def route(self, courier: str) -> Term:
++        other, fact = self.cfg.handoff_routes[courier]
++        return self.nested_belief(courier, other, fact) if other else self.belief(courier, fact)
++
++    # -- exact joint over latents
++    def joint(self) -> list[tuple[dict, Fraction]]:
++        if self._joint is None:
++            rows = [({}, Fraction(1))]
++            for name, dist in self.pm.latents(self):
++                rows = [({**s, name: v}, w * pv) for s, w in rows for v, pv in dist(s) if pv > 0]
++            cons = self.pm.constraints(self)
++            keep = []
++            for s, w in rows:
++                ok = all(term_value(t, s) == v for t, v, _ in cons)
++                for e in self.evidence:
++                    if e[0] == "unknown-answer":
++                        continue  # an "I don't know" answer is checked separately (see inconsistent())
++                    ok = ok and term_value(e[0], s) == e[1]
++                if ok:
++                    keep.append((s, w))
++            total = sum(w for _, w in keep)
++            self._joint = [(s, w / total) for s, w in keep] if total else []
++        return self._joint
++
++    def inconsistent(self) -> list[str]:
++        """Evidence the public model gives zero probability (exposed, never forced into a confident answer)."""
++        out = [] if self.joint() else ["joint: zero mass"]
++        for e in self.evidence:
++            if e[0] == "unknown-answer" and self.belief(e[1], self.fact)[0] != "unknown":
++                out.append(f"{e[2]}: {e[1]} said 'I don't know' but holds a belief under the public model")
++        return out
++
++    def dist(self, term: Term) -> dict[str, Fraction]:
++        out: dict[str, Fraction] = {}
++        for s, w in self.joint():
++            v = term_value(term, s)
++            out[v] = out.get(v, Fraction(0)) + w
++        return out
++
++    def p_equal(self, t1: Term, t2: Term) -> Fraction:
++        return sum((w for s, w in self.joint() if term_value(t1, s) == term_value(t2, s) != UNKNOWN), Fraction(0))
++
++    def p_equal_product(self, t1: Term, t2: Term) -> Fraction:
++        """CONTRAST ONLY: the independence reading of the two marginals (what marginal-only notes imply)."""
++        d1, d2 = self.dist(t1), self.dist(t2)
++        return sum((p * d2.get(v, 0) for v, p in d1.items() if v != UNKNOWN), Fraction(0))
++
++    def frechet(self, t1: Term, t2: Term) -> tuple[Fraction, Fraction]:
++        """Bounds on P(equal) from the marginals alone (any coupling)."""
++        d1, d2 = self.dist(t1), self.dist(t2)
++        vals = [v for v in d1 if v != UNKNOWN]
++        hi = sum((min(d1[v], d2.get(v, 0)) for v in vals), Fraction(0))
++        lo = max([Fraction(0)] + [d1[v] + d2.get(v, 0) - 1 for v in vals])
++        return lo, hi
++
++
++def engine_for(construction: str, cfg: WorldConfig, hist: VisibleHistory) -> ReferentEngine:
++    return ReferentEngine(SPECS[construction](cfg), ProvenanceIndex.build(hist))
++
++
++# ----------------------------------------------------------------------------- relation cache (reuse / refresh)
++@dataclass
++class RelationRecord:
++    courier: str
++    p: Fraction  # P(route(courier) == recipient location | h)
++    route_term: str
++    loc_term: str
++    provenance: tuple
++    computed_t: int
++    n_events: int  # index length when computed
++    deps: frozenset
++
++
++class RelationCache:
++    """Reuse a relation until a visible event touches one of its people, or the public model allows an unobserved change
++    while the robot was not watching. Mere sightings of unrelated people do not invalidate."""
++
++    def __init__(self):
++        self.records: dict[str, RelationRecord] = {}
++        self.log: list[dict] = []
++
++    def status(self, courier: str, idx: ProvenanceIndex, pm: PublicModelSpec) -> str:
++        r = self.records.get(courier)
++        if r is None:
++            return "not_computed"
++        new = idx.events[r.n_events:]
++        # a person's state changes only through what they hear (announce / quiet) or, for the recipient, by moving;
++        # an arrival or departure of a courier, a remark or a third person's sighting changes no dependency
++        if any(e.changes_person_state and (e.hearers & r.deps or e.actor in r.deps) for e in new) or \
++                any(e.kind in ("leave", "arrive") and e.actor == pm.R for e in new):
++            return "stale_person_state"
++        if any(e.kind == "answer" for e in new):  # changes only the robot's estimate (evidence on shared latents)
++            return "stale_estimate"
++        if pm.may_change_unobserved(idx, r.computed_t, len(idx.robot_rooms) - 1):
++            return "stale_unobserved"
++        return "fresh"
++
++    def get(self, courier: str, eng: ReferentEngine) -> tuple[RelationRecord, str]:
++        st = self.status(courier, eng.idx, eng.pm)
++        if st == "fresh":
++            self.log.append({"t": len(eng.idx.robot_rooms) - 1, "courier": courier, "op": "reuse"})
++            return self.records[courier], "reuse"
++        rt, lt = eng.route(courier), eng.pm.recipient_loc(eng)
++        other, fact = eng.cfg.handoff_routes[courier]
++        prov = eng.provenance(courier, fact, other)
++        rec = RelationRecord(courier, eng.p_equal(rt, lt), term_label(rt), term_label(lt), tuple(prov),
++                             len(eng.idx.robot_rooms) - 1, len(eng.idx.events), frozenset({courier, eng.pm.R}))
++        op = "compute" if st == "not_computed" else "refresh"
++        self.records[courier] = rec
++        self.log.append({"t": rec.computed_t, "courier": courier, "op": op, "reason": st, "p": str(rec.p)})
++        return rec, op
++
++
++# ----------------------------------------------------------------------------- decision interface
++STEP = 0.05
++
++
++def j_commit(p: float, stakes: float) -> float:
++    """Immediate expected return of a one-step terminal commitment with success probability p."""
++    return -STEP + p - (1 - p) * 0.5 * stakes
++
++
++def _dist_to(room: str, office: str) -> int:
++    if room == office:
++        return 0
++    return 1 if room == "hall" else 2  # lobby -> hall -> office; office -> hall -> office
++
++
++def search_value(loc: dict, room: str, remaining: int, offices, excluded=()) -> float:
++    """Declared feasible alternative: search the offices in person in descending probability (ties: config order),
++    deliver on sight; exact expected return under `loc` within the remaining steps (timeouts carry no penalty)."""
++    cand = [o for o in offices if o not in excluded]
++    order = sorted(cand, key=lambda o: (-float(loc.get(o, 0)), offices.index(o)))
++    total, steps, here = 0.0, 0, room
++    covered = 0.0
++    for o in order:
++        steps += _dist_to(here, o)
++        here = o
++        p = float(loc.get(o, 0))
++        if steps + 1 <= remaining:
++            total += p * (1 - STEP * (steps + 1))
++        else:
++            total += p * (-STEP * remaining)
++        covered += p
++    return total + (1 - covered) * (-STEP * remaining)
++
++
++@dataclass
++class GateVerdict:
++    action: str
++    p: float
++    j_commit: float
++    v_alt: float
++    allow: bool
++    source: str
++
++
++def gate(action: str, p: float, loc: dict, room: str, remaining: int, cfg: WorldConfig, excluded=(),
++         source: str = "") -> GateVerdict:
++    v_alt = search_value(loc, room, remaining, tuple(cfg.offices), excluded)
++    j = j_commit(p, cfg.stakes)
++    return GateVerdict(action, p, j, v_alt, j >= v_alt, source)
+diff --git a/tests/test_hybrid.py b/tests/test_hybrid.py
+new file mode 100644
+index 0000000..c2394e3
+--- /dev/null
++++ b/tests/test_hybrid.py
+@@ -0,0 +1,121 @@
++"""Hybrid block (D-019): referent engine, relation cache and decision interface (CPU only)."""
++
++from fractions import Fraction
++
++import pytest
++
++from officeminds import hybridfam as F
++from officeminds.episode import VisibleHistory
++from officeminds.world import Action
++from vomi.oracle import ExactOracle
++from vomi.relational import (ProvenanceIndex, RelationCache, ReferentEngine, SPECS, j_commit, search_value)
++
++SEED = 20261500
++
++
++def _hist(sc, params, acts=()):
++    w = sc.build(params)
++    h = VisibleHistory(sc.brief, [(None, w.reset())])
++    for a in acts:
++        h.steps.append((a, w.step(a)))
++    return h
++
++
++def _engine(case, h):
++    return ReferentEngine(SPECS[case.construction](case.scenario.config), ProvenanceIndex.build(h))
++
++
++def _enum_p(sc, h, courier):
++    cfg = sc.config
++    other, fact = cfg.handoff_routes[courier]
++    o = ExactOracle(sc, h)
++    return sum(w for w, x in o.belief
++               if (x.minds[courier].nested.get((other, fact), "unknown") if other
++                   else x.minds[courier].beliefs.get(fact, "unknown")) == x.people_rooms[cfg.recipient])
++
++
++@pytest.mark.parametrize("case", [c for c in F.cases(SEED) if c.stakes == 1.0], ids=lambda c: c.construction)
++def test_engine_matches_public_model_enumeration_in_every_world(case):
++    sc = case.scenario
++    for params, _ in sc.prior:
++        h = _hist(sc, params)
++        eng = _engine(case, h)
++        for c in sc.config.handoff_routes:
++            assert float(eng.p_equal(eng.route(c), eng.pm.recipient_loc(eng))) == pytest.approx(_enum_p(sc, h, c), abs=1e-12)
++
++
++def test_matched_marginals_different_joint_2d():
++    case = next(c for c in F.cases(SEED) if c.construction == "2d" and c.stakes == 1.0)
++    eng = _engine(case, _hist(case.scenario, case.hidden))
++    H, N = case.names["H"], case.names["N"]
++    loc = eng.pm.recipient_loc(eng)
++    assert eng.dist(eng.route(H)) == eng.dist(eng.route(N)) == eng.dist(loc)  # identical marginals
++    assert eng.p_equal(eng.route(N), loc) == 1 and eng.p_equal(eng.route(H), loc) == 0  # opposite joints
++    assert eng.p_equal_product(eng.route(N), loc) == Fraction(1, 2)
++
++
++def test_uncertain_provenance_2e_is_not_deterministic():
++    case = next(c for c in F.cases(SEED) if c.construction == "2e")
++    eng = _engine(case, _hist(case.scenario, case.hidden))
++    H = case.names["H"]
++    assert eng.p_equal(eng.route(H), eng.pm.recipient_loc(eng)) == Fraction(3, 4)
++
++
++def test_answer_updates_robot_estimate_not_person_term():
++    case = next(c for c in F.cases(SEED) if c.construction == "2d")
++    H = case.names["H"]
++    fact = case.scenario.config.query_facts[0]
++    e0 = _engine(case, _hist(case.scenario, case.hidden))
++    e1 = _engine(case, _hist(case.scenario, case.hidden, [Action("ask", H, fact)]))
++    assert e0.route(H) == e1.route(H)
++    assert len(e0.dist(e0.route(H))) == 2 and len(e1.dist(e1.route(H))) == 1
++
++
++def test_cache_reuse_and_refresh_match_fresh_computation():
++    for case in [c for c in F.cases(SEED) if c.construction == "seq"]:
++        sc, cfg = case.scenario, case.scenario.config
++        for ret in ("yes", "no"):
++            params = tuple((k, ret if k == "ret" else v) for k, v in case.hidden)
++            for acts in ([Action("wait"), Action("wait")], [Action("move", "hall"), Action("move", "lobby")]):
++                cache = RelationCache()
++                for k in range(3):
++                    eng = _engine(case, _hist(sc, params, acts[:k]))
++                    for c in cfg.handoff_routes:
++                        rec, _ = cache.get(c, eng)
++                        assert rec.p == eng.p_equal(eng.route(c), eng.pm.recipient_loc(eng))
++
++
++def test_gate_formulas():
++    assert j_commit(1.0, 4.0) == pytest.approx(0.95)
++    assert j_commit(0.5, 1.0) == pytest.approx(0.2)
++    offices = ("o1", "o2", "o3")
++    # uniform over two offices from the lobby: 0.5*(1-0.15) + 0.5*(1-0.25)
++    assert search_value({"o1": 0.5, "o2": 0.5}, "lobby", 8, offices) == pytest.approx(0.80)
++    # horizon too short to reach any office and deliver: timeout without penalty after the walked steps
++    assert search_value({"o1": 1.0}, "lobby", 2, offices) == pytest.approx(-0.10)
++
++
++def test_fallback_direct_prompt_is_the_repair_block_direct_prompt():
++    import sys
++    from pathlib import Path
++    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
++    import run_hybrid_fallback as RF
++    from officeminds import devgen3 as G
++    from officeminds.world import legal_actions
++    from vomi.pilot import load_prompts, policy_messages
++    prompts = load_prompts("pilot-v1")
++    for inst in G.generate(20261499)[:8]:
++        sc, cfg = inst.scenario, inst.scenario.config
++        h = VisibleHistory(sc.brief, [(None, sc.build(inst.hidden).reset())])
++        acts = [str(a) for a in legal_actions(cfg, h.last)]
++        assert RF.decision_messages(prompts, cfg, sc.brief, h, acts) == policy_messages(prompts, cfg, sc.brief, h, None, 7)[0]
++
++
++def test_fallback_tracker_reads_no_hidden_values():
++    import inspect
++    import sys
++    from pathlib import Path
++    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
++    import run_hybrid_fallback as RF
++    src = inspect.getsource(RF.tracker_check) + inspect.getsource(RF.check_messages) + inspect.getsource(RF.decision_messages)
++    assert "hidden" not in src.replace("hidden-variable", "") and "world" not in src
