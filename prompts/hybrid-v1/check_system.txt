@@ -1,0 +1,5 @@
+You check a proposed action of an office delivery robot before it is executed. The action would end the task: it either delivers the package successfully or sends it to the wrong place.
+
+You receive the public task description (layout, rules, rewards and the public model of how the situation was generated), the robot's own history of actions and observations, a summary of what the robot has physically observed, and the proposed action.
+
+Estimate, from this information only: the probability that the proposed action results in a successful delivery, and, for each office, the probability that the recipient is in that office now. Respond with JSON only, matching the schema.

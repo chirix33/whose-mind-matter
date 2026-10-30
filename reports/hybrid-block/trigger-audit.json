@@ -1,0 +1,1031 @@
+{
+ "source": "/home/aashraf/officeminds-runs/repair/repair-stage2-20261029-132459-743ace/episodes.jsonl",
+ "condition": "none",
+ "summary": {
+  "all": {
+   "episodes": 1152,
+   "mean_return": 0.3807,
+   "mean_bayes_v0": 0.8845,
+   "mean_lost_vs_bayes": 0.5038,
+   "lost_in_error_episodes": 0.3975,
+   "lost_in_timeouts": 0.0734,
+   "lost_in_successes": 0.0329,
+   "error_rate": 0.178,
+   "timeout_rate": 0.0582,
+   "commit_triggers": 805,
+   "wrong_commits": 205,
+   "right_commits": 600,
+   "veto_of_wrong": 196,
+   "veto_of_right": 161,
+   "allowed_wrong": 9,
+   "episodes_with_veto": 357,
+   "optimistic_gain_ideal_after_veto": 0.3499,
+   "missed_commit_opportunity_episodes": 213,
+   "lost_in_missed_opportunity": 0.0601,
+   "by_class": {
+    "social_belief": {
+     "triggers": 248,
+     "wrong": 80,
+     "veto_wrong": 80,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 397,
+     "wrong": 102,
+     "veto_wrong": 100,
+     "veto_right": 96
+    },
+    "testimony_reliability": {
+     "triggers": 160,
+     "wrong": 23,
+     "veto_wrong": 16,
+     "veto_right": 65
+    }
+   }
+  },
+  "1a-x1": {
+   "episodes": 48,
+   "mean_return": 0.8719,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 0.0781,
+   "lost_in_error_episodes": 0.0,
+   "lost_in_timeouts": 0.0,
+   "lost_in_successes": 0.0781,
+   "error_rate": 0.0,
+   "timeout_rate": 0.0,
+   "commit_triggers": 27,
+   "wrong_commits": 0,
+   "right_commits": 27,
+   "veto_of_wrong": 0,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 0,
+   "optimistic_gain_ideal_after_veto": 0.0,
+   "missed_commit_opportunity_episodes": 21,
+   "lost_in_missed_opportunity": 0.0615,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 27,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "1a-x4": {
+   "episodes": 48,
+   "mean_return": 0.8771,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 0.0729,
+   "lost_in_error_episodes": 0.0,
+   "lost_in_timeouts": 0.0,
+   "lost_in_successes": 0.0729,
+   "error_rate": 0.0,
+   "timeout_rate": 0.0,
+   "commit_triggers": 27,
+   "wrong_commits": 0,
+   "right_commits": 27,
+   "veto_of_wrong": 0,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 0,
+   "optimistic_gain_ideal_after_veto": 0.0,
+   "missed_commit_opportunity_episodes": 21,
+   "lost_in_missed_opportunity": 0.0583,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 27,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "1b-x1": {
+   "episodes": 48,
+   "mean_return": 0.199,
+   "mean_bayes_v0": 0.75,
+   "mean_lost_vs_bayes": 0.551,
+   "lost_in_error_episodes": 0.4281,
+   "lost_in_timeouts": 0.1677,
+   "lost_in_successes": -0.0448,
+   "error_rate": 0.3125,
+   "timeout_rate": 0.1458,
+   "commit_triggers": 30,
+   "wrong_commits": 15,
+   "right_commits": 15,
+   "veto_of_wrong": 15,
+   "veto_of_right": 15,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 30,
+   "optimistic_gain_ideal_after_veto": 0.309,
+   "missed_commit_opportunity_episodes": 0,
+   "lost_in_missed_opportunity": 0.0,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 30,
+     "wrong": 15,
+     "veto_wrong": 15,
+     "veto_right": 15
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "1b-x4": {
+   "episodes": 48,
+   "mean_return": -0.5979,
+   "mean_bayes_v0": 0.75,
+   "mean_lost_vs_bayes": 1.3479,
+   "lost_in_error_episodes": 1.15,
+   "lost_in_timeouts": 0.2156,
+   "lost_in_successes": -0.0177,
+   "error_rate": 0.3958,
+   "timeout_rate": 0.1875,
+   "commit_triggers": 28,
+   "wrong_commits": 19,
+   "right_commits": 9,
+   "veto_of_wrong": 19,
+   "veto_of_right": 9,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 28,
+   "optimistic_gain_ideal_after_veto": 0.9625,
+   "missed_commit_opportunity_episodes": 0,
+   "lost_in_missed_opportunity": 0.0,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 28,
+     "wrong": 19,
+     "veto_wrong": 19,
+     "veto_right": 9
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "1c-x1": {
+   "episodes": 48,
+   "mean_return": 0.8802,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 0.0698,
+   "lost_in_error_episodes": 0.0,
+   "lost_in_timeouts": 0.0,
+   "lost_in_successes": 0.0698,
+   "error_rate": 0.0,
+   "timeout_rate": 0.0,
+   "commit_triggers": 28,
+   "wrong_commits": 0,
+   "right_commits": 28,
+   "veto_of_wrong": 0,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 0,
+   "optimistic_gain_ideal_after_veto": 0.0,
+   "missed_commit_opportunity_episodes": 20,
+   "lost_in_missed_opportunity": 0.0521,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 28,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "1c-x4": {
+   "episodes": 48,
+   "mean_return": 0.8865,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 0.0635,
+   "lost_in_error_episodes": 0.0,
+   "lost_in_timeouts": 0.0,
+   "lost_in_successes": 0.0635,
+   "error_rate": 0.0,
+   "timeout_rate": 0.0,
+   "commit_triggers": 32,
+   "wrong_commits": 0,
+   "right_commits": 32,
+   "veto_of_wrong": 0,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 0,
+   "optimistic_gain_ideal_after_veto": 0.0,
+   "missed_commit_opportunity_episodes": 16,
+   "lost_in_missed_opportunity": 0.0427,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 32,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "2a-x1": {
+   "episodes": 48,
+   "mean_return": 0.8812,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 0.0687,
+   "lost_in_error_episodes": 0.0,
+   "lost_in_timeouts": 0.0,
+   "lost_in_successes": 0.0687,
+   "error_rate": 0.0,
+   "timeout_rate": 0.0,
+   "commit_triggers": 43,
+   "wrong_commits": 0,
+   "right_commits": 43,
+   "veto_of_wrong": 0,
+   "veto_of_right": 2,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 2,
+   "optimistic_gain_ideal_after_veto": 0.0,
+   "missed_commit_opportunity_episodes": 5,
+   "lost_in_missed_opportunity": 0.0167,
+   "by_class": {
+    "social_belief": {
+     "triggers": 26,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 17,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 2
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "2a-x4": {
+   "episodes": 48,
+   "mean_return": 0.6854,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 0.2646,
+   "lost_in_error_episodes": 0.1906,
+   "lost_in_timeouts": 0.0,
+   "lost_in_successes": 0.074,
+   "error_rate": 0.0625,
+   "timeout_rate": 0.0,
+   "commit_triggers": 39,
+   "wrong_commits": 3,
+   "right_commits": 36,
+   "veto_of_wrong": 3,
+   "veto_of_right": 1,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 4,
+   "optimistic_gain_ideal_after_veto": 0.1875,
+   "missed_commit_opportunity_episodes": 9,
+   "lost_in_missed_opportunity": 0.0292,
+   "by_class": {
+    "social_belief": {
+     "triggers": 19,
+     "wrong": 1,
+     "veto_wrong": 1,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 20,
+     "wrong": 2,
+     "veto_wrong": 2,
+     "veto_right": 1
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "2b-x1": {
+   "episodes": 48,
+   "mean_return": -0.05,
+   "mean_bayes_v0": 0.8,
+   "mean_lost_vs_bayes": 0.85,
+   "lost_in_error_episodes": 0.8385,
+   "lost_in_timeouts": 0.05,
+   "lost_in_successes": -0.0385,
+   "error_rate": 0.6042,
+   "timeout_rate": 0.0417,
+   "commit_triggers": 43,
+   "wrong_commits": 29,
+   "right_commits": 14,
+   "veto_of_wrong": 29,
+   "veto_of_right": 14,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 43,
+   "optimistic_gain_ideal_after_veto": 0.775,
+   "missed_commit_opportunity_episodes": 0,
+   "lost_in_missed_opportunity": 0.0,
+   "by_class": {
+    "social_belief": {
+     "triggers": 9,
+     "wrong": 9,
+     "veto_wrong": 9,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 34,
+     "wrong": 20,
+     "veto_wrong": 20,
+     "veto_right": 14
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "2b-x4": {
+   "episodes": 48,
+   "mean_return": -0.825,
+   "mean_bayes_v0": 0.8,
+   "mean_lost_vs_bayes": 1.625,
+   "lost_in_error_episodes": 1.6344,
+   "lost_in_timeouts": 0.025,
+   "lost_in_successes": -0.0344,
+   "error_rate": 0.5625,
+   "timeout_rate": 0.0208,
+   "commit_triggers": 43,
+   "wrong_commits": 27,
+   "right_commits": 16,
+   "veto_of_wrong": 27,
+   "veto_of_right": 16,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 43,
+   "optimistic_gain_ideal_after_veto": 1.5563,
+   "missed_commit_opportunity_episodes": 0,
+   "lost_in_missed_opportunity": 0.0,
+   "by_class": {
+    "social_belief": {
+     "triggers": 7,
+     "wrong": 7,
+     "veto_wrong": 7,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 36,
+     "wrong": 20,
+     "veto_wrong": 20,
+     "veto_right": 16
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "2c-x1": {
+   "episodes": 48,
+   "mean_return": -0.025,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 0.975,
+   "lost_in_error_episodes": 0.7917,
+   "lost_in_timeouts": 0.1406,
+   "lost_in_successes": 0.0427,
+   "error_rate": 0.5,
+   "timeout_rate": 0.1042,
+   "commit_triggers": 42,
+   "wrong_commits": 24,
+   "right_commits": 18,
+   "veto_of_wrong": 24,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 24,
+   "optimistic_gain_ideal_after_veto": 0.75,
+   "missed_commit_opportunity_episodes": 6,
+   "lost_in_missed_opportunity": 0.1448,
+   "by_class": {
+    "social_belief": {
+     "triggers": 25,
+     "wrong": 14,
+     "veto_wrong": 14,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 17,
+     "wrong": 10,
+     "veto_wrong": 10,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "2c-x4": {
+   "episodes": 48,
+   "mean_return": -0.6542,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 1.6042,
+   "lost_in_error_episodes": 1.476,
+   "lost_in_timeouts": 0.0844,
+   "lost_in_successes": 0.0437,
+   "error_rate": 0.4792,
+   "timeout_rate": 0.0625,
+   "commit_triggers": 43,
+   "wrong_commits": 23,
+   "right_commits": 20,
+   "veto_of_wrong": 23,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 23,
+   "optimistic_gain_ideal_after_veto": 1.4375,
+   "missed_commit_opportunity_episodes": 5,
+   "lost_in_missed_opportunity": 0.0917,
+   "by_class": {
+    "social_belief": {
+     "triggers": 24,
+     "wrong": 12,
+     "veto_wrong": 12,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 19,
+     "wrong": 11,
+     "veto_wrong": 11,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "3a-x1": {
+   "episodes": 48,
+   "mean_return": 0.725,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 0.225,
+   "lost_in_error_episodes": 0.0,
+   "lost_in_timeouts": 0.1688,
+   "lost_in_successes": 0.0562,
+   "error_rate": 0.0,
+   "timeout_rate": 0.125,
+   "commit_triggers": 32,
+   "wrong_commits": 0,
+   "right_commits": 32,
+   "veto_of_wrong": 0,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 0,
+   "optimistic_gain_ideal_after_veto": 0.0,
+   "missed_commit_opportunity_episodes": 16,
+   "lost_in_missed_opportunity": 0.2031,
+   "by_class": {
+    "social_belief": {
+     "triggers": 32,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "3a-x4": {
+   "episodes": 48,
+   "mean_return": 0.8042,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 0.1458,
+   "lost_in_error_episodes": 0.0,
+   "lost_in_timeouts": 0.0563,
+   "lost_in_successes": 0.0896,
+   "error_rate": 0.0,
+   "timeout_rate": 0.0417,
+   "commit_triggers": 28,
+   "wrong_commits": 0,
+   "right_commits": 28,
+   "veto_of_wrong": 0,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 0,
+   "optimistic_gain_ideal_after_veto": 0.0,
+   "missed_commit_opportunity_episodes": 20,
+   "lost_in_missed_opportunity": 0.1292,
+   "by_class": {
+    "social_belief": {
+     "triggers": 28,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "3b-x1": {
+   "episodes": 48,
+   "mean_return": 0.2354,
+   "mean_bayes_v0": 0.8,
+   "mean_lost_vs_bayes": 0.5646,
+   "lost_in_error_episodes": 0.4083,
+   "lost_in_timeouts": 0.15,
+   "lost_in_successes": 0.0063,
+   "error_rate": 0.2917,
+   "timeout_rate": 0.125,
+   "commit_triggers": 14,
+   "wrong_commits": 14,
+   "right_commits": 0,
+   "veto_of_wrong": 14,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 14,
+   "optimistic_gain_ideal_after_veto": 0.4062,
+   "missed_commit_opportunity_episodes": 0,
+   "lost_in_missed_opportunity": 0.0,
+   "by_class": {
+    "social_belief": {
+     "triggers": 14,
+     "wrong": 14,
+     "veto_wrong": 14,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "3b-x4": {
+   "episodes": 48,
+   "mean_return": -0.6469,
+   "mean_bayes_v0": 0.8,
+   "mean_lost_vs_bayes": 1.4469,
+   "lost_in_error_episodes": 1.3854,
+   "lost_in_timeouts": 0.05,
+   "lost_in_successes": 0.0115,
+   "error_rate": 0.4792,
+   "timeout_rate": 0.0417,
+   "commit_triggers": 23,
+   "wrong_commits": 23,
+   "right_commits": 0,
+   "veto_of_wrong": 23,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 23,
+   "optimistic_gain_ideal_after_veto": 1.3812,
+   "missed_commit_opportunity_episodes": 0,
+   "lost_in_missed_opportunity": 0.0,
+   "by_class": {
+    "social_belief": {
+     "triggers": 23,
+     "wrong": 23,
+     "veto_wrong": 23,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "3c-x1": {
+   "episodes": 48,
+   "mean_return": 0.7479,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 0.2021,
+   "lost_in_error_episodes": 0.0,
+   "lost_in_timeouts": 0.1125,
+   "lost_in_successes": 0.0896,
+   "error_rate": 0.0,
+   "timeout_rate": 0.0833,
+   "commit_triggers": 27,
+   "wrong_commits": 0,
+   "right_commits": 27,
+   "veto_of_wrong": 0,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 0,
+   "optimistic_gain_ideal_after_veto": 0.0,
+   "missed_commit_opportunity_episodes": 21,
+   "lost_in_missed_opportunity": 0.1719,
+   "by_class": {
+    "social_belief": {
+     "triggers": 27,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "3c-x4": {
+   "episodes": 48,
+   "mean_return": 0.5781,
+   "mean_bayes_v0": 0.95,
+   "mean_lost_vs_bayes": 0.3719,
+   "lost_in_error_episodes": 0.0,
+   "lost_in_timeouts": 0.2812,
+   "lost_in_successes": 0.0906,
+   "error_rate": 0.0,
+   "timeout_rate": 0.2083,
+   "commit_triggers": 14,
+   "wrong_commits": 0,
+   "right_commits": 14,
+   "veto_of_wrong": 0,
+   "veto_of_right": 0,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 0,
+   "optimistic_gain_ideal_after_veto": 0.0,
+   "missed_commit_opportunity_episodes": 34,
+   "lost_in_missed_opportunity": 0.3604,
+   "by_class": {
+    "social_belief": {
+     "triggers": 14,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "4a-x1": {
+   "episodes": 48,
+   "mean_return": 0.7875,
+   "mean_bayes_v0": 0.8681,
+   "mean_lost_vs_bayes": 0.0806,
+   "lost_in_error_episodes": 0.0615,
+   "lost_in_timeouts": 0.0,
+   "lost_in_successes": 0.0192,
+   "error_rate": 0.0417,
+   "timeout_rate": 0.0,
+   "commit_triggers": 40,
+   "wrong_commits": 2,
+   "right_commits": 38,
+   "veto_of_wrong": 0,
+   "veto_of_right": 0,
+   "allowed_wrong": 2,
+   "episodes_with_veto": 0,
+   "optimistic_gain_ideal_after_veto": 0.0,
+   "missed_commit_opportunity_episodes": 8,
+   "lost_in_missed_opportunity": 0.0241,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 40,
+     "wrong": 2,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "4a-x4": {
+   "episodes": 48,
+   "mean_return": 0.6562,
+   "mean_bayes_v0": 0.8418,
+   "mean_lost_vs_bayes": 0.1856,
+   "lost_in_error_episodes": 0.188,
+   "lost_in_timeouts": 0.0259,
+   "lost_in_successes": -0.0284,
+   "error_rate": 0.0625,
+   "timeout_rate": 0.0208,
+   "commit_triggers": 42,
+   "wrong_commits": 3,
+   "right_commits": 39,
+   "veto_of_wrong": 3,
+   "veto_of_right": 39,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 42,
+   "optimistic_gain_ideal_after_veto": 0.0825,
+   "missed_commit_opportunity_episodes": 0,
+   "lost_in_missed_opportunity": 0.0,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 42,
+     "wrong": 3,
+     "veto_wrong": 3,
+     "veto_right": 39
+    },
+    "testimony_reliability": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    }
+   }
+  },
+  "4b-x1": {
+   "episodes": 48,
+   "mean_return": 0.5948,
+   "mean_bayes_v0": 0.8649,
+   "mean_lost_vs_bayes": 0.2701,
+   "lost_in_error_episodes": 0.2282,
+   "lost_in_timeouts": 0.0,
+   "lost_in_successes": 0.0419,
+   "error_rate": 0.1458,
+   "timeout_rate": 0.0,
+   "commit_triggers": 44,
+   "wrong_commits": 7,
+   "right_commits": 37,
+   "veto_of_wrong": 5,
+   "veto_of_right": 0,
+   "allowed_wrong": 2,
+   "episodes_with_veto": 5,
+   "optimistic_gain_ideal_after_veto": 0.1475,
+   "missed_commit_opportunity_episodes": 4,
+   "lost_in_missed_opportunity": 0.0127,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 44,
+     "wrong": 7,
+     "veto_wrong": 5,
+     "veto_right": 0
+    }
+   }
+  },
+  "4b-x4": {
+   "episodes": 48,
+   "mean_return": 0.4156,
+   "mean_bayes_v0": 0.8431,
+   "mean_lost_vs_bayes": 0.4274,
+   "lost_in_error_episodes": 0.3159,
+   "lost_in_timeouts": 0.1036,
+   "lost_in_successes": 0.0079,
+   "error_rate": 0.1042,
+   "timeout_rate": 0.0833,
+   "commit_triggers": 42,
+   "wrong_commits": 5,
+   "right_commits": 37,
+   "veto_of_wrong": 5,
+   "veto_of_right": 36,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 41,
+   "optimistic_gain_ideal_after_veto": 0.2086,
+   "missed_commit_opportunity_episodes": 0,
+   "lost_in_missed_opportunity": 0.0,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 42,
+     "wrong": 5,
+     "veto_wrong": 5,
+     "veto_right": 36
+    }
+   }
+  },
+  "4c-x1": {
+   "episodes": 48,
+   "mean_return": 0.5594,
+   "mean_bayes_v0": 0.8675,
+   "mean_lost_vs_bayes": 0.3081,
+   "lost_in_error_episodes": 0.258,
+   "lost_in_timeouts": 0.0266,
+   "lost_in_successes": 0.0235,
+   "error_rate": 0.1667,
+   "timeout_rate": 0.0208,
+   "commit_triggers": 41,
+   "wrong_commits": 8,
+   "right_commits": 33,
+   "veto_of_wrong": 3,
+   "veto_of_right": 0,
+   "allowed_wrong": 5,
+   "episodes_with_veto": 3,
+   "optimistic_gain_ideal_after_veto": 0.0887,
+   "missed_commit_opportunity_episodes": 7,
+   "lost_in_missed_opportunity": 0.0451,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 41,
+     "wrong": 8,
+     "veto_wrong": 3,
+     "veto_right": 0
+    }
+   }
+  },
+  "4c-x4": {
+   "episodes": 48,
+   "mean_return": 0.55,
+   "mean_bayes_v0": 0.8417,
+   "mean_lost_vs_bayes": 0.2918,
+   "lost_in_error_episodes": 0.1849,
+   "lost_in_timeouts": 0.1035,
+   "lost_in_successes": 0.0033,
+   "error_rate": 0.0625,
+   "timeout_rate": 0.0833,
+   "commit_triggers": 33,
+   "wrong_commits": 3,
+   "right_commits": 30,
+   "veto_of_wrong": 3,
+   "veto_of_right": 29,
+   "allowed_wrong": 0,
+   "episodes_with_veto": 32,
+   "optimistic_gain_ideal_after_veto": 0.1059,
+   "missed_commit_opportunity_episodes": 0,
+   "lost_in_missed_opportunity": 0.0,
+   "by_class": {
+    "social_belief": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "physical": {
+     "triggers": 0,
+     "wrong": 0,
+     "veto_wrong": 0,
+     "veto_right": 0
+    },
+    "testimony_reliability": {
+     "triggers": 33,
+     "wrong": 3,
+     "veto_wrong": 3,
+     "veto_right": 29
+    }
+   }
+  }
+ }
+}

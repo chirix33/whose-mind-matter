@@ -1,0 +1,83 @@
+{
+ "tokenizer": "openai/gpt-oss-20b (HF snapshot, chat template)",
+ "t0_rendered": [
+  {
+   "construction": "1a",
+   "decision": 1177,
+   "check": 1170,
+   "redecision": 1227
+  },
+  {
+   "construction": "1b",
+   "decision": 1220,
+   "check": 1214,
+   "redecision": 1270
+  },
+  {
+   "construction": "1c",
+   "decision": 1221,
+   "check": 1215,
+   "redecision": 1271
+  },
+  {
+   "construction": "2a",
+   "decision": 1534,
+   "check": 1503,
+   "redecision": 1584
+  },
+  {
+   "construction": "2b",
+   "decision": 1423,
+   "check": 1415,
+   "redecision": 1473
+  },
+  {
+   "construction": "2c",
+   "decision": 1575,
+   "check": 1546,
+   "redecision": 1625
+  },
+  {
+   "construction": "3a",
+   "decision": 1457,
+   "check": 1463,
+   "redecision": 1507
+  },
+  {
+   "construction": "3b",
+   "decision": 1508,
+   "check": 1507,
+   "redecision": 1558
+  },
+  {
+   "construction": "3c",
+   "decision": 1502,
+   "check": 1501,
+   "redecision": 1552
+  },
+  {
+   "construction": "4a",
+   "decision": 1286,
+   "check": 1273,
+   "redecision": 1336
+  },
+  {
+   "construction": "4b",
+   "decision": 1459,
+   "check": 1439,
+   "redecision": 1509
+  },
+  {
+   "construction": "4c",
+   "decision": 1276,
+   "check": 1270,
+   "redecision": 1326
+  }
+ ],
+ "measured_direct_none_repair_stage2": {
+  "decision_prompt": 1465.4,
+  "decision_completion": 195.4,
+  "decisions_per_episode": 3.1
+ },
+ "t0_template_vs_server_note": "server prompt_tokens for the same t0 prompt can differ slightly from the local chat-template count (server-side system/developer header)."
+}

@@ -1,0 +1,3971 @@
+{
+ "qualification": {
+  "checks": 1008,
+  "mismatches": [],
+  "rows_seed0": [
+   {
+    "construction": "3b",
+    "acts": [],
+    "courier": "vik",
+    "route": "room_12",
+    "recipient_loc": "<b>",
+    "route_marginal": {
+     "room_12": "1"
+    },
+    "loc_marginal": {
+     "room_7": "1/2",
+     "room_19": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note1"
+    ]
+   },
+   {
+    "construction": "3b",
+    "acts": [],
+    "courier": "vik",
+    "route": "room_7",
+    "recipient_loc": "<b>",
+    "route_marginal": {
+     "room_7": "1"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_19": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note1"
+    ]
+   },
+   {
+    "construction": "3b",
+    "acts": [],
+    "courier": "vik",
+    "route": "room_19",
+    "recipient_loc": "<b>",
+    "route_marginal": {
+     "room_19": "1"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note1"
+    ]
+   },
+   {
+    "construction": "3c",
+    "acts": [],
+    "courier": "sara",
+    "route": "office_c",
+    "recipient_loc": "office_c",
+    "route_marginal": {
+     "office_c": "1"
+    },
+    "loc_marginal": {
+     "office_c": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "office_c",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note1"
+    ]
+   },
+   {
+    "construction": "3c",
+    "acts": [],
+    "courier": "sara",
+    "route": "office_a",
+    "recipient_loc": "office_a",
+    "route_marginal": {
+     "office_a": "1"
+    },
+    "loc_marginal": {
+     "office_a": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "office_a",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note1"
+    ]
+   },
+   {
+    "construction": "3c",
+    "acts": [],
+    "courier": "sara",
+    "route": "office_b",
+    "recipient_loc": "office_b",
+    "route_marginal": {
+     "office_b": "1"
+    },
+    "loc_marginal": {
+     "office_b": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "office_b",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note1"
+    ]
+   },
+   {
+    "construction": "3a",
+    "acts": [],
+    "courier": "grace",
+    "route": "<b>",
+    "recipient_loc": "<b>",
+    "route_marginal": {
+     "lab_south": "1/2",
+     "lab_west": "1/2"
+    },
+    "loc_marginal": {
+     "lab_south": "1/2",
+     "lab_west": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "lab_north",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "3a",
+    "acts": [],
+    "courier": "grace",
+    "route": "<b>",
+    "recipient_loc": "<b>",
+    "route_marginal": {
+     "lab_north": "1/2",
+     "lab_west": "1/2"
+    },
+    "loc_marginal": {
+     "lab_north": "1/2",
+     "lab_west": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "lab_south",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "3a",
+    "acts": [],
+    "courier": "grace",
+    "route": "<b>",
+    "recipient_loc": "<b>",
+    "route_marginal": {
+     "lab_north": "1/2",
+     "lab_south": "1/2"
+    },
+    "loc_marginal": {
+     "lab_north": "1/2",
+     "lab_south": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "lab_west",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "2d",
+    "acts": [],
+    "courier": "ravi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "desk_9": "1/2",
+     "desk_3": "1/2"
+    },
+    "loc_marginal": {
+     "desk_3": "1/2",
+     "desk_9": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "desk_14",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "2d",
+    "acts": [],
+    "courier": "yara",
+    "route": "<Q2>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "desk_3": "1/2",
+     "desk_9": "1/2"
+    },
+    "loc_marginal": {
+     "desk_3": "1/2",
+     "desk_9": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "desk_14",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "2d",
+    "acts": [],
+    "courier": "ravi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "desk_14": "1/2",
+     "desk_3": "1/2"
+    },
+    "loc_marginal": {
+     "desk_3": "1/2",
+     "desk_14": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "desk_9",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "2d",
+    "acts": [],
+    "courier": "yara",
+    "route": "<Q2>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "desk_3": "1/2",
+     "desk_14": "1/2"
+    },
+    "loc_marginal": {
+     "desk_3": "1/2",
+     "desk_14": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "desk_9",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "2d",
+    "acts": [],
+    "courier": "ravi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "desk_14": "1/2",
+     "desk_9": "1/2"
+    },
+    "loc_marginal": {
+     "desk_9": "1/2",
+     "desk_14": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "desk_3",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "2d",
+    "acts": [],
+    "courier": "yara",
+    "route": "<Q2>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "desk_9": "1/2",
+     "desk_14": "1/2"
+    },
+    "loc_marginal": {
+     "desk_9": "1/2",
+     "desk_14": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "desk_3",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "2e",
+    "acts": [],
+    "courier": "grace",
+    "route": "<Q1>",
+    "recipient_loc": "final(Q1,kept)",
+    "route_marginal": {
+     "lab_north": "1/2",
+     "lab_west": "1/2"
+    },
+    "loc_marginal": {
+     "lab_north": "1/2",
+     "lab_west": "1/2"
+    },
+    "p_joint": "3/4",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "lab_south",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "2e",
+    "acts": [],
+    "courier": "carol",
+    "route": "lab_south",
+    "recipient_loc": "final(Q1,kept)",
+    "route_marginal": {
+     "lab_south": "1"
+    },
+    "loc_marginal": {
+     "lab_north": "1/2",
+     "lab_west": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "lab_south",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "2e",
+    "acts": [],
+    "courier": "grace",
+    "route": "<Q1>",
+    "recipient_loc": "final(Q1,kept)",
+    "route_marginal": {
+     "lab_south": "1/2",
+     "lab_west": "1/2"
+    },
+    "loc_marginal": {
+     "lab_south": "1/2",
+     "lab_west": "1/2"
+    },
+    "p_joint": "3/4",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "lab_north",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "2e",
+    "acts": [],
+    "courier": "carol",
+    "route": "lab_north",
+    "recipient_loc": "final(Q1,kept)",
+    "route_marginal": {
+     "lab_north": "1"
+    },
+    "loc_marginal": {
+     "lab_south": "1/2",
+     "lab_west": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "lab_north",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "2e",
+    "acts": [],
+    "courier": "grace",
+    "route": "<Q1>",
+    "recipient_loc": "final(Q1,kept)",
+    "route_marginal": {
+     "lab_south": "1/2",
+     "lab_north": "1/2"
+    },
+    "loc_marginal": {
+     "lab_south": "1/2",
+     "lab_north": "1/2"
+    },
+    "p_joint": "3/4",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "lab_west",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "2e",
+    "acts": [],
+    "courier": "carol",
+    "route": "lab_west",
+    "recipient_loc": "final(Q1,kept)",
+    "route_marginal": {
+     "lab_west": "1"
+    },
+    "loc_marginal": {
+     "lab_south": "1/2",
+     "lab_north": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "lab_west",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "stop_visible",
+    "acts": [],
+    "courier": "mia",
+    "route": "<Q1>",
+    "recipient_loc": "lobby",
+    "route_marginal": {
+     "office_a": "1/2",
+     "office_c": "1/2"
+    },
+    "loc_marginal": {
+     "lobby": "1"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "office_b",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "stop_visible",
+    "acts": [],
+    "courier": "kim",
+    "route": "office_b",
+    "recipient_loc": "lobby",
+    "route_marginal": {
+     "office_b": "1"
+    },
+    "loc_marginal": {
+     "lobby": "1"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "office_b",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "stop_visible",
+    "acts": [],
+    "courier": "mia",
+    "route": "<Q1>",
+    "recipient_loc": "lobby",
+    "route_marginal": {
+     "office_b": "1/2",
+     "office_c": "1/2"
+    },
+    "loc_marginal": {
+     "lobby": "1"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "office_a",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "stop_visible",
+    "acts": [],
+    "courier": "kim",
+    "route": "office_a",
+    "recipient_loc": "lobby",
+    "route_marginal": {
+     "office_a": "1"
+    },
+    "loc_marginal": {
+     "lobby": "1"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "office_a",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "stop_visible",
+    "acts": [],
+    "courier": "mia",
+    "route": "<Q1>",
+    "recipient_loc": "lobby",
+    "route_marginal": {
+     "office_b": "1/2",
+     "office_a": "1/2"
+    },
+    "loc_marginal": {
+     "lobby": "1"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "office_c",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "stop_visible",
+    "acts": [],
+    "courier": "kim",
+    "route": "office_c",
+    "recipient_loc": "lobby",
+    "route_marginal": {
+     "office_c": "1"
+    },
+    "loc_marginal": {
+     "lobby": "1"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "office_c",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "mia",
+    "route": "room_19",
+    "recipient_loc": "room_19",
+    "route_marginal": {
+     "room_19": "1"
+    },
+    "loc_marginal": {
+     "room_19": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "heidi",
+    "route": "room_19",
+    "recipient_loc": "room_19",
+    "route_marginal": {
+     "room_19": "1"
+    },
+    "loc_marginal": {
+     "room_19": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "mia",
+    "route": "room_12",
+    "recipient_loc": "room_12",
+    "route_marginal": {
+     "room_12": "1"
+    },
+    "loc_marginal": {
+     "room_12": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "kept": "yes",
+     "m1": "1"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "heidi",
+    "route": "room_12",
+    "recipient_loc": "room_12",
+    "route_marginal": {
+     "room_12": "1"
+    },
+    "loc_marginal": {
+     "room_12": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "kept": "yes",
+     "m1": "1"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "mia",
+    "route": "room_7",
+    "recipient_loc": "room_7",
+    "route_marginal": {
+     "room_7": "1"
+    },
+    "loc_marginal": {
+     "room_7": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "heidi",
+    "route": "room_7",
+    "recipient_loc": "room_7",
+    "route_marginal": {
+     "room_7": "1"
+    },
+    "loc_marginal": {
+     "room_7": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "mia",
+    "route": "room_12",
+    "recipient_loc": "room_12",
+    "route_marginal": {
+     "room_12": "1"
+    },
+    "loc_marginal": {
+     "room_12": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "kept": "yes",
+     "m1": "1"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "heidi",
+    "route": "room_12",
+    "recipient_loc": "room_12",
+    "route_marginal": {
+     "room_12": "1"
+    },
+    "loc_marginal": {
+     "room_12": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "kept": "yes",
+     "m1": "1"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "mia",
+    "route": "room_7",
+    "recipient_loc": "room_7",
+    "route_marginal": {
+     "room_7": "1"
+    },
+    "loc_marginal": {
+     "room_7": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "heidi",
+    "route": "room_7",
+    "recipient_loc": "room_7",
+    "route_marginal": {
+     "room_7": "1"
+    },
+    "loc_marginal": {
+     "room_7": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "kept": "yes",
+     "m1": "0"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "mia",
+    "route": "room_19",
+    "recipient_loc": "room_19",
+    "route_marginal": {
+     "room_19": "1"
+    },
+    "loc_marginal": {
+     "room_19": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "kept": "yes",
+     "m1": "1"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "stop_announced",
+    "acts": [],
+    "courier": "heidi",
+    "route": "room_19",
+    "recipient_loc": "room_19",
+    "route_marginal": {
+     "room_19": "1"
+    },
+    "loc_marginal": {
+     "room_19": "1"
+    },
+    "p_joint": "1",
+    "p_product": "1",
+    "frechet": [
+     "1",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "kept": "yes",
+     "m1": "1"
+    },
+    "provenance": [
+     "t0:note6"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [],
+    "courier": "carol",
+    "route": "room_19",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_19": "1"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [],
+    "courier": "carol",
+    "route": "room_12",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_12": "1"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [],
+    "courier": "carol",
+    "route": "room_7",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_7": "1"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "<Q2>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/4",
+     "room_12": "1/4"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/4",
+     "room_12": "1/4"
+    },
+    "p_joint": "1",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t1:note1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/4",
+     "room_12": "1/4"
+    },
+    "p_joint": "0",
+    "p_product": "1/4",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "room_19",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_19": "1"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "<Q2>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/4",
+     "room_19": "1/4"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/4",
+     "room_19": "1/4"
+    },
+    "p_joint": "1",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t1:note1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/4",
+     "room_19": "1/4"
+    },
+    "p_joint": "0",
+    "p_product": "1/4",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "room_12",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_12": "1"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "<Q2>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_12": "1/4",
+     "room_7": "1/2",
+     "room_19": "1/4"
+    },
+    "loc_marginal": {
+     "room_12": "1/4",
+     "room_7": "1/2",
+     "room_19": "1/4"
+    },
+    "p_joint": "1",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t1:note1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "loc_marginal": {
+     "room_12": "1/4",
+     "room_7": "1/2",
+     "room_19": "1/4"
+    },
+    "p_joint": "0",
+    "p_product": "1/4",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "room_7",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_7": "1"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "<Q2>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/4",
+     "room_12": "1/4"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/4",
+     "room_12": "1/4"
+    },
+    "p_joint": "1",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t1:note1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/4",
+     "room_12": "1/4"
+    },
+    "p_joint": "0",
+    "p_product": "1/4",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "room_19",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_19": "1"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "<Q2>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/4",
+     "room_19": "1/4"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/4",
+     "room_19": "1/4"
+    },
+    "p_joint": "1",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t1:note1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/4",
+     "room_19": "1/4"
+    },
+    "p_joint": "0",
+    "p_product": "1/4",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "room_12",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_12": "1"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "<Q2>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_12": "1/4",
+     "room_7": "1/2",
+     "room_19": "1/4"
+    },
+    "loc_marginal": {
+     "room_12": "1/4",
+     "room_7": "1/2",
+     "room_19": "1/4"
+    },
+    "p_joint": "1",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t1:note1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q2>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "loc_marginal": {
+     "room_12": "1/4",
+     "room_7": "1/2",
+     "room_19": "1/4"
+    },
+    "p_joint": "0",
+    "p_product": "1/4",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "carol",
+    "route": "room_7",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_7": "1"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "p_joint": "0",
+    "p_product": "0",
+    "frechet": [
+     "0",
+     "0"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note0"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "wait()",
+     "wait()"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "<Q1>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "loc_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "p_joint": "1",
+    "p_product": "1/2",
+    "frechet": [
+     "0",
+     "1"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "no"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)"
+    ],
+    "courier": "carol",
+    "route": "ret?<Q2>:room_19",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_19": "3/4",
+     "room_7": "1/8",
+     "room_12": "1/8"
+    },
+    "loc_marginal": {
+     "room_19": "1/4",
+     "room_12": "3/8",
+     "room_7": "3/8"
+    },
+    "p_joint": "1/2",
+    "p_product": "9/32",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note0",
+     "unobserved:t1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_19": "1/4",
+     "room_12": "3/8",
+     "room_7": "3/8"
+    },
+    "p_joint": "1/2",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "3/4"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)"
+    ],
+    "courier": "carol",
+    "route": "ret?<Q2>:room_12",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_12": "3/4",
+     "room_7": "1/8",
+     "room_19": "1/8"
+    },
+    "loc_marginal": {
+     "room_12": "1/4",
+     "room_19": "3/8",
+     "room_7": "3/8"
+    },
+    "p_joint": "1/2",
+    "p_product": "9/32",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note0",
+     "unobserved:t1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_12": "1/4",
+     "room_19": "3/8",
+     "room_7": "3/8"
+    },
+    "p_joint": "1/2",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "3/4"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)"
+    ],
+    "courier": "carol",
+    "route": "ret?<Q2>:room_7",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_12": "1/8",
+     "room_7": "3/4",
+     "room_19": "1/8"
+    },
+    "loc_marginal": {
+     "room_12": "3/8",
+     "room_19": "3/8",
+     "room_7": "1/4"
+    },
+    "p_joint": "1/2",
+    "p_product": "9/32",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note0",
+     "unobserved:t1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "loc_marginal": {
+     "room_12": "3/8",
+     "room_19": "3/8",
+     "room_7": "1/4"
+    },
+    "p_joint": "1/2",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "3/4"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)",
+     "move(lobby)"
+    ],
+    "courier": "carol",
+    "route": "ret?<Q2>:room_19",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_19": "3/4",
+     "room_7": "1/8",
+     "room_12": "1/8"
+    },
+    "loc_marginal": {
+     "room_19": "1/4",
+     "room_12": "3/8",
+     "room_7": "3/8"
+    },
+    "p_joint": "1/2",
+    "p_product": "9/32",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note0",
+     "unobserved:t1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)",
+     "move(lobby)"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_12": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_19": "1/4",
+     "room_12": "3/8",
+     "room_7": "3/8"
+    },
+    "p_joint": "1/2",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "3/4"
+    ],
+    "hidden": {
+     "a": "room_19",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)",
+     "move(lobby)"
+    ],
+    "courier": "carol",
+    "route": "ret?<Q2>:room_12",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_12": "3/4",
+     "room_7": "1/8",
+     "room_19": "1/8"
+    },
+    "loc_marginal": {
+     "room_12": "1/4",
+     "room_19": "3/8",
+     "room_7": "3/8"
+    },
+    "p_joint": "1/2",
+    "p_product": "9/32",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note0",
+     "unobserved:t1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)",
+     "move(lobby)"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_7": "1/2"
+    },
+    "loc_marginal": {
+     "room_12": "1/4",
+     "room_19": "3/8",
+     "room_7": "3/8"
+    },
+    "p_joint": "1/2",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "3/4"
+    ],
+    "hidden": {
+     "a": "room_12",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)",
+     "move(lobby)"
+    ],
+    "courier": "carol",
+    "route": "ret?<Q2>:room_7",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_12": "1/8",
+     "room_7": "3/4",
+     "room_19": "1/8"
+    },
+    "loc_marginal": {
+     "room_12": "3/8",
+     "room_19": "3/8",
+     "room_7": "1/4"
+    },
+    "p_joint": "1/2",
+    "p_product": "9/32",
+    "frechet": [
+     "0",
+     "1/2"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note0",
+     "unobserved:t1"
+    ]
+   },
+   {
+    "construction": "seq",
+    "acts": [
+     "move(hall)",
+     "move(lobby)"
+    ],
+    "courier": "heidi",
+    "route": "<Q1>",
+    "recipient_loc": "ret?<Q2>:<Q1>",
+    "route_marginal": {
+     "room_19": "1/2",
+     "room_12": "1/2"
+    },
+    "loc_marginal": {
+     "room_12": "3/8",
+     "room_19": "3/8",
+     "room_7": "1/4"
+    },
+    "p_joint": "1/2",
+    "p_product": "3/8",
+    "frechet": [
+     "0",
+     "3/4"
+    ],
+    "hidden": {
+     "a": "room_7",
+     "m1": "0",
+     "m2": "0",
+     "ret": "yes"
+    },
+    "provenance": [
+     "t0:note3"
+    ]
+   }
+  ],
+  "seeds": [
+   20261500,
+   20261501,
+   20261502,
+   20261503
+  ]
+ },
+ "boundary": {
+  "history_equivalence_pairs": 1440,
+  "history_equivalence_violations": 0,
+  "static_scan_relational_py": {
+   "\\.minds\\b": 0,
+   "people_rooms": 0,
+   "\\.hidden\\b": 0,
+   "\\bWorld\\(": 0,
+   "ExactOracle": 0,
+   "\\boracle\\b": 0,
+   "PersonMind": 0,
+   "\\.facts\\b": 0,
+   "timed_events": 0,
+   "\\bw(?:orld)?\\.log\\b": 0,
+   "\\bprivileged\\b": 0
+  }
+ },
+ "contrasts": {
+  "2d-x1": {
+   "bayes_action": "give(yara)",
+   "ravi": {
+    "p_joint": 0.0,
+    "p_product": 0.5,
+    "J_joint": -0.55,
+    "J_product": 0.2,
+    "V_alt": 0.8,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   },
+   "yara": {
+    "p_joint": 1.0,
+    "p_product": 0.5,
+    "J_joint": 0.95,
+    "J_product": 0.2,
+    "V_alt": 0.8,
+    "gate_joint": "allow",
+    "gate_product": "veto"
+   }
+  },
+  "2d-x4": {
+   "bayes_action": "give(yara)",
+   "ravi": {
+    "p_joint": 0.0,
+    "p_product": 0.5,
+    "J_joint": -2.05,
+    "J_product": -0.55,
+    "V_alt": 0.8,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   },
+   "yara": {
+    "p_joint": 1.0,
+    "p_product": 0.5,
+    "J_joint": 0.95,
+    "J_product": -0.55,
+    "V_alt": 0.8,
+    "gate_joint": "allow",
+    "gate_product": "veto"
+   }
+  },
+  "2e-x1": {
+   "bayes_action": "move(hall)",
+   "grace": {
+    "p_joint": 0.75,
+    "p_product": 0.5,
+    "J_joint": 0.575,
+    "J_product": 0.2,
+    "V_alt": 0.8,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   },
+   "carol": {
+    "p_joint": 0.0,
+    "p_product": 0.0,
+    "J_joint": -0.55,
+    "J_product": -0.55,
+    "V_alt": 0.8,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   }
+  },
+  "2e-x4": {
+   "bayes_action": "move(hall)",
+   "grace": {
+    "p_joint": 0.75,
+    "p_product": 0.5,
+    "J_joint": 0.2,
+    "J_product": -0.55,
+    "V_alt": 0.8,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   },
+   "carol": {
+    "p_joint": 0.0,
+    "p_product": 0.0,
+    "J_joint": -2.05,
+    "J_product": -2.05,
+    "V_alt": 0.8,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   }
+  },
+  "3a-x1": {
+   "bayes_action": "give(grace)",
+   "grace": {
+    "p_joint": 1.0,
+    "p_product": 0.5,
+    "J_joint": 0.95,
+    "J_product": 0.2,
+    "V_alt": 0.8,
+    "gate_joint": "allow",
+    "gate_product": "veto"
+   }
+  },
+  "3a-x4": {
+   "bayes_action": "give(grace)",
+   "grace": {
+    "p_joint": 1.0,
+    "p_product": 0.5,
+    "J_joint": 0.95,
+    "J_product": -0.55,
+    "V_alt": 0.8,
+    "gate_joint": "allow",
+    "gate_product": "veto"
+   }
+  },
+  "3b-x1": {
+   "bayes_action": "ask(vik,meeting_room)",
+   "vik": {
+    "p_joint": 0.0,
+    "p_product": 0.0,
+    "J_joint": -0.55,
+    "J_product": -0.55,
+    "V_alt": 0.8,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   }
+  },
+  "3b-x4": {
+   "bayes_action": "ask(vik,meeting_room)",
+   "vik": {
+    "p_joint": 0.0,
+    "p_product": 0.0,
+    "J_joint": -2.05,
+    "J_product": -2.05,
+    "V_alt": 0.8,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   }
+  },
+  "3c-x1": {
+   "bayes_action": "give(sara)",
+   "sara": {
+    "p_joint": 1.0,
+    "p_product": 1.0,
+    "J_joint": 0.95,
+    "J_product": 0.95,
+    "V_alt": 0.85,
+    "gate_joint": "allow",
+    "gate_product": "allow"
+   }
+  },
+  "3c-x4": {
+   "bayes_action": "give(sara)",
+   "sara": {
+    "p_joint": 1.0,
+    "p_product": 1.0,
+    "J_joint": 0.95,
+    "J_product": 0.95,
+    "V_alt": 0.85,
+    "gate_joint": "allow",
+    "gate_product": "allow"
+   }
+  },
+  "stop_announced-x1": {
+   "bayes_action": "drop(room_19)",
+   "mia": {
+    "p_joint": 1.0,
+    "p_product": 1.0,
+    "J_joint": 0.95,
+    "J_product": 0.95,
+    "V_alt": 0.85,
+    "gate_joint": "allow",
+    "gate_product": "allow"
+   },
+   "heidi": {
+    "p_joint": 1.0,
+    "p_product": 1.0,
+    "J_joint": 0.95,
+    "J_product": 0.95,
+    "V_alt": 0.85,
+    "gate_joint": "allow",
+    "gate_product": "allow"
+   }
+  },
+  "stop_announced-x4": {
+   "bayes_action": "drop(room_19)",
+   "mia": {
+    "p_joint": 1.0,
+    "p_product": 1.0,
+    "J_joint": 0.95,
+    "J_product": 0.95,
+    "V_alt": 0.85,
+    "gate_joint": "allow",
+    "gate_product": "allow"
+   },
+   "heidi": {
+    "p_joint": 1.0,
+    "p_product": 1.0,
+    "J_joint": 0.95,
+    "J_product": 0.95,
+    "V_alt": 0.85,
+    "gate_joint": "allow",
+    "gate_product": "allow"
+   }
+  },
+  "stop_visible-x1": {
+   "bayes_action": "deliver()",
+   "mia": {
+    "p_joint": 0.0,
+    "p_product": 0.0,
+    "J_joint": -0.55,
+    "J_product": -0.55,
+    "V_alt": -0.4,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   },
+   "kim": {
+    "p_joint": 0.0,
+    "p_product": 0.0,
+    "J_joint": -0.55,
+    "J_product": -0.55,
+    "V_alt": -0.4,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   }
+  },
+  "stop_visible-x4": {
+   "bayes_action": "deliver()",
+   "mia": {
+    "p_joint": 0.0,
+    "p_product": 0.0,
+    "J_joint": -2.05,
+    "J_product": -2.05,
+    "V_alt": -0.4,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   },
+   "kim": {
+    "p_joint": 0.0,
+    "p_product": 0.0,
+    "J_joint": -2.05,
+    "J_product": -2.05,
+    "V_alt": -0.4,
+    "gate_joint": "veto",
+    "gate_product": "veto"
+   }
+  },
+  "evidence_only_update": {
+   "event": "robot asks ravi (answer heard)",
+   "H_term_before": "<Q1>",
+   "H_term_after": "<Q1>",
+   "H_route_marginal_before": {
+    "desk_9": "1/2",
+    "desk_3": "1/2"
+   },
+   "H_route_marginal_after": {
+    "desk_9": "1"
+   },
+   "p_rel_N_before": "1",
+   "p_rel_N_after": "1",
+   "p_rel_H_before": "0",
+   "p_rel_H_after": "0",
+   "recipient_marginal_after": {
+    "desk_3": "1"
+   }
+  },
+  "reuse_refresh": {
+   "ret=yes/watch": {
+    "ops": [
+     {
+      "t": 0,
+      "courier": "carol",
+      "op": "compute",
+      "p": "0",
+      "route": "room_7",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 0,
+      "courier": "heidi",
+      "op": "compute",
+      "p": "1",
+      "route": "<Q1>",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 1,
+      "courier": "carol",
+      "op": "refresh",
+      "p": "1",
+      "route": "<Q2>",
+      "loc": "<Q2>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 1,
+      "courier": "heidi",
+      "op": "refresh",
+      "p": "0",
+      "route": "<Q1>",
+      "loc": "<Q2>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 2,
+      "courier": "carol",
+      "op": "reuse",
+      "p": "1",
+      "route": "<Q2>",
+      "loc": "<Q2>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 2,
+      "courier": "heidi",
+      "op": "reuse",
+      "p": "0",
+      "route": "<Q1>",
+      "loc": "<Q2>",
+      "reused_equals_fresh": true
+     }
+    ],
+    "bayes_action_t2": "give(carol)",
+    "present_t2": [
+     "carol",
+     "heidi",
+     "nadia"
+    ]
+   },
+   "ret=yes/away_t1": {
+    "ops": [
+     {
+      "t": 0,
+      "courier": "carol",
+      "op": "compute",
+      "p": "0",
+      "route": "room_7",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 0,
+      "courier": "heidi",
+      "op": "compute",
+      "p": "1",
+      "route": "<Q1>",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 1,
+      "courier": "carol",
+      "op": "refresh",
+      "p": "1/2",
+      "route": "ret?<Q2>:room_7",
+      "loc": "ret?<Q2>:<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 1,
+      "courier": "heidi",
+      "op": "refresh",
+      "p": "1/2",
+      "route": "<Q1>",
+      "loc": "ret?<Q2>:<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 2,
+      "courier": "carol",
+      "op": "reuse",
+      "p": "1/2",
+      "route": "ret?<Q2>:room_7",
+      "loc": "ret?<Q2>:<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 2,
+      "courier": "heidi",
+      "op": "reuse",
+      "p": "1/2",
+      "route": "<Q1>",
+      "loc": "ret?<Q2>:<Q1>",
+      "reused_equals_fresh": true
+     }
+    ],
+    "bayes_action_t2": "ask(carol,grace_loc)",
+    "present_t2": [
+     "carol",
+     "heidi",
+     "nadia"
+    ]
+   },
+   "ret=no/watch": {
+    "ops": [
+     {
+      "t": 0,
+      "courier": "carol",
+      "op": "compute",
+      "p": "0",
+      "route": "room_7",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 0,
+      "courier": "heidi",
+      "op": "compute",
+      "p": "1",
+      "route": "<Q1>",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 1,
+      "courier": "carol",
+      "op": "reuse",
+      "p": "0",
+      "route": "room_7",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 1,
+      "courier": "heidi",
+      "op": "reuse",
+      "p": "1",
+      "route": "<Q1>",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 2,
+      "courier": "carol",
+      "op": "reuse",
+      "p": "0",
+      "route": "room_7",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 2,
+      "courier": "heidi",
+      "op": "reuse",
+      "p": "1",
+      "route": "<Q1>",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     }
+    ],
+    "bayes_action_t2": "give(heidi)",
+    "present_t2": [
+     "carol",
+     "heidi",
+     "nadia"
+    ]
+   },
+   "ret=no/away_t1": {
+    "ops": [
+     {
+      "t": 0,
+      "courier": "carol",
+      "op": "compute",
+      "p": "0",
+      "route": "room_7",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 0,
+      "courier": "heidi",
+      "op": "compute",
+      "p": "1",
+      "route": "<Q1>",
+      "loc": "<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 1,
+      "courier": "carol",
+      "op": "refresh",
+      "p": "1/2",
+      "route": "ret?<Q2>:room_7",
+      "loc": "ret?<Q2>:<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 1,
+      "courier": "heidi",
+      "op": "refresh",
+      "p": "1/2",
+      "route": "<Q1>",
+      "loc": "ret?<Q2>:<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 2,
+      "courier": "carol",
+      "op": "reuse",
+      "p": "1/2",
+      "route": "ret?<Q2>:room_7",
+      "loc": "ret?<Q2>:<Q1>",
+      "reused_equals_fresh": true
+     },
+     {
+      "t": 2,
+      "courier": "heidi",
+      "op": "reuse",
+      "p": "1/2",
+      "route": "<Q1>",
+      "loc": "ret?<Q2>:<Q1>",
+      "reused_equals_fresh": true
+     }
+    ],
+    "bayes_action_t2": "ask(carol,grace_loc)",
+    "present_t2": [
+     "carol",
+     "heidi",
+     "nadia"
+    ]
+   }
+  }
+ },
+ "voc": [
+  {
+   "construction": "3b",
+   "stakes": 1.0,
+   "acts": [],
+   "hidden": {
+    "a": "room_12",
+    "m1": "1"
+   },
+   "present": [
+    "vik"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "vik": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 1.35,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.0
+    }
+   },
+   "exact_option_values": {
+    "search": 0.8,
+    "give(vik)": -0.55
+   }
+  },
+  {
+   "construction": "3b",
+   "stakes": 4.0,
+   "acts": [],
+   "hidden": {
+    "a": "room_12",
+    "m1": "1"
+   },
+   "present": [
+    "vik"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "vik": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 2.85,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.0
+    }
+   },
+   "exact_option_values": {
+    "search": 0.8,
+    "give(vik)": -2.05
+   }
+  },
+  {
+   "construction": "3c",
+   "stakes": 1.0,
+   "acts": [],
+   "hidden": {
+    "a": "office_a",
+    "m1": "0"
+   },
+   "present": [
+    "sara"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "sara": {
+     "safe_default_gain": 0.1,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.1
+    },
+    "all": {
+     "safe_default_gain": 0.1
+    }
+   },
+   "exact_option_values": {
+    "search": 0.85,
+    "give(sara)": 0.95
+   }
+  },
+  {
+   "construction": "3c",
+   "stakes": 4.0,
+   "acts": [],
+   "hidden": {
+    "a": "office_a",
+    "m1": "0"
+   },
+   "present": [
+    "sara"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "sara": {
+     "safe_default_gain": 0.1,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.1
+    },
+    "all": {
+     "safe_default_gain": 0.1
+    }
+   },
+   "exact_option_values": {
+    "search": 0.85,
+    "give(sara)": 0.95
+   }
+  },
+  {
+   "construction": "3a",
+   "stakes": 1.0,
+   "acts": [],
+   "hidden": {
+    "a": "lab_west",
+    "m1": "0"
+   },
+   "present": [
+    "grace"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "grace": {
+     "safe_default_gain": 0.15,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.15
+    },
+    "all": {
+     "safe_default_gain": 0.15
+    }
+   },
+   "exact_option_values": {
+    "search": 0.8,
+    "give(grace)": 0.95
+   }
+  },
+  {
+   "construction": "3a",
+   "stakes": 4.0,
+   "acts": [],
+   "hidden": {
+    "a": "lab_west",
+    "m1": "0"
+   },
+   "present": [
+    "grace"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "grace": {
+     "safe_default_gain": 0.15,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.15
+    },
+    "all": {
+     "safe_default_gain": 0.15
+    }
+   },
+   "exact_option_values": {
+    "search": 0.8,
+    "give(grace)": 0.95
+   }
+  },
+  {
+   "construction": "2d",
+   "stakes": 1.0,
+   "acts": [],
+   "hidden": {
+    "a": "desk_14",
+    "m1": "0"
+   },
+   "present": [
+    "ravi",
+    "yara"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "ravi": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 1.5,
+     "safe_gain_given_L": 0.0
+    },
+    "yara": {
+     "safe_default_gain": 0.15,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.15
+    },
+    "all": {
+     "safe_default_gain": 0.15
+    }
+   },
+   "exact_option_values": {
+    "search": 0.8,
+    "give(ravi)": -0.55,
+    "give(yara)": 0.95,
+    "drop(desk_14)": -0.55,
+    "drop(desk_9)": 0.2,
+    "drop(desk_3)": 0.2
+   }
+  },
+  {
+   "construction": "2d",
+   "stakes": 4.0,
+   "acts": [],
+   "hidden": {
+    "a": "desk_14",
+    "m1": "0"
+   },
+   "present": [
+    "ravi",
+    "yara"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "ravi": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 3.0,
+     "safe_gain_given_L": 0.0
+    },
+    "yara": {
+     "safe_default_gain": 0.15,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.15
+    },
+    "all": {
+     "safe_default_gain": 0.15
+    }
+   },
+   "exact_option_values": {
+    "search": 0.8,
+    "give(ravi)": -2.05,
+    "give(yara)": 0.95,
+    "drop(desk_14)": -2.05,
+    "drop(desk_9)": -0.55,
+    "drop(desk_3)": -0.55
+   }
+  },
+  {
+   "construction": "2e",
+   "stakes": 1.0,
+   "acts": [],
+   "hidden": {
+    "a": "lab_west",
+    "kept": "yes",
+    "m1": "1"
+   },
+   "present": [
+    "carol",
+    "grace"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "grace": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 0.225,
+     "safe_gain_given_L": 0.0
+    },
+    "carol": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 1.35,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.0
+    }
+   },
+   "exact_option_values": {
+    "search": 0.8,
+    "give(grace)": 0.575,
+    "give(carol)": -0.55,
+    "drop(lab_south)": 0.2,
+    "drop(lab_north)": 0.2,
+    "drop(lab_west)": -0.55
+   }
+  },
+  {
+   "construction": "2e",
+   "stakes": 4.0,
+   "acts": [],
+   "hidden": {
+    "a": "lab_west",
+    "kept": "yes",
+    "m1": "1"
+   },
+   "present": [
+    "carol",
+    "grace"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "grace": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 0.6,
+     "safe_gain_given_L": 0.0
+    },
+    "carol": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 2.85,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.0
+    }
+   },
+   "exact_option_values": {
+    "search": 0.8,
+    "give(grace)": 0.2,
+    "give(carol)": -2.05,
+    "drop(lab_south)": -0.55,
+    "drop(lab_north)": -0.55,
+    "drop(lab_west)": -2.05
+   }
+  },
+  {
+   "construction": "stop_visible",
+   "stakes": 1.0,
+   "acts": [],
+   "hidden": {
+    "a": "office_c",
+    "kept": "yes",
+    "m1": "0"
+   },
+   "present": [
+    "kim",
+    "mia",
+    "zane"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "mia": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 1.5,
+     "safe_gain_given_L": 0.0
+    },
+    "kim": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 1.5,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.0
+    }
+   },
+   "exact_option_values": {
+    "search": -0.4,
+    "deliver()": 0.95,
+    "give(mia)": -0.55,
+    "give(kim)": -0.55,
+    "drop(office_b)": -0.55,
+    "drop(office_a)": -0.55,
+    "drop(office_c)": -0.55
+   }
+  },
+  {
+   "construction": "stop_visible",
+   "stakes": 4.0,
+   "acts": [],
+   "hidden": {
+    "a": "office_c",
+    "kept": "yes",
+    "m1": "0"
+   },
+   "present": [
+    "kim",
+    "mia",
+    "zane"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "mia": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 3.0,
+     "safe_gain_given_L": 0.0
+    },
+    "kim": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 3.0,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.0
+    }
+   },
+   "exact_option_values": {
+    "search": -0.4,
+    "deliver()": 0.95,
+    "give(mia)": -2.05,
+    "give(kim)": -2.05,
+    "drop(office_b)": -2.05,
+    "drop(office_a)": -2.05,
+    "drop(office_c)": -2.05
+   }
+  },
+  {
+   "construction": "stop_announced",
+   "stakes": 1.0,
+   "acts": [],
+   "hidden": {
+    "a": "room_12",
+    "kept": "yes",
+    "m1": "1"
+   },
+   "present": [
+    "heidi",
+    "mia"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.1
+    },
+    "mia": {
+     "safe_default_gain": 0.1,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.0
+    },
+    "heidi": {
+     "safe_default_gain": 0.1,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.1
+    }
+   },
+   "exact_option_values": {
+    "search": 0.85,
+    "give(mia)": 0.95,
+    "give(heidi)": 0.95,
+    "drop(room_7)": -0.55,
+    "drop(room_19)": 0.95,
+    "drop(room_12)": -0.55
+   }
+  },
+  {
+   "construction": "stop_announced",
+   "stakes": 4.0,
+   "acts": [],
+   "hidden": {
+    "a": "room_12",
+    "kept": "yes",
+    "m1": "1"
+   },
+   "present": [
+    "heidi",
+    "mia"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.1
+    },
+    "mia": {
+     "safe_default_gain": 0.1,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.0
+    },
+    "heidi": {
+     "safe_default_gain": 0.1,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.1
+    }
+   },
+   "exact_option_values": {
+    "search": 0.85,
+    "give(mia)": 0.95,
+    "give(heidi)": 0.95,
+    "drop(room_7)": -2.05,
+    "drop(room_19)": 0.95,
+    "drop(room_12)": -2.05
+   }
+  },
+  {
+   "construction": "seq",
+   "stakes": 1.0,
+   "acts": [
+    "wait()",
+    "wait()"
+   ],
+   "hidden": {
+    "a": "room_7",
+    "m1": "0",
+    "m2": "1",
+    "ret": "yes"
+   },
+   "present": [
+    "carol",
+    "heidi",
+    "nadia"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "carol": {
+     "safe_default_gain": 0.4125,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.4125
+    },
+    "heidi": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 1.5,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.4125
+    }
+   },
+   "exact_option_values": {
+    "search": 0.5375,
+    "give(carol)": 0.95,
+    "give(heidi)": -0.55,
+    "drop(room_19)": -0.175,
+    "drop(room_12)": -0.175,
+    "drop(room_7)": 0.2
+   }
+  },
+  {
+   "construction": "seq",
+   "stakes": 1.0,
+   "acts": [
+    "wait()",
+    "wait()"
+   ],
+   "hidden": {
+    "a": "room_7",
+    "m1": "0",
+    "m2": "1",
+    "ret": "no"
+   },
+   "present": [
+    "carol",
+    "heidi",
+    "nadia"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "carol": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 1.5,
+     "safe_gain_given_L": 0.0
+    },
+    "heidi": {
+     "safe_default_gain": 0.15,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.15
+    },
+    "all": {
+     "safe_default_gain": 0.15
+    }
+   },
+   "exact_option_values": {
+    "search": 0.8,
+    "give(carol)": -0.55,
+    "give(heidi)": 0.95,
+    "drop(room_19)": 0.2,
+    "drop(room_12)": 0.2,
+    "drop(room_7)": -0.55
+   }
+  },
+  {
+   "construction": "seq",
+   "stakes": 1.0,
+   "acts": [
+    "move(hall)",
+    "move(lobby)"
+   ],
+   "hidden": {
+    "a": "room_7",
+    "m1": "0",
+    "m2": "1",
+    "ret": "yes"
+   },
+   "present": [
+    "carol",
+    "heidi",
+    "nadia"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "carol": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 0.325,
+     "safe_gain_given_L": 0.0
+    },
+    "heidi": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 0.325,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.0
+    }
+   },
+   "exact_option_values": {
+    "search": 0.525,
+    "give(carol)": 0.2,
+    "give(heidi)": 0.2,
+    "drop(room_19)": 0.0125,
+    "drop(room_12)": 0.0125,
+    "drop(room_7)": -0.175
+   }
+  },
+  {
+   "construction": "seq",
+   "stakes": 1.0,
+   "acts": [
+    "move(hall)",
+    "move(lobby)"
+   ],
+   "hidden": {
+    "a": "room_7",
+    "m1": "0",
+    "m2": "1",
+    "ret": "no"
+   },
+   "present": [
+    "carol",
+    "heidi",
+    "nadia"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "carol": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 0.325,
+     "safe_gain_given_L": 0.0
+    },
+    "heidi": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 0.325,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.0
+    }
+   },
+   "exact_option_values": {
+    "search": 0.525,
+    "give(carol)": 0.2,
+    "give(heidi)": 0.2,
+    "drop(room_19)": 0.0125,
+    "drop(room_12)": 0.0125,
+    "drop(room_7)": -0.175
+   }
+  },
+  {
+   "construction": "seq",
+   "stakes": 4.0,
+   "acts": [
+    "wait()",
+    "wait()"
+   ],
+   "hidden": {
+    "a": "room_7",
+    "m1": "0",
+    "m2": "1",
+    "ret": "yes"
+   },
+   "present": [
+    "carol",
+    "heidi",
+    "nadia"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "carol": {
+     "safe_default_gain": 0.4125,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.4125
+    },
+    "heidi": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 3.0,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.4125
+    }
+   },
+   "exact_option_values": {
+    "search": 0.5375,
+    "give(carol)": 0.95,
+    "give(heidi)": -2.05,
+    "drop(room_19)": -1.3,
+    "drop(room_12)": -1.3,
+    "drop(room_7)": -0.55
+   }
+  },
+  {
+   "construction": "seq",
+   "stakes": 4.0,
+   "acts": [
+    "wait()",
+    "wait()"
+   ],
+   "hidden": {
+    "a": "room_7",
+    "m1": "0",
+    "m2": "1",
+    "ret": "no"
+   },
+   "present": [
+    "carol",
+    "heidi",
+    "nadia"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "carol": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 3.0,
+     "safe_gain_given_L": 0.0
+    },
+    "heidi": {
+     "safe_default_gain": 0.15,
+     "commit_default_gain": 0.0,
+     "safe_gain_given_L": 0.15
+    },
+    "all": {
+     "safe_default_gain": 0.15
+    }
+   },
+   "exact_option_values": {
+    "search": 0.8,
+    "give(carol)": -2.05,
+    "give(heidi)": 0.95,
+    "drop(room_19)": -0.55,
+    "drop(room_12)": -0.55,
+    "drop(room_7)": -2.05
+   }
+  },
+  {
+   "construction": "seq",
+   "stakes": 4.0,
+   "acts": [
+    "move(hall)",
+    "move(lobby)"
+   ],
+   "hidden": {
+    "a": "room_7",
+    "m1": "0",
+    "m2": "1",
+    "ret": "yes"
+   },
+   "present": [
+    "carol",
+    "heidi",
+    "nadia"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "carol": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 1.075,
+     "safe_gain_given_L": 0.0
+    },
+    "heidi": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 1.075,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.0
+    }
+   },
+   "exact_option_values": {
+    "search": 0.525,
+    "give(carol)": -0.55,
+    "give(heidi)": -0.55,
+    "drop(room_19)": -0.925,
+    "drop(room_12)": -0.925,
+    "drop(room_7)": -1.3
+   }
+  },
+  {
+   "construction": "seq",
+   "stakes": 4.0,
+   "acts": [
+    "move(hall)",
+    "move(lobby)"
+   ],
+   "hidden": {
+    "a": "room_7",
+    "m1": "0",
+    "m2": "1",
+    "ret": "no"
+   },
+   "present": [
+    "carol",
+    "heidi",
+    "nadia"
+   ],
+   "voc": {
+    "L": {
+     "safe_default_gain": 0.0
+    },
+    "carol": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 1.075,
+     "safe_gain_given_L": 0.0
+    },
+    "heidi": {
+     "safe_default_gain": 0.0,
+     "commit_default_gain": 1.075,
+     "safe_gain_given_L": 0.0
+    },
+    "all": {
+     "safe_default_gain": 0.0
+    }
+   },
+   "exact_option_values": {
+    "search": 0.525,
+    "give(carol)": -0.55,
+    "give(heidi)": -0.55,
+    "drop(room_19)": -0.925,
+    "drop(room_12)": -0.925,
+    "drop(room_7)": -1.3
+   }
+  }
+ ],
+ "costs_family_us": {
+  "3b": {
+   "index_us": 6.9,
+   "one_relation_us": 18.3,
+   "dense_all_us": 19.6,
+   "world_enumeration_us": 286.2,
+   "n_worlds": 6
+  },
+  "3c": {
+   "index_us": 5.9,
+   "one_relation_us": 17.6,
+   "dense_all_us": 19.2,
+   "world_enumeration_us": 268.6,
+   "n_worlds": 6
+  },
+  "3a": {
+   "index_us": 6.8,
+   "one_relation_us": 19.0,
+   "dense_all_us": 20.7,
+   "world_enumeration_us": 287.6,
+   "n_worlds": 6
+  },
+  "2d": {
+   "index_us": 9.0,
+   "one_relation_us": 23.6,
+   "dense_all_us": 26.9,
+   "world_enumeration_us": 242.4,
+   "n_worlds": 6
+  },
+  "2e": {
+   "index_us": 5.6,
+   "one_relation_us": 25.0,
+   "dense_all_us": 30.4,
+   "world_enumeration_us": 355.5,
+   "n_worlds": 12
+  },
+  "stop_visible": {
+   "index_us": 6.8,
+   "one_relation_us": 23.5,
+   "dense_all_us": 27.3,
+   "world_enumeration_us": 386.4,
+   "n_worlds": 12
+  },
+  "stop_announced": {
+   "index_us": 8.8,
+   "one_relation_us": 29.2,
+   "dense_all_us": 32.7,
+   "world_enumeration_us": 444.5,
+   "n_worlds": 12
+  },
+  "seq": {
+   "index_us": 7.0,
+   "one_relation_us": 18.5,
+   "dense_all_us": 21.7,
+   "world_enumeration_us": 893.6,
+   "n_worlds": 24
+  }
+ },
+ "costs_devv3_checker_us": {
+  "1a": {
+   "world_enumeration_us": 94.2,
+   "n_worlds": 3
+  },
+  "1b": {
+   "world_enumeration_us": 111.2,
+   "n_worlds": 3
+  },
+  "1c": {
+   "world_enumeration_us": 100.5,
+   "n_worlds": 3
+  },
+  "2a": {
+   "world_enumeration_us": 311.3,
+   "n_worlds": 6
+  },
+  "2b": {
+   "world_enumeration_us": 269.7,
+   "n_worlds": 6
+  },
+  "2c": {
+   "world_enumeration_us": 648.7,
+   "n_worlds": 12
+  },
+  "3a": {
+   "world_enumeration_us": 282.2,
+   "n_worlds": 6
+  },
+  "3b": {
+   "world_enumeration_us": 299.0,
+   "n_worlds": 6
+  },
+  "3c": {
+   "world_enumeration_us": 312.2,
+   "n_worlds": 6
+  },
+  "4a": {
+   "world_enumeration_us": 431.9,
+   "n_worlds": 12
+  },
+  "4b": {
+   "world_enumeration_us": 1387.8,
+   "n_worlds": 30
+  },
+  "4c": {
+   "world_enumeration_us": 410.0,
+   "n_worlds": 12
+  }
+ },
+ "wall_s": 1.3
+}

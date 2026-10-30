@@ -1,0 +1,16 @@
+{
+ "probes": 48,
+ "ok": 48,
+ "attempts": 48,
+ "wall_s": 14.9,
+ "by_kind": {
+  "check": {
+   "n": 24,
+   "ok": 24
+  },
+  "redecision": {
+   "n": 24,
+   "ok": 24
+  }
+ }
+}
