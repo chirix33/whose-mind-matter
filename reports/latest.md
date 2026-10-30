@@ -1,6 +1,12 @@
 # Milestone report — through the hybrid feasibility block (2026-10-30)
 
-> **Latest: block closed (D-021); problem-design argument drafted.**
+> **Latest: allocation claim frozen (D-022, 2026-10-30).**
+> - Ashraf chose to freeze rather than authorize the CPU-only G1 check.
+> - No further experiments, builds, runs or spending; services stopped; about USD 1.076 unspent.
+> - Findings stand as recorded in **[reports/PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)**: negative on allocation; positive on symbolic checking plus gating of the local policy.
+> - The design argument is kept on file only.
+>
+> **Earlier: block closed (D-021); problem-design argument drafted.**
 > - The research review independently reproduced the CPU results:
 >   - 1,008 qualification checks; text-compiled = instance model on 192/192 states;
 >   - planner 0.8719 realized vs checker+LLM 0.564.

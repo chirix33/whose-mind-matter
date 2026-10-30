@@ -1,9 +1,11 @@
 # Project summary: Whose Mind Matters? (as of 2026-10-30, D-021)
 
-**Status.** The OfficeMinds Tier 1 implementation line is **closed** (D-021).
+**Status: FROZEN (D-022, 2026-10-30).** Ashraf froze the allocation claim. No further experiments, builds, runs or spending pursue it. The design argument's gates (G1–G3) are not authorized. Everything below stands as recorded.
+
+**Earlier status.** The OfficeMinds Tier 1 implementation line is **closed** (D-021).
 - The intended contribution, choosing whose mental state and which perspective path to compute at a competitive resource budget, has **not** been demonstrated.
 - No runs, spending, training or prompt work are authorized.
-- Next decision: problem design (`reports/design-argument/DESIGN_ARGUMENT.md`, a proposal only).
+- The problem-design proposal (`reports/design-argument/DESIGN_ARGUMENT.md`) was delivered and declined (D-022); it is kept on file only.
 - Budget: USD 3.924 of the original 5 spent; about 1.076 unspent. vLLM stopped.
 
 ## Findings by block (development evidence only; nothing confirmatory)
