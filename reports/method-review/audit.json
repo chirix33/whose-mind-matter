@@ -1,6 +1,6 @@
 {
- "commit": "5603137",
- "dirty": true,
+ "commit": "3868153",
+ "dirty": false,
  "seed": 20261029,
  "constructions": [
   "2a",
@@ -1801,10 +1801,10 @@
      "{K(dave)}": 0.0,
      "{K(ivan)}": 0.0,
      "{K(judy)}": 0.0,
-     "{K(dave),K(ivan)}": 1.1102230246251565e-16,
-     "{K(dave),K(judy)}": 8.548717289613705e-15,
+     "{K(dave),K(ivan)}": 0.0,
+     "{K(dave),K(judy)}": 8.659739592076221e-15,
      "{K(ivan),K(judy)}": 1.1102230246251565e-16,
-     "{K(dave),K(ivan),K(judy)}": 0.00012508756129303578
+     "{K(dave),K(ivan),K(judy)}": 0.00012503125781460067
     },
     "failures": {},
     "traces": {
@@ -2383,10 +2383,10 @@
      "{K(dave)}": 0.0,
      "{K(ivan)}": 0.0,
      "{K(judy)}": 0.0,
-     "{K(dave),K(ivan)}": 1.1102230246251565e-16,
-     "{K(dave),K(judy)}": 8.548717289613705e-15,
+     "{K(dave),K(ivan)}": 0.0,
+     "{K(dave),K(judy)}": 8.659739592076221e-15,
      "{K(ivan),K(judy)}": 1.1102230246251565e-16,
-     "{K(dave),K(ivan),K(judy)}": 0.00012508756129303578
+     "{K(dave),K(ivan),K(judy)}": 0.00012503125781460067
     },
     "failures": {},
     "traces": {
@@ -4286,5 +4286,5 @@
    "note_reasoning_tokens_per_attempt": 351.0
   }
  },
- "seconds": 13.66
+ "seconds": 14.53
 }
