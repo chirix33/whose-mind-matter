@@ -1,0 +1,46 @@
+{
+ "block": "D-019 fallback",
+ "git_commit": "6d0579e77425984d926ef0d83577183dea5d8fac",
+ "code_sha256": {
+  "scripts/run_hybrid_fallback.py": "659cc8f5cddd7e84056f260dd6d4d58ecf4ccc05d923005a7c79725f8fc89a3d",
+  "src/vomi/relational.py": "dc765fb9badd750cb290284703d0dfde503bf7219f0b0fec1eaab48364b91e2d",
+  "src/vomi/pilot.py": "0260bd267ab41f2bced85539c03436df3c962929a6ce3098e9f404914fe4530a",
+  "src/vomi/clients.py": "4f6679f20f716e8e5606f1387414147cbceedce5747e2bb1bb85cd9d208b88d8",
+  "src/officeminds/devgen3.py": "c74ef81e4c19a697e3b533fc74e96a5a63ab1b8400409267ab8dbdfbd491e81b",
+  "src/officeminds/world.py": "953080cc2929faf07caa650dc526ba6e13dd47fcbbf4979486dbf33fc7740909",
+  "src/vomi/oracle.py": "a8e6704109c70b4cc1f0bb3303ea85f416f41b687ee0db19a2cc79d7a08758a0",
+  "prompts/pilot-v1/policy_system.txt": "d6c4000c3bc6c0c716d340a8658851d1a8860c09eb1976cee1481d3270208c05",
+  "prompts/hybrid-v1/check_system.txt": "d8dc11bd8037fe4e477cf35f80ceeddccc06ef87314ac0092c6ff3c584f7e84f",
+  "reports/hybrid-block/fallback-protocol.md": "3e57900a0950e171242fdd1c657fb99adf6b039b9d52b3c0c26a1eb4223c676b"
+ },
+ "seeds": [
+  20261400,
+  20261401,
+  20261402,
+  20261403,
+  20261404,
+  20261405,
+  20261406,
+  20261407
+ ],
+ "conditions": [
+  "direct",
+  "checker_gate",
+  "generic_gate",
+  "ask_first"
+ ],
+ "draws": 2,
+ "decoding": {
+  "temperature": 1.0,
+  "max_tokens": 1024,
+  "reasoning_effort": "low"
+ },
+ "package": "pilot-v1",
+ "render_revision": 7,
+ "concurrency": 8,
+ "max_checks_per_episode": 4,
+ "fallback_action": "wait()",
+ "model": "openai/gpt-oss-20b@6cee5e81ee83917806bbde320786a8fb61efebee",
+ "episodes_planned": 1536,
+ "state_ids_sha256": "106b72b37fd577cca3ca6d34f4809214c52e93b2cb63a3c06eccd22180aeb09e"
+}
