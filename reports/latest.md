@@ -1,6 +1,14 @@
-# Milestone report — through the method review (2026-10-29)
+# Milestone report — through the redesign concept (2026-10-29)
 
-> **Latest: method review delivered (D-017).** See **[reports/method-review/METHOD_REVIEW.md](method-review/METHOD_REVIEW.md)**. It is a proposal; nothing was launched.
+> **Latest: redesign concept delivered (D-018).** See **[reports/redesign-concept/CONCEPT.md](redesign-concept/CONCEPT.md)**. It is a concept only.
+> - Optimizing the current implementation stopped (D-018). The METHOD_REVIEW corrections are applied, including the cost per requested unit: 4,027 tokens, 77% of B0.
+> - The concept has two parts:
+>   - referential, provenance-carrying unit content with an agent-side relation layer (hand-derived: it determines the handoff relation in 9/9 audited rows vs 4/9 for marginals);
+>   - a sequential "office day" Tier 1 task in which perspective content is reused and the log grows causally, with full-history, reasoning and generic-memory baselines kept.
+> - Gates G0–G4 each have an abandon criterion. Recommendation: authorize at most G0 (CPU only); otherwise freeze the negative findings.
+> - No code, model or API use. A literature check was done (sources in concept §9).
+>
+> **Earlier: method review delivered (D-017).** See **[reports/method-review/METHOD_REVIEW.md](method-review/METHOD_REVIEW.md)**. It is a proposal; nothing was launched.
 > - CPU-only. No LLM calls, paid calls or new seeds.
 > - Commands run: `python scripts/method_review_audit.py` (12 s) and `python scripts/method_review_selector.py`.
 > - **Bayes over the full history:** every note value and interaction is exactly 0, checked on 36 rows.

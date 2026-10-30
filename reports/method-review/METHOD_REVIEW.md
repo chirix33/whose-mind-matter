@@ -2,6 +2,20 @@
 
 Date: 2026-10-29. This responds to `INTEGRATION_BLOCK_RESEARCH_DECISIONS.md` (recorded as D-017). It is a **proposal for research review**, and nothing in it has been launched.
 
+> **Reviewed under D-018** (`METHOD_REVIEW_RESEARCH_DECISIONS.md`).
+> - The stop recommendation is accepted.
+> - The closure test (§3–§5) is **not authorized** and will not be run.
+> - V1–V4 are not launched. The follow-up is a redesign concept: `reports/redesign-concept/CONCEPT.md`.
+>
+> Corrections applied in place (2026-10-29):
+> - (a) The Bayes proposition is now worded about the *computed posterior*. A person's realized mental state is often not determined by h.
+> - (b) "Free correct notes have no practical headroom" became "the tested cell-level selection procedure has not demonstrated a practical gain". It is not a ceiling, and some recorded conditions contain two focal notes.
+> - (c) The cost per requested unit charges all attempts: 4,027 tokens, which is 77% of a no-note episode, not 63%.
+> - (d) The bounded-context cost figures are conditional planning estimates, not bounds.
+> - (e) D_memory is no longer defined as an episode-minus-probe residual.
+>
+> Struck text is kept only where needed for traceability.
+
 Scope of the review work:
 - No LLM calls, no paid calls, no training, no prompt or generator change, and no new seeds were used.
 - The new evidence comes from two CPU-only scripts over existing material:
@@ -12,9 +26,9 @@ Scope of the review work:
 ## 0. Recommendation
 
 1. **The current implementation leaves no plausible matched-compute value for allocation.** It has three parts: OfficeMinds dev-v3, a full-history LLM decision policy, and one LLM instantiation call per unit. I recommend **stopping its optimization**. This is a finding about this approach, not about theory of mind. Three results support it (§1.6):
-   - Correct notes help a full-history Bayes actor by exactly zero. This holds as a proposition and is checked numerically.
-   - For the local actor, even *free* correct notes chosen per construction by an optimistic selector gain only +0.044 over no notes. A cross-fitted selector gains −0.001.
-   - One instantiated unit costs about 63% of an entire no-note episode's tokens.
+   - Reference notes are deterministic functions of h and the public model. They add no information for an ideal actor that already conditions on both. This is a basic information-boundary observation, checked numerically.
+   - For the local actor, the tested cell-level selection procedure has not demonstrated a practical gain from free correct notes: +0.044 in-sample (optimistic), −0.001 cross-fitted, with an interval that does not exclude gains above +0.05.
+   - Charging all attempts, one requested inferred unit costs about 4,027 tokens, which is 77% of a no-note episode's 5,230 decision tokens.
 2. **One hypothesis is still open: the pair K(F→R)+K(R) in 3b.** The symbolic audit shows it is the one note pair whose marginals fully determine the 3b handoff outcome.
    - If the review wants this hypothesis closed rather than left open, I propose **one bounded closure test** (§3–§5). It is local only, USD 0, about 1.5 h of GPU time, and 64 fresh seeds.
    - It has generic-computation controls and a pre-declared stop rule.
@@ -64,18 +78,22 @@ For the actual actor π (the backbone at the fixed decoding) and an allocation S
 - This is the outline's realized-LLM VoMI with the actor named. It is a property of (π, decoding, context regime, renderer), not of the unit alone.
 - **The action effect and the retained-memory effect are kept apart:**
   - D_action is the change in the first decision, measured in a single-decision probe at a fixed context;
-  - D_memory is the remainder of the episode-level ΔJ, which comes from the note persisting (and being relabeled) across later decisions.
-  - The spec §4.4 decomposition applies symbolically. For the LLM it is estimated by pairing probe and episode results on the same states.
+  - the episode-level effect is measured separately.
+  - *(Corrected under D-018.)* The episode-level effect minus the probe effect is **not** a memory value. Probe Q-values use a declared continuation, while episode returns include later policy changes. A D_action/D_memory split needs matched interventions under one common continuation definition, as in the symbolic decomposition of spec §4.4. Without that, first-action and episode effects are reported side by side, with no causal residual.
 
 ### 1.4 Proposition: no value to a Bayes actor that already reasons from h
 
-If a unit's content is a deterministic function of h under the declared model, then for a Bayes actor whose decision context contains h:
+*(Wording corrected under D-018.)* This concerns the **computed posterior distribution** over a unit's content, which is a deterministic function of h and the declared model. It does not concern the person's **realized** mental state: h often leaves that unresolved (for example, which office a person was quietly told). Revealing a realized value would be a different, privileged operation.
+
+If a note's content is that computed posterior, then for a Bayes actor whose decision context contains h and the model:
 - the posterior conditioned on (h, content) equals the posterior conditioned on h alone;
 - so ΔJ(u | S) = 0 for every u and S, and every interaction I(u, v) = 0.
 
 **Checked numerically:** 6 constructions × 2 stakes, every subset of {routing units, K(R)}, under an exact I-projection actor with ε = 1. Every J(S) equals V*(h), with max |J(S) − V*| = 0.000 (`audit.md` Part 2).
 
-**Consequence.** Any value of explicit mental computation in this environment must be a **bounded-actor** effect. That means either better return for a non-ideal policy at the same compute, or equal return at lower compute. The repair block's ≈ 0.50 gap to Bayes is general headroom of this policy. It is not recoverable through notes by definition.
+**Consequence.** Any value of explicit mental computation in this environment must be a **bounded-actor** effect. That means either better return for a non-ideal policy at the same compute, or equal return at lower compute.
+
+For a bounded policy, deterministic processing of h *can* improve decisions. Its value has to be measured for that policy, with its cost; the proposition does not settle it. The repair block's ≈ 0.50 gap to Bayes is general headroom of this policy, and notes have not been shown to recover any of it.
 
 ### 1.5 The existing symbolic bounded actor does not supply labels here
 
@@ -91,11 +109,13 @@ Following the review's caution, **no symbolic record in the current family shoul
 
 | actor / regime | quality headroom vs Bayes | what notes can add | cost of one unit | verdict |
 |---|---|---|---|---|
-| **FH-local** (current) | ≈ 0.50/episode (repair) | free correct single units, always given: −0.024 [−0.074, +0.028]. Per-cell oracle choice among none / K(focal) / K(R), knowing the construction: in-sample +0.044 (optimistic), **cross-fitted −0.001** (`selector-headroom.md`) | ≈ 3,280 tokens per instantiation (2,743 prompt + 541 completion, measured) = **+63% of B0**, plus ≈ 290 render tokens/episode | Even a zero-cost, perfectly targeted single unit is below δ = 0.05 before cost. Only untested: unit **pairs** (3b) |
+| **FH-local** (current) | ≈ 0.50/episode (repair) | free correct focal notes (one or two per construction), always given: −0.024 [−0.074, +0.028]. Per-cell choice among the recorded conditions none / focal / K(R), knowing the construction: in-sample +0.044 (optimistic), **cross-fitted −0.001** (`selector-headroom.md`) | **4,027 tokens per requested unit**, all 883 attempts charged to the 720 requests (**77% of B0**); 3,284 per attempt. Plus ≈ 290 render tokens/episode | The tested cell-level selection has not demonstrated a practical gain. This is not a ceiling for state-level selection or untested subsets such as the 3b pair. The cost is a large practical disadvantage but not a proof of impossibility: a note could change call counts or reasoning length |
 | **FH-API** (gpt-6.1-sol, low) | none observed on the 8 checked contexts (8/8 Bayes-optimal without notes) | no quality headroom to recover; efficiency would require notes to *replace* reasoning, but in FH they are additive tokens | a separate call over the same history | No allocation purpose demonstrated; keep the USD 1.076 unspent |
-| **BC** (bounded context: decision prompt without the prologue ledger; mental information only via G) | exists by construction (`audit.md` Part 3: J_B(∅) < V* in 5/6) | units carry information, and the best set varies by state (§2) | removing the ledger saves only ≈ 150–230 prompt tokens per call (ledger 590–930 characters at t0, ≈ 4 characters/token, *estimate*), ≈ 650 per episode, against ≈ 3,280 per unit plus re-rendering | In dev-v3 the histories are far too short: BC with one unit costs ≈ +56% over FH. Break-even needs the per-call ledger to be ≈ 5–6× longer than now for each unit used (V1+V3, §6) |
+| **BC** (bounded context: decision prompt without the prologue ledger; mental information only via G) | exists by construction (`audit.md` Part 3: J_B(∅) < V* in 5/6) | units carry information, and the best set varies by state (§2) | removing the ledger saves only ≈ 150–230 prompt tokens per call (ledger 590–930 characters at t0, ≈ 4 characters/token, *estimate*), ≈ 650 per episode, against ≈ 3,280 per unit plus re-rendering | *Conditional planning estimate (D-018):* if call counts and reasoning stayed unchanged, BC with one unit would cost ≈ +56% over FH, and break-even would need a per-call ledger ≈ 5–6× longer. This is not a performance bound: a redesigned policy's behaviour was not measured, and character counts are not tokenizer counts |
 
-**Selector caveats.** The in-sample selector is upward-biased (winner's curse). Its seed bootstrap interval [+0.036, +0.096] is also optimistic, because a bootstrap of a selection procedure re-uses duplicated seeds. The cross-fitted interval [−0.005, +0.069] has the same leakage, which inflates its upper end. Treat both upper bounds as generous. A selector that knows the construction is not deployable, so this is a ceiling for single-unit allocation with perfect content.
+**Selector caveats.** The in-sample selector is upward-biased (winner's curse). Its seed bootstrap interval [+0.036, +0.096] is also optimistic, because a bootstrap of a selection procedure re-uses duplicated seeds. The cross-fitted interval [−0.005, +0.069] has the same leakage, which inflates its upper end. Treat both upper bounds as generous, and the cross-fitted interval as unable to establish equivalence to zero gain.
+
+A selector that knows the construction is not deployable. *(Corrected under D-018.)* It is also **not** an upper bound on a selector that chooses per visible state, or on subsets, pairs and refresh schedules that were not recorded. It is a restricted diagnostic only.
 
 ## 2. Relationship audit (review item B)
 
@@ -147,6 +167,8 @@ Findings:
    So positive interactions occur both with and without useful value. The review's warning that a positive I alone is insufficient applies directly.
 
 ## 3. Complementarity closure test (review item C), specified but not run
+
+> **D-018:** not authorized. It is kept for the record. Its proxy cost charge is per attempt, and per D-018 that kind of figure belongs only in a labeled sensitivity analysis.
 
 **Question.** For the FH-local actor, does the pair {K(F→R), K(R)} with *correct* content raise 3b return beyond:
 - each single unit;
