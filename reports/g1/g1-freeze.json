@@ -1,0 +1,67 @@
+{
+ "block": "D-023 G1",
+ "git_commit": "ce3ac72b8298893f47169730fd26fb47c0c1da7d",
+ "sha256": {
+  "scripts/g1_symbolic_twin.py": "f04990d68f93aa8c2064e60fea0414cfeb31b8918c723948a4a5a520a772e387",
+  "src/vomi/relational.py": "dc765fb9badd750cb290284703d0dfde503bf7219f0b0fec1eaab48364b91e2d",
+  "reports/g1/G1_PROTOCOL.md": "1fc9a86e57f8e6f78d02af296af023ba651e58f1163ee9c19a6bab9591ec17f8"
+ },
+ "conditions": {
+  "sparse": {
+   "others": 8,
+   "K": 3
+  },
+  "dense": {
+   "others": 3,
+   "K": 4
+  }
+ },
+ "days": 2000,
+ "seed0": 20261600,
+ "persp": [
+  20262600,
+  500,
+  4
+ ],
+ "lambdas": [
+  0.005,
+  0.01,
+  0.02,
+  0.04,
+  0.08,
+  0.16
+ ],
+ "lambda_op": 0.04,
+ "thetas": [
+  0.05,
+  0.1,
+  0.2,
+  0.4,
+  0.8,
+  1.6
+ ],
+ "selectors": [
+  "none",
+  "dense",
+  "structural",
+  "latest",
+  "action_prov",
+  "risk:0.05",
+  "risk:0.1",
+  "risk:0.2",
+  "risk:0.4",
+  "risk:0.8",
+  "risk:1.6",
+  "entropy:1",
+  "entropy:2",
+  "random:1",
+  "random:2",
+  "dv:0.005",
+  "dv:0.01",
+  "dv:0.02",
+  "dv:0.04",
+  "dv:0.08",
+  "dv:0.16"
+ ],
+ "bootstrap": 2000
+}
