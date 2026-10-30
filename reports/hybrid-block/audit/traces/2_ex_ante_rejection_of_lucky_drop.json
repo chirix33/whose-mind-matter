@@ -1,0 +1,308 @@
+{
+ "why_selected": "checker vetoes drop(room_7) (p=0.95, J=0.8 < V_alt=0.8425); the drop would have succeeded in this hidden draw",
+ "state_id": "s20261400-dev-v3-4a-stakes4-perm0",
+ "condition": "checker_gate",
+ "draw": 0,
+ "deployed": {
+  "agent_view": {
+   "brief": "Deliver the package to Heidi.",
+   "steps": [
+    {
+     "action": null,
+     "obs": {
+      "t": 0,
+      "room": "lobby",
+      "people_present": [
+       "grace",
+       "yara"
+      ],
+      "utterances": [],
+      "outcome": "",
+      "reward": 0.0,
+      "done": false,
+      "notices": [
+       [
+        "statement",
+        "grace",
+        "grace says: \"heidi_loc = room_7\"",
+        [
+         "yara"
+        ]
+       ],
+       [
+        "remark",
+        "grace",
+        "grace says: \"I saw heidi go into room_7 earlier.\"",
+        [
+         "yara"
+        ]
+       ]
+      ]
+     }
+    },
+    {
+     "action": "ask(grace,heidi_loc)",
+     "obs": {
+      "t": 1,
+      "room": "lobby",
+      "people_present": [
+       "grace",
+       "yara"
+      ],
+      "utterances": [
+       [
+        "grace",
+        "heidi_loc = room_7"
+       ]
+      ],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "ask(yara,heidi_loc)",
+     "obs": {
+      "t": 2,
+      "room": "lobby",
+      "people_present": [
+       "grace",
+       "yara"
+      ],
+      "utterances": [
+       [
+        "yara",
+        "I don't know."
+       ]
+      ],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(hall)",
+     "obs": {
+      "t": 3,
+      "room": "hall",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(room_7)",
+     "obs": {
+      "t": 4,
+      "room": "room_7",
+      "people_present": [
+       "heidi"
+      ],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "deliver()",
+     "obs": {
+      "t": 5,
+      "room": "room_7",
+      "people_present": [
+       "heidi"
+      ],
+      "utterances": [],
+      "outcome": "success",
+      "reward": 0.95,
+      "done": true
+     }
+    }
+   ]
+  },
+  "steps": [
+   {
+    "t": 0,
+    "proposal": "drop(room_7)",
+    "policy_ok": true,
+    "check": {
+     "p": 0.95,
+     "J": 0.8,
+     "V_alt": 0.8425,
+     "allow": false
+    },
+    "veto": true,
+    "redecision": "ask(grace,heidi_loc)",
+    "executed": "ask(grace,heidi_loc)"
+   },
+   {
+    "t": 1,
+    "proposal": "ask(yara,heidi_loc)",
+    "policy_ok": true,
+    "executed": "ask(yara,heidi_loc)"
+   },
+   {
+    "t": 2,
+    "proposal": "drop(room_7)",
+    "policy_ok": true,
+    "check": {
+     "p": 0.95,
+     "J": 0.8,
+     "V_alt": 0.8188,
+     "allow": false
+    },
+    "veto": true,
+    "redecision": "move(hall)",
+    "executed": "move(hall)"
+   },
+   {
+    "t": 3,
+    "proposal": "move(room_7)",
+    "policy_ok": true,
+    "executed": "move(room_7)"
+   },
+   {
+    "t": 4,
+    "proposal": "deliver()",
+    "policy_ok": true,
+    "executed": "deliver()"
+   }
+  ],
+  "actions": [
+   "ask(grace,heidi_loc)",
+   "ask(yara,heidi_loc)",
+   "move(hall)",
+   "move(room_7)",
+   "deliver()"
+  ],
+  "outcome": "success",
+  "return": 0.75,
+  "usage": {
+   "decision": {
+    "calls": 5,
+    "attempts": 5,
+    "attempts_failed": 0,
+    "fallbacks": 0,
+    "prompt_tokens": 7021,
+    "completion_tokens": 661,
+    "reasoning_tokens": 551,
+    "reasoning_known": true,
+    "latency_s": 4.904960756000008
+   },
+   "redecision": {
+    "calls": 2,
+    "attempts": 2,
+    "attempts_failed": 0,
+    "fallbacks": 0,
+    "prompt_tokens": 2834,
+    "completion_tokens": 552,
+    "reasoning_tokens": 506,
+    "reasoning_known": true,
+    "latency_s": 4.129876830000029
+   }
+  },
+  "calls": [
+   {
+    "kind": "decision",
+    "step": 0,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "drop(room_7)"
+    },
+    "final_text": "{\"action\":\"drop(room_7)\"}",
+    "final_reasoning": "We should ask someone about heidi_loc. Grace or Yara. Grace says heidi_loc=room_7. That may be accurate? But probability that moved. We can ask Yara also. But Grace already gave. Could double-check? Better to ask Yara to confirm? But Yara hasn't said. We risk extra step. We need minimal steps. Best to ask Yara to verify? But maybe unnecessary. We can trust Grace? But Grace states she saw sheidi go into room_7 earlier. Probability 0.95 heidi hasn't moved. So likely room_7. Could just drop at room_7 chute. That's within 1 step? Wait drop room_7 counts as one step. Then 0 steps penalty. So choose drop(room_7)."
+   },
+   {
+    "kind": "redecision",
+    "step": 0,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "ask(grace,heidi_loc)"
+    },
+    "final_text": "{\"action\":\"ask(grace,heidi_loc)\"}",
+    "final_reasoning": "We need to ask where Heidi is. Grace was in lobby and said heidi_loc = room_7. But based on PM5, heidi may have moved, but grace only saw earlier. So best ask both? Just one: ask(grace,heidi_loc). That's legal."
+   },
+   {
+    "kind": "decision",
+    "step": 1,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "ask(yara,heidi_loc)"
+    },
+    "final_text": "{\"action\":\"ask(yara,heidi_loc)\"}",
+    "final_reasoning": "We need to deliver to Heidi. Grace says heidi_loc=room_7. Probabilities indicate she may be wrong. We have 8 steps total. We could ask Yara too. But Yara hasn't said. We can ask Yara. But we likely need certainty? Best is to ask Yara as well? But we have only 8 steps; safe path: ask Yara. That uses one step. Wait or move? We are in lobby; need to get to correct room. Best guess: room_7. So we could move to hall then to room_7 and deliver. That would be 2 moves then deliver: total steps 1 ask +2 moves+deliver=4. Under 8 is fine. We'll choose ask(yara,heidi_loc)."
+   },
+   {
+    "kind": "decision",
+    "step": 2,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "drop(room_7)"
+    },
+    "final_text": "{\"action\":\"drop(room_7)\"}",
+    "final_reasoning": "Need choose action. We know fact: grace says she saw Heidi in room_7 earlier. Yara doesn't know. We should ask grace again? But we already got answer same. But we could ask grace or yara again. Probably ask grace to reduce uncertainty? But both same. The best is to ask grace to confirm? Already did. So maybe drop to room_7 if accuracy high? Probability that Heidi moved:0.05. So 95% still in 7. So drop(room_7). But wait risk of wrong drop -2. 0.95*1-0.05*2 = 0.95-0.1=0.85 net. Accept.\n\nThus action: drop(room_7)."
+   },
+   {
+    "kind": "redecision",
+    "step": 2,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(hall)"
+    },
+    "final_text": "{\"action\":\"move(hall)\"}",
+    "final_reasoning": "Need to decide. Grace says she saw heidi go into room_7 earlier. It's likely location but 5% move. Yara uncertain. Better to ask Yara? She said I don't know. Ask grace? She is same belief. Maybe better to move to hall and ask someone there? No, only loc known in lobby. Maybe better to ask Yara again? No new info. Could drop into hall? not allowed. We need to deliver. The best action is ask(grace,heidi_loc) again? Doubtful; maybe ask Yara since she might know? But she had no info. Given PM4, probability heidi in 12,19,7 equally, but grace saw 7 earlier; only 5% moved. So high probability 0.95 that still 7. So maybe just drop(room_7)? Risk -2 if wrong. 95% success yields 0.95*1-0.2? Actually step cost -0.05. Expected reward: 0.95*1 -0.05=0.9. That is >0.82 threshold so action check prevented. But we can't drop? Action check blocked; choose different. We need to maximize. We could move to hall as first step then maybe ask. But that's two steps. If we move to hall and ask Yara? Maybe Yara in hall? unknown. But we don't know anyone there. Might be better to just ask Yara again? Not helpful.\n\nMaybe best is ask(Yara, heidi_loc) again? But same.\n\nWe can attempt to move to hall and ask Grace? Grace is in lobby. So maybe we need to move to hall to fetch? But there's no info there. Best we can do: ask(Yara, heidi_loc) to get nothing. Then next step maybe move to hall and ask Grace? Or we can just drop room_12 or 19? That'd be wrong with 95% probability. Probably better to move to hall and wait? Wait does nothing. But we need to end within 8 steps.\n\nMaybe choose to move(hall) to start exploring? Let's choose move(hall)."
+   },
+   {
+    "kind": "decision",
+    "step": 3,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(room_7)"
+    },
+    "final_text": "{\"action\":\"move(room_7)\"}",
+    "final_reasoning": "We need best action. We know heidi likely still in room_7 with 0.95. Grace says she saw earlier in room7. Yara unknown. Best is to ask someone in hall? No one present. Could go to room_7 and deliver. Likely correct. So move(room_7)."
+   },
+   {
+    "kind": "decision",
+    "step": 4,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "deliver()"
+    },
+    "final_text": "{\"action\":\"deliver()\"}",
+    "final_reasoning": "We are in room_7 with Heidi. We need deliver package. Successful."
+   }
+  ]
+ },
+ "evaluator_only": {
+  "hidden": [
+   [
+    "a",
+    "room_7"
+   ],
+   [
+    "m1",
+    "0"
+   ],
+   [
+    "moved",
+    "no"
+   ]
+  ],
+  "bayes_v_t0": 0.8425,
+  "bayes_first_action": "move(hall)",
+  "interventions_would_have": [
+   "success",
+   "success"
+  ]
+ }
+}

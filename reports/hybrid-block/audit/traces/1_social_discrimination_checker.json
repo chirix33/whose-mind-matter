@@ -1,0 +1,287 @@
+{
+ "why_selected": "checker vetoes a handoff that would have failed; episode succeeds",
+ "state_id": "s20261400-dev-v3-3b-stakes1-perm0",
+ "condition": "checker_gate",
+ "draw": 0,
+ "deployed": {
+  "agent_view": {
+   "brief": "Deliver the package to Kim.",
+   "steps": [
+    {
+     "action": null,
+     "obs": {
+      "t": 0,
+      "room": "lobby",
+      "people_present": [
+       "leo",
+       "tomas"
+      ],
+      "utterances": [],
+      "outcome": "",
+      "reward": 0.0,
+      "done": false,
+      "notices": [
+       [
+        "announce",
+        "uma",
+        "uma announces to everyone present: \"meeting_room = suite_1\"",
+        [
+         "kim",
+         "leo",
+         "tomas"
+        ]
+       ],
+       [
+        "statement",
+        "kim",
+        "kim says: \"meeting_room = suite_1\"",
+        [
+         "leo",
+         "tomas",
+         "uma"
+        ]
+       ],
+       [
+        "quiet",
+        "uma",
+        "uma talks quietly to tomas; only tomas can hear it, and the robot cannot hear what is said",
+        [
+         "kim",
+         "leo"
+        ]
+       ],
+       [
+        "quiet",
+        "uma",
+        "uma talks quietly to kim; only kim can hear it, and the robot cannot hear what is said",
+        [
+         "leo",
+         "tomas"
+        ]
+       ],
+       [
+        "leave",
+        "uma",
+        "uma leaves the lobby and the building",
+        [
+         "kim",
+         "leo",
+         "tomas"
+        ]
+       ],
+       [
+        "leave",
+        "kim",
+        "kim leaves the lobby",
+        [
+         "leo",
+         "tomas"
+        ]
+       ]
+      ]
+     }
+    },
+    {
+     "action": "ask(tomas,meeting_room)",
+     "obs": {
+      "t": 1,
+      "room": "lobby",
+      "people_present": [
+       "leo",
+       "tomas"
+      ],
+      "utterances": [
+       [
+        "tomas",
+        "meeting_room = suite_3"
+       ]
+      ],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(hall)",
+     "obs": {
+      "t": 2,
+      "room": "hall",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(suite_3)",
+     "obs": {
+      "t": 3,
+      "room": "suite_3",
+      "people_present": [
+       "kim"
+      ],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "deliver()",
+     "obs": {
+      "t": 4,
+      "room": "suite_3",
+      "people_present": [
+       "kim"
+      ],
+      "utterances": [],
+      "outcome": "success",
+      "reward": 0.95,
+      "done": true
+     }
+    }
+   ]
+  },
+  "steps": [
+   {
+    "t": 0,
+    "proposal": "ask(tomas,meeting_room)",
+    "policy_ok": true,
+    "executed": "ask(tomas,meeting_room)"
+   },
+   {
+    "t": 1,
+    "proposal": "give(tomas)",
+    "policy_ok": true,
+    "check": {
+     "p": 0.0,
+     "J": -0.55,
+     "V_alt": 0.85,
+     "allow": false
+    },
+    "veto": true,
+    "redecision": "move(hall)",
+    "executed": "move(hall)"
+   },
+   {
+    "t": 2,
+    "proposal": "move(suite_3)",
+    "policy_ok": true,
+    "executed": "move(suite_3)"
+   },
+   {
+    "t": 3,
+    "proposal": "deliver()",
+    "policy_ok": true,
+    "executed": "deliver()"
+   }
+  ],
+  "actions": [
+   "ask(tomas,meeting_room)",
+   "move(hall)",
+   "move(suite_3)",
+   "deliver()"
+  ],
+  "outcome": "success",
+  "return": 0.8,
+  "usage": {
+   "decision": {
+    "calls": 4,
+    "attempts": 4,
+    "attempts_failed": 0,
+    "fallbacks": 0,
+    "prompt_tokens": 6289,
+    "completion_tokens": 702,
+    "reasoning_tokens": 615,
+    "reasoning_known": true,
+    "latency_s": 4.956099851999966
+   },
+   "redecision": {
+    "calls": 1,
+    "attempts": 1,
+    "attempts_failed": 0,
+    "fallbacks": 0,
+    "prompt_tokens": 1625,
+    "completion_tokens": 273,
+    "reasoning_tokens": 252,
+    "reasoning_known": true,
+    "latency_s": 2.0168232839999973
+   }
+  },
+  "calls": [
+   {
+    "kind": "decision",
+    "step": 0,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "ask(tomas,meeting_room)"
+    },
+    "final_text": "{\"action\":\"ask(tomas,meeting_room)\"}",
+    "final_reasoning": "We need to deliver to kim. We don't know where kim is; we have to get meeting_room from someone who knows. We can ask leo or tomas. Both are in lobby. Likely kim went to meeting room: kim stays in office where kim believes meeting. We need the office. Ask tomas: he knows from quiet conversation? Quiet conversation started by uma or tomas tells the person addressed the current meeting office. Uma gave it to tomas. So tomas knows current meeting office. So ask(tomas,meeting_room). That will give answer. After that we can move to that room and deliver if kim is there. Actually Kim stays in that office. So after we know, we move there, and then ask? But we can deliver directly when we are in same room. But we might need to be in same room as kim to deliver. So action: ask(tomas,meeting_room)."
+   },
+   {
+    "kind": "decision",
+    "step": 1,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "give(tomas)"
+    },
+    "final_text": "{\"action\":\"give(tomas)\"}",
+    "final_reasoning": "We need deliver to kim. Kim is in why? She goes to office where she believes meeting. currently she believes meeting_room suite_1. We don't know if she moved? After change? But we don't know. We could ask leo? He doesn't know. The best is to deliver to kim if she is there. But she's not in lobby. We could ask tomas; he says meeting_room= suite_3. Tomas thinks kim will go to suite_3. So deliver to tomas and he will forward to suite_3. That might get package to kim if she goes to suite_3. But if kim went to suite_1 then wrong. Which is more likely? Initially equal 1/3 each. Uma changed to one of two others equally likely: suite_3 or suite_2. Tomas heard quiet conversation from Uma or Tomas starting with Uma; that tells the person the current meeting office. So before change, everyone knew suite_1. Then Uma changed to either final: suite_3 or suite_2 with equal probability. Tomas learns the new meeting office because quiet conversation. Thus Tomas says suite_3 or suite_2? He said suite_3. So Uma changed to suite_3. Therefore kim is going to suite_3. So giving to tomas is correct. So action give(tomas)."
+   },
+   {
+    "kind": "redecision",
+    "step": 1,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(hall)"
+    },
+    "final_text": "{\"action\":\"move(hall)\"}",
+    "final_reasoning": "We should deliver to kim. She is in suite where she believes meeting. We don't know which suite due to change by uma. Tomas said suite_3. Tomas believes that. He will forward to that. Best is to ask tomas again? But we already know. Maybe move to hall then ask? Actually we can move to hall (adjacent). Then ask tomas about meeting_room? But we already know. Better to ask leo? He has no belief. But maybe he knows? He didn't get info. So we could ask tomas again but same. Or move to hall and then deliver? Kim is in some suite. We can't deliver until we know which suite. We could move to hall, then ask tomas again to be sure? But could ask leo? No info. So best: move(hall) then ask tomas again? But we already asked, maybe cost step. Already step1: ask(tomas) gave suite_3. So have info. Tomas will forward to suite_3. That may be correct. So option: ask(tomas,meeting_room) we already did. So next best is move(hall) and then go to suite_3 deliver. So next action: move(hall)."
+   },
+   {
+    "kind": "decision",
+    "step": 2,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(suite_3)"
+    },
+    "final_text": "{\"action\":\"move(suite_3)\"}",
+    "final_reasoning": "We need deliver to Kim. We know Kim is in suite where she believes meeting is. Which suite? Tom\u00e1s says meeting_room = suite_3. But meeting_room could have changed by une to other of two others after announcement. She might have updated via quiet conversation. But we only know tomas says suite_3. But tomas may be telling truth. He has belief from quiet conversation by une. He says suite_3. So likely Kim believes suite_3. So we should go to suite_3 deliver. Need to go from hall to suite_3. Hall adjacent to suite_3. So action move(suite_3)."
+   },
+   {
+    "kind": "decision",
+    "step": 3,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "deliver()"
+    },
+    "final_text": "{\"action\":\"deliver()\"}",
+    "final_reasoning": "We need to deliver to kim. Kim is present, package held. Deliver to kim. So action: deliver()."
+   }
+  ]
+ },
+ "evaluator_only": {
+  "hidden": [
+   [
+    "a",
+    "suite_1"
+   ],
+   [
+    "m1",
+    "0"
+   ]
+  ],
+  "bayes_v_t0": 0.8,
+  "bayes_first_action": "ask(tomas,meeting_room)",
+  "interventions_would_have": [
+   "error"
+  ]
+ }
+}

@@ -1,0 +1,4093 @@
+{
+ "summary": {
+  "states": 192,
+  "checks": 380,
+  "episode_replay_mismatches": 0,
+  "card_class_size": {
+   "min": 1,
+   "max": 3,
+   "states_with_class_gt1": 128
+  },
+  "card_class_constructions_by_instance": {
+   "1a": [
+    "1a",
+    "1c"
+   ],
+   "1b": [
+    "1b"
+   ],
+   "1c": [
+    "1a",
+    "1c"
+   ],
+   "2a": [
+    "2a"
+   ],
+   "2b": [
+    "2b"
+   ],
+   "2c": [
+    "2c"
+   ],
+   "3a": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "3b": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "3c": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "4a": [
+    "4a"
+   ],
+   "4b": [
+    "4b"
+   ],
+   "4c": [
+    "4c"
+   ]
+  },
+  "t0_value_max_abs_diff": 0.0,
+  "t0_best_action_disagreements": 0,
+  "t0_states_history_pins_one_pattern": 192,
+  "check_p_max_abs_diff": 0.0,
+  "check_loc_max_abs_diff": 0.0,
+  "check_verdict_disagreements": 0,
+  "logged_vs_recomputed_verdict_disagreements": 0,
+  "logged_vs_recomputed_p_max_abs_diff": 0.0,
+  "checks_history_pins_one_pattern": 380,
+  "bayes_v_t0_mean_card_compiled": 0.8846,
+  "planner_realized_return_mean_card_compiled": 0.8719,
+  "planner_realized_return_mean_instance_model": 0.8719,
+  "planner_realized_return_by_stakes": {
+   "x1": 0.8708,
+   "x4": 0.8729
+  },
+  "cpu_s": 25.2
+ },
+ "t0": [
+  {
+   "state_id": "s20261400-dev-v3-1a-stakes1-perm0",
+   "construction": "1a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(suite_3)",
+   "best_card_compiled": "drop(suite_3)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_3)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-1a-stakes4-perm0",
+   "construction": "1a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(suite_3)",
+   "best_card_compiled": "drop(suite_3)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_3)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-1b-stakes1-perm0",
+   "construction": "1b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_a)",
+    "move(hall)",
+    "move(office_b)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(office_c)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-1b-stakes4-perm0",
+   "construction": "1b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_a)",
+    "move(hall)",
+    "move(office_b)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(office_c)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-1c-stakes1-perm0",
+   "construction": "1c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(room_12)",
+   "best_card_compiled": "drop(room_12)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(room_12)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-1c-stakes4-perm0",
+   "construction": "1c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(room_12)",
+   "best_card_compiled": "drop(room_12)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(room_12)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-2a-stakes1-perm0",
+   "construction": "2a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(grace)",
+   "best_card_compiled": "give(grace)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(grace)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-2a-stakes4-perm0",
+   "construction": "2a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(grace)",
+   "best_card_compiled": "give(grace)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(grace)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-2b-stakes1-perm0",
+   "construction": "2b",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_12)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(room_19)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-2b-stakes4-perm0",
+   "construction": "2b",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_12)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(room_19)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-2c-stakes1-perm0",
+   "construction": "2c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(erin)",
+   "best_card_compiled": "give(erin)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(erin)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-2c-stakes4-perm0",
+   "construction": "2c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(erin)",
+   "best_card_compiled": "give(erin)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(erin)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-3a-stakes1-perm0",
+   "construction": "3a",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(sara)",
+   "best_card_compiled": "give(sara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(sara)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-3a-stakes4-perm0",
+   "construction": "3a",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(sara)",
+   "best_card_compiled": "give(sara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(sara)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-3b-stakes1-perm0",
+   "construction": "3b",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(tomas,meeting_room)",
+   "best_card_compiled": "ask(tomas,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(tomas,meeting_room)",
+    "move(hall)",
+    "move(suite_3)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-3b-stakes4-perm0",
+   "construction": "3b",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(tomas,meeting_room)",
+   "best_card_compiled": "ask(tomas,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(tomas,meeting_room)",
+    "move(hall)",
+    "move(suite_3)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-3c-stakes1-perm0",
+   "construction": "3c",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(vik)",
+   "best_card_compiled": "give(vik)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(vik)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-3c-stakes4-perm0",
+   "construction": "3c",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(vik)",
+   "best_card_compiled": "give(vik)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(vik)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-4a-stakes1-perm0",
+   "construction": "4a",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.875,
+   "v_card_compiled": 0.875,
+   "best_instance": "drop(room_7)",
+   "best_card_compiled": "drop(room_7)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(room_7)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-4a-stakes4-perm0",
+   "construction": "4a",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8425,
+   "v_card_compiled": 0.8425,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_7)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-4b-stakes1-perm0",
+   "construction": "4b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8680064309,
+   "v_card_compiled": 0.8680064309,
+   "best_instance": "drop(office_c)",
+   "best_card_compiled": "drop(office_c)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(office_c)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-4b-stakes4-perm0",
+   "construction": "4b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8435691318,
+   "v_card_compiled": 0.8435691318,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_c)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-4c-stakes1-perm0",
+   "construction": "4c",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.86,
+   "v_card_compiled": 0.86,
+   "best_instance": "drop(lab_south)",
+   "best_card_compiled": "drop(lab_south)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(lab_south)"
+   ]
+  },
+  {
+   "state_id": "s20261400-dev-v3-4c-stakes4-perm0",
+   "construction": "4c",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.841,
+   "v_card_compiled": 0.841,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(lab_south)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-1a-stakes1-perm0",
+   "construction": "1a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(lab_west)",
+   "best_card_compiled": "drop(lab_west)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(lab_west)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-1a-stakes4-perm0",
+   "construction": "1a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(lab_west)",
+   "best_card_compiled": "drop(lab_west)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(lab_west)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-1b-stakes1-perm0",
+   "construction": "1b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(desk_14)",
+    "move(hall)",
+    "move(desk_3)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-1b-stakes4-perm0",
+   "construction": "1b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(desk_14)",
+    "move(hall)",
+    "move(desk_3)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-1c-stakes1-perm0",
+   "construction": "1c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(room_7)",
+   "best_card_compiled": "drop(room_7)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(room_7)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-1c-stakes4-perm0",
+   "construction": "1c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(room_7)",
+   "best_card_compiled": "drop(room_7)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(room_7)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-2a-stakes1-perm0",
+   "construction": "2a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(nadia)",
+   "best_card_compiled": "give(nadia)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(nadia)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-2a-stakes4-perm0",
+   "construction": "2a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(nadia)",
+   "best_card_compiled": "give(nadia)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(nadia)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-2b-stakes1-perm0",
+   "construction": "2b",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_2)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(suite_3)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-2b-stakes4-perm0",
+   "construction": "2b",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_2)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(suite_3)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-2c-stakes1-perm0",
+   "construction": "2c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(heidi)",
+   "best_card_compiled": "give(heidi)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(heidi)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-2c-stakes4-perm0",
+   "construction": "2c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(heidi)",
+   "best_card_compiled": "give(heidi)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(heidi)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-3a-stakes1-perm0",
+   "construction": "3a",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(sara)",
+   "best_card_compiled": "give(sara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(sara)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-3a-stakes4-perm0",
+   "construction": "3a",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(sara)",
+   "best_card_compiled": "give(sara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(sara)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-3b-stakes1-perm0",
+   "construction": "3b",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(omar,meeting_room)",
+   "best_card_compiled": "ask(omar,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(omar,meeting_room)",
+    "move(hall)",
+    "move(desk_14)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-3b-stakes4-perm0",
+   "construction": "3b",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(omar,meeting_room)",
+   "best_card_compiled": "ask(omar,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(omar,meeting_room)",
+    "move(hall)",
+    "move(desk_14)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-3c-stakes1-perm0",
+   "construction": "3c",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(judy)",
+   "best_card_compiled": "give(judy)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(judy)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-3c-stakes4-perm0",
+   "construction": "3c",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(judy)",
+   "best_card_compiled": "give(judy)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(judy)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-4a-stakes1-perm0",
+   "construction": "4a",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.875,
+   "v_card_compiled": 0.875,
+   "best_instance": "drop(room_12)",
+   "best_card_compiled": "drop(room_12)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(room_12)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-4a-stakes4-perm0",
+   "construction": "4a",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8425,
+   "v_card_compiled": 0.8425,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_12)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-4b-stakes1-perm0",
+   "construction": "4b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8626213592,
+   "v_card_compiled": 0.8626213592,
+   "best_instance": "drop(lab_north)",
+   "best_card_compiled": "drop(lab_north)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(lab_north)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-4b-stakes4-perm0",
+   "construction": "4b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8427184466,
+   "v_card_compiled": 0.8427184466,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(lab_north)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-4c-stakes1-perm0",
+   "construction": "4c",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.86,
+   "v_card_compiled": 0.86,
+   "best_instance": "drop(desk_9)",
+   "best_card_compiled": "drop(desk_9)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_9)"
+   ]
+  },
+  {
+   "state_id": "s20261401-dev-v3-4c-stakes4-perm0",
+   "construction": "4c",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.841,
+   "v_card_compiled": 0.841,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(desk_9)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-1a-stakes1-perm0",
+   "construction": "1a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(suite_2)",
+   "best_card_compiled": "drop(suite_2)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_2)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-1a-stakes4-perm0",
+   "construction": "1a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(suite_2)",
+   "best_card_compiled": "drop(suite_2)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_2)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-1b-stakes1-perm0",
+   "construction": "1b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(desk_14)",
+    "move(hall)",
+    "move(desk_3)",
+    "move(hall)",
+    "move(desk_9)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-1b-stakes4-perm0",
+   "construction": "1b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(desk_14)",
+    "move(hall)",
+    "move(desk_3)",
+    "move(hall)",
+    "move(desk_9)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-1c-stakes1-perm0",
+   "construction": "1c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(suite_3)",
+   "best_card_compiled": "drop(suite_3)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_3)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-1c-stakes4-perm0",
+   "construction": "1c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(suite_3)",
+   "best_card_compiled": "drop(suite_3)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_3)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-2a-stakes1-perm0",
+   "construction": "2a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(ravi)",
+   "best_card_compiled": "give(ravi)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(ravi)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-2a-stakes4-perm0",
+   "construction": "2a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(ravi)",
+   "best_card_compiled": "give(ravi)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(ravi)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-2b-stakes1-perm0",
+   "construction": "2b",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(desk_14)",
+    "move(hall)",
+    "move(desk_3)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-2b-stakes4-perm0",
+   "construction": "2b",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(desk_14)",
+    "move(hall)",
+    "move(desk_3)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-2c-stakes1-perm0",
+   "construction": "2c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(alice)",
+   "best_card_compiled": "give(alice)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(alice)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-2c-stakes4-perm0",
+   "construction": "2c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(alice)",
+   "best_card_compiled": "give(alice)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(alice)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-3a-stakes1-perm0",
+   "construction": "3a",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(leo)",
+   "best_card_compiled": "give(leo)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(leo)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-3a-stakes4-perm0",
+   "construction": "3a",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(leo)",
+   "best_card_compiled": "give(leo)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(leo)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-3b-stakes1-perm0",
+   "construction": "3b",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(judy,meeting_room)",
+   "best_card_compiled": "ask(judy,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(judy,meeting_room)",
+    "move(hall)",
+    "move(suite_1)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-3b-stakes4-perm0",
+   "construction": "3b",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(judy,meeting_room)",
+   "best_card_compiled": "ask(judy,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(judy,meeting_room)",
+    "move(hall)",
+    "move(suite_1)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-3c-stakes1-perm0",
+   "construction": "3c",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(yara)",
+   "best_card_compiled": "give(yara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(yara)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-3c-stakes4-perm0",
+   "construction": "3c",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(yara)",
+   "best_card_compiled": "give(yara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(yara)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-4a-stakes1-perm0",
+   "construction": "4a",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.86,
+   "v_card_compiled": 0.86,
+   "best_instance": "drop(office_c)",
+   "best_card_compiled": "drop(office_c)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(office_c)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-4a-stakes4-perm0",
+   "construction": "4a",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.841,
+   "v_card_compiled": 0.841,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_c)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-4b-stakes1-perm0",
+   "construction": "4b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8626213592,
+   "v_card_compiled": 0.8626213592,
+   "best_instance": "drop(lab_north)",
+   "best_card_compiled": "drop(lab_north)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(lab_north)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-4b-stakes4-perm0",
+   "construction": "4b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8427184466,
+   "v_card_compiled": 0.8427184466,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(lab_north)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-4c-stakes1-perm0",
+   "construction": "4c",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.86,
+   "v_card_compiled": 0.86,
+   "best_instance": "drop(desk_14)",
+   "best_card_compiled": "drop(desk_14)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_14)"
+   ]
+  },
+  {
+   "state_id": "s20261402-dev-v3-4c-stakes4-perm0",
+   "construction": "4c",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.841,
+   "v_card_compiled": 0.841,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(desk_14)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-1a-stakes1-perm0",
+   "construction": "1a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(desk_9)",
+   "best_card_compiled": "drop(desk_9)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_9)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-1a-stakes4-perm0",
+   "construction": "1a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(desk_9)",
+   "best_card_compiled": "drop(desk_9)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_9)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-1b-stakes1-perm0",
+   "construction": "1b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_a)",
+    "move(hall)",
+    "move(office_b)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-1b-stakes4-perm0",
+   "construction": "1b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_a)",
+    "move(hall)",
+    "move(office_b)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-1c-stakes1-perm0",
+   "construction": "1c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(desk_9)",
+   "best_card_compiled": "drop(desk_9)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_9)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-1c-stakes4-perm0",
+   "construction": "1c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(desk_9)",
+   "best_card_compiled": "drop(desk_9)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_9)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-2a-stakes1-perm0",
+   "construction": "2a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(heidi)",
+   "best_card_compiled": "give(heidi)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(heidi)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-2a-stakes4-perm0",
+   "construction": "2a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(heidi)",
+   "best_card_compiled": "give(heidi)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(heidi)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-2b-stakes1-perm0",
+   "construction": "2b",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_1)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(suite_2)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-2b-stakes4-perm0",
+   "construction": "2b",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_1)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(suite_2)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-2c-stakes1-perm0",
+   "construction": "2c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(vik)",
+   "best_card_compiled": "give(vik)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(vik)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-2c-stakes4-perm0",
+   "construction": "2c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(vik)",
+   "best_card_compiled": "give(vik)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(vik)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-3a-stakes1-perm0",
+   "construction": "3a",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(uma)",
+   "best_card_compiled": "give(uma)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(uma)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-3a-stakes4-perm0",
+   "construction": "3a",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(uma)",
+   "best_card_compiled": "give(uma)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(uma)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-3b-stakes1-perm0",
+   "construction": "3b",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(dave,meeting_room)",
+   "best_card_compiled": "ask(dave,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(dave,meeting_room)",
+    "move(hall)",
+    "move(lab_south)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-3b-stakes4-perm0",
+   "construction": "3b",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(dave,meeting_room)",
+   "best_card_compiled": "ask(dave,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(dave,meeting_room)",
+    "move(hall)",
+    "move(lab_south)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-3c-stakes1-perm0",
+   "construction": "3c",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(yara)",
+   "best_card_compiled": "give(yara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(yara)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-3c-stakes4-perm0",
+   "construction": "3c",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(yara)",
+   "best_card_compiled": "give(yara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(yara)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-4a-stakes1-perm0",
+   "construction": "4a",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.86,
+   "v_card_compiled": 0.86,
+   "best_instance": "drop(suite_1)",
+   "best_card_compiled": "drop(suite_1)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_1)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-4a-stakes4-perm0",
+   "construction": "4a",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.841,
+   "v_card_compiled": 0.841,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_1)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-4b-stakes1-perm0",
+   "construction": "4b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8626213592,
+   "v_card_compiled": 0.8626213592,
+   "best_instance": "drop(lab_west)",
+   "best_card_compiled": "drop(lab_west)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(lab_west)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-4b-stakes4-perm0",
+   "construction": "4b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8427184466,
+   "v_card_compiled": 0.8427184466,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(lab_west)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-4c-stakes1-perm0",
+   "construction": "4c",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.86,
+   "v_card_compiled": 0.86,
+   "best_instance": "drop(desk_14)",
+   "best_card_compiled": "drop(desk_14)",
+   "planner_return_instance_model": -0.55,
+   "planner_return_card_compiled": -0.55,
+   "planner_actions_card_compiled": [
+    "drop(desk_14)"
+   ]
+  },
+  {
+   "state_id": "s20261403-dev-v3-4c-stakes4-perm0",
+   "construction": "4c",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.841,
+   "v_card_compiled": 0.841,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(desk_14)",
+    "move(hall)",
+    "move(desk_3)",
+    "move(hall)",
+    "move(desk_9)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-1a-stakes1-perm0",
+   "construction": "1a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(office_a)",
+   "best_card_compiled": "drop(office_a)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(office_a)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-1a-stakes4-perm0",
+   "construction": "1a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(office_a)",
+   "best_card_compiled": "drop(office_a)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(office_a)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-1b-stakes1-perm0",
+   "construction": "1b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_1)",
+    "move(hall)",
+    "move(suite_2)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(suite_3)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-1b-stakes4-perm0",
+   "construction": "1b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_1)",
+    "move(hall)",
+    "move(suite_2)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(suite_3)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-1c-stakes1-perm0",
+   "construction": "1c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(lab_west)",
+   "best_card_compiled": "drop(lab_west)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(lab_west)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-1c-stakes4-perm0",
+   "construction": "1c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(lab_west)",
+   "best_card_compiled": "drop(lab_west)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(lab_west)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-2a-stakes1-perm0",
+   "construction": "2a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(ivan)",
+   "best_card_compiled": "give(ivan)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(ivan)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-2a-stakes4-perm0",
+   "construction": "2a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(ivan)",
+   "best_card_compiled": "give(ivan)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(ivan)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-2b-stakes1-perm0",
+   "construction": "2b",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_a)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(office_b)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-2b-stakes4-perm0",
+   "construction": "2b",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_a)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(office_b)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-2c-stakes1-perm0",
+   "construction": "2c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(uma)",
+   "best_card_compiled": "give(uma)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(uma)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-2c-stakes4-perm0",
+   "construction": "2c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(uma)",
+   "best_card_compiled": "give(uma)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(uma)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-3a-stakes1-perm0",
+   "construction": "3a",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(bob)",
+   "best_card_compiled": "give(bob)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(bob)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-3a-stakes4-perm0",
+   "construction": "3a",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(bob)",
+   "best_card_compiled": "give(bob)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(bob)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-3b-stakes1-perm0",
+   "construction": "3b",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(alice,meeting_room)",
+   "best_card_compiled": "ask(alice,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(alice,meeting_room)",
+    "move(hall)",
+    "move(desk_14)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-3b-stakes4-perm0",
+   "construction": "3b",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(alice,meeting_room)",
+   "best_card_compiled": "ask(alice,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(alice,meeting_room)",
+    "move(hall)",
+    "move(desk_14)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-3c-stakes1-perm0",
+   "construction": "3c",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(quinn)",
+   "best_card_compiled": "give(quinn)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(quinn)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-3c-stakes4-perm0",
+   "construction": "3c",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(quinn)",
+   "best_card_compiled": "give(quinn)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(quinn)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-4a-stakes1-perm0",
+   "construction": "4a",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.875,
+   "v_card_compiled": 0.875,
+   "best_instance": "drop(desk_14)",
+   "best_card_compiled": "drop(desk_14)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_14)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-4a-stakes4-perm0",
+   "construction": "4a",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8425,
+   "v_card_compiled": 0.8425,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(desk_14)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-4b-stakes1-perm0",
+   "construction": "4b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8680064309,
+   "v_card_compiled": 0.8680064309,
+   "best_instance": "drop(office_a)",
+   "best_card_compiled": "drop(office_a)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(office_a)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-4b-stakes4-perm0",
+   "construction": "4b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8435691318,
+   "v_card_compiled": 0.8435691318,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_a)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-4c-stakes1-perm0",
+   "construction": "4c",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.875,
+   "v_card_compiled": 0.875,
+   "best_instance": "drop(room_12)",
+   "best_card_compiled": "drop(room_12)",
+   "planner_return_instance_model": -0.55,
+   "planner_return_card_compiled": -0.55,
+   "planner_actions_card_compiled": [
+    "drop(room_12)"
+   ]
+  },
+  {
+   "state_id": "s20261404-dev-v3-4c-stakes4-perm0",
+   "construction": "4c",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8425,
+   "v_card_compiled": 0.8425,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_12)",
+    "move(hall)",
+    "move(room_19)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(room_7)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-1a-stakes1-perm0",
+   "construction": "1a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(office_b)",
+   "best_card_compiled": "drop(office_b)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(office_b)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-1a-stakes4-perm0",
+   "construction": "1a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(office_b)",
+   "best_card_compiled": "drop(office_b)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(office_b)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-1b-stakes1-perm0",
+   "construction": "1b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_1)",
+    "move(hall)",
+    "move(suite_2)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(suite_3)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-1b-stakes4-perm0",
+   "construction": "1b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_1)",
+    "move(hall)",
+    "move(suite_2)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(suite_3)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-1c-stakes1-perm0",
+   "construction": "1c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(desk_14)",
+   "best_card_compiled": "drop(desk_14)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_14)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-1c-stakes4-perm0",
+   "construction": "1c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(desk_14)",
+   "best_card_compiled": "drop(desk_14)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_14)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-2a-stakes1-perm0",
+   "construction": "2a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(alice)",
+   "best_card_compiled": "give(alice)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(alice)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-2a-stakes4-perm0",
+   "construction": "2a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(alice)",
+   "best_card_compiled": "give(alice)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(alice)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-2b-stakes1-perm0",
+   "construction": "2b",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(lab_north)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-2b-stakes4-perm0",
+   "construction": "2b",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(lab_north)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-2c-stakes1-perm0",
+   "construction": "2c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(kim)",
+   "best_card_compiled": "give(kim)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(kim)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-2c-stakes4-perm0",
+   "construction": "2c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(kim)",
+   "best_card_compiled": "give(kim)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(kim)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-3a-stakes1-perm0",
+   "construction": "3a",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(wen)",
+   "best_card_compiled": "give(wen)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(wen)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-3a-stakes4-perm0",
+   "construction": "3a",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(wen)",
+   "best_card_compiled": "give(wen)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(wen)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-3b-stakes1-perm0",
+   "construction": "3b",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(vik,meeting_room)",
+   "best_card_compiled": "ask(vik,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(vik,meeting_room)",
+    "move(hall)",
+    "move(lab_north)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-3b-stakes4-perm0",
+   "construction": "3b",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(vik,meeting_room)",
+   "best_card_compiled": "ask(vik,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(vik,meeting_room)",
+    "move(hall)",
+    "move(lab_north)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-3c-stakes1-perm0",
+   "construction": "3c",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(yara)",
+   "best_card_compiled": "give(yara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(yara)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-3c-stakes4-perm0",
+   "construction": "3c",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(yara)",
+   "best_card_compiled": "give(yara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(yara)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-4a-stakes1-perm0",
+   "construction": "4a",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.875,
+   "v_card_compiled": 0.875,
+   "best_instance": "drop(suite_1)",
+   "best_card_compiled": "drop(suite_1)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_1)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-4a-stakes4-perm0",
+   "construction": "4a",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8425,
+   "v_card_compiled": 0.8425,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_1)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-4b-stakes1-perm0",
+   "construction": "4b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8680064309,
+   "v_card_compiled": 0.8680064309,
+   "best_instance": "drop(lab_west)",
+   "best_card_compiled": "drop(lab_west)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(lab_west)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-4b-stakes4-perm0",
+   "construction": "4b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8435691318,
+   "v_card_compiled": 0.8435691318,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(lab_west)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-4c-stakes1-perm0",
+   "construction": "4c",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.875,
+   "v_card_compiled": 0.875,
+   "best_instance": "drop(suite_2)",
+   "best_card_compiled": "drop(suite_2)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_2)"
+   ]
+  },
+  {
+   "state_id": "s20261405-dev-v3-4c-stakes4-perm0",
+   "construction": "4c",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8425,
+   "v_card_compiled": 0.8425,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_2)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-1a-stakes1-perm0",
+   "construction": "1a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(lab_west)",
+   "best_card_compiled": "drop(lab_west)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(lab_west)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-1a-stakes4-perm0",
+   "construction": "1a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(lab_west)",
+   "best_card_compiled": "drop(lab_west)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(lab_west)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-1b-stakes1-perm0",
+   "construction": "1b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_12)",
+    "move(hall)",
+    "move(room_19)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(room_7)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-1b-stakes4-perm0",
+   "construction": "1b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.65,
+   "planner_return_card_compiled": 0.65,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_12)",
+    "move(hall)",
+    "move(room_19)",
+    "move(hall)",
+    "move(lobby)",
+    "drop(room_7)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-1c-stakes1-perm0",
+   "construction": "1c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(room_19)",
+   "best_card_compiled": "drop(room_19)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(room_19)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-1c-stakes4-perm0",
+   "construction": "1c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(room_19)",
+   "best_card_compiled": "drop(room_19)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(room_19)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-2a-stakes1-perm0",
+   "construction": "2a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(bob)",
+   "best_card_compiled": "give(bob)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(bob)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-2a-stakes4-perm0",
+   "construction": "2a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(bob)",
+   "best_card_compiled": "give(bob)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(bob)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-2b-stakes1-perm0",
+   "construction": "2b",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_19)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-2b-stakes4-perm0",
+   "construction": "2b",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_19)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-2c-stakes1-perm0",
+   "construction": "2c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(nadia)",
+   "best_card_compiled": "give(nadia)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(nadia)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-2c-stakes4-perm0",
+   "construction": "2c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(nadia)",
+   "best_card_compiled": "give(nadia)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(nadia)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-3a-stakes1-perm0",
+   "construction": "3a",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(ivan)",
+   "best_card_compiled": "give(ivan)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(ivan)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-3a-stakes4-perm0",
+   "construction": "3a",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(ivan)",
+   "best_card_compiled": "give(ivan)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(ivan)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-3b-stakes1-perm0",
+   "construction": "3b",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(judy,meeting_room)",
+   "best_card_compiled": "ask(judy,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(judy,meeting_room)",
+    "move(hall)",
+    "move(desk_14)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-3b-stakes4-perm0",
+   "construction": "3b",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(judy,meeting_room)",
+   "best_card_compiled": "ask(judy,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(judy,meeting_room)",
+    "move(hall)",
+    "move(desk_14)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-3c-stakes1-perm0",
+   "construction": "3c",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(tomas)",
+   "best_card_compiled": "give(tomas)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(tomas)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-3c-stakes4-perm0",
+   "construction": "3c",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(tomas)",
+   "best_card_compiled": "give(tomas)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(tomas)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-4a-stakes1-perm0",
+   "construction": "4a",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.875,
+   "v_card_compiled": 0.875,
+   "best_instance": "drop(office_b)",
+   "best_card_compiled": "drop(office_b)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(office_b)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-4a-stakes4-perm0",
+   "construction": "4a",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8425,
+   "v_card_compiled": 0.8425,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_b)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-4b-stakes1-perm0",
+   "construction": "4b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8680064309,
+   "v_card_compiled": 0.8680064309,
+   "best_instance": "drop(desk_3)",
+   "best_card_compiled": "drop(desk_3)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_3)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-4b-stakes4-perm0",
+   "construction": "4b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8435691318,
+   "v_card_compiled": 0.8435691318,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(desk_3)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-4c-stakes1-perm0",
+   "construction": "4c",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.875,
+   "v_card_compiled": 0.875,
+   "best_instance": "drop(suite_2)",
+   "best_card_compiled": "drop(suite_2)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_2)"
+   ]
+  },
+  {
+   "state_id": "s20261406-dev-v3-4c-stakes4-perm0",
+   "construction": "4c",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8425,
+   "v_card_compiled": 0.8425,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(suite_2)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-1a-stakes1-perm0",
+   "construction": "1a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(suite_2)",
+   "best_card_compiled": "drop(suite_2)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_2)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-1a-stakes4-perm0",
+   "construction": "1a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(suite_2)",
+   "best_card_compiled": "drop(suite_2)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(suite_2)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-1b-stakes1-perm0",
+   "construction": "1b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_12)",
+    "move(hall)",
+    "move(room_19)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-1b-stakes4-perm0",
+   "construction": "1b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "1b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.75,
+   "v_card_compiled": 0.75,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.75,
+   "planner_return_card_compiled": 0.75,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_12)",
+    "move(hall)",
+    "move(room_19)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-1c-stakes1-perm0",
+   "construction": "1c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(desk_3)",
+   "best_card_compiled": "drop(desk_3)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_3)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-1c-stakes4-perm0",
+   "construction": "1c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "1a",
+    "1c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "drop(desk_3)",
+   "best_card_compiled": "drop(desk_3)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(desk_3)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-2a-stakes1-perm0",
+   "construction": "2a",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(zane)",
+   "best_card_compiled": "give(zane)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(zane)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-2a-stakes4-perm0",
+   "construction": "2a",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(zane)",
+   "best_card_compiled": "give(zane)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(zane)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-2b-stakes1-perm0",
+   "construction": "2b",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_b)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-2b-stakes4-perm0",
+   "construction": "2b",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_b)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-2c-stakes1-perm0",
+   "construction": "2c",
+   "stakes": 1.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(yara)",
+   "best_card_compiled": "give(yara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(yara)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-2c-stakes4-perm0",
+   "construction": "2c",
+   "stakes": 4.0,
+   "card_class_size": 2,
+   "card_class_constructions": [
+    "2c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(yara)",
+   "best_card_compiled": "give(yara)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(yara)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-3a-stakes1-perm0",
+   "construction": "3a",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(nadia)",
+   "best_card_compiled": "give(nadia)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(nadia)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-3a-stakes4-perm0",
+   "construction": "3a",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(nadia)",
+   "best_card_compiled": "give(nadia)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(nadia)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-3b-stakes1-perm0",
+   "construction": "3b",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(pia,meeting_room)",
+   "best_card_compiled": "ask(pia,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(pia,meeting_room)",
+    "move(hall)",
+    "move(room_12)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-3b-stakes4-perm0",
+   "construction": "3b",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8,
+   "v_card_compiled": 0.8,
+   "best_instance": "ask(pia,meeting_room)",
+   "best_card_compiled": "ask(pia,meeting_room)",
+   "planner_return_instance_model": 0.8,
+   "planner_return_card_compiled": 0.8,
+   "planner_actions_card_compiled": [
+    "ask(pia,meeting_room)",
+    "move(hall)",
+    "move(room_12)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-3c-stakes1-perm0",
+   "construction": "3c",
+   "stakes": 1.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(ivan)",
+   "best_card_compiled": "give(ivan)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(ivan)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-3c-stakes4-perm0",
+   "construction": "3c",
+   "stakes": 4.0,
+   "card_class_size": 3,
+   "card_class_constructions": [
+    "3a",
+    "3b",
+    "3c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.95,
+   "v_card_compiled": 0.95,
+   "best_instance": "give(ivan)",
+   "best_card_compiled": "give(ivan)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "give(ivan)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-4a-stakes1-perm0",
+   "construction": "4a",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.86,
+   "v_card_compiled": 0.86,
+   "best_instance": "drop(office_c)",
+   "best_card_compiled": "drop(office_c)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(office_c)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-4a-stakes4-perm0",
+   "construction": "4a",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4a"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.841,
+   "v_card_compiled": 0.841,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(office_c)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-4b-stakes1-perm0",
+   "construction": "4b",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8680064309,
+   "v_card_compiled": 0.8680064309,
+   "best_instance": "drop(room_12)",
+   "best_card_compiled": "drop(room_12)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(room_12)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-4b-stakes4-perm0",
+   "construction": "4b",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4b"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8435691318,
+   "v_card_compiled": 0.8435691318,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_12)",
+    "deliver()"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-4c-stakes1-perm0",
+   "construction": "4c",
+   "stakes": 1.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.875,
+   "v_card_compiled": 0.875,
+   "best_instance": "drop(room_12)",
+   "best_card_compiled": "drop(room_12)",
+   "planner_return_instance_model": 0.95,
+   "planner_return_card_compiled": 0.95,
+   "planner_actions_card_compiled": [
+    "drop(room_12)"
+   ]
+  },
+  {
+   "state_id": "s20261407-dev-v3-4c-stakes4-perm0",
+   "construction": "4c",
+   "stakes": 4.0,
+   "card_class_size": 1,
+   "card_class_constructions": [
+    "4c"
+   ],
+   "patterns_consistent_t0": 1,
+   "v_instance": 0.8425,
+   "v_card_compiled": 0.8425,
+   "best_instance": "move(hall)",
+   "best_card_compiled": "move(hall)",
+   "planner_return_instance_model": 0.85,
+   "planner_return_card_compiled": 0.85,
+   "planner_actions_card_compiled": [
+    "move(hall)",
+    "move(room_12)",
+    "deliver()"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,400 @@
+{
+ "why_selected": "checker vetoed a commitment; the episode then timed out",
+ "state_id": "s20261400-dev-v3-2b-stakes1-perm0",
+ "condition": "checker_gate",
+ "draw": 0,
+ "deployed": {
+  "agent_view": {
+   "brief": "Deliver the package to Quinn.",
+   "steps": [
+    {
+     "action": null,
+     "obs": {
+      "t": 0,
+      "room": "lobby",
+      "people_present": [
+       "sara"
+      ],
+      "utterances": [],
+      "outcome": "",
+      "reward": 0.0,
+      "done": false,
+      "notices": [
+       [
+        "announce",
+        "quinn",
+        "quinn announces to everyone present: \"quinn_loc = room_7\"",
+        [
+         "ravi",
+         "sara"
+        ]
+       ],
+       [
+        "leave",
+        "quinn",
+        "quinn leaves the lobby",
+        [
+         "ravi",
+         "sara"
+        ]
+       ],
+       [
+        "arrive",
+        "quinn",
+        "quinn arrives in the lobby",
+        [
+         "ravi",
+         "sara"
+        ]
+       ],
+       [
+        "quiet",
+        "quinn",
+        "quinn talks quietly to ravi; only ravi can hear it, and the robot cannot hear what is said",
+        [
+         "sara"
+        ]
+       ],
+       [
+        "leave",
+        "quinn",
+        "quinn leaves the lobby",
+        [
+         "ravi",
+         "sara"
+        ]
+       ],
+       [
+        "leave",
+        "ravi",
+        "ravi leaves the lobby and the building",
+        [
+         "sara"
+        ]
+       ]
+      ]
+     }
+    },
+    {
+     "action": "ask(sara,quinn_loc)",
+     "obs": {
+      "t": 1,
+      "room": "lobby",
+      "people_present": [
+       "sara"
+      ],
+      "utterances": [
+       [
+        "sara",
+        "quinn_loc = room_7"
+       ]
+      ],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "wait()",
+     "obs": {
+      "t": 2,
+      "room": "lobby",
+      "people_present": [
+       "sara"
+      ],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(hall)",
+     "obs": {
+      "t": 3,
+      "room": "hall",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(room_12)",
+     "obs": {
+      "t": 4,
+      "room": "room_12",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(hall)",
+     "obs": {
+      "t": 5,
+      "room": "hall",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(room_12)",
+     "obs": {
+      "t": 6,
+      "room": "room_12",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(hall)",
+     "obs": {
+      "t": 7,
+      "room": "hall",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(lobby)",
+     "obs": {
+      "t": 8,
+      "room": "lobby",
+      "people_present": [
+       "sara"
+      ],
+      "utterances": [],
+      "outcome": "timeout",
+      "reward": -0.05,
+      "done": true
+     }
+    }
+   ]
+  },
+  "steps": [
+   {
+    "t": 0,
+    "proposal": "ask(sara,quinn_loc)",
+    "policy_ok": true,
+    "executed": "ask(sara,quinn_loc)"
+   },
+   {
+    "t": 1,
+    "proposal": "wait()",
+    "policy_ok": true,
+    "executed": "wait()"
+   },
+   {
+    "t": 2,
+    "proposal": "drop(room_12)",
+    "policy_ok": true,
+    "check": {
+     "p": 0.5,
+     "J": 0.2,
+     "V_alt": 0.8,
+     "allow": false
+    },
+    "veto": true,
+    "redecision": "move(hall)",
+    "executed": "move(hall)"
+   },
+   {
+    "t": 3,
+    "proposal": "move(room_12)",
+    "policy_ok": true,
+    "executed": "move(room_12)"
+   },
+   {
+    "t": 4,
+    "proposal": "move(hall)",
+    "policy_ok": true,
+    "executed": "move(hall)"
+   },
+   {
+    "t": 5,
+    "proposal": "move(room_12)",
+    "policy_ok": true,
+    "executed": "move(room_12)"
+   },
+   {
+    "t": 6,
+    "proposal": "move(hall)",
+    "policy_ok": true,
+    "executed": "move(hall)"
+   },
+   {
+    "t": 7,
+    "proposal": "move(lobby)",
+    "policy_ok": true,
+    "executed": "move(lobby)"
+   }
+  ],
+  "actions": [
+   "ask(sara,quinn_loc)",
+   "wait()",
+   "move(hall)",
+   "move(room_12)",
+   "move(hall)",
+   "move(room_12)",
+   "move(hall)",
+   "move(lobby)"
+  ],
+  "outcome": "timeout",
+  "return": -0.4,
+  "usage": {
+   "decision": {
+    "calls": 8,
+    "attempts": 8,
+    "attempts_failed": 0,
+    "fallbacks": 0,
+    "prompt_tokens": 12174,
+    "completion_tokens": 2129,
+    "reasoning_tokens": 1956,
+    "reasoning_known": true,
+    "latency_s": 15.220673439999985
+   },
+   "redecision": {
+    "calls": 1,
+    "attempts": 1,
+    "attempts_failed": 0,
+    "fallbacks": 0,
+    "prompt_tokens": 1566,
+    "completion_tokens": 429,
+    "reasoning_tokens": 408,
+    "reasoning_known": true,
+    "latency_s": 3.0758580479999864
+   }
+  },
+  "calls": [
+   {
+    "kind": "decision",
+    "step": 0,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "ask(sara,quinn_loc)"
+    },
+    "final_text": "{\"action\":\"ask(sara,quinn_loc)\"}",
+    "final_reasoning": "We want deliver to Quinn. We don't know location. better ask sara quinn_loc. So choose ask(sara,quinn_loc)."
+   },
+   {
+    "kind": "decision",
+    "step": 1,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "wait()"
+    },
+    "final_text": "{\"action\":\"wait()\"}",
+    "final_reasoning": "We know quinn moved to another office after lobby pass. We don't know which. We asked sara; she says room_7. She may not know. Might be false. But can use give to ravi or sara to forward. But need without penalty. Since we don't know, best is to ask again? Actually we can ask quinn? Not here. Maybe deliver? Can't. We can drop via chute maybe guess? Risk -0.5. Better ask again? But we already asked. Could use give to sara; she forwards where she believes quinn is, which is room_7. Same risk. We could move to hall to get to quinn? But we don't know location. But we can wait and hope quinn appears? But random. We could ask quinn if in hall? but not present. We can do none. We might wait. But we need step to not lose. I choose wait."
+   },
+   {
+    "kind": "decision",
+    "step": 2,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "drop(room_12)"
+    },
+    "final_text": "{\"action\":\"drop(room_12)\"}",
+    "final_reasoning": "We need delivery to Quinn. We are in lobby. We know Sara says quinn_loc=room_7. That might be correct or not. But from PM6, the two other offices: after first office room7, quinn moved to one of other two: room19 or room12. So quinn loc is either 19 or 12. Therefore Sara's statement is likely false. But we can't be sure. We could drop in the right room via drop? But drop sends to chute that goes to specified room. If wrong, -0.5. So risky. Could ask quinn? but not present. We could move to hall then to target door? But we need to deliver to quinn physically: deliver() only if in same room. We could move through hall to room19 or 12. But we don't know which. The safest is to give(sara) to forward. Sara will forward to the office she believes quinn is. She believes room7. So she'll forward to room7, which is wrong (unless quinn happened to stay there). That would cause wrong delivery? If final recipient is not in room7, wrong. But if quinn stayed in room7? According to PM6, quinn moved to other office, so cannot stay. So give(sara) leads to wrong delivery.\n\nWe could ask (sara,quinn_loc) again? She said room7; same info. Could we ask quinn? not present. We could move to hall then maybe small chance to ask in hall if quinn present? But not.\n\nThus best action: drop(room_19) or drop(room_12). Which more probable? quinn's two other offices equally likely. So 0.5 each. No info to pick. So we have 50% chance correct: reward +1, else -0.5. So expected reward: 0.5*(1-0.05*steps?) but steps: dropping counts as step; we are step 2; likely 8 steps max. Considering risk maybe best to move to hall then wait? But no improvement.\n\nThus we must choose drop(room_19) or drop(room_12). We pick one arbitrarily. I'll choose drop(room_12)."
+   },
+   {
+    "kind": "redecision",
+    "step": 2,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(hall)"
+    },
+    "final_text": "{\"action\":\"move(hall)\"}",
+    "final_reasoning": "We can ask again? Already asked and got answer. We can give to sara. Sara will forward to where she thinks quinn is: she believes room_7. But quinn may not be. Better to move to hall then ask at potential location. But we could move to hall and then ask? But no person there. Actually hall contains no one present. We can move to hall then ask? But you need person there. So maybe go to hall, then to room_19 or 12 or 7. Need to guess. Use probabilities: initial 1/3 each, then moves to one of other two; so probability room_7 was initial; then moved to either of the other two. If initial room_7 then probability final two rooms: 12 or 19 each 0.5. If initial other, final could be any of the two remaining. Compute marginal: probability quinn in room_12? Cases: initial 7 -> 0.5 to 12 ; initial 12 -> then either 7 or 19 ; probability in 12? 0 if initial 12 moved; initial 19 -> either 7 or12 so 0.5. So P(room12)=0.3333*0.5 +0.3333*0 +0.3333*0.5=0.1667+0+0.1667=0.3333. Similarly room19=0.3333. room7: initial 7 leads to staying at 7? Wait: after leaving lobby, quinn moved to one of the two other offices; \"quinn stays in the new office.\" So if initial 7, moved to either 12 or 19. So quinn is not in 7. So P(room7)=0. So best is room12 or19 equal. choose one, say room_12. So walk: move(hall) then move(room_12) and ask. Let's do that."
+   },
+   {
+    "kind": "decision",
+    "step": 3,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(room_12)"
+    },
+    "final_text": "{\"action\":\"move(room_12)\"}",
+    "final_reasoning": "We need deliver to quinn. We know quinn last located in room7 per Sara. But quinn may have moved to another office. We need to get package to quinn. Only way: deliver directly if we are in same room. We are in hall. We could go to room7, room12, room19. Which one likely? Uncertainty: first office was room7 with 33%. Then moved to one of other two uniformly 50-50. So probabilities: room12 33% (first) + (room7 moved to room12?) actually after first office, moved to other two. So total: room12 0.333 + 0.333/2=0.333+0.1665=0.4995 \u22480.5. Similarly room19 same 0.5. So equal chance 50-50 between 12 and 19. So best non-guess? Could ask someone? Only sara present. We could ask staff? We could ask ravi? not present. We can ask person in same room only. So can't ask. So we must guess. Perhaps go to room12 first? With 50% chance deliver. If miss task end after step 8. But okay.\n\nWe could also deliver via drop corridor: drop(lobby) sends through chute in lobby to that room. Wait: \"drop(room) sends the package through the chute in the lobby to that room\". So if we drop to lobby, package will go to that room through chute? Actually we must specify room to send to. The description: drop(lobby) sends to that room? The action is drop(room). It sends through chute in lobby to that room. So if we are not in lobby, drop seems to send to that room. But we are in hall. We could drop drop(lobby)? That's not defined. Only drop(room) with room in adjacent rooms? But we are in hall adjacent to lobby. Could drop(room_12) etc. But package will go through chute in lobby to that room - but we are not in lobby. I think drop(action) requires being in lobby? Not specified. Probably can drop any adjacent? Eh.\n\nBetter go to rooms. I'd pick room12."
+   },
+   {
+    "kind": "decision",
+    "step": 4,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(hall)"
+    },
+    "final_text": "{\"action\":\"move(hall)\"}",
+    "final_reasoning": "We are in room_12. Need deliver to Quinn. We don't know location. We could attempt to droproom? risky. Better move back to hall. So choose move(hall)."
+   },
+   {
+    "kind": "decision",
+    "step": 5,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(room_12)"
+    },
+    "final_text": "{\"action\":\"move(room_12)\"}",
+    "final_reasoning": "We need to deliver to Quinn. Quinn currently in? We know history: Quinn announced quinn_loc=room_7. Then left lobby and arrived in lobby? Wait timeline: t0 notes: quinn announces... leaves lobby, arrives lobby?? weird. Then talks quietly to ravi about office to go. Leaves lobby again. So quinn moved to new office after lobby stop. So quinn currently in either room_12 or room_19. We don't know which. Robot has asked sara who said quinn_loc=room_7. So robot believes quorum in room_7 but that's outdated. Need to determine which office? We can guess random; but we can use give to ravi or sara who will forward based on their belief. Their belief about quinn: they heard quinn announce room_7, and no other info. They didn't hear quiet conversation. They will believe quinn in room_7 until told otherwise. So if we give to them, they forward to room_7 and drop via chute fails. Wrong. So must deliver to correct office. We can't ask about location because only fact quinn_loc. We can ask quinn if present. But quinn not present. We can move to rooms. We have visited hall. We can move to either room_12 or room_19. If choose correct, deliver; if wrong, wasted. probability half each. But we can first ask quinn mentally? not possible. Maybe we can get a better guess: probability equal amongst options. So choose one. No other info. We could risk. We have step budget. Let's move to room_12 and deliver. If quinn in room_12, +1 reward, else -0.5. That's acceptable. It's 3 steps left. Go.\n\n"
+   },
+   {
+    "kind": "decision",
+    "step": 6,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(hall)"
+    },
+    "final_text": "{\"action\":\"move(hall)\"}",
+    "final_reasoning": "We need deliver to Quinn. Quinn location unknown. We can ask rah? Only in same room. We are in room_12 alone. We can call wait or move(hall). Perhaps best to move to hall to maybe see. But we cannot deliver without knowing. If we drop(room) to a room where Quinn is likely? Probability earliest? Distribution: first office room7 then moves to one of two others equally. So a 0.3333 chance in each of room19,12,7. So max 0.333. But better maybe try ask? Can't. Maybe go to lobby? No people. We might exit? But dropping wrong costs -0.5. We might wait to maybe detect? But no one else moving. So only way to deliver is to move to a room where Quinn may be and wait for chance? Maybe go to hall then move to 12->19? If dropped to 19 may succeed 0.333. So we choose move(hall)."
+   },
+   {
+    "kind": "decision",
+    "step": 7,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(lobby)"
+    },
+    "final_text": "{\"action\":\"move(lobby)\"}",
+    "final_reasoning": "Need to deliver to quinn. Robot is in hall, hasn't seen anyone. By PM2 ravi/sara forward to where they believe quinn. best? Since robot doesn't know location. Could drop via chute? That would be wrong likely. Better ask someone? No one present. Maybe move to lobby where sara present but now not? actually seen sara earlier but now empty. So maybe move to lobby. Likely quinn somewhere else. To minimize risk, give to sara? She would forward to where she believes quinn: she believes room_7. High chance quinn is there? initial announcement room_7. quinn announced and went there. Then she moved to another office. So quinn not in room_7 now. So not good. Give to ravi? he left building. So no. Maybe just wait and hope quinn arrives? Likely not. Maybe we drop to chute room? That's wrong. Could ask? no one. Maybe we deliver to nobody? best is Move to lobby and wait. I'll move to lobby."
+   }
+  ]
+ },
+ "evaluator_only": {
+  "hidden": [
+   [
+    "a",
+    "room_7"
+   ],
+   [
+    "m1",
+    "0"
+   ]
+  ],
+  "bayes_v_t0": 0.8,
+  "bayes_first_action": "move(hall)",
+  "interventions_would_have": [
+   "error"
+  ]
+ }
+}

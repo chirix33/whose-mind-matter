@@ -1,0 +1,363 @@
+{
+ "why_selected": "Bayes first action commits; the policy never proposes a commitment and times out (a veto gate cannot help)",
+ "state_id": "s20261400-dev-v3-3a-stakes1-perm0",
+ "condition": "checker_gate",
+ "draw": 1,
+ "deployed": {
+  "agent_view": {
+   "brief": "Deliver the package to Heidi.",
+   "steps": [
+    {
+     "action": null,
+     "obs": {
+      "t": 0,
+      "room": "lobby",
+      "people_present": [
+       "sara"
+      ],
+      "utterances": [],
+      "outcome": "",
+      "reward": 0.0,
+      "done": false,
+      "notices": [
+       [
+        "announce",
+        "nadia",
+        "nadia announces to everyone present: \"meeting_room = desk_3\"",
+        [
+         "heidi",
+         "sara"
+        ]
+       ],
+       [
+        "statement",
+        "heidi",
+        "heidi says: \"meeting_room = desk_3\"",
+        [
+         "nadia",
+         "sara"
+        ]
+       ],
+       [
+        "quiet",
+        "nadia",
+        "nadia talks quietly to sara; only sara can hear it, and the robot cannot hear what is said",
+        [
+         "heidi"
+        ]
+       ],
+       [
+        "quiet",
+        "sara",
+        "sara talks quietly to heidi; only heidi can hear it, and the robot cannot hear what is said",
+        [
+         "nadia"
+        ]
+       ],
+       [
+        "leave",
+        "nadia",
+        "nadia leaves the lobby and the building",
+        [
+         "heidi",
+         "sara"
+        ]
+       ],
+       [
+        "leave",
+        "heidi",
+        "heidi leaves the lobby",
+        [
+         "sara"
+        ]
+       ]
+      ]
+     }
+    },
+    {
+     "action": "ask(sara,meeting_room)",
+     "obs": {
+      "t": 1,
+      "room": "lobby",
+      "people_present": [
+       "sara"
+      ],
+      "utterances": [
+       [
+        "sara",
+        "meeting_room = desk_14"
+       ]
+      ],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(hall)",
+     "obs": {
+      "t": 2,
+      "room": "hall",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(desk_3)",
+     "obs": {
+      "t": 3,
+      "room": "desk_3",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(hall)",
+     "obs": {
+      "t": 4,
+      "room": "hall",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(desk_3)",
+     "obs": {
+      "t": 5,
+      "room": "desk_3",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(hall)",
+     "obs": {
+      "t": 6,
+      "room": "hall",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(desk_9)",
+     "obs": {
+      "t": 7,
+      "room": "desk_9",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(hall)",
+     "obs": {
+      "t": 8,
+      "room": "hall",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "timeout",
+      "reward": -0.05,
+      "done": true
+     }
+    }
+   ]
+  },
+  "steps": [
+   {
+    "t": 0,
+    "proposal": "ask(sara,meeting_room)",
+    "policy_ok": true,
+    "executed": "ask(sara,meeting_room)"
+   },
+   {
+    "t": 1,
+    "proposal": "move(hall)",
+    "policy_ok": true,
+    "executed": "move(hall)"
+   },
+   {
+    "t": 2,
+    "proposal": "move(desk_3)",
+    "policy_ok": true,
+    "executed": "move(desk_3)"
+   },
+   {
+    "t": 3,
+    "proposal": "move(hall)",
+    "policy_ok": true,
+    "executed": "move(hall)"
+   },
+   {
+    "t": 4,
+    "proposal": "move(desk_3)",
+    "policy_ok": true,
+    "executed": "move(desk_3)"
+   },
+   {
+    "t": 5,
+    "proposal": "move(hall)",
+    "policy_ok": true,
+    "executed": "move(hall)"
+   },
+   {
+    "t": 6,
+    "proposal": "move(desk_9)",
+    "policy_ok": true,
+    "executed": "move(desk_9)"
+   },
+   {
+    "t": 7,
+    "proposal": "move(hall)",
+    "policy_ok": true,
+    "executed": "move(hall)"
+   }
+  ],
+  "actions": [
+   "ask(sara,meeting_room)",
+   "move(hall)",
+   "move(desk_3)",
+   "move(hall)",
+   "move(desk_3)",
+   "move(hall)",
+   "move(desk_9)",
+   "move(hall)"
+  ],
+  "outcome": "timeout",
+  "return": -0.4,
+  "usage": {
+   "decision": {
+    "calls": 8,
+    "attempts": 8,
+    "attempts_failed": 0,
+    "fallbacks": 0,
+    "prompt_tokens": 12468,
+    "completion_tokens": 1709,
+    "reasoning_tokens": 1532,
+    "reasoning_known": true,
+    "latency_s": 11.922204523999994
+   }
+  },
+  "calls": [
+   {
+    "kind": "decision",
+    "step": 0,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "ask(sara,meeting_room)"
+    },
+    "final_text": "{\"action\":\"ask(sara,meeting_room)\"}",
+    "final_reasoning": "Need deliver to Heidi at her office. We don't know which office she is in. We can ask sara about meeting_room. She knows from quiet conversation with nadia? Nadia gave to sara after leaving? Actually nadia talked quiet to sara before leaving. That told sara the meeting office after change? But she didn't get change until later? According to PM1, nadia announced initial room, later changed to one of the two others, conveyed via quiet conversation. So she told sara the new meeting room in a quiet conversation started by nadia or sara. So Sara should know the final meeting room. So asking sara meeting_room will give answer matching her belief. Then we can go to that room. We are in lobby. So choose ask(sara,meeting_room)."
+   },
+   {
+    "kind": "decision",
+    "step": 1,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(hall)"
+    },
+    "final_text": "{\"action\":\"move(hall)\"}",
+    "final_reasoning": "We should deliver to Heidi. Heidi is in the office where she believes meeting_room. From history, she was at lobby and left to her office after quiet conversation. She believes meeting_room? After quiet conversation, what did she learn? Quiet convo between nadia and sara; and sara talks quietly to heidi; we don't know content but could be meeting_room. But at t0, after those, heidi leaves lobby; she must be in her office where she believes meeting_room. We guessed maybe desk_14 or others. The ask(sara) got meeting_room=desk_14. So sara thinks the meeting is at desk_14. She won't forward to that; but we need Heidi. Since Heidi believes meeting_room, which may be desk_14? But Sara wrong maybe. But we can't know that. We should deliver directly, move to hall, then move to meeting_room. But we don't know which room. We can ask, but can't ask Heidi. Could ask hall? No. Might try move to hall. Then ask? Actually to deliver to Heidi, we must be in same room as Heidi. So we need to guess where she is. From probabilities: Initial meeting_room desk_3, then changed to one of two others (desk_9 or desk_14). So Heidi likely in desk_9 or desk_14, depending. Sara says desk_14, so likely. But may be wrong. Best guess to go to desk_14.\n\nThus action: move(hall)."
+   },
+   {
+    "kind": "decision",
+    "step": 2,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(desk_3)"
+    },
+    "final_text": "{\"action\":\"move(desk_3)\"}",
+    "final_reasoning": "We need deliver to Heidi. Heidi is in desk_3. So we need to move to hall then to desk_3 and deliver. But need to avoid giving to Sara. Optimal: move to desk_3 and deliver. We are in hall. So action: move(desk_3)."
+   },
+   {
+    "kind": "decision",
+    "step": 3,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(hall)"
+    },
+    "final_text": "{\"action\":\"move(hall)\"}",
+    "final_reasoning": "We need to deliver to Heidi. We are at desk_3. From PM3, Sara forwards to meeting_room that Sara thinks Heidi will go. Susan sent meeting_room=desk_14 by silence. So Sara thinks meeting_room=desk_14. Heidi will be in that office. So deliver at desk_14. Need go hall then desk_14. That's 2 moves. Move back? Should we deliver now? No, not Heidi present. Could ask Heidi? She's not here. So plan: move(hall) then move(desk_14) then deliver. But we must be careful: who might be in desk_14? Heidi will be there. So deliver. Steps: move(hall). That's legal. We'll choose that."
+   },
+   {
+    "kind": "decision",
+    "step": 4,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(desk_3)"
+    },
+    "final_text": "{\"action\":\"move(desk_3)\"}",
+    "final_reasoning": "We need deliver to Heidi. She is in office she believes meeting_room. She believes meeting_room=desk_3 (from initial announcement). But there was a quiet conversation indicating change to one of the other two: but we don't know which. Sara told robot meeting_room=desk_14, so Sara believes that. The robot believes based on answer; Sara says she knows. Sara might be lying? According to PM2, people answer sincerely with what they believe. So Sara believes meeting_room=desk_14. That implies she believes Heidi will go to desk_14. Heidi believes desk_3. So Heidi won't be at desk_14. So delivering to desk_14 would fail. We must take into account that whomever to whom we give package (Sara) will forward to where she thinks Heidi will go, which is desk_14. But that would be wrong. So we should deliver directly to Heidi in her room. We don't know her location; she is likely at desk_3. So move to desk_3 and deliver. So action: move(desk_3). It is legal."
+   },
+   {
+    "kind": "decision",
+    "step": 5,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(hall)"
+    },
+    "final_text": "{\"action\":\"move(hall)\"}",
+    "final_reasoning": "We are in desk_3. Heidi is in her office where she believes meeting_room. She attended meeting announced desk_3, but later changed to one of two others. Sara told Heidi that meeting_room=desk_14. So Heidi believes desk_14. So Heidi is in desk_14. We need deliver to Heidi. So go to desk_14. legal action now: move(hall). We cannot deliver here. So choose move(hall)."
+   },
+   {
+    "kind": "decision",
+    "step": 6,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(desk_9)"
+    },
+    "final_text": "{\"action\":\"move(desk_9)\"}",
+    "final_reasoning": "We need deliver to Heidi. Where is Heidi? She left lobby earlier at t0: she left lobby (t0:note5). She likely moved to the office she believes meeting is. Nadia announced desk_3 originally. Then two quiet conv likely changed from desk_3 to one of the other two desks. Sara received the change via quiet conversation with Nadia? According to PM1: quiet conversation started by Nadia or Sara always tells addressed person the current meeting office. So either Nadia spoke to Sara telling new office or Sara to Heidi. Hard to know the final meeting office. But we need to deliver to Heidi; easiest is go to desks? We don't know which.\n\nWe could ask someone? Who is in hall? Nobody. We saw no one. So we can't ask. We could deliver to desk of Megan? We need to deliver to Heidi; but we don't know where she is. Could deliver to Sara? No. Could wait? Not good.\n\nBetter to ask at lobby? No one. Could ask no one. We can't deduce.\n\nMaybe easiest: move(desk_14) guess? But risk wrong.\n\nWe have 8 steps limit; we could try ask a person. But we have nobody. So maybe deliver to desk_14 or desk_9 or desk_3 over next steps until find? But we only have 8 steps. If we go to one office and find no one, nos. We might succeed if guess correct.\n\nProbability: initial 1/3 desk_3 then change to one of other two. So 1/3 desk_3, 1/3 desk_9, 1/3 desk_14. So each equal? Actually change to other two equally likely. So overall: desk_3 1/3 ; desk_9 1/3 ; desk_14 1/3. So equal. So pick any.\n\nWe are at hall. So choose one to go. I think choose desk_9."
+   },
+   {
+    "kind": "decision",
+    "step": 7,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(hall)"
+    },
+    "final_text": "{\"action\":\"move(hall)\"}",
+    "final_reasoning": "We need deliver to Heidi. Heidi is in desk_9? Actually heidi left lobby, it's unknown. According rules: Heidi goes to office where she believes meeting room. She was told meeting_room=desk_3 by Nadia and she believes that. So she is in desk_3. So not at desk_9. Thus moving to hall then desk_9 is wrong. We should instead go to desk_3. Robot currently at desk_9; can move to hall then desk_3. But delivery to wrong place cost -0.5. So need go to desk_3. Let's move to hall then desk_3. So action move(hall)."
+   }
+  ]
+ },
+ "evaluator_only": {
+  "hidden": [
+   [
+    "a",
+    "desk_3"
+   ],
+   [
+    "m1",
+    "1"
+   ]
+  ],
+  "bayes_v_t0": 0.95,
+  "bayes_first_action": "give(sara)",
+  "interventions_would_have": []
+ }
+}

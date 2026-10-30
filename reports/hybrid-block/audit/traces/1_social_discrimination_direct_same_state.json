@@ -1,0 +1,194 @@
+{
+ "why_selected": "direct policy on the same state: wrong handoff",
+ "state_id": "s20261400-dev-v3-3b-stakes1-perm0",
+ "condition": "direct",
+ "draw": 0,
+ "deployed": {
+  "agent_view": {
+   "brief": "Deliver the package to Kim.",
+   "steps": [
+    {
+     "action": null,
+     "obs": {
+      "t": 0,
+      "room": "lobby",
+      "people_present": [
+       "leo",
+       "tomas"
+      ],
+      "utterances": [],
+      "outcome": "",
+      "reward": 0.0,
+      "done": false,
+      "notices": [
+       [
+        "announce",
+        "uma",
+        "uma announces to everyone present: \"meeting_room = suite_1\"",
+        [
+         "kim",
+         "leo",
+         "tomas"
+        ]
+       ],
+       [
+        "statement",
+        "kim",
+        "kim says: \"meeting_room = suite_1\"",
+        [
+         "leo",
+         "tomas",
+         "uma"
+        ]
+       ],
+       [
+        "quiet",
+        "uma",
+        "uma talks quietly to tomas; only tomas can hear it, and the robot cannot hear what is said",
+        [
+         "kim",
+         "leo"
+        ]
+       ],
+       [
+        "quiet",
+        "uma",
+        "uma talks quietly to kim; only kim can hear it, and the robot cannot hear what is said",
+        [
+         "leo",
+         "tomas"
+        ]
+       ],
+       [
+        "leave",
+        "uma",
+        "uma leaves the lobby and the building",
+        [
+         "kim",
+         "leo",
+         "tomas"
+        ]
+       ],
+       [
+        "leave",
+        "kim",
+        "kim leaves the lobby",
+        [
+         "leo",
+         "tomas"
+        ]
+       ]
+      ]
+     }
+    },
+    {
+     "action": "ask(tomas,meeting_room)",
+     "obs": {
+      "t": 1,
+      "room": "lobby",
+      "people_present": [
+       "leo",
+       "tomas"
+      ],
+      "utterances": [
+       [
+        "tomas",
+        "meeting_room = suite_3"
+       ]
+      ],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "give(tomas)",
+     "obs": {
+      "t": 2,
+      "room": "lobby",
+      "people_present": [
+       "leo",
+       "tomas"
+      ],
+      "utterances": [],
+      "outcome": "error",
+      "reward": -0.55,
+      "done": true
+     }
+    }
+   ]
+  },
+  "steps": [
+   {
+    "t": 0,
+    "proposal": "ask(tomas,meeting_room)",
+    "policy_ok": true,
+    "executed": "ask(tomas,meeting_room)"
+   },
+   {
+    "t": 1,
+    "proposal": "give(tomas)",
+    "policy_ok": true,
+    "executed": "give(tomas)"
+   }
+  ],
+  "actions": [
+   "ask(tomas,meeting_room)",
+   "give(tomas)"
+  ],
+  "outcome": "error",
+  "return": -0.6,
+  "usage": {
+   "decision": {
+    "calls": 2,
+    "attempts": 2,
+    "attempts_failed": 0,
+    "fallbacks": 0,
+    "prompt_tokens": 3077,
+    "completion_tokens": 147,
+    "reasoning_tokens": 102,
+    "reasoning_known": true,
+    "latency_s": 1.0518037700000207
+   }
+  },
+  "calls": [
+   {
+    "kind": "decision",
+    "step": 0,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "ask(tomas,meeting_room)"
+    },
+    "final_text": "{\"action\":\"ask(tomas,meeting_room)\"}",
+    "final_reasoning": "We should ask tomas for meeting_room since he knows it."
+   },
+   {
+    "kind": "decision",
+    "step": 1,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "give(tomas)"
+    },
+    "final_text": "{\"action\":\"give(tomas)\"}",
+    "final_reasoning": "We need deliver to kim. We know kim is in the office where she believes meeting_room. She believes suite_3 (tom said). As per PM3 tm forwards to office where tom thinks kim will go, to what tom thinks kim believes meeting_room. Tom thinks kit believes meeting_room=suite_3, so he will forward to suite_3. We can just give to tomas. That passes. So action give(tomas)."
+   }
+  ]
+ },
+ "evaluator_only": {
+  "hidden": [
+   [
+    "a",
+    "suite_1"
+   ],
+   [
+    "m1",
+    "0"
+   ]
+  ],
+  "bayes_v_t0": 0.8,
+  "bayes_first_action": "ask(tomas,meeting_room)",
+  "interventions_would_have": []
+ }
+}

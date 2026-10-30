@@ -1,0 +1,321 @@
+{
+ "why_selected": "generic LLM check vetoes a handoff that would have succeeded",
+ "state_id": "s20261400-dev-v3-2a-stakes1-perm0",
+ "condition": "generic_gate",
+ "draw": 0,
+ "deployed": {
+  "agent_view": {
+   "brief": "Deliver the package to Quinn.",
+   "steps": [
+    {
+     "action": null,
+     "obs": {
+      "t": 0,
+      "room": "lobby",
+      "people_present": [
+       "dave",
+       "grace",
+       "ivan"
+      ],
+      "utterances": [],
+      "outcome": "",
+      "reward": 0.0,
+      "done": false,
+      "notices": [
+       [
+        "announce",
+        "quinn",
+        "quinn announces to everyone present: \"quinn_loc = suite_1\"",
+        [
+         "grace",
+         "ivan"
+        ]
+       ],
+       [
+        "leave",
+        "quinn",
+        "quinn leaves the lobby",
+        [
+         "grace",
+         "ivan"
+        ]
+       ],
+       [
+        "arrive",
+        "quinn",
+        "quinn arrives in the lobby",
+        [
+         "grace",
+         "ivan"
+        ]
+       ],
+       [
+        "quiet",
+        "quinn",
+        "quinn talks quietly to grace; only grace can hear it, and the robot cannot hear what is said",
+        [
+         "ivan"
+        ]
+       ],
+       [
+        "leave",
+        "quinn",
+        "quinn leaves the lobby",
+        [
+         "grace",
+         "ivan"
+        ]
+       ],
+       [
+        "arrive",
+        "dave",
+        "dave arrives in the lobby",
+        [
+         "grace",
+         "ivan"
+        ]
+       ],
+       [
+        "remark",
+        "dave",
+        "dave says: \"I just got here.\"",
+        [
+         "grace",
+         "ivan"
+        ]
+       ]
+      ]
+     }
+    },
+    {
+     "action": "ask(grace,quinn_loc)",
+     "obs": {
+      "t": 1,
+      "room": "lobby",
+      "people_present": [
+       "dave",
+       "grace",
+       "ivan"
+      ],
+      "utterances": [
+       [
+        "grace",
+        "quinn_loc = suite_3"
+       ]
+      ],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(hall)",
+     "obs": {
+      "t": 2,
+      "room": "hall",
+      "people_present": [],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "move(suite_3)",
+     "obs": {
+      "t": 3,
+      "room": "suite_3",
+      "people_present": [
+       "quinn"
+      ],
+      "utterances": [],
+      "outcome": "",
+      "reward": -0.05,
+      "done": false
+     }
+    },
+    {
+     "action": "deliver()",
+     "obs": {
+      "t": 4,
+      "room": "suite_3",
+      "people_present": [
+       "quinn"
+      ],
+      "utterances": [],
+      "outcome": "success",
+      "reward": 0.95,
+      "done": true
+     }
+    }
+   ]
+  },
+  "steps": [
+   {
+    "t": 0,
+    "proposal": "give(grace)",
+    "policy_ok": true,
+    "check": {
+     "p": 0.5,
+     "J": 0.2,
+     "V_alt": 0.8,
+     "allow": false
+    },
+    "veto": true,
+    "redecision": "ask(grace,quinn_loc)",
+    "executed": "ask(grace,quinn_loc)"
+   },
+   {
+    "t": 1,
+    "proposal": "move(hall)",
+    "policy_ok": true,
+    "executed": "move(hall)"
+   },
+   {
+    "t": 2,
+    "proposal": "move(suite_3)",
+    "policy_ok": true,
+    "executed": "move(suite_3)"
+   },
+   {
+    "t": 3,
+    "proposal": "deliver()",
+    "policy_ok": true,
+    "executed": "deliver()"
+   }
+  ],
+  "actions": [
+   "ask(grace,quinn_loc)",
+   "move(hall)",
+   "move(suite_3)",
+   "deliver()"
+  ],
+  "outcome": "success",
+  "return": 0.8,
+  "usage": {
+   "decision": {
+    "calls": 4,
+    "attempts": 4,
+    "attempts_failed": 0,
+    "fallbacks": 0,
+    "prompt_tokens": 6495,
+    "completion_tokens": 572,
+    "reasoning_tokens": 488,
+    "reasoning_known": true,
+    "latency_s": 4.29501761399996
+   },
+   "check": {
+    "calls": 1,
+    "attempts": 1,
+    "attempts_failed": 0,
+    "fallbacks": 0,
+    "prompt_tokens": 1521,
+    "completion_tokens": 366,
+    "reasoning_tokens": 318,
+    "reasoning_known": true,
+    "latency_s": 2.7754517069999736
+   },
+   "redecision": {
+    "calls": 1,
+    "attempts": 1,
+    "attempts_failed": 0,
+    "fallbacks": 0,
+    "prompt_tokens": 1604,
+    "completion_tokens": 211,
+    "reasoning_tokens": 186,
+    "reasoning_known": true,
+    "latency_s": 1.486295059000014
+   }
+  },
+  "calls": [
+   {
+    "kind": "decision",
+    "step": 0,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "give(grace)"
+    },
+    "final_text": "{\"action\":\"give(grace)\"}",
+    "final_reasoning": "We need to decide best strategy to deliver to Quinn. We know Quinn is in one of suite_3 or suite_2 because originally announced suite_1, then dropped to lobby, then quiet conversation about upcoming office, then leaves and we don't know where he ends up. So we need to ask someone who knows. All three present (grace, ivan, dave). Grace and Ivan have heard quiet conversation? No: only grace heard the quiet conversation because quinn talked to grace. So grace knows which office Quinn will go to after that. Ivan doesn't. Dave may not know. So ask grace about quinn_loc. That will reveal location. Then deliver. But cannot deliver unless in same room. So we could ask grace to get location, then move to that suite, then deliver. That's 2 steps: ask and move/deliver. Wait moves cost -0.05 each. We could instead give to grace or ivan. They will forward to the office where they believe Quinn is. Grace will know correct target. So giving to grace is efficient: 1 action. That will cost +1? Actually delivery is successful if delivered to recipient. If grace forwards correctly, package ends up with Quinn eventually. But does that count as successful? Likely yes because the reward is +1 for delivery; since they forward to the recipient, no penalty. So giving to grace yields success in 1 step. That is best. Let's choose give(grace)."
+   },
+   {
+    "kind": "check",
+    "step": 0,
+    "target": "give(grace)",
+    "ok": true,
+    "parsed": {
+     "p_success": 0.5,
+     "recipient_location": {
+      "suite_3": 0.5,
+      "suite_2": 0.5,
+      "suite_1": 0.0
+     }
+    },
+    "final_text": "{\"p_success\":0.5,\"recipient_location\":{\"suite_3\":0.5,\"suite_2\":0.5,\"suite_1\":0.0}}",
+    "final_reasoning": "We need probability that give(grace) leads to successful delivery. Grace will forward to office she believes quinn is. What does grace believe quinn_loc? Initially at t0, quinn announced suite_1 to everyone present (grace, ivan). So grace believes quinn_loc = suite_1. Then quinn left, arrived, talks quietly to grace (rob cannot hear). That quiet talk presumably informs grace of new office quinn will go to. But does grace know new office? Quiet conversation starting by quinn always tells the person addressed the office quinn is about to go to. So grace heard it, knows new office. Therefore grace's belief changes to new office. According to PM1, quinn moved to one of the two other offices. So new office is either suite_2 or suite_3 equally likely. So grace believes quinn_loc is either suite_2 or suite_3, each 0.5.\n\nIvan still thinks suite_1. Dave has no belief.\n\nThus if give(grace), grace will forward to his belief which is new office. That will be correct only if quinn actually in that office. Probability 0.5. So p_success=0.5. Recipient_location probabilities: quinn actual location is equally likely among suite_2 and suite_3? Wait PM7: which of the two other offices quinn moved to (each equally likely). So actual distribution: suite_2 0.5, suite_3 0.5, suite_1 not possible. So output."
+   },
+   {
+    "kind": "redecision",
+    "step": 0,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "ask(grace,quinn_loc)"
+    },
+    "final_text": "{\"action\":\"ask(grace,quinn_loc)\"}",
+    "final_reasoning": "We want best. We know Quinn announced suite_1 at t0, then moved to one of two other offices, stopping in lobby. So Quinn currently is in one of suite2 or suite3. We don't know which. To deliver we could ask someone who knows. According to PM3, only robot can change beliefs. Grace and Ivan have not asked. They know initial announcement, but not quiet conversation? Quiet to grace: tells grace quinn is about to go to which office. That would be new office. Grace now believes quinn_loc = new office. The robot didn't hear. So grace belief known? Yes, grace now knows. Similarly Ivan didn't hear quiet conversation. He still believes quinn_loc = suite_1. So we should ask Grace or ask the new person that heard. Asking Grace will give us the new location. That seems best. So action: ask(grace, quinn_loc)."
+   },
+   {
+    "kind": "decision",
+    "step": 1,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(hall)"
+    },
+    "final_text": "{\"action\":\"move(hall)\"}",
+    "final_reasoning": "We have learned quinn_loc = suite_3 from grace. Delivery should be to quinn in suite_3. Robot in lobby. Best is move to hall then hall to suite_3? Actually hallway adjacent to lobby and suite_3. Move(hall) takes 1 step. Then next turn can move to suite_3? But we only require 1 action now. We'll choose move(hall)."
+   },
+   {
+    "kind": "decision",
+    "step": 2,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "move(suite_3)"
+    },
+    "final_text": "{\"action\":\"move(suite_3)\"}",
+    "final_reasoning": "We need best action. We know from PM1 that Quinn moved to one of two other offices, stopping in lobby. Quiet conversation tells the addressed person the office Quinn is about to go to. Grace heard quiet conversation and now knows destination. Grace said quinn_loc = suite_3. So Quinn went to suite_3. So deliver to suite_3. Robot currently in hall. Best to move to suite_3. That's action."
+   },
+   {
+    "kind": "decision",
+    "step": 3,
+    "target": "policy",
+    "ok": true,
+    "parsed": {
+     "action": "deliver()"
+    },
+    "final_text": "{\"action\":\"deliver()\"}",
+    "final_reasoning": "We are in suite_3 with quinn, so deliver() is correct."
+   }
+  ]
+ },
+ "evaluator_only": {
+  "hidden": [
+   [
+    "a",
+    "suite_1"
+   ],
+   [
+    "m1",
+    "0"
+   ]
+  ],
+  "bayes_v_t0": 0.95,
+  "bayes_first_action": "give(grace)",
+  "interventions_would_have": [
+   "success"
+  ]
+ }
+}
