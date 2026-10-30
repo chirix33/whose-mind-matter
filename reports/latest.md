@@ -1,6 +1,11 @@
 # Milestone report — through the hybrid feasibility block (2026-10-30)
 
-> **Latest: allocation claim frozen (D-022, 2026-10-30).**
+> **Latest: G1 symbolic-twin check (D-023) STOPPED; the freeze stands.** See **[reports/g1/G1_RESULTS.md](g1/G1_RESULTS.md)**.
+> - One frozen CPU pass: 38 s, no model calls.
+> - Content is worth reading (+0.07 per task), and only about 14% of messages are needed (G1a and G1c pass).
+> - But simple provenance rules match exact decision-value selection (G1b). Stakes never change the read decision (G1d). Perspectives change *which* read is needed without an outcome margin over "read the latest" (G1e).
+>
+> **Earlier: allocation claim frozen (D-022, 2026-10-30).**
 > - Ashraf chose to freeze rather than authorize the CPU-only G1 check.
 > - No further experiments, builds, runs or spending; services stopped; about USD 1.076 unspent.
 > - Findings stand as recorded in **[reports/PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)**: negative on allocation; positive on symbolic checking plus gating of the local policy.

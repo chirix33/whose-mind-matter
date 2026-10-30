@@ -1,0 +1,4266 @@
+{
+ "freeze_commit": "ce3ac72b8298893f47169730fd26fb47c0c1da7d",
+ "gates": {
+  "G1a": {
+   "U": 0.1365346038114343,
+   "return_dv": 0.9288333333333333,
+   "return_dense": 0.9296666666666666,
+   "verdict": "pass"
+  },
+  "G1b": {
+   "rows": [
+    {
+     "selector": "none",
+     "reads_per_day": 0,
+     "return": 0.8580666666666666,
+     "dv_minus_b": 0.07076666666666666,
+     "ci95": [
+      0.06885,
+      0.07271666666666665
+     ],
+     "reads_le_1.1x_dv": true,
+     "matches_dv": false,
+     "dv_ok": true
+    },
+    {
+     "selector": "structural",
+     "reads_per_day": 8.0415,
+     "return": 0.9296666666666666,
+     "dv_minus_b": -0.0008333333333333332,
+     "ci95": [
+      -0.0010999999999999998,
+      -0.0005833333333333332
+     ],
+     "reads_le_1.1x_dv": false,
+     "matches_dv": false,
+     "dv_ok": true
+    },
+    {
+     "selector": "latest",
+     "reads_per_day": 1.9735,
+     "return": 0.9271166666666666,
+     "dv_minus_b": 0.0017166666666666663,
+     "ci95": [
+      0.0013499999999999996,
+      0.002083333333333333
+     ],
+     "reads_le_1.1x_dv": false,
+     "matches_dv": false,
+     "dv_ok": true
+    },
+    {
+     "selector": "action_prov",
+     "reads_per_day": 1.8505,
+     "return": 0.92965,
+     "dv_minus_b": -0.0008166666666666665,
+     "ci95": [
+      -0.001083333333333333,
+      -0.0005666666666666665
+     ],
+     "reads_le_1.1x_dv": false,
+     "matches_dv": false,
+     "dv_ok": true
+    },
+    {
+     "selector": "risk:0.05",
+     "reads_per_day": 1.5445,
+     "return": 0.9271166666666666,
+     "dv_minus_b": 0.0017166666666666663,
+     "ci95": [
+      0.0013499999999999996,
+      0.002083333333333333
+     ],
+     "reads_le_1.1x_dv": true,
+     "matches_dv": true,
+     "dv_ok": false
+    },
+    {
+     "selector": "risk:0.1",
+     "reads_per_day": 1.5445,
+     "return": 0.9271166666666666,
+     "dv_minus_b": 0.0017166666666666663,
+     "ci95": [
+      0.0013499999999999996,
+      0.002083333333333333
+     ],
+     "reads_le_1.1x_dv": true,
+     "matches_dv": true,
+     "dv_ok": false
+    },
+    {
+     "selector": "risk:0.2",
+     "reads_per_day": 1.428,
+     "return": 0.9224833333333333,
+     "dv_minus_b": 0.006349999999999995,
+     "ci95": [
+      0.005791666666666662,
+      0.006924999999999995
+     ],
+     "reads_le_1.1x_dv": true,
+     "matches_dv": true,
+     "dv_ok": false
+    },
+    {
+     "selector": "risk:0.4",
+     "reads_per_day": 1.22675,
+     "return": 0.91445,
+     "dv_minus_b": 0.01438333333333333,
+     "ci95": [
+      0.013399999999999995,
+      0.015349999999999996
+     ],
+     "reads_le_1.1x_dv": true,
+     "matches_dv": true,
+     "dv_ok": false
+    },
+    {
+     "selector": "risk:0.8",
+     "reads_per_day": 0.74225,
+     "return": 0.8929583333333333,
+     "dv_minus_b": 0.035875,
+     "ci95": [
+      0.034574999999999995,
+      0.03712499999999999
+     ],
+     "reads_le_1.1x_dv": true,
+     "matches_dv": false,
+     "dv_ok": true
+    },
+    {
+     "selector": "risk:1.6",
+     "reads_per_day": 0.17125,
+     "return": 0.8664666666666666,
+     "dv_minus_b": 0.06236666666666666,
+     "ci95": [
+      0.06061666666666666,
+      0.064175
+     ],
+     "reads_le_1.1x_dv": true,
+     "matches_dv": false,
+     "dv_ok": true
+    },
+    {
+     "selector": "entropy:1",
+     "reads_per_day": 2.1415,
+     "return": 0.9273666666666667,
+     "dv_minus_b": 0.0014666666666666662,
+     "ci95": [
+      0.0011666666666666663,
+      0.001783333333333333
+     ],
+     "reads_le_1.1x_dv": false,
+     "matches_dv": false,
+     "dv_ok": true
+    },
+    {
+     "selector": "entropy:2",
+     "reads_per_day": 3.3545,
+     "return": 0.9293,
+     "dv_minus_b": -0.00046666666666666655,
+     "ci95": [
+      -0.0006833333333333332,
+      -0.00028333333333333325
+     ],
+     "reads_le_1.1x_dv": false,
+     "matches_dv": false,
+     "dv_ok": true
+    },
+    {
+     "selector": "random:1",
+     "reads_per_day": 2.1415,
+     "return": 0.9065083333333332,
+     "dv_minus_b": 0.022324999999999994,
+     "ci95": [
+      0.02108333333333333,
+      0.023566666666666663
+     ],
+     "reads_le_1.1x_dv": false,
+     "matches_dv": false,
+     "dv_ok": true
+    },
+    {
+     "selector": "random:2",
+     "reads_per_day": 3.3545,
+     "return": 0.9231666666666666,
+     "dv_minus_b": 0.005666666666666664,
+     "ci95": [
+      0.004974999999999998,
+      0.006316666666666663
+     ],
+     "reads_le_1.1x_dv": false,
+     "matches_dv": false,
+     "dv_ok": true
+    }
+   ],
+   "matching_rules": [
+    "risk:0.05",
+    "risk:0.1",
+    "risk:0.2",
+    "risk:0.4"
+   ],
+   "verdict": "stop"
+  },
+  "G1c": {
+   "share_gap_ge_0.10": 0.37755102040816324,
+   "states": 10584,
+   "verdict": "pass"
+  },
+  "G1d": {
+   "stop_share": 0.4162887377173091,
+   "stakes_flip_share": 0,
+   "states": 10584,
+   "repeat_recipient_tasks": 1416,
+   "verdict": "stop"
+  },
+  "G1e": {
+   "share_dv_set_differs": 0.688,
+   "dv_minus_latest_return": 0.0015500000000000513,
+   "dv_over_latest_reads": 0.796,
+   "verdict": "stop"
+  },
+  "overall": "STOP"
+ },
+ "summary": {
+  "sparse": {
+   "none": {
+    "return": 0.8580666666666666,
+    "reads_per_day": 0,
+    "U": 0.0,
+    "by_stakes": {
+     "x1": {
+      "return": 0.8580666666666666,
+      "reads_per_day": 0
+     },
+     "x4": {
+      "return": 0.8580666666666666,
+      "reads_per_day": 0
+     }
+    }
+   },
+   "dense": {
+    "return": 0.9296666666666666,
+    "reads_per_day": 11.964,
+    "U": 1.0,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9296666666666666,
+      "reads_per_day": 11.964
+     },
+     "x4": {
+      "return": 0.9296666666666666,
+      "reads_per_day": 11.964
+     }
+    }
+   },
+   "structural": {
+    "return": 0.9296666666666666,
+    "reads_per_day": 8.0415,
+    "U": 0.6721414242728184,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9296666666666666,
+      "reads_per_day": 8.0415
+     },
+     "x4": {
+      "return": 0.9296666666666666,
+      "reads_per_day": 8.0415
+     }
+    }
+   },
+   "latest": {
+    "return": 0.9271166666666666,
+    "reads_per_day": 1.9735,
+    "U": 0.16495319291206953,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9271166666666666,
+      "reads_per_day": 1.9735
+     },
+     "x4": {
+      "return": 0.9271166666666666,
+      "reads_per_day": 1.9735
+     }
+    }
+   },
+   "action_prov": {
+    "return": 0.92965,
+    "reads_per_day": 1.8505,
+    "U": 0.1546723503844868,
+    "by_stakes": {
+     "x1": {
+      "return": 0.92965,
+      "reads_per_day": 1.8505
+     },
+     "x4": {
+      "return": 0.92965,
+      "reads_per_day": 1.8505
+     }
+    }
+   },
+   "risk:0.05": {
+    "return": 0.9271166666666666,
+    "reads_per_day": 1.5445,
+    "U": 0.12909562019391507,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9271166666666666,
+      "reads_per_day": 1.5445
+     },
+     "x4": {
+      "return": 0.9271166666666666,
+      "reads_per_day": 1.5445
+     }
+    }
+   },
+   "risk:0.1": {
+    "return": 0.9271166666666666,
+    "reads_per_day": 1.5445,
+    "U": 0.12909562019391507,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9271166666666666,
+      "reads_per_day": 1.5445
+     },
+     "x4": {
+      "return": 0.9271166666666666,
+      "reads_per_day": 1.5445
+     }
+    }
+   },
+   "risk:0.2": {
+    "return": 0.9224833333333333,
+    "reads_per_day": 1.428,
+    "U": 0.119358074222668,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9178499999999999,
+      "reads_per_day": 1.3115
+     },
+     "x4": {
+      "return": 0.9271166666666666,
+      "reads_per_day": 1.5445
+     }
+    }
+   },
+   "risk:0.4": {
+    "return": 0.91445,
+    "reads_per_day": 1.22675,
+    "U": 0.10253677699765965,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9110499999999999,
+      "reads_per_day": 1.142
+     },
+     "x4": {
+      "return": 0.9178499999999999,
+      "reads_per_day": 1.3115
+     }
+    }
+   },
+   "risk:0.8": {
+    "return": 0.8929583333333333,
+    "reads_per_day": 0.74225,
+    "U": 0.06204028752925443,
+    "by_stakes": {
+     "x1": {
+      "return": 0.8748666666666667,
+      "reads_per_day": 0.3425
+     },
+     "x4": {
+      "return": 0.9110499999999999,
+      "reads_per_day": 1.142
+     }
+    }
+   },
+   "risk:1.6": {
+    "return": 0.8664666666666666,
+    "reads_per_day": 0.17125,
+    "U": 0.01431377465730525,
+    "by_stakes": {
+     "x1": {
+      "return": 0.8580666666666666,
+      "reads_per_day": 0
+     },
+     "x4": {
+      "return": 0.8748666666666667,
+      "reads_per_day": 0.3425
+     }
+    }
+   },
+   "entropy:1": {
+    "return": 0.9273666666666667,
+    "reads_per_day": 2.1415,
+    "U": 0.17899531929120696,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9273666666666667,
+      "reads_per_day": 2.1415
+     },
+     "x4": {
+      "return": 0.9273666666666667,
+      "reads_per_day": 2.1415
+     }
+    }
+   },
+   "entropy:2": {
+    "return": 0.9293,
+    "reads_per_day": 3.3545,
+    "U": 0.2803828151120027,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9293,
+      "reads_per_day": 3.3545
+     },
+     "x4": {
+      "return": 0.9293,
+      "reads_per_day": 3.3545
+     }
+    }
+   },
+   "random:1": {
+    "return": 0.9065083333333332,
+    "reads_per_day": 2.1415,
+    "U": 0.17899531929120696,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9067999999999999,
+      "reads_per_day": 2.1415
+     },
+     "x4": {
+      "return": 0.9062166666666667,
+      "reads_per_day": 2.1415
+     }
+    }
+   },
+   "random:2": {
+    "return": 0.9231666666666666,
+    "reads_per_day": 3.3545,
+    "U": 0.2803828151120027,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9234833333333333,
+      "reads_per_day": 3.3545
+     },
+     "x4": {
+      "return": 0.92285,
+      "reads_per_day": 3.3545
+     }
+    }
+   },
+   "dv:0.005": {
+    "return": 0.9296666666666666,
+    "reads_per_day": 1.853,
+    "U": 0.15488131059846205,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9296666666666666,
+      "reads_per_day": 1.853
+     },
+     "x4": {
+      "return": 0.9296666666666666,
+      "reads_per_day": 1.853
+     }
+    }
+   },
+   "dv:0.01": {
+    "return": 0.9296666666666666,
+    "reads_per_day": 1.803,
+    "U": 0.15070210631895686,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9296666666666666,
+      "reads_per_day": 1.803
+     },
+     "x4": {
+      "return": 0.9296666666666666,
+      "reads_per_day": 1.803
+     }
+    }
+   },
+   "dv:0.02": {
+    "return": 0.9296666666666666,
+    "reads_per_day": 1.7585,
+    "U": 0.14698261451019726,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9296666666666666,
+      "reads_per_day": 1.7585
+     },
+     "x4": {
+      "return": 0.9296666666666666,
+      "reads_per_day": 1.7585
+     }
+    }
+   },
+   "dv:0.04": {
+    "return": 0.9288333333333333,
+    "reads_per_day": 1.6335,
+    "U": 0.1365346038114343,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9288333333333333,
+      "reads_per_day": 1.6315
+     },
+     "x4": {
+      "return": 0.9288333333333333,
+      "reads_per_day": 1.6355
+     }
+    }
+   },
+   "dv:0.08": {
+    "return": 0.9272166666666666,
+    "reads_per_day": 1.5475,
+    "U": 0.1293463724506854,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9272166666666666,
+      "reads_per_day": 1.5475
+     },
+     "x4": {
+      "return": 0.9272166666666666,
+      "reads_per_day": 1.5475
+     }
+    }
+   },
+   "dv:0.16": {
+    "return": 0.8580666666666666,
+    "reads_per_day": 0,
+    "U": 0.0,
+    "by_stakes": {
+     "x1": {
+      "return": 0.8580666666666666,
+      "reads_per_day": 0
+     },
+     "x4": {
+      "return": 0.8580666666666666,
+      "reads_per_day": 0
+     }
+    }
+   }
+  },
+  "dense": {
+   "none": {
+    "return": 0.8894749999999999,
+    "reads_per_day": 0,
+    "U": 0.0,
+    "by_stakes": {
+     "x1": {
+      "return": 0.889475,
+      "reads_per_day": 0
+     },
+     "x4": {
+      "return": 0.889475,
+      "reads_per_day": 0
+     }
+    }
+   },
+   "dense": {
+    "return": 0.9373999999999999,
+    "reads_per_day": 4.4495,
+    "U": 1.0,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9374,
+      "reads_per_day": 4.4495
+     },
+     "x4": {
+      "return": 0.9374,
+      "reads_per_day": 4.4495
+     }
+    }
+   },
+   "structural": {
+    "return": 0.9373999999999999,
+    "reads_per_day": 4.4185,
+    "U": 0.9930329250477582,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9374,
+      "reads_per_day": 4.4185
+     },
+     "x4": {
+      "return": 0.9374,
+      "reads_per_day": 4.4185
+     }
+    }
+   },
+   "latest": {
+    "return": 0.934125,
+    "reads_per_day": 1.7805,
+    "U": 0.40015732104730867,
+    "by_stakes": {
+     "x1": {
+      "return": 0.934125,
+      "reads_per_day": 1.7805
+     },
+     "x4": {
+      "return": 0.934125,
+      "reads_per_day": 1.7805
+     }
+    }
+   },
+   "action_prov": {
+    "return": 0.9372625,
+    "reads_per_day": 1.2705,
+    "U": 0.28553770086526575,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9372625,
+      "reads_per_day": 1.2705
+     },
+     "x4": {
+      "return": 0.9372625,
+      "reads_per_day": 1.2705
+     }
+    }
+   },
+   "risk:0.05": {
+    "return": 0.934125,
+    "reads_per_day": 0.901,
+    "U": 0.20249466232160918,
+    "by_stakes": {
+     "x1": {
+      "return": 0.934125,
+      "reads_per_day": 0.901
+     },
+     "x4": {
+      "return": 0.934125,
+      "reads_per_day": 0.901
+     }
+    }
+   },
+   "risk:0.1": {
+    "return": 0.934125,
+    "reads_per_day": 0.901,
+    "U": 0.20249466232160918,
+    "by_stakes": {
+     "x1": {
+      "return": 0.934125,
+      "reads_per_day": 0.901
+     },
+     "x4": {
+      "return": 0.934125,
+      "reads_per_day": 0.901
+     }
+    }
+   },
+   "risk:0.2": {
+    "return": 0.9295687499999999,
+    "reads_per_day": 0.8015,
+    "U": 0.1801325991684459,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9250125,
+      "reads_per_day": 0.702
+     },
+     "x4": {
+      "return": 0.934125,
+      "reads_per_day": 0.901
+     }
+    }
+   },
+   "risk:0.4": {
+    "return": 0.9233874999999999,
+    "reads_per_day": 0.66775,
+    "U": 0.1500730419148219,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9217624999999999,
+      "reads_per_day": 0.6335
+     },
+     "x4": {
+      "return": 0.9250125,
+      "reads_per_day": 0.702
+     }
+    }
+   },
+   "risk:0.8": {
+    "return": 0.909125,
+    "reads_per_day": 0.38175,
+    "U": 0.0857961568715586,
+    "by_stakes": {
+     "x1": {
+      "return": 0.8964875,
+      "reads_per_day": 0.13
+     },
+     "x4": {
+      "return": 0.9217624999999999,
+      "reads_per_day": 0.6335
+     }
+    }
+   },
+   "risk:1.6": {
+    "return": 0.89298125,
+    "reads_per_day": 0.065,
+    "U": 0.01460838296437802,
+    "by_stakes": {
+     "x1": {
+      "return": 0.889475,
+      "reads_per_day": 0
+     },
+     "x4": {
+      "return": 0.8964875,
+      "reads_per_day": 0.13
+     }
+    }
+   },
+   "entropy:1": {
+    "return": 0.935125,
+    "reads_per_day": 2.467,
+    "U": 0.5544443195864703,
+    "by_stakes": {
+     "x1": {
+      "return": 0.935125,
+      "reads_per_day": 2.467
+     },
+     "x4": {
+      "return": 0.935125,
+      "reads_per_day": 2.467
+     }
+    }
+   },
+   "entropy:2": {
+    "return": 0.9370375,
+    "reads_per_day": 3.2555,
+    "U": 0.7316552421620407,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9370375,
+      "reads_per_day": 3.2555
+     },
+     "x4": {
+      "return": 0.9370375,
+      "reads_per_day": 3.2555
+     }
+    }
+   },
+   "random:1": {
+    "return": 0.92444375,
+    "reads_per_day": 2.467,
+    "U": 0.5544443195864703,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9245875,
+      "reads_per_day": 2.467
+     },
+     "x4": {
+      "return": 0.9243,
+      "reads_per_day": 2.467
+     }
+    }
+   },
+   "random:2": {
+    "return": 0.9341437499999999,
+    "reads_per_day": 3.2555,
+    "U": 0.7316552421620407,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9341499999999999,
+      "reads_per_day": 3.2555
+     },
+     "x4": {
+      "return": 0.9341375,
+      "reads_per_day": 3.2555
+     }
+    }
+   },
+   "dv:0.005": {
+    "return": 0.9373999999999999,
+    "reads_per_day": 1.276,
+    "U": 0.2867737948084054,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9374,
+      "reads_per_day": 1.276
+     },
+     "x4": {
+      "return": 0.9374,
+      "reads_per_day": 1.276
+     }
+    }
+   },
+   "dv:0.01": {
+    "return": 0.9373999999999999,
+    "reads_per_day": 1.2175,
+    "U": 0.2736262501404652,
+    "by_stakes": {
+     "x1": {
+      "return": 0.9374,
+      "reads_per_day": 1.2175
+     },
+     "x4": {
+      "return": 0.9374,
+      "reads_per_day": 1.2175
+     }
+    }
+   },
+   "dv:0.02": {
+    "return": 0.937375,
+    "reads_per_day": 1.17,
+    "U": 0.26295089335880434,
+    "by_stakes": {
+     "x1": {
+      "return": 0.937375,
+      "reads_per_day": 1.17
+     },
+     "x4": {
+      "return": 0.937375,
+      "reads_per_day": 1.17
+     }
+    }
+   },
+   "dv:0.04": {
+    "return": 0.93645,
+    "reads_per_day": 1.0205,
+    "U": 0.2293516125407349,
+    "by_stakes": {
+     "x1": {
+      "return": 0.93645,
+      "reads_per_day": 1.0165
+     },
+     "x4": {
+      "return": 0.93645,
+      "reads_per_day": 1.0245
+     }
+    }
+   },
+   "dv:0.08": {
+    "return": 0.9343499999999999,
+    "reads_per_day": 0.908,
+    "U": 0.20406787279469604,
+    "by_stakes": {
+     "x1": {
+      "return": 0.93435,
+      "reads_per_day": 0.908
+     },
+     "x4": {
+      "return": 0.93435,
+      "reads_per_day": 0.908
+     }
+    }
+   },
+   "dv:0.16": {
+    "return": 0.8894749999999999,
+    "reads_per_day": 0,
+    "U": 0.0,
+    "by_stakes": {
+     "x1": {
+      "return": 0.889475,
+      "reads_per_day": 0
+     },
+     "x4": {
+      "return": 0.889475,
+      "reads_per_day": 0
+     }
+    }
+   }
+  }
+ },
+ "messages_per_day": {
+  "sparse": 11.964,
+  "dense": 4.4495
+ },
+ "perspective": {
+  "share_dv_set_differs": 0.688,
+  "agg": {
+   "dv": {
+    "return": 0.92145,
+    "reads_per_task": 0.796
+   },
+   "latest": {
+    "return": 0.9198999999999999,
+    "reads_per_task": 1
+   },
+   "action_prov": {
+    "return": 0.9228,
+    "reads_per_task": 0.9045
+   }
+  },
+  "examples": [
+   {
+    "chain": 0,
+    "L": 1,
+    "variants": [
+     {
+      "listeners": [
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p6"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p1"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": false
+   },
+   {
+    "chain": 1,
+    "L": 2,
+    "variants": [
+     {
+      "listeners": [
+       "c1",
+       "p3"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        1,
+        2
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        1,
+        2
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p4",
+       "p3"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p5",
+       "p5"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p3",
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      }
+     }
+    ],
+    "dv_set_differs": false
+   },
+   {
+    "chain": 2,
+    "L": 2,
+    "variants": [
+     {
+      "listeners": [
+       "p2",
+       "p1"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p7",
+       "p5"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p3",
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "c2",
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        1,
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        1,
+        2
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1,
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        1,
+        2
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 3,
+    "L": 1,
+    "variants": [
+     {
+      "listeners": [
+       "p7"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "c1"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p5"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 4,
+    "L": 1,
+    "variants": [
+     {
+      "listeners": [
+       "p6"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "c1"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "c2"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 5,
+    "L": 3,
+    "variants": [
+     {
+      "listeners": [
+       "p2",
+       "p5",
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p3",
+       "p4",
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p4",
+       "p2",
+       "p5"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p7",
+       "c1",
+       "p6"
+      ],
+      "dv@x1": {
+       "reads": [
+        2,
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        2,
+        3
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2,
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        2,
+        3
+       ],
+       "return": 0.85
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 6,
+    "L": 1,
+    "variants": [
+     {
+      "listeners": [
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p6"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "c2"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p1"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.85
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 7,
+    "L": 1,
+    "variants": [
+     {
+      "listeners": [
+       "p7"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p6"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p5"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": false
+   },
+   {
+    "chain": 8,
+    "L": 2,
+    "variants": [
+     {
+      "listeners": [
+       "p7",
+       "c1"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p4",
+       "c2"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p2",
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p7",
+       "p6"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 9,
+    "L": 1,
+    "variants": [
+     {
+      "listeners": [
+       "p7"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p3"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p6"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p5"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": false
+   },
+   {
+    "chain": 10,
+    "L": 3,
+    "variants": [
+     {
+      "listeners": [
+       "p5",
+       "p4",
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p7",
+       "p5",
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p2",
+       "p6",
+       "p3"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p1",
+       "p5",
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": false
+   },
+   {
+    "chain": 11,
+    "L": 3,
+    "variants": [
+     {
+      "listeners": [
+       "p7",
+       "c2",
+       "c1"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p6",
+       "p7",
+       "p3"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p3",
+       "p6",
+       "c2"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p5",
+       "p2",
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 12,
+    "L": 1,
+    "variants": [
+     {
+      "listeners": [
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": false
+   },
+   {
+    "chain": 13,
+    "L": 2,
+    "variants": [
+     {
+      "listeners": [
+       "c2",
+       "p6"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        1,
+        2
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        1,
+        2
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p7",
+       "p5"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p7",
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p2",
+       "p7"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.85
+      }
+     }
+    ],
+    "dv_set_differs": false
+   },
+   {
+    "chain": 14,
+    "L": 3,
+    "variants": [
+     {
+      "listeners": [
+       "p5",
+       "p5",
+       "c2"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p5",
+       "p1",
+       "p1"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p1",
+       "p4",
+       "c2"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p2",
+       "p1",
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 15,
+    "L": 1,
+    "variants": [
+     {
+      "listeners": [
+       "p3"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "c1"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p3"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p7"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 16,
+    "L": 3,
+    "variants": [
+     {
+      "listeners": [
+       "p3",
+       "p4",
+       "c1"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "c1",
+       "c1",
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        2,
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        2,
+        3
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        2,
+        3
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        2,
+        3
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p4",
+       "p7",
+       "p1"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      }
+     },
+     {
+      "listeners": [
+       "p4",
+       "p3",
+       "p7"
+      ],
+      "dv@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x1": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "dv@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "latest@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      },
+      "action_prov@x4": {
+       "reads": [
+        3
+       ],
+       "return": 0.85
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 17,
+    "L": 1,
+    "variants": [
+     {
+      "listeners": [
+       "p7"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "c1"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "c2"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p1"
+      ],
+      "dv@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 18,
+    "L": 2,
+    "variants": [
+     {
+      "listeners": [
+       "p6",
+       "p7"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p7",
+       "p5"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p6",
+       "p4"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p2",
+       "c1"
+      ],
+      "dv@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": true
+   },
+   {
+    "chain": 19,
+    "L": 2,
+    "variants": [
+     {
+      "listeners": [
+       "c1",
+       "p7"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        1,
+        2
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        1,
+        2
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p2",
+       "p6"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p4",
+       "p2"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      }
+     },
+     {
+      "listeners": [
+       "p5",
+       "p7"
+      ],
+      "dv@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x1": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "dv@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "latest@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      },
+      "action_prov@x4": {
+       "reads": [
+        2
+       ],
+       "return": 0.95
+      }
+     }
+    ],
+    "dv_set_differs": false
+   }
+  ]
+ },
+ "cpu_s": 38.4,
+ "wall_s": 38.5
+}

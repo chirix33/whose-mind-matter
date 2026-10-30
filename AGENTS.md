@@ -2,7 +2,7 @@
 
 Version: 2026-10-28. Place this file at the root of the fresh repository.
 
-> **Active (2026-10-30, eleventh): one bounded CPU-only G1 check (D-023).** Ashraf supplied the research recommendation, which reverses the D-022 freeze for this check only. One frozen evaluation pass of the symbolic twin ("cheap provenance, costly content") with stronger cheap selectors, perspective-paired cases, sparse and dense conditions, and outcome-based gates. At most one CPU day. No model calls, spending, text environment, or automatic G2. State: `reports/g1/`.
+> **Active (2026-10-30, eleventh): one bounded CPU-only G1 check (D-023).** Ashraf supplied the research recommendation, which reverses the D-022 freeze for this check only. One frozen evaluation pass of the symbolic twin ("cheap provenance, costly content") with stronger cheap selectors, perspective-paired cases, sparse and dense conditions, and outcome-based gates. At most one CPU day. No model calls, spending, text environment, or automatic G2. State: `reports/g1/`. **Result (2026-10-30): STOP** (`reports/g1/G1_RESULTS.md`). Simple provenance rules match decision-value selection, so the D-022 freeze stands again.
 >
 > **Previous (2026-10-30, tenth): allocation claim FROZEN (D-022).** This is Ashraf's decision ("Freeze it") on the D-021 review request. No further experiments, builds, runs or spending pursue decision-value allocation. The design-argument gates G1–G3 are not authorized. Findings stand as recorded in `reports/PROJECT_SUMMARY.md`. Services stay stopped, and about USD 1.076 stays unspent. Reopening requires a new research decision.
 >

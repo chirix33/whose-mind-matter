@@ -26,3 +26,13 @@
 7. **G2's 1,000-token floor is withdrawn.** Any later G2 measures the cheapest reliable extraction approach instead.
 
 Protocol: `reports/g1/G1_PROTOCOL.md`, frozen and hash-pinned in `reports/g1/g1-freeze.json` before any measurement.
+
+## Outcome (2026-10-30): STOP
+
+`reports/g1/G1_RESULTS.md`: one frozen pass, 38 s CPU.
+- **Passed:** G1a (U = 0.137, return within 0.001 of full information) and G1c (37.8% of initial states gain ≥ 0.10 from content).
+- **G1b stop:** `risk(θ ≤ 0.4)` matches dv within 0.02 with fewer reads, and `action_prov` equals dv's full-information point.
+- **G1d stop:** stakes never flip READ/STOP (0%), because uncertain handoffs never beat search in this generator.
+- **G1e stop:** perspectives change dv's read set in 69% of chains, but dv beats perspective-blind `latest` by only +0.0016.
+
+A simple provenance rule performs as well as decision-value selection. The allocation claim returns to frozen (D-022 stands); no G2.

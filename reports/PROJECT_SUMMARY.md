@@ -1,6 +1,8 @@
 # Project summary: Whose Mind Matters? (as of 2026-10-30, D-021)
 
-**Status: FROZEN (D-022, 2026-10-30).** Ashraf froze the allocation claim. No further experiments, builds, runs or spending pursue it. The design argument's gates (G1–G3) are not authorized. Everything below stands as recorded.
+**Status: FROZEN (D-022; reaffirmed by the G1 STOP under D-023, 2026-10-30).** One bounded CPU-only check of the last candidate setting ("cheap provenance, costly content") stopped. Simple provenance rules (action-specific, or recency × change rate) matched exact decision-value selection, stakes never changed the read decision, and the perspective structure changed which read was needed but not the outcome margin (`reports/g1/G1_RESULTS.md`).
+
+**Previous status: FROZEN (D-022, 2026-10-30).** Ashraf froze the allocation claim. No further experiments, builds, runs or spending pursue it. The design argument's gates (G1–G3) are not authorized. Everything below stands as recorded.
 
 **Earlier status.** The OfficeMinds Tier 1 implementation line is **closed** (D-021).
 - The intended contribution, choosing whose mental state and which perspective path to compute at a competitive resource budget, has **not** been demonstrated.
@@ -21,6 +23,7 @@
 | Hybrid block (D-019) | A provenance/referent engine matches enumeration (1,008/1,008). Every relation costs about 20 µs and 0 tokens, so there is nothing to allocate and the hybrid is closed |
 | Fallback pilot (D-019) | Symbolic checker + action gate vs direct: +0.261 [+0.186, +0.336]. Beats the generic LLM check by +0.131 at 0.76× tokens. Beats ask-first by +0.294 but at 1.26× tokens: **failed** the frozen screen, which D-020 notes was restrictive |
 | Audit (D-020, D-021) | See the input contract and evidence status below |
+| G1 symbolic twin (D-023) | **STOP**. Content is worth reading (+0.07/task; U = 0.14), but `action_prov` / `risk` rules match decision value; 0% stakes flips; dv beats perspective-blind `latest` by only +0.0016 |
 
 ## Corrected input contract (D-020 / D-021)
 
