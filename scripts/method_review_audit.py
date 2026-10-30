@@ -325,7 +325,7 @@ def main():
     insts = [i for i in G.generate(G.BASE_SEED) if i.construction in CONSTRUCTIONS and not i.variant.permuted]
     records = [record(i) for i in insts]
     commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-    dirty = bool(subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout.strip())
+    dirty = bool(subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], cwd=ROOT, capture_output=True, text=True).stdout.strip())
     cs = [c for r in records for c in r["couriers"]]
     res = {"commit": commit, "dirty": dirty, "seed": G.BASE_SEED, "constructions": CONSTRUCTIONS,
            "checks": {"unit_equals_destination_all": all(c["unit_equals_destination"] for c in cs),
