@@ -2,7 +2,7 @@
 
 Research code for *Decision-Value Allocation of Theory of Mind over Perspective Graphs*. The full plan is in [docs/research/methods-experiments-v2.md](docs/research/methods-experiments-v2.md), a verbatim copy of the outline. Implementation rules are in [AGENTS.md](AGENTS.md).
 
-Current milestone: **Stage 2 (local LLM pilot), step 1 done: Stage 1 review corrections** (D-007…D-012). See [reports/latest.md](reports/latest.md).
+Current status (2026-10-30): **the Tier 1 implementation line is closed (D-021); next is a problem-design decision.** See [reports/PROJECT_SUMMARY.md](reports/PROJECT_SUMMARY.md) and [reports/latest.md](reports/latest.md).
 
 ## Layout
 ```

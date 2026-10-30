@@ -1,0 +1,290 @@
+{
+ "cases": [
+  {
+   "case": "E1 later conversation, uncertain change",
+   "q_change": 0.5,
+   "stakes": 1.0,
+   "t7_header_present": true,
+   "lambda_times_c": 0.04,
+   "values_by_read_set": {
+    "none": 0.8,
+    "t3": 0.8,
+    "t7": 0.9,
+    "t3,t7": 0.9
+   },
+   "actions_by_read_set": {
+    "none": {
+     "()": "search"
+    },
+    "t3": {
+     "('b',)": "search",
+     "('c',)": "search"
+    },
+    "t7": {
+     "('stay',)": "give(F)",
+     "('move:c',)": "search",
+     "('move:b',)": "search"
+    },
+    "t3,t7": {
+     "('b', 'stay')": "give(F)",
+     "('b', 'move:c')": "search",
+     "('c', 'stay')": "give(F)",
+     "('c', 'move:b')": "search"
+    }
+   },
+   "voi": {
+    "t3": 0.0,
+    "t7": 0.1
+   },
+   "content_entropy_bits": {
+    "t3": 1.0,
+    "t7": 1.5
+   },
+   "decision_value_choice": "t7",
+   "entropy_choice": "t7",
+   "structural_rule_reads": [
+    "t3",
+    "t7"
+   ],
+   "dense_reads": 10,
+   "reads_by_decision_value": 1
+  },
+  {
+   "case": "E1 later conversation, uncertain change",
+   "q_change": 0.5,
+   "stakes": 4.0,
+   "t7_header_present": true,
+   "lambda_times_c": 0.04,
+   "values_by_read_set": {
+    "none": 0.8,
+    "t3": 0.8,
+    "t7": 0.9,
+    "t3,t7": 0.9
+   },
+   "actions_by_read_set": {
+    "none": {
+     "()": "search"
+    },
+    "t3": {
+     "('b',)": "search",
+     "('c',)": "search"
+    },
+    "t7": {
+     "('stay',)": "give(F)",
+     "('move:c',)": "search",
+     "('move:b',)": "search"
+    },
+    "t3,t7": {
+     "('b', 'stay')": "give(F)",
+     "('b', 'move:c')": "search",
+     "('c', 'stay')": "give(F)",
+     "('c', 'move:b')": "search"
+    }
+   },
+   "voi": {
+    "t3": 0.0,
+    "t7": 0.1
+   },
+   "content_entropy_bits": {
+    "t3": 1.0,
+    "t7": 1.5
+   },
+   "decision_value_choice": "t7",
+   "entropy_choice": "t7",
+   "structural_rule_reads": [
+    "t3",
+    "t7"
+   ],
+   "dense_reads": 10,
+   "reads_by_decision_value": 1
+  },
+  {
+   "case": "E2 no later conversation (provenance settles it)",
+   "q_change": 0.0,
+   "stakes": 1.0,
+   "t7_header_present": false,
+   "lambda_times_c": 0.04,
+   "values_by_read_set": {
+    "none": 0.95,
+    "t3": 0.95
+   },
+   "actions_by_read_set": {
+    "none": {
+     "()": "give(F)"
+    },
+    "t3": {
+     "('b',)": "give(F)",
+     "('c',)": "give(F)"
+    }
+   },
+   "voi": {
+    "t3": 0.0
+   },
+   "content_entropy_bits": {
+    "t3": 1.0
+   },
+   "decision_value_choice": "STOP",
+   "entropy_choice": "t3",
+   "structural_rule_reads": [
+    "t3"
+   ],
+   "dense_reads": 9,
+   "reads_by_decision_value": 0
+  },
+  {
+   "case": "E3 rare change: stakes decide READ vs STOP",
+   "q_change": 0.02,
+   "stakes": 1.0,
+   "t7_header_present": true,
+   "lambda_times_c": 0.04,
+   "values_by_read_set": {
+    "none": 0.92,
+    "t3": 0.92,
+    "t7": 0.948,
+    "t3,t7": 0.948
+   },
+   "actions_by_read_set": {
+    "none": {
+     "()": "give(F)"
+    },
+    "t3": {
+     "('b',)": "give(F)",
+     "('c',)": "give(F)"
+    },
+    "t7": {
+     "('stay',)": "give(F)",
+     "('move:c',)": "search",
+     "('move:b',)": "search"
+    },
+    "t3,t7": {
+     "('b', 'stay')": "give(F)",
+     "('b', 'move:c')": "search",
+     "('c', 'stay')": "give(F)",
+     "('c', 'move:b')": "search"
+    }
+   },
+   "voi": {
+    "t3": 0.0,
+    "t7": 0.028
+   },
+   "content_entropy_bits": {
+    "t3": 1.0,
+    "t7": 0.1614
+   },
+   "decision_value_choice": "STOP",
+   "entropy_choice": "t3",
+   "structural_rule_reads": [
+    "t3",
+    "t7"
+   ],
+   "dense_reads": 10,
+   "reads_by_decision_value": 0
+  },
+  {
+   "case": "E3 rare change: stakes decide READ vs STOP",
+   "q_change": 0.02,
+   "stakes": 4.0,
+   "t7_header_present": true,
+   "lambda_times_c": 0.04,
+   "values_by_read_set": {
+    "none": 0.89,
+    "t3": 0.89,
+    "t7": 0.948,
+    "t3,t7": 0.948
+   },
+   "actions_by_read_set": {
+    "none": {
+     "()": "give(F)"
+    },
+    "t3": {
+     "('b',)": "give(F)",
+     "('c',)": "give(F)"
+    },
+    "t7": {
+     "('stay',)": "give(F)",
+     "('move:c',)": "search",
+     "('move:b',)": "search"
+    },
+    "t3,t7": {
+     "('b', 'stay')": "give(F)",
+     "('b', 'move:c')": "search",
+     "('c', 'stay')": "give(F)",
+     "('c', 'move:b')": "search"
+    }
+   },
+   "voi": {
+    "t3": 0.0,
+    "t7": 0.058
+   },
+   "content_entropy_bits": {
+    "t3": 1.0,
+    "t7": 0.1614
+   },
+   "decision_value_choice": "t7",
+   "entropy_choice": "t3",
+   "structural_rule_reads": [
+    "t3",
+    "t7"
+   ],
+   "dense_reads": 10,
+   "reads_by_decision_value": 1
+  },
+  {
+   "case": "E4 decision value vs entropy",
+   "q_change": 0.2,
+   "stakes": 1.0,
+   "t7_header_present": true,
+   "lambda_times_c": 0.04,
+   "values_by_read_set": {
+    "none": 0.8,
+    "t3": 0.83,
+    "t7": 0.93,
+    "t3,t7": 0.93
+   },
+   "actions_by_read_set": {
+    "none": {
+     "()": "search"
+    },
+    "t3": {
+     "('b',)": "search",
+     "('c',)": "search"
+    },
+    "t7": {
+     "('stay',)": "give(F)",
+     "('move:c',)": "search",
+     "('move:b',)": "search"
+    },
+    "t3,t7": {
+     "('b', 'stay')": "give(F)",
+     "('b', 'move:c')": "search",
+     "('c', 'stay')": "give(F)",
+     "('c', 'move:b')": "search"
+    }
+   },
+   "voi": {
+    "t3": 0.03,
+    "t7": 0.13
+   },
+   "content_entropy_bits": {
+    "t3": 1.0,
+    "t7": 0.9219
+   },
+   "decision_value_choice": "t7",
+   "entropy_choice": "t3",
+   "structural_rule_reads": [
+    "t3",
+    "t7"
+   ],
+   "dense_reads": 10,
+   "reads_by_decision_value": 1
+  }
+ ],
+ "amortization": {
+  "case": "E5 dense amortizes when relevance covers the log",
+  "transcripts": 10,
+  "reads_selective_union": 10,
+  "reads_dense_once": 10,
+  "saving": 0.0,
+  "note": "with encode-once caching, selective saves only transcripts never needed during the episode"
+ }
+}

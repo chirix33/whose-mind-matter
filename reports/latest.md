@@ -1,6 +1,14 @@
 # Milestone report — through the hybrid feasibility block (2026-10-30)
 
-> **Latest: D-020 input-contract audit and evidence export.** See **[reports/hybrid-block/audit/AUDIT.md](hybrid-block/audit/AUDIT.md)**.
+> **Latest: block closed (D-021); problem-design argument drafted.**
+> - The research review independently reproduced the CPU results:
+>   - 1,008 qualification checks; text-compiled = instance model on 192/192 states;
+>   - planner 0.8719 realized vs checker+LLM 0.564.
+> - It closed the line. The intended allocation contribution is not demonstrated.
+> - Project record: **[reports/PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)**, with the corrected input contract and evidence status (reviewer-reproduced vs agent-reported).
+> - Design proposal, not authorized: **[reports/design-argument/DESIGN_ARGUMENT.md](design-argument/DESIGN_ARGUMENT.md)**. Its thesis is "cheap provenance, costly content". Exact worked examples (`scripts/design_argument_examples.py`) show decision value choosing R's later conversation where entropy picks F's source, STOP from provenance alone, a stakes-dependent read, and a kill case where dense reading amortizes. Stop rules G1–G3 are included; G1 is CPU-only.
+>
+> **Earlier: D-020 input-contract audit and evidence export.** See **[reports/hybrid-block/audit/AUDIT.md](hybrid-block/audit/AUDIT.md)**.
 > - The deployed checker and the Bayes reference received the per-instance generator Scenario (construction ID, role mapping), not only the LLM's card and history. This was not stated before.
 > - A model compiled from the LLM's own task card gives identical outputs in 380/380 pilot checks and 192/192 t0 values. The checker is output-equivalent to a hand-compiled template model, not inference from text.
 > - The Bayes planner's realized return on the same draws is 0.872 (CPU evaluation).

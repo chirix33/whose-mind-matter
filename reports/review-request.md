@@ -1,13 +1,17 @@
-# Review request: 2026-10-30 (D-020 audit of the hybrid block)
+# Review request: 2026-10-30 (D-021 problem design)
 
-**Read first:** `reports/hybrid-block/audit/AUDIT.md`. Evidence is in the same directory and listed in `HASHES.sha256`. The source is `source-ef77ad6.zip`.
+**Read first:** `reports/design-argument/DESIGN_ARGUMENT.md` (a proposal; nothing started). The project record is `reports/PROJECT_SUMMARY.md`.
 
-## Findings
-- **Input contract.** The deployed checker and the Bayes reference received the per-instance generator `Scenario`: the disclosed prior plus a builder carrying the construction ID and role→name mapping. That is not literally what the LLM saw.
-- **Equivalence test.** Compile a public model from the LLM's own card: every generator pattern with a byte-identical task card, mixed uniformly. It gives identical p, location, verdicts, t0 values and actions (380/380 checks, 192/192 states). The visible history always pins a single pattern.
-  - So the metadata was redundant for these templates. The checker still depends on hand-compiled template engineering and does not read text.
-- **Bayes planner.** Realized deterministic return on the same 192 hidden draws: 0.872 (expectation 0.885). This is a CPU evaluation added in the audit.
+## The argument in brief
+- Selective mental computation can pay only when **provenance is cheap and content is costly**: who talked to whom is visible for almost nothing, but what was said needs a model extraction call. It also needs relevance to be sparse over the episode and predictable from provenance.
+- Exact small examples (`reports/design-argument/examples.json`):
+  - decision value reads R's later conversation while entropy reads F's source;
+  - provenance alone gives STOP;
+  - stakes flip READ vs STOP;
+  - in a kill case where relevance covers the log, dense encode-once reading costs the same.
+- The comparison keeps one exact planner and one extraction model and varies only the read policy, at matched read-token budgets. This removes the LLM action-selection weakness exposed by the 0.872-vs-0.564 result.
+- **The contribution is narrow:** value of information over a provenance graph. Savings depend on the generator's relevance sparsity.
 
 ## Decisions requested
-1. Accept the audit, and the corrected description of the checker ("hand-compiled model of the task-card templates, output-equivalent to the card"), as closing D-019/D-020.
-2. Next step. Freeze and consolidate this line, or specify, as a separate project-extension proposal, how to establish evidence of a genuine perspective-reconstruction bottleneck before any new environment. No experiment is proposed or started here.
+1. **Freeze** the allocation claim now; or **authorize G1 only**: a CPU-only symbolic twin, about one day, no model calls, with the stop rules in §5. If G1 fails, freeze.
+2. If episode-level reproduction matters for the record, attach `reports/hybrid-block/audit/` (`episodes.csv`, `interventions.csv`, `episodes-agent.jsonl.gz`, `input-audit-checks.jsonl`, `HASHES.sha256`) to the review conversation.
