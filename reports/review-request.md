@@ -1,24 +1,18 @@
-# Review request — 2026-10-29 (redesign concept, D-018)
+# Review request: 2026-10-30 (hybrid feasibility block, D-019)
 
-**Read first:** `reports/redesign-concept/CONCEPT.md`. It is a concept, and no experiment is authorized by it.
+**Read first:** `reports/hybrid-block/FINAL_REVIEW.md`. CPU detail is in `reports/hybrid-block/cpu-gate.md`, and the frozen rules in `reports/hybrid-block/fallback-protocol.md`.
 
-Also updated:
-- `reports/method-review/METHOD_REVIEW.md`, with the D-018 corrections applied in place and listed at the top;
-- `docs/decisions/2026-10-29-D018-stop-and-redesign-concept.md`.
-
-## The concept in brief
-- **Relations.** Unit content becomes a distribution over *referents*: which visible event's value a belief points to, with provenance. Value marginals stay derivable. An agent-side relation layer derives same/different/undetermined from the agent's own units and the public constraints. It is declared, costed and ablated, and it is not an evaluator success field.
-  - Hand-derived on the existing rows: referents determine the handoff relation in 9 of 9 cases; marginals determine it in 4 of 9.
-- **Computation constraint.** A sequential Tier 1 "office day": K tasks drawn from the validated construction families, with a shared cast. Perspective content is reused across decisions, and the log grows for causal reasons, not padding.
-  - All baselines keep full-history access: direct, direct with more reasoning, and generic memory. Dense memory has the same representation as the method.
-  - Compute is reported on two frontiers, GPU-seconds with caching on and actual-tokenizer tokens.
-- **Causal links:** L1 headroom, L2 usability, L3 sparsity/predictability, L4 inferability per cost. Each has its own abandon criterion.
-- **Gates:** G0 (CPU only) through G4. Thresholds are frozen per gate, and a failed gate stops the line with no revision.
+## Outcome in brief
+- **Common foundation:** sound.
+- **Hybrid:** not established in this regime. Selection economics fails because every relational computation is effectively free.
+- **Fallback:** the pre-declared decision is not to continue.
+  - The exact-checker gate gains +0.261 over direct and beats generic verification by +0.131 at 0.76× the tokens.
+  - It beats ask-first by +0.294 in return but uses 1.26× its tokens, so criterion (b) fails.
+- **Caveat:** a CPU Bayes planner with no LLM reaches 0.885 in expectation.
 
 ## Decisions requested
-1. **Is the concept convincing enough to keep the project going?** If not, the alternative is freezing and documenting the negative findings (concept §7).
-2. **If it is: accept, modify or reject the versioned changes R1–R6** (concept §4.2), especially:
-   - R4: the method processes a bounded context while every baseline has full-history access;
-   - R5: the bounded-context Bayes actor as the symbolic label reference.
-3. **If it is: authorize G0 only** (CPU-only dev-v4 generator and qualification, about a week of engineering), with its abandon criteria (a)–(e). Or authorize nothing yet.
-4. **Confirm the scope reading.** The day-level task lengthens the robot's horizon. It does not add modeling of other people's long-horizon goals, which stays excluded.
+1. **Accept or modify the block outcome.** Hybrid not established; fallback not continued under the frozen criterion. Or rule that criterion (b)'s token cap should not bind when the return gain is this large. That would be a post-hoc change, so it is flagged as such.
+2. **Freeze or redirect.**
+   - Freeze the line and consolidate the negative and positive findings (FINAL_REVIEW §6); or
+   - authorize scoping (not running) a regime change in which perspective relations are not machine-compilable (natural-language Tier 2 role-play with private information), testing a targeted model-based relational check against generic verification and ask-first under the frozen gate.
+3. **If you redirect:** resource scope. Local only, or an API allowance. The ledger is USD 3.924 of 5.

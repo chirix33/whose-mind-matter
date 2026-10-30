@@ -1,0 +1,24 @@
+{
+ "states": 192,
+ "mean_v_bayes_t0": 0.8846,
+ "by_stakes": {
+  "x1": 0.8877,
+  "x4": 0.8814
+ },
+ "by_construction": {
+  "1a": 0.95,
+  "1b": 0.75,
+  "1c": 0.95,
+  "2a": 0.95,
+  "2b": 0.8,
+  "2c": 0.95,
+  "3a": 0.95,
+  "3b": 0.8,
+  "3c": 0.95,
+  "4a": 0.8557,
+  "4b": 0.8546,
+  "4c": 0.8546
+ },
+ "cpu_s_total": 4.32,
+ "note": "expected return of the exact public-model expectimax policy; not a rollout"
+}

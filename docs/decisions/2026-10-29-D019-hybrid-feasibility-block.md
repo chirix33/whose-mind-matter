@@ -30,3 +30,14 @@
    - Then one frozen pilot of at most 1,536 episodes with four conditions: direct; targeted checker + gate; generic verification + the same gate; simple ask/search-before-commit.
    - Same screening criteria as hybrid §5(2), with return and full cost.
 6. **Deliverable.** One bundle, `reports/hybrid-block/FINAL_REVIEW.md` and its artifacts. No further methodological round starts automatically.
+
+## Outcome (2026-10-30; awaiting research review)
+
+Handoff: `reports/hybrid-block/FINAL_REVIEW.md`.
+- **Foundation:** sound.
+- **Hybrid:** not established. Selection economics fails: every relational computation costs about 20 µs and 0 tokens, so the 768-episode pilot was not run.
+- **Fallback pilot:** 1,536 episodes, frozen at `b42589d`.
+  - checker_gate − direct: +0.261 [+0.186, +0.336].
+  - Beats generic_gate by +0.131 [+0.068, +0.194] at 0.76× its tokens.
+  - Beats ask_first by +0.294, but at 1.26× its tokens, so criterion (b) fails, and the pre-declared decision is: do not continue Concept 2 as specified.
+- **Caveat:** a CPU public-model Bayes planner reaches 0.885 (exact expectation) with no LLM. Any continuation needs a regime where perspective relations are not cheaply compilable.

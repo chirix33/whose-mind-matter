@@ -1,6 +1,21 @@
-# Milestone report — through the redesign concept (2026-10-29)
+# Milestone report — through the hybrid feasibility block (2026-10-30)
 
-> **Latest: redesign concept delivered (D-018).** See **[reports/redesign-concept/CONCEPT.md](redesign-concept/CONCEPT.md)**. It is a concept only.
+> **Latest: hybrid feasibility block complete (D-019).** See **[reports/hybrid-block/FINAL_REVIEW.md](hybrid-block/FINAL_REVIEW.md)**.
+> - **Common relational foundation (CPU): sound.**
+>   - The provenance/referent engine matches an independent enumeration in 1,008/1,008 checks across every hidden world, with 0 information-boundary violations.
+>   - Matched-marginal contrasts are reproduced (2d: joint 1 vs 0 where marginals are identical).
+>   - 320 tests pass.
+> - **Hybrid: not established.**
+>   - Every relational computation costs about 20 µs and 0 tokens, and computing all of them costs the same as one, so there is nothing to allocate.
+>   - The 768-episode hybrid pilot was not run (brief §3).
+> - **Concept 2 fallback:** 1,536 local episodes on fresh seeds 20261400–07, frozen at `b42589d`, about 27 min of serving, no paid calls.
+>   - Gate with exact public-model checker − direct: **+0.261 [+0.186, +0.336]**.
+>   - Against generic LLM verification: +0.131 [+0.068, +0.194] at 0.76× the tokens.
+>   - Against ask-first: +0.294 in return, but at **1.26× the tokens**, which fails pre-declared criterion (b). So: do not continue Concept 2 as specified.
+> - **Caveat:** a CPU public-model Bayes planner has expected return 0.885 with no LLM. Continuing requires a regime where perspective relations are not cheaply compilable.
+>
+> **Earlier: redesign concept delivered (D-018).** See [reports/redesign-concept/CONCEPT.md](redesign-concept/CONCEPT.md).
+
 > - Optimizing the current implementation stopped (D-018). The METHOD_REVIEW corrections are applied, including the cost per requested unit: 4,027 tokens, 77% of B0.
 > - The concept has two parts:
 >   - referential, provenance-carrying unit content with an agent-side relation layer (hand-derived: it determines the handoff relation in 9/9 audited rows vs 4/9 for marginals);
